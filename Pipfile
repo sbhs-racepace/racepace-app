@@ -1,0 +1,22 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+ujson = {version = "*", sys_platform = "== 'darwin'"}
+sanic = "*"
+aiohttp = "*"
+py-bcrypt = "*"
+motor = "*"
+pyjwt = "*"
+dhooks = "*"
+python-decouple = "*"
+
+[dev-packages]
+requests = "*"
+sphinx = "*"
+v = {version = "*", editable = true}
+
+[requires]
+python_version = "3.7"
