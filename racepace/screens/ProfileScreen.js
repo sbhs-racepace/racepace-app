@@ -44,8 +44,7 @@ export default class ProfileScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      visible: {username: false,
-      password: false, changepassword: false},
+      visible: false,
       name: 'Jason Yu',
       username: 'jyuuuk',
       age: 16,
@@ -68,22 +67,9 @@ export default class ProfileScreen extends React.Component {
         <Prompt
           title="Change Username"
           placeholder="New Username"
-          visible={this.state.visible.username}
+          visible={this.state.visible}
           onCancel={() => this.setState({ visible: false })}
           onSubmit={text => this.setState({ username: text, visible: false })}
-        />
-        <Prompt
-          title="Change Password"
-          placeholder="Current Password"
-          visible={this.state.visible.password}
-          onCancel={() => this.setState({ visible: false })}
-          onSubmit={this.setState({ visible: {changePassword: false} })}
-        />
-        <Prompt
-          title="Change Password"
-          placeholder="New Password"
-          visible={this.state.visible.changepassword}
-          onCancel={() => this.setState({ visible: false })}
         />
         <Text> </Text>
         <Text> </Text>
@@ -102,9 +88,6 @@ export default class ProfileScreen extends React.Component {
             <Button
               onPress={() => this.setState({ visible: true })}
               title="✎"
-            />
-            <Button
-              onPress={() => this.setState({ visible: {password: false}})}
             />
           </View>
         </View>
