@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import '../global';
 import '../assets/cat.jpeg';
-import Prompt from 'react-native-input-prompt';
 
 const styles = StyleSheet.create({
   container: {
@@ -44,7 +43,6 @@ export default class ProfileScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      visible: false,
       name: 'Jason Yu',
       username: 'jyuuuk',
       age: 16,
@@ -64,13 +62,6 @@ export default class ProfileScreen extends React.Component {
   render() {
     return (
       <ScrollView style={styles.container}>
-        <Prompt
-          title="Change Username"
-          placeholder="New Username"
-          visible={this.state.visible}
-          onCancel={() => this.setState({ visible: false })}
-          onSubmit={text => this.setState({ username: text, visible: false })}
-        />
         <Text> </Text>
         <Text> </Text>
         <View style={styles.profile_box}>
@@ -85,10 +76,6 @@ export default class ProfileScreen extends React.Component {
             </Text>
             <Text>Age: {this.state.age}</Text>
             <Text>Email: {this.state.email}</Text>
-            <Button
-              onPress={() => this.setState({ visible: true })}
-              title="✎"
-            />
           </View>
         </View>
         <View style={styles.profile_data_box}>
