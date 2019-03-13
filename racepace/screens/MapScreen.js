@@ -1,7 +1,8 @@
 import React from "react";
 import MapView from 'react-native-maps';
 import { Marker, Polyline } from 'react-native-maps';
-import { View, Text, StyleSheet, Button, Dimensions } from "react-native";
+import { View, Text, TextInput, StyleSheet, Dimensions } from "react-native";
+import Button from '../components/Button'
 
 let { width, height } = Dimensions.get('window');
 
@@ -24,7 +25,10 @@ export default class MapScreen extends React.Component {
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA,
       },
-      markers: []
+      markers: [],
+      start: "",
+      end: "",
+      viewHeight: 0
     };
     
     let start = '-33.9672563,151.1002119'
@@ -125,20 +129,54 @@ export default class MapScreen extends React.Component {
     navigator.geolocation.clearWatch(this.watchID);
   }
 
+  generateStyles() {
+    return StyleSheet.create({
+      map: {
+        ...StyleSheet.absoluteFillObject,
+        top: 80,
+        height: 600
+      },
+    });
+  }
+
   render () {
     return(
-      <MapView
-        style={{flex: 1}}
-        showsUserLocation={true}
-        initialRegion={this.state.region}
-        onRegionChange={this.onRegionChange.bind(this)}
-      >
-        <Polyline
-          coordinates={this.state.markers.map(marker => {return marker.coordinate})}
-          strokeColor="#9900FF"
-          strokeWidth={6}>
-        </Polyline>
-      </MapView>
+      <View onLayout={(event)=>{
+        let {x,y, width, height} = event.nativeEvent.layout
+        this.setState({
+          viewHeight: height
+        })
+      }}>
+        <TextInput 
+          placeholder="From"
+          onChangeText={(text)=>this.setState({
+            start: text
+          })}
+        />
+        <TextInput
+          placeholder="To"
+          onChangeText={(text)=>this.setState({
+            end: text
+          })}
+        />
+        <Button text="Generate" onPress={() => {
+          console.log(this.state.start)
+          console.log(this.state.end)
+        }}
+        />
+        <MapView
+          style={this.generateStyles().map}
+          showsUserLocation={true}
+          initialRegion={this.state.region}
+          onRegionChange={this.onRegionChange.bind(this)}
+        >
+          <Polyline
+            coordinates={this.state.markers.map(marker => {return marker.coordinate})}
+            strokeColor="#9900FF"
+            strokeWidth={6}
+          />
+        </MapView>
+      </View>
     );
   }
 }
