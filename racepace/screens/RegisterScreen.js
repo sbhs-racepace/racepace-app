@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import Button from '../components/Button.js'
 import PickTwo from '../components/PickTwo'
-import {login} from "../login"
+import {register} from "../login"
 import '../global';
 
 const STYLES = StyleSheet.create({
@@ -97,8 +97,13 @@ export default class RegisterScreen extends React.Component {
           secureTextEntry={true}
           placeholderTextColor="rgba(225,225,225,0.8)"
         />
-        <PickTwo view_style={STYLES.general} btn_style={STYLES.pickTwo} options={["Standard","Coach"]} abbrev={["s","c"]} _this={this} />
-        <Button style={STYLES.general} text="Register" onPress={login.bind(this)} />
+        <PickTwo view_style={STYLES.general}
+          btn_style={STYLES.pickTwo}
+          options={["Standard","Coach"]}
+          abbrev={["s","c"]}
+          _this={this}
+        />
+        <Button style={STYLES.general} text="Register" onPress={register.bind(this)} />
       </View>
     );
   }

@@ -149,6 +149,7 @@ export default class MapScreen extends React.Component {
       }}>
         <TextInput 
           placeholder="From"
+          style = {this}
           onChangeText={(text)=>this.setState({
             start: text
           })}

@@ -1,63 +1,109 @@
 //SY
-import "./global"
-import {Alert} from "react-native"
-import Expo from "expo"
+import './global';
+import { Alert } from 'react-native';
+import Expo from 'expo';
 
 function check_login(res) {
-    if (res === undefined || res === null) {
-      Alert.alert('Error connecting to server');
-      console.log(false);
-      return false;
-    }
-    res = res.json()
-    if (res.success) {
-      global.login_status = res;
-    } else {
-      Alert.alert('Error', res.error);
-    }
-    return res.success;
+  //Read response from server
+  if (!res) {
+    //Check for empty response
+    Alert.alert('Error',"Server didn't respond");
+    return false;
   }
+  res = JSON.parse(res._bodyText); //Parse response as JSON
+  console.log(res);
+  if (res['success']) {
+    //Credentials correct
+    global.login_status = res; //Save response (contains user id, token)
+  } else {
+    //Credentials incorrect
+    Alert.alert('Error', res.error);
+  }
+  return res['success'];
+}
 
-export function login(register) {
-    let data = {
-      email: this.state.email,
-      password: this.state.pword
-    };
-    if (register) data.name = this.state.name
-    let url = register ? "http://192.168.0.5:8000/api/register" : "http://192.168.0.5:8000/api/login"
-    let success;
-    try {
-      fetch(url, {
-        method: 'POST',
-        body: JSON.stringify(data),
+export function login() {
+  //Sends login request to server
+  let data = {
+    email: this.state.email,
+    password: this.state.pword,
+  };
+  let url = global.serverURL + '/api/login';
+  try {
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    })
+      .catch(res => {
+        Alert.alert('Error connecting to server', res);
       })
-        .catch(res => {console.log("fail")
-          Alert.alert('Error connecting to server', res);
-          this.success = false;})
-        .then(res => {this.success = this.check_login(res)}, reason => {console.log("reject")
+      .then(
+        res => {
+          console.log('Login response received from server');
+          if (check_login(res)) {
+            //Checking response from server
+            console.log('Login success');
+            this.props.navigation.navigate('Details');
+          }
+        },
+        reason => {
+          console.log('Promise rejected');
           Alert.alert('Error connecting to server', reason);
-          this.success = false;});
-    }
-    catch (err) {
-      Alert.alert("Error",err)
-      this.success =false;
-    }
-    if (this.success) this.props.navigation.navigate('Main');
-    else if (this.success === undefined) Alert.alert("Error","An unknown error occured when connecting to the server");
+        }
+      );
+  } catch (err) {
+    //Catch any other errors
+    Alert.alert('Error', err);
   }
+}
+
+export function register() {
+  //Sends register request to server (also logs in after user is registered)
+  let data = {
+    email: this.state.email,
+    password: this.state.pword,
+    name: this.state.name
+  };
+  let url = global.serverURL + '/api/register';
+  try {
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    })
+      .catch(res => {
+        Alert.alert('Error connecting to server', res);
+      })
+      .then(
+        res => {
+          console.log('Login response received from server');
+          if (check_login(res)) {
+            //Checking response from server
+            console.log('Login success');
+            this.props.navigation.navigate('Details');
+          }
+        },
+        reason => {
+          console.log('Promise rejected');
+          Alert.alert('Error connecting to server', reason);
+        }
+      );
+  } catch (err) {
+    //Catch any other errors
+    Alert.alert('Error', err);
+  }
+}
 
 export async function googleLogin() {
   try {
     const result = await Expo.Google.logInAsync({
       androidClientId: global.googleLoginID.android,
-      scopes: ["email"]
-    })
-    if (result.type == "success"){
+      scopes: ['email'],
+    });
+    if (result.type == 'success') {
       console.log(result);
       //NOT IMPLEMENTED (Requires new backend code)
     }
-  }
-  catch (err) {
-    Alert.alert("Google Login Error",err)
+  } catch (err) {
+    Alert.alert('Google Login Error', err);
   }
 }
