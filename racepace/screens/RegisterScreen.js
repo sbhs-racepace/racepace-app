@@ -19,14 +19,11 @@ const STYLES = StyleSheet.create({
     borderBottomWidth: 2,
     marginTop: 5,
     paddingLeft: 3,
-    width:"80%",
-    left: "10%",
-    right: "10%",
+    width:"80%"
   },
   general: {
     marginTop: 5,
-    width:"80%",
-    left: "10%",
+    width:"80%"
   },
   pickTwo: {
     width:"50%"
@@ -51,7 +48,7 @@ export default class RegisterScreen extends React.Component {
 
   render() {
     return (
-      <View>
+      <View style={{alignItems:"center"}}>
         <Image style={STYLES.general} source={require('../assets/cat.jpeg')} />
         <TextInput
           autoCorrect={false}
