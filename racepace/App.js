@@ -11,6 +11,7 @@ import ProfileScreen from './screens/ProfileScreen';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import ChatScreen from './screens/ChatScreen';
+import RouteListScreen from './screens/RouteListScreen';
 import './global.js';
 //REMINDER: https://github.com/FaridSafi/react-native-gifted-chat
 
@@ -23,6 +24,7 @@ const LoginNavigator = createStackNavigator({
   Main: {
     screen: createBottomTabNavigator({
       Details: { screen: DetailScreen },
+      Routes: { screen: RouteListScreen },
       Map: { screen: MapScreen },
       Chat: { screen: ChatScreen },
       Profile: { screen: ProfileScreen },

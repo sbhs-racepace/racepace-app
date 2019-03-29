@@ -8,7 +8,7 @@ import {
   Image,
   Alert,
 } from 'react-native';
-import {login} from "../login"
+import {login, googleLogin} from "../login"
 import Button from '../components/Button.js'
 import '../global';
 
@@ -75,16 +75,17 @@ export default class LoginScreen extends React.Component {
           placeholder="Password"
           placeholderTextColor="rgba(225,225,225,0.8)"
         />
-        <Button style={STYLES.general} onPress={login.bind(this)} text={"Login"} />
+        <Button style={STYLES.general} onPress={login.bind(this)} text="Login" />
         <Button
           style={STYLES.general}
           onPress={() => {
             global.login_status = { success: true };
             this.props.navigation.navigate('Main');
           }}
-          text={"Login as guest"}
+          text="Login as guest"
         />
         <Button style={STYLES.general} onPress = {() => this.props.navigation.navigate('Register')} text="Register" />
+        <Button style={STYLES.general} onPress={googleLogin} text="Login with Google" />
       </View>
     );
   }

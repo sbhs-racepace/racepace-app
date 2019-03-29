@@ -12,6 +12,7 @@ export default class RouteListScreen extends React.Component {
   constructor(state) {
     super(state);
   }
+  
   render() {
     let routeElements = (
         <View style={styles.routeBox}>
