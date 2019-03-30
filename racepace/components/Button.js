@@ -15,7 +15,6 @@ export default class Button extends React.Component {
       },
       text: {
         textAlign:"center",
-        top: "50%"
       }
     };
     if (this.props.style) styles.button = Object.assign(styles.button,this.props.style)
