@@ -7,11 +7,12 @@
   "main": "node_modules/expo/AppEntry.js",
   "dependencies": {
     "expo": "^32.0.0",
+    "prop-types": "^15.5.10",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
-    "prop-types": "^15.5.10",
     "react-native-code-push": "5.5.2",
     "react-native-google-signin": "1.0.2",
+    "react-native-maps": "^0.23.0",
     "react-native-paper": "2.2.8",
     "react-navigation": "3.0.9"
   }

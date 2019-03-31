@@ -38,7 +38,7 @@ const LoginNavigator = createStackNavigator({
               navigation.navigate('Login');
               global.login_status = {};
             }}
-            style={{ left: 5, height: '80%', topMargin: '10%', width: '100%' }}
+            style={{ left: 5, height: '80%', marginTop: '10%', width: '100%' }}
             text_style={{ top: '20%' }}
           />
         ),

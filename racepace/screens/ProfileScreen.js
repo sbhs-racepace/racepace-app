@@ -66,14 +66,14 @@ export default class ProfileScreen extends React.Component {
         <View style={styles.profile_box}>
           <Image
             style={styles.profileimage}
-            source={require(this.state.imageurl)}
+            source={this.state.imageurl}
           />
           <Button
             title="Edit"
             onPress={() => {
               this.props.navigation.navigate('Edit');
             }}
-            style={{ right: 5, height: '80%', topMargin: '10%', width: '100%' }}
+            style={{ right: 5, height: '80%', marginTop: '10%', width: '100%' }}
             text_style={{ top: '20%' }}
           />
           <View style={styles.profile_data_box}>
