@@ -19,6 +19,7 @@ export default class DetailScreen extends React.Component {
 			description="This is a great route"
 			length="2.2"
 			time="30"
+		/>
       </View>
     );
   }
