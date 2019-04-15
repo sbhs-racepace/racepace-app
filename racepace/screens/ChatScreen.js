@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
     fontSize:20,
     padding:"3%",
     margin: "3%",
-    backgroundColor:"red",
     borderRadius:20,
   },
   user_message: {
@@ -51,7 +50,7 @@ class MessageBubble extends React.Component {
 
   render() {
     let message_style = this.props.sender ? styles.user_message : styles.other_message;
-    let message_color = this.props.sender ? {backgroundColor:"blue"} : {backgroundColor:"rgb(215,215,215)"};
+    let message_color = this.props.sender ? {backgroundColor:"rgb(0, 153, 255)"} : {backgroundColor:"rgb(215,215,215)"};
     let text = this.props.sender ? {color:"white",textAlign:"right"} : {color:"black",textAlign:"left"};
     return (
       <View style={message_style}>
