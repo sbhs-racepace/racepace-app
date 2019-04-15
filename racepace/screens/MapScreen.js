@@ -21,7 +21,7 @@ const STYLES = StyleSheet.create({
     borderWidth: 1,
     paddingLeft: 3,
     backgroundColor: "white",
-    placeholderTextColor: "#fffe"
+    // placeholderTextColor: "#fffe"
   }
 })
 
