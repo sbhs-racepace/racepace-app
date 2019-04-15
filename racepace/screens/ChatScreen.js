@@ -1,6 +1,7 @@
 import React from "react";
 import {
   ScrollView,
+  FlatList,
   View,
   Text,
   TextInput,
@@ -14,22 +15,19 @@ import '../global';
 const styles = StyleSheet.create({
   chat_screen: {
     flex: 5,
-    backgroundColor: "red",
   },
   message_input_box: {
     flex: 1,
-    backgroundColor: "green",
+    backgroundColor: "rgb(224,224,224)",
     flexDirection:"row",
   },
   message_input: {
     fontSize: 20,
   },
-  message_bubble: {
+  message_text: {
     color:"white",
     fontSize:20,
-    backgroundColor:"blue",
-    borderStyle:"solid",
-    borderColor: "red",
+    backgroundColor:"rgb(0,102,204)",
     padding:"3%",
     margin: "3%",
     textAlign: 'center',
@@ -52,40 +50,13 @@ class MessageBubble extends React.Component {
     super(props);
   }
 
-  message(text) {
-    return (
-      <View style={{width:"80%"}}>
-        <Text style={styles.message_bubble}>{text}</Text>
-      </View>
-    );
-  }
-
-  userMessage(text) {
-    return (
-      <View style={styles.user_message}>
-        {this.message(text)}
-      </View>
-    );
-  }
-  
-  otherMessage(text) {
-    return (
-      <View style={styles.other_message}>
-        {this.message(text)}
-      </View>
-    );
-  }
-
   render() {
-    if (this.props.sender == true) {
-      message = this.userMessage(this.props.text);
-    } else {
-      message = this.otherMessage(this.props.text);
-    }
-
+    let message_style = this.props.sender ? styles.user_message : styles.other_message;
     return (
-      <View>
-        {message}
+      <View style={message_style}>
+        <View style={{width:"80%"}}>
+         <Text style={styles.message_text}>{this.props.text}</Text>
+       </View>
       </View>
     )
   }
@@ -96,11 +67,11 @@ export default class ChatScreen extends React.Component {
     super(props);
     this.state = {
       messages: [
-        {text:"Hello my name is jason and i come from africa and i am black",sender:true},
-        {text:"Hello my name is jason and i come from africa and i am black",sender:false},
-        {text:"Hello my name is jason and i come from africa and i am black",sender:true},
-        {text:"Hello my name is jason and i come from africa and i am black",sender:false},
-        {text:"Hello my name is jason and i come from africa and i am black",sender:true}
+        {text:"VO2 max (also maximal oxygen consumption, maximal oxygen uptake, peak oxygen uptake or maximal aerobic capacity) is the maximum rate of oxygen consumption measured during incremental exercise; that is, exercise of increasing intensity.",sender:true},
+        {text:"Accurately measuring VO2 max involves a physical effort sufficient in duration and intensity to fully tax the aerobic energy system.",sender:false},
+        {text:"VO2 max is reached when oxygen consumption remains at a steady state despite an increase in workload.",sender:true},
+        {text:"Cool",sender:false},
+        {text:"Nice",sender:true},
       ]
     }
   }
@@ -110,7 +81,11 @@ export default class ChatScreen extends React.Component {
 
       <View style={{flex: 1}}>
         <View style={styles.chat_screen}>
-          <ScrollView>
+
+          <ScrollView 
+          ref={ref => this.scrollView = ref}
+          onContentSizeChange={(contentWidth, contentHeight)=>{this.scrollView.scrollToEnd({animated: false});}}
+          >
             {this.state.messages.map(message => <MessageBubble text={message.text} sender={message.sender}/>)}
           </ScrollView>
         </View>
