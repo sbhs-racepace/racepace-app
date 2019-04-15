@@ -2,6 +2,14 @@ import * as React from 'react';
 import { Text, TextInput, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Button from "./Button"
 
+const STYLES = StyleSheet.create({
+	feed_item : {
+		borderWidth:1,
+		padding: "5%",
+		width:"80%"
+	}
+})
+
 export class FeedItem extends React.Component {
 	constructor(props) {
 		super(props);
@@ -9,7 +17,7 @@ export class FeedItem extends React.Component {
 	
 	render() {
 		return (
-			<View>
+			<View style={STYLES.feed_item}>
 				<View style={{flexDirection: "row"}}>
 					<Image source='../assets/cat.jpeg' />
 					<View>
@@ -21,7 +29,7 @@ export class FeedItem extends React.Component {
 				<Text>Description: {this.props.description}</Text>
 				<Text>Stats: {this.props.length}km {this.props.time}m</Text>
 				<Image source='../assets/cat.jpeg' />
-				<View style={{flexDirection: "row"}}>
+				<View style={{flexDirection: "row", justifyContent: 'space-between'}}>
 					<Button text="Like"/>
 					<Button text="Comment"/>
 				</View>

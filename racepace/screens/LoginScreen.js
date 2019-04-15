@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Image,
   Alert,
+  Dimensions,
 } from 'react-native';
 import {login, googleLogin} from "../login"
 import Button from '../components/Button.js'
@@ -14,16 +15,27 @@ import '../global';
 
 const STYLES = StyleSheet.create({
   input: {
-    borderLeftWidth: 2,
-    borderBottomWidth: 2,
-    marginTop: 5,
-    paddingLeft: 3,
+    fontSize:20,
+    borderWidth: 1,
     width:"80%",
+    borderRadius:10,
   },
-  general: {
-    marginTop: 5,
+  button: {
+    fontSize:20,
     width:"80%",
+    borderRadius:10,
   },
+  logo: {
+    margin:"5%",
+    width: Dimensions.get('window').width * 0.5,
+    height: Dimensions.get('window').width * 0.5,
+    borderRadius: Dimensions.get('window').width * 0.5 / 2,
+  },
+  title: {
+    fontSize:40,
+    fontFamily:"Courier New",
+    fontStyle:'italic',
+  }
 })
 
 export default class LoginScreen extends React.Component {
@@ -43,8 +55,11 @@ export default class LoginScreen extends React.Component {
 
   render() {
     return (
-      <View style={{alignItems:"center"}}>
-        <Image style={STYLES.general} source={require('../assets/cat.jpeg')} />
+      <View 
+        style={{alignItems:"center", flexDirection:"column",flex:1,justifyContent: 'space-evenly'}}
+      >
+        <Text style={STYLES.title}>Racepace</Text>
+        <Image style={STYLES.logo} source={require('../assets/running.jpg')} />
         <TextInput
           autoCorrect={false}
           defaultValue="aaa"
@@ -75,17 +90,17 @@ export default class LoginScreen extends React.Component {
           placeholder="Password"
           placeholderTextColor="rgba(225,225,225,0.8)"
         />
-        <Button style={STYLES.general} onPress={login.bind(this)} text="Login" />
+        <Button style={STYLES.button} onPress={login.bind(this)} text="Login" />
         <Button
-          style={STYLES.general}
+          style={STYLES.button}
           onPress={() => {
             global.login_status = { success: true };
             this.props.navigation.navigate('Main');
           }}
           text="Login as guest"
         />
-        <Button style={STYLES.general} onPress = {() => this.props.navigation.navigate('Register')} text="Register" />
-        <Button style={STYLES.general} onPress={googleLogin} text="Login with Google" />
+        <Button style={STYLES.button} onPress = {() => this.props.navigation.navigate('Register')} text="Register" />
+        <Button style={STYLES.button} onPress={googleLogin} text="Login with Google" />
       </View>
     );
   }
