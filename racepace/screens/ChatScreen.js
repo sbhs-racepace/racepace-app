@@ -9,28 +9,31 @@ import {
   Image,
   Alert,
   Button,
+  TouchableOpacity,
 } from 'react-native';
 import '../global';
 
 const styles = StyleSheet.create({
   chat_screen: {
-    flex: 5,
+    flex: 7,
   },
   message_input_box: {
+    borderStyle:"solid",
+    borderWidth:1,
+    borderColor:"black",
+    padding:"6%",
     flex: 1,
-    backgroundColor: "rgb(224,224,224)",
-    flexDirection:"row",
+    flexDirection:"column",
   },
   message_input: {
     fontSize: 20,
   },
-  message_text: {
-    color:"white",
+  message_container: {
     fontSize:20,
-    backgroundColor:"rgb(0,102,204)",
     padding:"3%",
     margin: "3%",
-    textAlign: 'center',
+    backgroundColor:"red",
+    borderRadius:20,
   },
   user_message: {
     flexDirection: 'row',
@@ -38,10 +41,6 @@ const styles = StyleSheet.create({
   },
   other_message: {
     flexDirection: 'row',
-  },
-  submit_button: {
-    backgroundColor:"blue",
-    color:"purple",
   }
 });
 
@@ -52,10 +51,12 @@ class MessageBubble extends React.Component {
 
   render() {
     let message_style = this.props.sender ? styles.user_message : styles.other_message;
+    let message_color = this.props.sender ? {backgroundColor:"blue"} : {backgroundColor:"rgb(215,215,215)"};
+    let text = this.props.sender ? {color:"white",textAlign:"right"} : {color:"black",textAlign:"left"};
     return (
       <View style={message_style}>
-        <View style={{width:"80%"}}>
-         <Text style={styles.message_text}>{this.props.text}</Text>
+        <View style={[styles.message_container,message_color]}>
+         <Text style={text}>{this.props.text}</Text>
        </View>
       </View>
     )
@@ -72,8 +73,15 @@ export default class ChatScreen extends React.Component {
         {text:"VO2 max is reached when oxygen consumption remains at a steady state despite an increase in workload.",sender:true},
         {text:"Cool",sender:false},
         {text:"Nice",sender:true},
-      ]
+      ],
+      current_text: "test",
     }
+  }
+
+  enterMessage() {
+    alert(this.state.current_text)
+    this.state.messages.push(this.state.current_text);
+    this.state.current_text = "";
   }
 
   render() {
@@ -81,7 +89,6 @@ export default class ChatScreen extends React.Component {
 
       <View style={{flex: 1}}>
         <View style={styles.chat_screen}>
-
           <ScrollView 
           ref={ref => this.scrollView = ref}
           onContentSizeChange={(contentWidth, contentHeight)=>{this.scrollView.scrollToEnd({animated: false});}}
@@ -90,12 +97,20 @@ export default class ChatScreen extends React.Component {
           </ScrollView>
         </View>
         <View style={styles.message_input_box}>
-          <View>
-            <TextInput style={styles.message_input} placeholder="Enter a message..." editable={true}/>
-          </View>
-          <View>
-            <Button style={styles.submit_button} title="Submit Message"/>
-          </View>
+          <TextInput 
+            style={styles.message_input} 
+            placeholder="Enter a message..." 
+            onChangeText={(current_text) => this.setState({current_text})}
+            editable={true}
+            multiline={true}
+            clearButtonMode='always'
+          />
+          <TouchableOpacity
+              onPress = {
+                () => this.enterMessage()
+              }>
+              <Text> Submit </Text>
+          </TouchableOpacity>
         </View>
       </View>
     )
