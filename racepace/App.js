@@ -4,8 +4,10 @@ import {
   createStackNavigator,
   createAppContainer,
   createBottomTabNavigator,
+  createMaterialTopTabNavigator,
 } from 'react-navigation';
-import DetailScreen from './screens/DetailScreen';
+import FeedFollowingScreen from './screens/FeedFollowingScreen';
+import FeedYouScreen from './screens/FeedYouScreen'
 import MapScreen from './screens/MapScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import LoginScreen from './screens/LoginScreen';
@@ -13,7 +15,6 @@ import RegisterScreen from './screens/RegisterScreen';
 import ChatScreen from './screens/ChatScreen';
 import RouteListScreen from './screens/RouteListScreen';
 import './global.js';
-//REMINDER: https://github.com/FaridSafi/react-native-gifted-chat
 
 const LoginNavigator = createStackNavigator({
   Login: { screen: LoginScreen, navigationOptions: { title: 'Login' } },
@@ -23,7 +24,10 @@ const LoginNavigator = createStackNavigator({
   },
   Main: {
     screen: createBottomTabNavigator({
-      Details: { screen: DetailScreen },
+      Feed: createMaterialTopTabNavigator({
+        FeedFollowing: {screen: FeedFollowingScreen, navigationOptions: {title: "Following"}},
+        FeedYou: {screen: FeedYouScreen, navigationOptions: {title: "You"}},
+      }),
       Routes: { screen: RouteListScreen },
       Map: { screen: MapScreen },
       Chat: { screen: ChatScreen },

@@ -47,6 +47,11 @@ export default class MapScreen extends React.Component {
       },
       viewHeight: 0,
       moveToCurrentLoc: true,
+      showSearch: false,
+      searchLoc: {
+        latitude: -33.9672563,
+        longitude: 151.1002119,
+      }
     };
   }
 
@@ -93,7 +98,6 @@ export default class MapScreen extends React.Component {
       return 0;
     }
     if ([latitude, longitude] != global.region.coords) {
-      console.log("test")
       this.setState(prevState => ({
         region: {
           ...prevState.region, //Copy in other parts of the object
@@ -101,6 +105,13 @@ export default class MapScreen extends React.Component {
           longitude: longitude
         }
       }))
+      this.setState({
+        searchLoc: {
+          latitude: latitude,
+          longitude: longitude,
+        },
+        showSearch: true,
+      })
     }
     else {
       console.log("Fail")
@@ -122,11 +133,12 @@ export default class MapScreen extends React.Component {
           region={this.state.region}
           onRegionChange={this.onRegionChange.bind(this)}
         >
-          <Polyline
-            coordinates={global.dispRoute.markers}
-            strokeColor="#9900FF"
-            strokeWidth={6}
-          />
+          {this.state.showSearch &&
+            <Marker
+              coordinate={this.state.searchLoc}
+              pinColor="#9900FF"
+            />
+          }
         </MapView>
       </View>
     );
