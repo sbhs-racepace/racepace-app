@@ -90,31 +90,33 @@ export default class MapScreen extends React.Component {
   }
 
   async goToLocation(loc) {
+    let lat,lon
     try {
       let {latitude, longitude} = (await Location.geocodeAsync(loc+","+global.region.name))[0];
+      lat = latitude
+      lon = longitude
     }
     catch {
       Alert.Alert("Error","Input couldn't be understood.")
       return 0;
     }
-    if ([latitude, longitude] != global.region.coords) {
+
+    console.log(`Comparing [${lat},${lon}] == ${global.region.coords}`)
+    if (lat != global.region.coords[0] || lon != global.region.coords[1]) {
       this.setState(prevState => ({
         region: {
           ...prevState.region, //Copy in other parts of the object
-          latitude: latitude,
-          longitude: longitude
-        }
-      }))
-      this.setState({
+          latitude: lat,
+          longitude: lon
+        },
         searchLoc: {
-          latitude: latitude,
-          longitude: longitude,
+          latitude: lat,
+          longitude: lon,
         },
         showSearch: true,
-      })
+      }))
     }
     else {
-      console.log("Fail")
       Alert.Alert("Error","Input was blank or couldn't be understood.")
     }
   }
