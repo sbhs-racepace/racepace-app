@@ -65,39 +65,21 @@ export default class ProfileScreen extends React.Component {
             source={require('../assets/cat.jpeg')}
           />
           <View style={STYLES.profile_data_box}>
-            <Text>Name: {this.state.name}</Text>
-            <Text>Username: {this.state.username}</Text>
-            <Text>Age: {this.state.age}</Text>
-            <Text>Email: {this.state.email}</Text>
-            <Text>Country: {global.region.name}</Text>
+            <Text>{this.state.name}</Text>
           </View>
         </View>
-        
-        <View style={STYLES.profile_data_box}>
-            <Text>Total distance run {this.state.statistics.total_distance_run}</Text>
-            <Text>Fastest 100m: {this.state.statistics.fastest_100}</Text>
-            <Text>Fastest 800m: {this.state.statistics.fastest_800}</Text>
-            <Text>Maximum v02: {this.state.statistics.v02_max}</Text>
-            <Text>Average pace: {this.state.statistics.average_pace}</Text>
-        </View>
 
-        <View>
-          <Button 
-          text= "Account Settings"
-          onPress={() => 
-                  this.props.navigation.navigate('Settings')
-                }
-          style= {STYLES.thebuttons}/>
-          <Button 
-          text= "Statistics"
-          style= {STYLES.thebuttons}/>
-          <Button 
-          style= {STYLES.thebuttons}
-          text= "Routes"
-          onPress={() => 
-                  this.props.navigation.navigate('Routes')
-                }/>
-        </View>
+        <Text>Username: {this.state.username}</Text>
+        <Text>Age: {this.state.age}</Text>
+        <Text>Email: {this.state.email}</Text>
+        <Text>Country: {global.region.name}</Text>
+              
+
+        <Button text="9 Following"/>
+        <Button text="3 Followers"/>
+        <Button text="Find Friends"/>
+
+
       </View>
     );
   }
