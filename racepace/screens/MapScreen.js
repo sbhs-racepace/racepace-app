@@ -97,7 +97,7 @@ export default class MapScreen extends React.Component {
       lon = longitude
     }
     catch {
-      Alert.Alert("Error","Input couldn't be understood.")
+      Alert.alert("Error","Input couldn't be understood.")
       return 0;
     }
 
@@ -114,9 +114,10 @@ export default class MapScreen extends React.Component {
         },
         showSearch: true,
       }))
+      Alert.alert("asd")
     }
     else {
-      Alert.Alert("Error","Input was blank or couldn't be understood.")
+      Alert.alert("Error","Input was blank or couldn't be understood.")
     }
   }
 
