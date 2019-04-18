@@ -5,6 +5,7 @@ import {
   createAppContainer,
   createBottomTabNavigator,
   createMaterialTopTabNavigator,
+  SafeAreaView
 } from 'react-navigation';
 import FeedFollowingScreen from './screens/FeedFollowingScreen';
 import FeedYouScreen from './screens/FeedYouScreen'
@@ -14,6 +15,7 @@ import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import ChatScreen from './screens/ChatScreen';
 import RouteListScreen from './screens/RouteListScreen';
+import FollowScreen from './screens/FollowScreen';
 import './global.js';
 
 const LoginNavigator = createStackNavigator({
@@ -22,6 +24,7 @@ const LoginNavigator = createStackNavigator({
     screen: RegisterScreen,
     navigationOptions: { title: 'Register' },
   },
+  Follow : { screen: FollowScreen},
   Main: {
     screen: createBottomTabNavigator({
       Feed: createMaterialTopTabNavigator({
@@ -33,21 +36,9 @@ const LoginNavigator = createStackNavigator({
       Chat: { screen: ChatScreen },
       Profile: { screen: ProfileScreen },
     }),
-    navigationOptions: ({ navigation }) => {
-      return {
-        headerLeft: (
-          <Button
-            text="Logout"
-            onPress={() => {
-              navigation.navigate('Login');
-              global.login_status = {};
-            }}
-            style={{ left: 5, height: '80%', marginTop: '10%', width: '100%', borderRadius:5}}
-            text_style={{ top: '20%' }}
-          />
-        ),
-      };
-    },
+    navigationOptions: {
+      header: null,
+    }
   },
 });
 
@@ -55,6 +46,10 @@ const AppContainer = createAppContainer(LoginNavigator);
 
 export default class App extends React.Component {
   render() {
-    return <AppContainer />;
+    return (
+    <SafeAreaView style={{flex:1}}>
+      <AppContainer />
+    </SafeAreaView>
+    )
   }
 }
