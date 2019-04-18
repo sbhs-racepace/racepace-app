@@ -101,7 +101,6 @@ export default class MapScreen extends React.Component {
       return 0;
     }
 
-    console.log(`Comparing [${lat},${lon}] == ${global.region.coords}`)
     if (lat != global.region.coords[0] || lon != global.region.coords[1]) {
       this.setState(prevState => ({
         region: {
