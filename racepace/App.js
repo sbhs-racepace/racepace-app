@@ -14,6 +14,7 @@ import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import ChatScreen from './screens/ChatScreen';
 import RouteListScreen from './screens/RouteListScreen';
+import FollowScreen from './screens/FollowScreen';
 import './global.js';
 
 const LoginNavigator = createStackNavigator({
@@ -22,6 +23,7 @@ const LoginNavigator = createStackNavigator({
     screen: RegisterScreen,
     navigationOptions: { title: 'Register' },
   },
+  Follow : { screen: FollowScreen},
   Main: {
     screen: createBottomTabNavigator({
       Feed: createMaterialTopTabNavigator({

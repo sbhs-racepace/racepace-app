@@ -11,7 +11,7 @@ export default class FeedFollowingScreen extends React.Component {
   }
   render() {
     return (
-      <ScrollView style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <ScrollView contentContainerStyle={{ justifyContent : 'center', flexGrow: 1, alignItems: 'center'}}>
         <FeedItem
           username="Test User"
           posttime="3 hours ago"
