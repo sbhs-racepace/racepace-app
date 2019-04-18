@@ -1,40 +1,20 @@
 import React from 'react';
-import { ScrollView, View, Text, Alert } from 'react-native';
+import { ScrollView, View, Text, Alert, StyleSheet } from 'react-native';
 import Button from "../components/Button"
 import "../global.js"
+import RecommendedFollow from "../components/RecommendedFollow";
+import FollowRequest from "../components/FollowRequest";
 
+const STYLES = StyleSheet.create({
+  follow_requests : {
+    flex:1, padding:"3%", backgroundColor:"rgb(250,250,250)"
+  },
+  recommended_follows: {
+    flex:2, padding:"3%"
+  },
+});
 
-class FollowRequest extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <View style={{flex: 1, margin:"5%", flexDirection:"row"}}>
-        <Text style={{flex:2}}>{this.props.name} wants to follow you!</Text>
-        <Button style={{flex:1 ,borderRadius:10}} text="Accept Request"/>
-      </View>
-    )
-  }
-}
-
-class Follow extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <View style={{flex: 1, margin:"5%", flexDirection:"row"}}>
-        <Text style={{flex:2}}>{this.props.name}</Text>
-        <Button style={{flex:1 ,borderRadius:10}} text="Follow"/>
-      </View>
-    )
-  }
-}
-
-class NotificationDropDown extends React.Component {
+export default class FollowScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -45,28 +25,20 @@ class NotificationDropDown extends React.Component {
   render() {
     return (
       <View style={{flex:1}}>
-        <View style={{flex:1, padding:"3%", backgroundColor:"rgb(250,250,250)"}}>
+        <View style={STYLES.follow_requests}>
           <Text>Pending Follow Requests</Text>
           <ScrollView>
             {this.state.follow_requests.map(name => <FollowRequest name={name}/>)}
           </ScrollView>
         </View>
 
-        <View style={{flex:2, padding:"3%"}}>
+        <View style={STYLES.recommended_follows}>
           <Text style={{alignContent:"center"}}>Suggested for You</Text>
           <ScrollView>
-            {this.state.follow_requests.map(name => <Follow name={name}/>)}
+            {this.state.follow_requests.map(name => <RecommendedFollow name={name}/>)}
           </ScrollView>
         </View>
       </View>
     )
-  }
-}
-
-export default class FollowScreen extends React.Component {
-  render() {
-    return (
-      <NotificationDropDown/>
-    );
   }
 }

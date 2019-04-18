@@ -1,4 +1,4 @@
-import * as React from 'react';
+﻿import * as React from 'react';
 import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Button from "./Button"
 
@@ -28,7 +28,7 @@ export default class PickTwo extends React.Component {
   render() {
     let styles = {
       view: {flexDirection: 'row',
-        bottomMargin: 10,
+        marginBottom: 10,
         height: 25
       },
       button: {

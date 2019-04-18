@@ -60,7 +60,7 @@ export default class ProfileScreen extends React.Component {
 
   render() {
     return (
-      <ScrollView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.container}>
         <Text> </Text>
         <Text> </Text>
         <View style={styles.profile_box}>
