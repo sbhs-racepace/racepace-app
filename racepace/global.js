@@ -22,4 +22,5 @@ global.user_routes = [
     nodes: [(34,121),(34,122)]
   }
 ]
-global.region = "NSW Australia"
+global.region = {name:"NSW Australia",
+coords:"-32.3010715,146.746138"}
