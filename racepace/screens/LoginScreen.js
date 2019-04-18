@@ -19,11 +19,15 @@ const STYLES = StyleSheet.create({
     borderWidth: 1,
     width:"80%",
     borderRadius:10,
+    padding:"1%",
   },
   button: {
     fontSize:20,
     width:"80%",
     borderRadius:10,
+  },
+  button_text: {
+    padding:"1%"
   },
   logo: {
     margin:"5%",
@@ -32,7 +36,7 @@ const STYLES = StyleSheet.create({
     borderRadius: Dimensions.get('window').width * 0.5 / 2,
   },
   title: {
-    fontSize:40,
+    fontSize:50,
     fontFamily:"Courier New",
     fontStyle:'italic',
   }
@@ -90,17 +94,18 @@ export default class LoginScreen extends React.Component {
           placeholder="Password"
           placeholderTextColor="rgba(225,225,225,0.8)"
         />
-        <Button style={STYLES.button} onPress={login.bind(this)} text="Login" />
+        <Button style={STYLES.button} text_style={STYLES.button_text} onPress={login.bind(this)} text="Login" />
         <Button
           style={STYLES.button}
+          text_style={STYLES.button_text}
           onPress={() => {
             global.login_status = { success: true };
             this.props.navigation.navigate('Main');
           }}
           text="Login as guest"
         />
-        <Button style={STYLES.button} onPress = {() => this.props.navigation.navigate('Register')} text="Register" />
-        <Button style={STYLES.button} onPress={googleLogin} text="Login with Google" />
+        <Button style={STYLES.button} text_style={STYLES.button_text} onPress = {() => this.props.navigation.navigate('Register')} text="Register" />
+        <Button style={STYLES.button} text_style={STYLES.button_text} onPress={googleLogin} text="Login with Google" />
       </View>
     );
   }

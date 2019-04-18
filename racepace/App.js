@@ -17,6 +17,8 @@ import RegisterScreen from './screens/RegisterScreen';
 import ChatScreen from './screens/ChatScreen';
 import RouteListScreen from './screens/RouteListScreen';
 import FollowScreen from './screens/FollowScreen';
+import RunSetupScreen from './screens/RunSetupScreen';
+// import MoreScreen from './screens/MoreScreen';
 import './global.js';
 
 const LoginNavigator = createStackNavigator({
@@ -34,11 +36,11 @@ const LoginNavigator = createStackNavigator({
           FeedFollowing: {screen: FeedFollowingScreen, navigationOptions: {title: "Following"}},
           FeedYou: {screen: FeedYouScreen, navigationOptions: {title: "You"}},
         }),
-        Routes: { screen: RouteListScreen },
+        // More: { screen: MoreScreen },
+        Run: { screen: RunSetupScreen },
         Map: { screen: MapScreen },
         Chat: { screen: ChatScreen },
         Profile: { screen: ProfileScreen },
-        
       }),
     navigationOptions: {
       header: null,
