@@ -7,6 +7,7 @@ import {
   createMaterialTopTabNavigator,
   SafeAreaView
 } from 'react-navigation';
+import EditScreen from './screens/EditScreen'
 import FeedFollowingScreen from './screens/FeedFollowingScreen';
 import FeedYouScreen from './screens/FeedYouScreen'
 import MapScreen from './screens/MapScreen';
@@ -24,6 +25,7 @@ const LoginNavigator = createStackNavigator({
     screen: RegisterScreen,
     navigationOptions: { title: 'Register' },
   },
+  Edit : {screen: EditScreen},
   Follow : { screen: FollowScreen},
   Main: {
     screen: createBottomTabNavigator({
