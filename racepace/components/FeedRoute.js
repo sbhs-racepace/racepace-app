@@ -9,7 +9,7 @@ const STYLES = StyleSheet.create({
 		width:"80%"
 	},
   routeName: {
-    fontSize: "20"
+    fontSize: 20
   }
   
 })
