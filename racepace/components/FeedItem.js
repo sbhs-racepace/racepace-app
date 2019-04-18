@@ -52,20 +52,20 @@ export class FeedItem extends React.Component {
 					<Text>Description: {this.props.description}</Text>
 					<Text>Stats: {this.props.length}km {this.props.time}m</Text>
 				</View>
-
+				
 				<Image source={require('../assets/cat.jpeg')} style={STYLES.routePic} />
 				<View
-					style={{flexDirection: "row", justifyContent: 'space-between', width:"100%"}}
+					style={{flexDirection: "row", justifyContent: 'space-between', width:"100%", margin:"2%"}}
 				>
 					<Text>0 Likes</Text>
 					<Text>0 Comments</Text>
 				</View>
-
 				<View style={{flexDirection: "row", justifyContent: 'space-between', width:"100%", backgroundColor: "rgb(0, 153, 255)", borderRadius:10,padding:"3%"}}>
 					<Button text="Like" style={STYLES.button}/>
 					<Text>|</Text>
 					<Button text="Comment" style={STYLES.button} />
 				</View>
+
 			</View>
 		)
 	}

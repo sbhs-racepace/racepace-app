@@ -6,11 +6,10 @@ const STYLES = StyleSheet.create({
 	feed_item : {
 		borderWidth:1,
 		padding: "5%",
-		width:"80%",
-		marginTop: 5
+		width:"100%",
 	},
   routeName: {
-    fontSize: "20"
+    fontSize: 20
   }
   
 })

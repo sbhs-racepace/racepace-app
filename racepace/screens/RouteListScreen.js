@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, Alert, ScrollView } from 'react-native';
 import Button from "../components/Button"
 import "../global.js"
 
-const styles = StyleSheet.create({
+const STYLES = StyleSheet.create({
 
   route_item: {
     padding:"3%",
@@ -26,7 +26,7 @@ class RouteItem extends React.Component {
 
   render() {
     return (
-      <View style={styles.route_item}>
+      <View style={STYLES.route_item}>
         <Text>{this.props.route.start} to {this.props.route.end}</Text>
         <Text>{this.props.route.dist}km</Text>
       </View>
@@ -43,7 +43,7 @@ export default class RouteListScreen extends React.Component {
     let routes = global.user_routes.map(route => <RouteItem route={route}/>);
     return (
       <View style={{flexDirection:"column", flex:1}}>
-        <ScrollView style={styles.route_box}>
+        <ScrollView style={STYLES.route_box}>
           {routes}
         </ScrollView>
       </View>
