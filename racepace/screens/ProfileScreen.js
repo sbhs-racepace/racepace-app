@@ -12,7 +12,6 @@ import '../assets/cat.jpeg';
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'green',
     flex: 1,
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
@@ -26,18 +25,12 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     marginTop: 100,
-    borderWidth: 10,
+    borderWidth: 1,
   },
   profile_box: {
     flexDirection: 'row',
   },
 });
-
-class WhiteText extends React.Component {
-  render() {
-    return <Text style={styles.white_text}>{this.props.text}</Text>;
-  }
-}
 
 export default class ProfileScreen extends React.Component {
   constructor(props) {
@@ -60,13 +53,11 @@ export default class ProfileScreen extends React.Component {
 
   render() {
     return (
-      <ScrollView contentContainerStyle={styles.container}>
-        <Text> </Text>
-        <Text> </Text>
+      <View contentContainerStyle={styles.container}>
         <View style={styles.profile_box}>
           <Image
             style={styles.profileimage}
-            source={this.state.imageurl}
+            source={require('../assets/cat.jpeg')}
           />
           <Button
             title="Edit"
@@ -96,7 +87,7 @@ export default class ProfileScreen extends React.Component {
           <Text>Maximum v02: {this.state.statistics.v02_max}</Text>
           <Text>Average pace: {this.state.statistics.average_pace}</Text>
         </View>
-      </ScrollView>
+      </View>
     );
   }
 }
