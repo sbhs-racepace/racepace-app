@@ -17,31 +17,30 @@ import RegisterScreen from './screens/RegisterScreen';
 import ChatScreen from './screens/ChatScreen';
 import RouteListScreen from './screens/RouteListScreen';
 import FollowScreen from './screens/FollowScreen';
+import MoreScreen from './screens/MoreScreen';
 import RunSetupScreen from './screens/RunSetupScreen';
-// import MoreScreen from './screens/MoreScreen';
 import './global.js';
 
 const LoginNavigator = createStackNavigator({
-  Login: { screen: LoginScreen, navigationOptions: { header: null } },
+  Login: { screen: LoginScreen, navigationOptions: { title: 'Login' } },
   Register: {
     screen: RegisterScreen,
     navigationOptions: { title: 'Register' },
   },
   Edit : {screen: EditScreen},
   Follow : { screen: FollowScreen},
-  Main: {
-    screen: 
-      createBottomTabNavigator({
-        Feed: createMaterialTopTabNavigator({
-          FeedFollowing: {screen: FeedFollowingScreen, navigationOptions: {title: "Following"}},
-          FeedYou: {screen: FeedYouScreen, navigationOptions: {title: "You"}},
-        }),
-        // More: { screen: MoreScreen },
+  Routes: { screen: RouteListScreen },
+  Main: { screen: createBottomTabNavigator({
+		Feed: createMaterialTopTabNavigator({
+		  FeedFollowing: {screen: FeedFollowingScreen, navigationOptions: {title: "Following"}},
+		  FeedYou: {screen: FeedYouScreen, navigationOptions: {title: "You"}},
+		}),
         Run: { screen: RunSetupScreen },
         Map: { screen: MapScreen },
         Chat: { screen: ChatScreen },
-        Profile: { screen: ProfileScreen },
-      }),
+        Profile: { screen: ProfileScreen },      
+        More: { screen: MoreScreen },
+    }),
     navigationOptions: {
       header: null,
     }
