@@ -37,10 +37,11 @@ export default class ChatScreen extends React.Component {
     this.state = {
       messages: [
         {text:"VO2 max (also maximal oxygen consumption, maximal oxygen uptake, peak oxygen uptake or maximal aerobic capacity) is the maximum rate of oxygen consumption measured during incremental exercise; that is, exercise of increasing intensity.",sender:true},
-        {text:"Accurately measuring VO2 max involves a physical effort sufficient in duration and intensity to fully tax the aerobic energy system.",sender:false},
+        {text:"Accurately measuring VO2 max involves a physical effort sufficient in duration and intensity to fully tax the aerobic energy system.",sender:'a'},
         {text:"VO2 max is reached when oxygen consumption remains at a steady state despite an increase in workload.",sender:true},
-        {text:"Cool",sender:false},
-        {text:"Nice",sender:true},
+        {text:"Cool Right?",sender:true},
+        {text:"yeah very cool",sender:'b'},
+        {text:"indeed",sender:true},
       ],
       current_text: "test",
     }
@@ -52,16 +53,43 @@ export default class ChatScreen extends React.Component {
     this.state.current_text = "";
   }
 
+  getMessages() {
+    let samePreviousMessage = false;
+    let messages = [];
+    for (let i=0;i<this.state.messages.length;i++) {
+      Alert.alert(i);
+      let message = this.state.messages[i].sender
+      if (i == 0) {
+        samePreviousMessage = false;
+      } else {
+        samePreviousMessage = message.sender == this.state.messages[i-1].sender;
+      }
+      messages.push(<MessageBubble style={{margin:"5%"}} samePreviousMessage={samePreviousMessage} text={"afsd"} sender={message.sender}/>)
+    }
+    return messages;
+  }
+
+  checkSameSender(sender,index) {
+    if (index == 0) {
+      return false;
+    } else if (sender == this.state.messages[index-1].sender) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   render() {
     return(
 
       <View style={{flex: 1}}>
         <View style={STYLES.message_screen}>
           <ScrollView 
+          scrollEnabled={true}
           ref={ref => this.scrollView = ref}
           onContentSizeChange={(contentWidth, contentHeight)=>{this.scrollView.scrollToEnd({animated: false});}}
           >
-            {this.state.messages.map(message => <MessageBubble text={message.text} sender={message.sender}/>)}
+            {this.state.messages.map((message,index) => <MessageBubble style={{margin:"5%"}} sameSender={this.checkSameSender(message.sender,index)} text={message.text} sender={message.sender}/>)}
           </ScrollView>
         </View>
         <View style={STYLES.message_input_box}>
