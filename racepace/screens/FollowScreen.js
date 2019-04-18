@@ -11,9 +11,24 @@ class FollowRequest extends React.Component {
 
   render() {
     return (
-      <View style={{flexDirection:"row"}}>
-        <Text>{this.props.name} wants to follow you!</Text>
-        <Button text="Follow"/>
+      <View style={{flex: 1, margin:"5%", flexDirection:"row"}}>
+        <Text style={{flex:2}}>{this.props.name} wants to follow you!</Text>
+        <Button style={{flex:1 ,borderRadius:10}} text="Accept Request"/>
+      </View>
+    )
+  }
+}
+
+class Follow extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <View style={{flex: 1, margin:"5%", flexDirection:"row"}}>
+        <Text style={{flex:2}}>{this.props.name}</Text>
+        <Button style={{flex:1 ,borderRadius:10}} text="Follow"/>
       </View>
     )
   }
@@ -29,9 +44,20 @@ class NotificationDropDown extends React.Component {
 
   render() {
     return (
-      <View>
-        <Button text="Notifications"/>
-        {this.state.follow_requests.map(name => <FollowRequest name={name}/>)}
+      <View style={{flex:1}}>
+        <View style={{flex:1, padding:"3%", backgroundColor:"rgb(250,250,250)"}}>
+          <Text>Pending Follow Requests</Text>
+          <ScrollView>
+            {this.state.follow_requests.map(name => <FollowRequest name={name}/>)}
+          </ScrollView>
+        </View>
+
+        <View style={{flex:2, padding:"3%"}}>
+          <Text style={{alignContent:"center"}}>Suggested for You</Text>
+          <ScrollView>
+            {this.state.follow_requests.map(name => <Follow name={name}/>)}
+          </ScrollView>
+        </View>
       </View>
     )
   }

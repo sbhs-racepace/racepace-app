@@ -7,7 +7,7 @@ export default class FeedYouScreen extends React.Component {
   render() {
     return (
       <View>
-        <Button text="Follow Requests" onPress={() => this.props.navigation.navigate("Follow")}/>
+        <Button text="Follow Requests" style={{padding: "3%",color: "rgb(30, 153, 255)"}}onPress={() => this.props.navigation.navigate("Follow")}/>
         <Text>
           Notifications
         </Text>
