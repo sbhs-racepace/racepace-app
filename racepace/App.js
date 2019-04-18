@@ -19,23 +19,25 @@ import FollowScreen from './screens/FollowScreen';
 import './global.js';
 
 const LoginNavigator = createStackNavigator({
-  Login: { screen: LoginScreen, navigationOptions: { title: 'Login' } },
+  Login: { screen: LoginScreen, navigationOptions: { header: null } },
   Register: {
     screen: RegisterScreen,
     navigationOptions: { title: 'Register' },
   },
   Follow : { screen: FollowScreen},
   Main: {
-    screen: createBottomTabNavigator({
-      Feed: createMaterialTopTabNavigator({
-        FeedFollowing: {screen: FeedFollowingScreen, navigationOptions: {title: "Following"}},
-        FeedYou: {screen: FeedYouScreen, navigationOptions: {title: "You"}},
+    screen: 
+      createBottomTabNavigator({
+        Feed: createMaterialTopTabNavigator({
+          FeedFollowing: {screen: FeedFollowingScreen, navigationOptions: {title: "Following"}},
+          FeedYou: {screen: FeedYouScreen, navigationOptions: {title: "You"}},
+        }),
+        Routes: { screen: RouteListScreen },
+        Map: { screen: MapScreen },
+        Chat: { screen: ChatScreen },
+        Profile: { screen: ProfileScreen },
+        
       }),
-      Routes: { screen: RouteListScreen },
-      Map: { screen: MapScreen },
-      Chat: { screen: ChatScreen },
-      Profile: { screen: ProfileScreen },
-    }),
     navigationOptions: {
       header: null,
     }
