@@ -11,10 +11,11 @@ import {
   Button,
   TouchableOpacity,
 } from 'react-native';
+import MessageBubble from "../components/MessageBubble"
 import '../global';
 
-const styles = StyleSheet.create({
-  chat_screen: {
+const STYLES = StyleSheet.create({
+  message_screen: {
     flex: 7,
   },
   message_input_box: {
@@ -28,39 +29,7 @@ const styles = StyleSheet.create({
   message_input: {
     fontSize: 20,
   },
-  message_container: {
-    fontSize:20,
-    padding:"3%",
-    margin: "3%",
-    borderRadius:20,
-  },
-  user_message: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-  },
-  other_message: {
-    flexDirection: 'row',
-  }
 });
-
-class MessageBubble extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    let message_style = this.props.sender ? styles.user_message : styles.other_message;
-    let message_color = this.props.sender ? {backgroundColor:"rgb(0, 153, 255)"} : {backgroundColor:"rgb(215,215,215)"};
-    let text = this.props.sender ? {color:"white",textAlign:"right"} : {color:"black",textAlign:"left"};
-    return (
-      <View style={message_style}>
-        <View style={[styles.message_container,message_color]}>
-         <Text style={text}>{this.props.text}</Text>
-       </View>
-      </View>
-    )
-  }
-}
 
 export default class ChatScreen extends React.Component {
   constructor(props) {
@@ -87,7 +56,7 @@ export default class ChatScreen extends React.Component {
     return(
 
       <View style={{flex: 1}}>
-        <View style={styles.chat_screen}>
+        <View style={STYLES.message_screen}>
           <ScrollView 
           ref={ref => this.scrollView = ref}
           onContentSizeChange={(contentWidth, contentHeight)=>{this.scrollView.scrollToEnd({animated: false});}}
@@ -95,9 +64,9 @@ export default class ChatScreen extends React.Component {
             {this.state.messages.map(message => <MessageBubble text={message.text} sender={message.sender}/>)}
           </ScrollView>
         </View>
-        <View style={styles.message_input_box}>
+        <View style={STYLES.message_input_box}>
           <TextInput 
-            style={styles.message_input} 
+            style={STYLES.message_input} 
             placeholder="Enter a message..." 
             onChangeText={(current_text) => this.setState({current_text})}
             editable={true}
