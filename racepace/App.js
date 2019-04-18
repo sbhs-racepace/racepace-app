@@ -17,15 +17,17 @@ import RegisterScreen from './screens/RegisterScreen';
 import ChatScreen from './screens/ChatScreen';
 import RouteListScreen from './screens/RouteListScreen';
 import FollowScreen from './screens/FollowScreen';
-import MoreScreen from './screens/MoreScreen';
 import RunSetupScreen from './screens/RunSetupScreen';
 import './global.js';
 
 const LoginNavigator = createStackNavigator({
-  Login: { screen: LoginScreen, navigationOptions: { title: 'Login' } },
+  Login: { 
+    screen: LoginScreen, 
+    navigationOptions: {header: null }
+  },
   Register: {
     screen: RegisterScreen,
-    navigationOptions: { title: 'Register' },
+    navigationOptions: { header: null },
   },
   Edit : {screen: EditScreen},
   Follow : { screen: FollowScreen},
@@ -39,7 +41,6 @@ const LoginNavigator = createStackNavigator({
         Map: { screen: MapScreen },
         Chat: { screen: ChatScreen },
         Profile: { screen: ProfileScreen },      
-        More: { screen: MoreScreen },
     }),
     navigationOptions: {
       header: null,
