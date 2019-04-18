@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, Alert, ScrollView, TextInput, Picker, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, Alert, ScrollView, TextInput, Dimensions } from 'react-native';
 import Button from "../components/Button"
 import "../global.js"
 
@@ -7,19 +7,31 @@ const STYLES = StyleSheet.create({
   route_input : {
     borderWidth:1,
     padding:"5%",
-    flex:3
+  },
+  text_style: {
+    fontSize: 15,
+    padding:"3%",
   },
   route_info : {
     borderWidth:1,
-    padding:"5%",
-    flex:2
+    padding:"3%",
   },
   route_type: {
     borderWidth:1,
-    padding:"5%",
-    flex:1,
   },
-
+  input_view: {
+    borderWidth: 1,
+    borderRadius:10,
+    margin:"3%",
+  },
+  pace_view: {
+    borderWidth: 1,
+    borderRadius:10,
+    margin:"3%",
+    padding:"3%",
+    flexDirection:"row",
+    alignItems:"center"
+  },
 })
 
 export default class RunSetupScreen extends React.Component {
@@ -32,33 +44,34 @@ export default class RunSetupScreen extends React.Component {
   
   render() {
     return(
-      <View style={{flexDirection:"column", flex:1}}>
+      <ScrollView contentContainerStyle={{flexDirection:"column", flex:1}}>
         <View style={STYLES.route_input}>
-          <Text>Create Route</Text>
-          <TextInput placeholder="start"/>
-          <TextInput placeholder="end"/>
-          <TextInput placeholder="pace"/>
+          <Text style={[STYLES.text_style,{textAlign:"center"}]}>Plan Route</Text>
+          <TextInput style={[STYLES.text_style,STYLES.input_view]} placeholder="start"/>
+          <TextInput style={[STYLES.text_style,STYLES.input_view]} placeholder="end"/>
+          <View style={STYLES.pace_view}>
+            <TextInput style={STYLES.text_style} placeholder="minutes"/>
+            <Text style={STYLES.text_style}>:</Text>
+            <TextInput style={STYLES.text_style} placeholder="seconds"/>
+          </View>
         </View>
         <View style={STYLES.route_type}>
-          <Picker
-            selectedValue={this.state.route_type}
-            onValueChange={(itemValue, itemIndex) =>
-              this.setState({route_type: itemValue})
-            }>
-            <Picker.Item label="Default Route" value="default" />
-            <Picker.Item label="Scenic Route" value="scenic" />
-          </Picker>
+          <Text style={[STYLES.text_style,{textAlign:"center"}]}>Route Type</Text>
+          <Text style={STYLES.text_style}>Default</Text>
+          <Text style={STYLES.text_style}>Scenic</Text>
         </View>
         <View style={STYLES.route_info}>
-          <Text>Start to End takes 20 minutes</Text>
-          <Text>500 calories burnt</Text>
-          <Text>10km run</Text>
-          <Text>average 5 degree incline</Text>
+          <Text style={[STYLES.text_style,{textAlign:"center"}]}>Route Information</Text>
+          <Text style={STYLES.text_style}>Time: 20 minutes</Text>
+          <Text style={STYLES.text_style}>Total Distance: 10.6km</Text>
+          <Text style={STYLES.text_style}>Calories: 500 calories burnt</Text>
+          <Text style={STYLES.text_style}>Average Incline: 5 Degrees</Text>
+          <Text style={STYLES.text_style}>Points: 50</Text>
         </View>
         <View>
-          <Button text="Start Run"/>
+          <Button text_style={{padding:"5%"}} style={{borderRadius:10, margin:"3%"}} text="Start Run"/>
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }
