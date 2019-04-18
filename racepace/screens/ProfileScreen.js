@@ -10,7 +10,7 @@ import Button from '../components/Button'
 import '../global';
 import '../assets/cat.jpeg';
 
-const styles = StyleSheet.create({
+const STYLES = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection:"column"
@@ -29,6 +29,12 @@ const styles = StyleSheet.create({
     padding: "3%",
     flex:1
   },
+  thebuttons: {
+    fontSize:20,
+    borderWidth: 1,
+    width:"80%",
+    borderRadius:10,
+  }
 });
 
 export default class ProfileScreen extends React.Component {
@@ -52,13 +58,13 @@ export default class ProfileScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <View style={styles.profile_box}>
+      <View style={STYLES.container}>
+        <View style={STYLES.profile_box}>
           <Image
-            style={styles.profile_image}
+            style={STYLES.profile_image}
             source={require('../assets/cat.jpeg')}
           />
-          <View style={styles.profile_data_box}>
+          <View style={STYLES.profile_data_box}>
             <Text>Name: {this.state.name}</Text>
             <Text>Username: {this.state.username}</Text>
             <Text>Age: {this.state.age}</Text>
@@ -67,12 +73,30 @@ export default class ProfileScreen extends React.Component {
           </View>
         </View>
         
-        <View style={styles.profile_data_box}>
+        <View style={STYLES.profile_data_box}>
             <Text>Total distance run {this.state.statistics.total_distance_run}</Text>
             <Text>Fastest 100m: {this.state.statistics.fastest_100}</Text>
             <Text>Fastest 800m: {this.state.statistics.fastest_800}</Text>
             <Text>Maximum v02: {this.state.statistics.v02_max}</Text>
             <Text>Average pace: {this.state.statistics.average_pace}</Text>
+        </View>
+
+        <View>
+          <Button 
+          text= "Account Settings"
+          onPress={() => 
+                  this.props.navigation.navigate('Settings')
+                }
+          style= {STYLES.thebuttons}/>
+          <Button 
+          text= "Statistics"
+          style= {STYLES.thebuttons}/>
+          <Button 
+          style= {STYLES.thebuttons}
+          text= "Routes"
+          onPress={() => 
+                  this.props.navigation.navigate('Routes')
+                }/>
         </View>
       </View>
     );
