@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import FeedItem from "../components/FeedItem"
+import FeedRoute from "../components/FeedRoute"
 import Button from "../components/Button"
 
 export default class FeedYouScreen extends React.Component {
@@ -8,12 +8,11 @@ export default class FeedYouScreen extends React.Component {
     return (
       <View>
         <Button text="Follow Requests" onPress={() => this.props.navigation.navigate("Follow")}/>
-        <Text>
-          Notifications
-        </Text>
-        <Text>
-          Runs
-        </Text>
+        <FeedRoute 
+        routeName="ok"
+        postTime="yes"
+        length="1"
+        time="7"/> 
       </View>
     );
   }
