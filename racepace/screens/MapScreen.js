@@ -90,6 +90,10 @@ export default class MapScreen extends React.Component {
   }
 
   async goToLocation(loc) {
+    if (!loc) {
+      Alert.alert("Error","Input was blank.")
+      return 0;
+    }
     let lat,lon
     try {
       let {latitude, longitude} = (await Location.geocodeAsync(loc+","+global.region.name))[0];
@@ -114,21 +118,26 @@ export default class MapScreen extends React.Component {
         },
         showSearch: true,
       }))
-      Alert.alert("asd")
     }
     else {
-      Alert.alert("Error","Input was blank or couldn't be understood.")
+      Alert.alert("Error","Input couldn't be understood.")
     }
   }
 
   render() {
     return (
       <View style={{alignItems:"center"}}>
-        <TextInput 
-          placeholder="Search"
-          style = {StyleSheet.flatten([STYLES.header,STYLES.search])}
-          onSubmitEditing={event=>this.goToLocation(event.nativeEvent.text)}
-        />
+        <View style={{flexDirection: "row", zIndex:2, alignItems:"center"}}>
+          <TextInput 
+            placeholder="Search"
+            style = {StyleSheet.flatten([STYLES.header,STYLES.search])}
+          />
+          <Button img={require("../assets/icons/search.png")}
+            style={{height:30,width:30,borderRadius:15,borderWidth:1}}
+            img_style={{height:30,width:30,borderRadius:15,borderWidth:1}}
+            onPress={event=>this.goToLocation(event.nativeEvent.text)}
+          />
+        </View>
         <MapView
           style={generateMapStyle()}
           showsUserLocation={true}
