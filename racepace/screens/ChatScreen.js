@@ -101,12 +101,12 @@ export default class ChatScreen extends React.Component {
             multiline={true}
             clearButtonMode='always'
           />
-          <TouchableOpacity
+          {/* <TouchableOpacity
               onPress = {
                 () => this.enterMessage()
               }>
               <Text> Submit </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
     )
