@@ -8,25 +8,56 @@ import "../global"
 
 const LATITUDE_DELTA = 0.0922*1.5
 const LONGITUDE_DELTA = 0.0421*1.5
+const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
 const STYLES = StyleSheet.create({
   header: {
-    top:5,
+    top:20,
     width:"80%",
     height:30,
     zIndex:2,
+    elevation: 2,
+    flexDirection:"row",
+    alignItems:"center"
   },
   search: {
     borderRadius: 5,
     borderWidth: 1,
     paddingLeft: 3,
     backgroundColor: "white",
-    // placeholderTextColor: "#fffe"
+    width:"90%",
+    height:30,
+  },
+  search_btn: {
+    width:"10%",
+    height: "100%",
+    borderRadius: 0.08*windowWidth,
+    borderWidth: 1,
+    backgroundColor:"white"
+  },
+  search_img: {
+    width:"100%",
+    height:"100%",
+    borderRadius: 0.08*windowWidth,
+  },
+  compass_btn: {
+    position: "absolute",
+    width:40,
+    height:40,
+    borderRadius: 20,
+    borderWidth:1,
+    zIndex: 2,
+    top: windowHeight-90,
+    right: 5,
+  },
+  compass_img: {
+    width:"100%",
+    height:"100%",
+    borderRadius: 20,
   }
 })
 
 function generateMapStyle() {
-  const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
   return {
     ...StyleSheet.absoluteFillObject,
     width: windowWidth,
@@ -46,7 +77,7 @@ export default class MapScreen extends React.Component {
         longitudeDelta: LONGITUDE_DELTA,
       },
       viewHeight: 0,
-      moveToCurrentLoc: true,
+      moveToCurrentLoc: false,
       showSearch: false,
       searchStr: "",
       searchLoc: {
@@ -83,9 +114,7 @@ export default class MapScreen extends React.Component {
 
   onRegionChange = (region) => {
     this.setState({
-      mapRegion: region,
-      lastLat: region.latitude || this.state.lastLat,
-      lastLong: region.longitude || this.state.lastLong,
+      region: region,
       moveToCurrentLoc: false
     });
   }
@@ -125,18 +154,36 @@ export default class MapScreen extends React.Component {
     }
   }
 
+  async goToCurrent() {
+    try {
+    Location.getCurrentPositionAsync({accuracy:4,maximumAge:5000,timeout:5000}).then(
+      location => {this.setState(prevState => ({
+        region: {
+          ...prevState.region, //Copy in other parts of the object
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude
+        }
+      }))},
+      reason => Alert.alert("Error","Location tracking failed. Error: "+reason)
+    ).catch(error => Alert.alert("Error","Location tracking failed. Error: "+error))
+    }
+    catch(error) {
+      Alert.alert("Error","Location tracking failed. Error: "+error)
+    }
+  }
+
   render() {
     return (
       <View style={{alignItems:"center"}}>
-        <View style={{flexDirection: "row", zIndex:2, alignItems:"center"}}>
+        <View style={STYLES.header}>
           <TextInput 
             placeholder="Search"
-            style = {StyleSheet.flatten([STYLES.header,STYLES.search])}
+            style = {STYLES.search}
             onChangeText = {text=>this.setState({searchStr:text})}
           />
           <Button img={require("../assets/icons/search.png")}
-            style={{height:30,width:30,borderRadius:15,borderWidth:1}}
-            img_style={{height:30,width:30,borderRadius:15,borderWidth:1}}
+            style={STYLES.search_btn}
+            img_style={STYLES.search_img}
             onPress={()=>this.goToLocation(this.state.searchStr)}
           />
         </View>
@@ -144,7 +191,7 @@ export default class MapScreen extends React.Component {
           style={generateMapStyle()}
           showsUserLocation={true}
           region={this.state.region}
-          onRegionChange={this.onRegionChange.bind(this)}
+          onRegionChangeComplete={this.onRegionChange.bind(this)}
         >
           {this.state.showSearch &&
             <Marker
@@ -153,6 +200,13 @@ export default class MapScreen extends React.Component {
             />
           }
         </MapView>
+        <Button img={require("../assets/icons/compass.jpg")}
+          style={STYLES.compass_btn}
+          img_style={STYLES.compass_img}
+          onPress={()=>{
+          this.setState({moveToCurrentLoc: true});
+          this.goToCurrent();}}
+        />
       </View>
     );
   }
