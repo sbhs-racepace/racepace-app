@@ -62,7 +62,7 @@ export function register() {
   let data = {
     email: this.state.email,
     password: this.state.pword,
-    name: this.state.name
+    full_name: this.state.full_name
   };
   let url = global.serverURL + '/api/register';
   try {
