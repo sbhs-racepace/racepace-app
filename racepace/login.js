@@ -79,7 +79,7 @@ export function register() {
           if (check_login(res)) {
             //Checking response from server
             console.log('Login success');
-            this.props.navigation.navigate('Details');
+            this.props.navigation.navigate('FeedFollowing');
           }
         },
         reason => {
