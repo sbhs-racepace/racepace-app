@@ -40,7 +40,7 @@ export default class RouteListScreen extends React.Component {
   }
   
   render() {
-    let routes = global.user_routes.map(route => <RouteItem route={route}/>);
+    let routes = global.user.routes.map(route => <RouteItem route={route}/>);
     return (
       <View style={{flexDirection:"column", flex:1}}>
         <ScrollView style={STYLES.route_box}>

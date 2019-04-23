@@ -43,7 +43,20 @@ export function login() {
           if (check_login(res)) {
             //Checking response from server
             console.log('Login success');
-            this.props.navigation.navigate('Details');
+            let data = {'user':global.login_status.user_id}
+            let info_url = global.serverURL + '/api/get_info'
+            fetch(url, {
+              method: 'GET',
+              body: JSON.stringify(data),
+              headers: new Headers({
+                'Authorization': global.login_status.token,
+              })
+            }).then(res => {
+              global.user = res.info
+              console.log(res.info.full_name)
+            })
+
+            this.props.navigation.navigate('FeedFollowing');
           }
         },
         reason => {
