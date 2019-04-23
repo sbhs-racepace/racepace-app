@@ -48,6 +48,7 @@ export default class MapScreen extends React.Component {
       viewHeight: 0,
       moveToCurrentLoc: true,
       showSearch: false,
+      searchStr: "",
       searchLoc: {
         latitude: -33.9672563,
         longitude: 151.1002119,
@@ -131,11 +132,12 @@ export default class MapScreen extends React.Component {
           <TextInput 
             placeholder="Search"
             style = {StyleSheet.flatten([STYLES.header,STYLES.search])}
+            onChangeText = {text=>this.setState({searchStr:text})}
           />
           <Button img={require("../assets/icons/search.png")}
             style={{height:30,width:30,borderRadius:15,borderWidth:1}}
             img_style={{height:30,width:30,borderRadius:15,borderWidth:1}}
-            onPress={event=>this.goToLocation(event.nativeEvent.text)}
+            onPress={()=>this.goToLocation(this.state.searchStr)}
           />
         </View>
         <MapView
