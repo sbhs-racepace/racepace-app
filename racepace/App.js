@@ -18,6 +18,8 @@ import ChatScreen from './screens/ChatScreen';
 import RouteListScreen from './screens/RouteListScreen';
 import FollowScreen from './screens/FollowScreen';
 import RunSetupScreen from './screens/RunSetupScreen';
+import GroupScreen from './screens/GroupScreen';
+import ChatScreenTest from './screens/ChatScreenTest';
 import './global.js';
 
 const LoginNavigator = createStackNavigator({
@@ -39,7 +41,9 @@ const LoginNavigator = createStackNavigator({
 		}),
         Run: { screen: RunSetupScreen },
         Map: { screen: MapScreen },
+        Group: { screen: GroupScreen },
         Chat: { screen: ChatScreen },
+        ChatTest: {screen: ChatScreenTest},
         Profile: { screen: ProfileScreen },      
     }),
     navigationOptions: {
