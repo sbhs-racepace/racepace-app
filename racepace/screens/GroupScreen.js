@@ -9,7 +9,7 @@ export default class GroupScreen extends React.Component {
       groups: [
         {
           group_name: "Running Group 1",
-          members: ["a", "b", "c"],
+          members: ["P Longname", "T Shortname", "R Testname"],
           description: "abcdefg this is cool",
           messages: [
           {
@@ -73,18 +73,36 @@ class Group extends React.Component{
       },
       border: {
         borderWidth:1,
-        padding:"3%",
+        paddingLeft:"3%",
+        padding:"2% 3%",
         marginTop:5,
         marginLeft:"2%",
         width:"96%",
       }
     })
+
+    let members_str = ""
+    let i = 0
+    while (members_str.length < 24 && i<this.props.group.members.length) {
+      members_str += this.props.group.members[i] + ", "
+      i++
+    }
+    members_str = members_str.slice(0,members_str.length-2)
+    if (i<this.props.group.members.length) {
+      members_str += ` + ${this.props.group.members.length-i} more`
+    }
+
+    let last_mess = `[${this.props.group.messages[0].author}] ${this.props.group.messages[0].message}`
+    if (last_mess.length > 32) {
+      last_mess = last_mess.slice(0,32) + "..."
+    }
+
     return (
       <TouchableOpacity style={STYLES.border}>
         <Text style={STYLES.name}>{this.props.group.group_name}</Text>
-        <Text>Group Length: {this.props.group.members.length}</Text>
+        <Text>Members: {members_str}</Text>
         <Text>Description: {this.props.group.description}</Text>
-        <View>{this.props.group.members.map(member => <Text>{member}</Text>)}</View>
+        <Text>Last Message: {last_mess}</Text>
       </TouchableOpacity>
     )
   }
