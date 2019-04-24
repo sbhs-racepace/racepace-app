@@ -5,10 +5,13 @@ import {
   Image,
   StyleSheet,
   ScrollView,
+  TouchableHighlight
 } from 'react-native';
 import Button from '../components/Button'
 import '../global';
 import '../assets/cat.jpeg';
+import RouteListScreen from './RouteListScreen'
+import StatsScreen from './StatsScreen'
 
 const STYLES = StyleSheet.create({
   container: {
@@ -24,18 +27,13 @@ const STYLES = StyleSheet.create({
   other_data_box: {
     padding:"3%"
   },
-  profile_image_box: {
-    flexDirection: 'column',
-    padding: "3%",
-  },
   text: {
-    fontSize:20,
+    fontSize:15,
   },
   button: {
     fontSize:20,
     borderWidth: 1,
     borderRadius:10,
-    margin:"3%"
   }
 });
 
@@ -69,43 +67,62 @@ export default class ProfileScreen extends React.Component {
         average_pace: 3.4,
       },
       imageurl: '../assets/cat.jpeg',
+      showCancel: true,
     };
+  }
+
+  _renderCancel() {
+      if (this.state.showCancel) {
+        return (
+          <StatsScreen></StatsScreen>
+        );
+      } else {
+        return (
+          <RouteListScreen></RouteListScreen>
+        );
+      }
   }
 
   render() {
     return (
       <View style={STYLES.container}>
-        <View style={{height:150}}>
-          <View style={{flexDirection:"row", flex:1, justifyContent:"space-evenly"}}>
-            <View style={STYLES.profile_image_box}>
+        <View style={{height:150, padding:"3%"}}>
+          <View style={{flexDirection:"row", flex:1, justifyContent:"space-between"}}>
+            <View style={{flexDirection: 'column', flex:1, alignItems:"center"}}>
               <Image
                 style={STYLES.profile_image}
                 source={require('../assets/cat.jpeg')}
               />
-              <Text style={[{padding:"3%"},STYLES.text]}>Name: {this.state.name}</Text>
+              <Text style={STYLES.text}>{this.state.name}</Text>
             </View>
-            <View style={{flexDirection:'column', flex:1, justifyContent:"space-evenly"}}>
-              <View style={{flexDirection:'row', flex:1, justifyContent:"space-evenly"}}>
-                <Button style={STYLES.button} text="8 Runs"/>
-                <Button style={STYLES.button} text="9 Following"/>
-                <Button style={STYLES.button} text="3 Followers"/>
+            <View style={{flexDirection:'column', flex:2, justifyContent:"space-between"}}>
+              <View style={{flexDirection:'row', flex:2}}>
+                <Button style={{flex:1}} text="8 Pace Points"/>
+                <Button style={{flex:1}} text="9 Following"/>
+                <Button style={{flex:1}} text="3 Followers"/>
               </View>
-              <Button style={STYLES.button} text="Edit Profile"/>
+              <Button style={{flex:1}} text="Edit Profile"/>
             </View>
           </View>
         </View>
+        <Text multiline={true} style={{fontSize:10, padding:"3%"}}>Hi! My name is Jason and I am not a runner. I am 58 :)</Text>
 
-        <View style={{flexDirection:'column', flex:1}}>
-          <View>
-            <Text>Username: {this.state.username}</Text>
-            <Text>Age: {this.state.age}</Text>
-            <Text>Country: {global.region.name}</Text>
+        <View style={{flexDirection:'column', flex:1, padding:"3%"}}>
+          <View style={{flexDirection:'row', flex:1}}>
+            <Button style={{flex:1}} text="Stats" onPress={()=>{this.setState({
+              showCancel: true
+            })}}/>
+            <Button style={{flex:1}} text="Runs" onPress={()=>{this.setState({
+              showCancel: false
+            })}}/>
+          </View>
+          <View style={{flex:7}}>
+            {this._renderCancel()}          
           </View>
                 
 
-          <Button style={STYLES.button} text="Find Friends"/>
+          <Button text="Find Friends"/>
           <Button
-            style={STYLES.button} 
             text="Logout"
             onPress={()=>{
               logout()
