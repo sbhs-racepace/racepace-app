@@ -9,24 +9,24 @@ import {
   Alert,
 } from 'react-native';
 import Button from '../components/Button.js'
-import PickTwo from '../components/PickTwo'
+import DatePicker from 'react-native-datepicker';
 import {register} from "../login"
 import '../global';
 
 const STYLES = StyleSheet.create({
-  input: {
-    borderLeftWidth: 2,
-    borderBottomWidth: 2,
-    marginTop: 5,
-    paddingLeft: 3,
-    width:"80%"
-  },
   general: {
     marginTop: 5,
     width:"80%"
   },
-  pickTwo: {
-    width:"50%"
+  input: {
+    fontSize:20,
+    borderWidth: 1,
+    width:"80%",
+    borderRadius:10,
+    padding:"1%",
+  },
+  dob: {
+    width:'80%'
   }
 })
 
@@ -40,12 +40,14 @@ export default class RegisterScreen extends React.Component {
       full_name: "",
       email: "",
       pword: "",
+      dob:"",
+      username: "",
     };
   }
 
   render() {
     return (
-      <View style={{alignItems:"center"}}>
+      <View style={{alignItems:"center",justifyContent:"space-evenly", flexDirection:"column", flex:1}}>
         <Image style={STYLES.general} source={require('../assets/cat.jpeg')} />
         <TextInput
           autoCorrect={false}
@@ -59,6 +61,16 @@ export default class RegisterScreen extends React.Component {
         />
         <TextInput
           autoCorrect={false}
+          onChangeText={username => {
+            this.setState({ username: username });
+          }}
+          style={STYLES.input}
+          returnKeyType="go"
+          placeholder="Username"
+          placeholderTextColor="rgba(225,225,225,0.8)"
+        />
+        <TextInput
+          autoCorrect={false}
           onChangeText={email => {
             this.setState({ email: email });
           }}
@@ -67,6 +79,15 @@ export default class RegisterScreen extends React.Component {
           returnKeyType="go"
           placeholder="Email"
           placeholderTextColor="rgba(225,225,225,0.8)"
+        />
+        <DatePicker
+          style={STYLES.dob}
+          mode="date" //The enum of date, datetime and time
+          placeholder="Enter Date of Birth"
+          format="DD-MM-YYYY"
+          confirmBtnText="Confirm"
+          cancelBtnText="Cancel"
+          onDateChange={(date) => {this.setState({date: date})}}
         />
         <TextInput
           autoCorrect={false}

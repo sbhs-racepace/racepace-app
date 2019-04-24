@@ -41,7 +41,7 @@ export default class ProfileScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: 'Jason Yu',
+      name: global.user.full_name,
       username: 'jyuuuk',
       age: 16,
       email: 'jasonyu0100@gmail.com',
