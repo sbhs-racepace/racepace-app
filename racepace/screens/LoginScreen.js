@@ -47,8 +47,8 @@ export default class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: 'aaa',
-      pword: 'bbb',
+      email: "",
+      pword: "",
       isSigninInProgress: false,
     };
   }
@@ -66,7 +66,6 @@ export default class LoginScreen extends React.Component {
         <Image style={STYLES.logo} source={require('../assets/running.jpg')} />
         <TextInput
           autoCorrect={false}
-          defaultValue="aaa"
           style = {STYLES.input}
           ref={el => {
             this.email = el;
@@ -81,7 +80,6 @@ export default class LoginScreen extends React.Component {
         />
         <TextInput
           autoCorrect={false}
-          defaultValue="bbb"
           style = {STYLES.input}
           ref={el => {
             this.pword = el;

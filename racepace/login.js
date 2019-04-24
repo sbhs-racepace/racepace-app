@@ -3,6 +3,7 @@ import './global';
 import { Alert } from 'react-native';
 import Expo from 'expo';
 
+
 function check_login(res) {
   //Read response from server
   if (!res) {
@@ -43,19 +44,18 @@ export function login() {
           if (check_login(res)) {
             //Checking response from server
             console.log('Login success');
-            let data = {'user':global.login_status.user_id}
+            let data = {'user_id':global.login_status.user_id}
             let info_url = global.serverURL + '/api/get_info'
-            fetch(url, {
-              method: 'GET',
+            fetch(info_url, {
+              method: 'POST',
               body: JSON.stringify(data),
               headers: new Headers({
                 'Authorization': global.login_status.token,
               })
             }).then(res => {
-              global.user = res.info
-              console.log(res.info.full_name)
+              // Store user info
+              global.user = JSON.parse(res._bodyText).info
             })
-
             this.props.navigation.navigate('FeedFollowing');
           }
         },
