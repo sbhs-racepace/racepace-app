@@ -1,7 +1,7 @@
+import '../global';
 import React from "react";
 import { GiftedChat } from "react-native-gifted-chat";
 import { View, Text, AsyncStorage } from 'react-native';
-import SocketIOClient from 'socket.io-client';
 
 const USER_ID = '@userId';
 
@@ -17,7 +17,7 @@ export default class ChatScreenTest extends React.Component {
     this.onSend = this.onSend.bind(this);
     this._storeMessages = this._storeMessages.bind(this);
 
-    this.socket = SocketIOClient('http://localhost:3000');
+    this.socket = global.socket;
     this.socket.on('message', this.onReceivedMessage);
     this.socket.on('connect', this.onConnect)
     this.determineUser();

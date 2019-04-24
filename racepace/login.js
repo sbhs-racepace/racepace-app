@@ -2,6 +2,7 @@
 import './global';
 import { Alert } from 'react-native';
 import Expo from 'expo';
+import io from 'socket.io-client';
 
 
 function check_login(res) {
@@ -36,6 +37,14 @@ function storeUserInfo(res) {
   }).then(res => {
     // Store user info
     global.user = JSON.parse(res._bodyText).info
+    global.socket = socket = io(
+        `http://127.0.0.1:8000?token=${global.login_status.token}`,
+        {transports: ['websocket']}
+        )
+    console.log('authenticating websocket')
+    socket.emit('authenticate', global.login_status.token)
+
+
   })
 }
 
