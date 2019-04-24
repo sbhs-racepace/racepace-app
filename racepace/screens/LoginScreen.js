@@ -58,44 +58,44 @@ export default class LoginScreen extends React.Component {
   render() {
     return (
       <View>
-      <Button
-          style={STYLES.back_btn}
-          text="Back"
-          text_style={STYLES.button_text}
-          onPress={()=>this.props.navigation.goBack()}
-      />
-      <View 
-        style={{alignItems:"center", flexDirection:"column",height:"95%",justifyContent: 'space-evenly'}}
-      >
-        <Image style={STYLES.logo} source={require('../assets/running.jpg')} />
-        <TextInput
-          autoCorrect={false}
-          defaultValue="aaa"
-          style = {STYLES.input}
-          defaultValue={'Jasonemail5'}
-          onChangeText={email => {
-            this.setState({ email: email });
-          }}
-          keyboardType="email-address"
-          returnKeyType="go"
-          placeholder="Email or Mobile Num"
-          placeholderTextColor="rgba(225,225,225,0.8)"
+        <Button
+            style={STYLES.back_btn}
+            text="Back"
+            text_style={STYLES.button_text}
+            onPress={()=>this.props.navigation.goBack()}
         />
-        <TextInput
-          autoCorrect={false}
-          defaultValue={'jasonpassword'}
-          style = {STYLES.input}
-          onChangeText={pword => {
-            this.setState({ pword });
-          }}
-          returnKeyType="go"
-          secureTextEntry={true}
-          placeholder="Password"
-          placeholderTextColor="rgba(225,225,225,0.8)"
-        />
-        <Button style={STYLES.button} text_style={STYLES.button_text} onPress={login.bind(this)} text="Login" />
-        <Button style={STYLES.button} text_style={STYLES.button_text} onPress={googleLogin} text="Login with Google" />
-      </View>
+        <View 
+          style={{alignItems:"center", flexDirection:"column",height:"95%",justifyContent: 'space-evenly'}}
+        >
+          <Image style={STYLES.logo} source={require('../assets/running.jpg')} />
+          <TextInput
+            autoCorrect={false}
+            defaultValue="aaa"
+            style = {STYLES.input}
+            defaultValue={'Jasonemail5'}
+            onChangeText={email => {
+              this.setState({ email: email });
+            }}
+            keyboardType="email-address"
+            returnKeyType="go"
+            placeholder="Email or Mobile Num"
+            placeholderTextColor="rgba(225,225,225,0.8)"
+          />
+          <TextInput
+            autoCorrect={false}
+            defaultValue={'jasonpassword'}
+            style = {STYLES.input}
+            onChangeText={pword => {
+              this.setState({ pword });
+            }}
+            returnKeyType="go"
+            secureTextEntry={true}
+            placeholder="Password"
+            placeholderTextColor="rgba(225,225,225,0.8)"
+          />
+          <Button style={STYLES.button} text_style={STYLES.button_text} onPress={login.bind(this)} text="Login" />
+          <Button style={STYLES.button} text_style={STYLES.button_text} onPress={googleLogin} text="Login with Google" />
+        </View>
       </View>
     );
   }

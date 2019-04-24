@@ -13,9 +13,6 @@ const STYLES = StyleSheet.create({
     borderStyle:"solid",
     borderRadius:20,
     flexDirection:"column",
-  },
-  route_box: {
-    flexDirection:"column",
   }
 })
 
@@ -42,11 +39,9 @@ export default class RouteListScreen extends React.Component {
   render() {
     let routes = global.user_routes.map(route => <RouteItem route={route}/>);
     return (
-      <View style={{flexDirection:"column", flex:1}}>
-        <ScrollView style={STYLES.route_box}>
-          {routes}
-        </ScrollView>
-      </View>
+      <ScrollView>
+        {routes}
+      </ScrollView>
     );
   }
 }

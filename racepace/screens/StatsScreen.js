@@ -17,7 +17,7 @@ export default class StatsScreen extends React.Component {
   
   render() {
     return (
-      <ScrollView contentContainerStyle={{flexDirection:"column", flex:1}}>
+      <ScrollView>
         <Text style={STYLES.text}>Runs made: 10</Text>
         <Text style={STYLES.text}>Distance Ran Altogether: 10</Text>
         <Text style={STYLES.text}>Longest Distance Ran: 10</Text>

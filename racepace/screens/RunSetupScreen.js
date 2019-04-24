@@ -6,15 +6,12 @@ import "../global.js"
 const STYLES = StyleSheet.create({
   route_input : {
     borderWidth:1,
-    padding:"5%",
   },
   text_style: {
-    fontSize: 15,
-    padding:"3%",
+    fontSize: 40,
   },
   route_info : {
     borderWidth:1,
-    padding:"3%",
   },
   route_type: {
     borderWidth:1,
@@ -22,13 +19,10 @@ const STYLES = StyleSheet.create({
   input_view: {
     borderWidth: 1,
     borderRadius:10,
-    margin:"3%",
   },
   pace_view: {
     borderWidth: 1,
     borderRadius:10,
-    margin:"3%",
-    padding:"3%",
     flexDirection:"row",
     alignItems:"center"
   },
@@ -44,18 +38,22 @@ export default class RunSetupScreen extends React.Component {
   
   render() {
     return(
-      <ScrollView contentContainerStyle={{flexDirection:"column", flex:1}}>
+      <ScrollView>
         <View style={STYLES.route_input}>
-          <Text style={[STYLES.text_style,{textAlign:"center"}]}>Plan Route</Text>
+          {/* <Text style={[STYLES.text_style,{textAlign:"center"}]}>Plan Route</Text>
           <TextInput style={[STYLES.text_style,STYLES.input_view]} placeholder="start"/>
           <TextInput style={[STYLES.text_style,STYLES.input_view]} placeholder="end"/>
           <View style={STYLES.pace_view}>
             <TextInput style={STYLES.text_style} placeholder="minutes"/>
             <Text style={STYLES.text_style}>:</Text>
             <TextInput style={STYLES.text_style} placeholder="seconds"/>
-          </View>
+          </View> */}
         </View>
-        <View style={STYLES.route_type}>
+        <View style={{height:1000}}>
+
+        </View>
+        <Text>afds</Text>
+        {/* <View style={STYLES.route_type}>
           <Text style={[STYLES.text_style,{textAlign:"center"}]}>Route Type</Text>
           <Text style={STYLES.text_style}>Default</Text>
           <Text style={STYLES.text_style}>Scenic</Text>
@@ -69,8 +67,8 @@ export default class RunSetupScreen extends React.Component {
           <Text style={STYLES.text_style}>Points: 50</Text>
         </View>
         <View>
-          <Button text_style={{padding:"5%"}} style={{borderRadius:10, margin:"3%"}} text="Start Run"/>
-        </View>
+          <Button text_style={{padding:"5%"}} style={{borderRadius:10}} text="Start Run"/>
+        </View> */}
       </ScrollView>
     );
   }
