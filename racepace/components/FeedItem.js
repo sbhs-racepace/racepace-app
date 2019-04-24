@@ -42,8 +42,8 @@ export class FeedItem extends React.Component {
 				<View style={STYLES.user_profile}>
 					<Image source={require('../assets/cat.jpeg')} style={STYLES.profilePic}/>
 					<View style={STYLES.user_info}>
-						<Text style={{textVerticalAlign:"bottom"}}>{this.props.username}</Text>
-						<Text style={{textVerticalAlign:"bottom"}}>{this.props.posttime}</Text>
+						<Text>{this.props.username}</Text>
+						<Text>{this.props.posttime}</Text>
 					</View>
 				</View>
 

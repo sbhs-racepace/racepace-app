@@ -4,8 +4,14 @@ import {
   createAppContainer,
   createBottomTabNavigator,
   createMaterialTopTabNavigator,
-  SafeAreaView
 } from 'react-navigation';
+import {
+  View,
+  Text
+} from 'react-native'
+
+import MainScreenHeader from './components/MainScreenHeader'
+
 import EditScreen from './screens/EditScreen'
 import FeedFollowingScreen from './screens/FeedFollowingScreen';
 import FeedYouScreen from './screens/FeedYouScreen'
@@ -34,24 +40,33 @@ const LoginNavigator = createStackNavigator({
     screen: RegisterScreen,
     navigationOptions: { header: null },
   },
-  Edit : {screen: EditScreen},
-  Follow : { screen: FollowScreen},
+  Edit : {
+    screen: EditScreen
+  },
+  Follow : { 
+    screen: FollowScreen, 
+  },
   Routes: { screen: RouteListScreen },
   Main: { screen: createBottomTabNavigator({
 		Feed: createMaterialTopTabNavigator({
 		  FeedFollowing: {screen: FeedFollowingScreen, navigationOptions: {title: "Following"}},
 		  FeedYou: {screen: FeedYouScreen, navigationOptions: {title: "You"}},
-		}),
-        Run: { screen: RunSetupScreen },
-        Map: { screen: MapScreen },
-        Group: { screen: GroupScreen },
-        Chat: { screen: ChatScreen },
-        ChatTest: { screen: ChatScreenTest },
-        Profile: { screen: ProfileScreen },      
-    }),
-    navigationOptions: {
-      header: null,
+    },
+    {
+      tabBarOptions: {
+        style: {
+          backgroundColor: 'rgb(0, 153, 255)',
+        }
     }
+      ,
+    }),
+      Run: { screen: RunSetupScreen },
+      Map: { screen: MapScreen },
+      Group: { screen: GroupScreen },
+      ChatTest: { screen: ChatScreenTest },
+      Profile: { screen: ProfileScreen },     
+    }),
+    navigationOptions: { header: null }, 
   },
 });
 
@@ -60,9 +75,10 @@ const AppContainer = createAppContainer(LoginNavigator);
 export default class App extends React.Component {
   render() {
     return (
-    <SafeAreaView style={{flex:1}}>
-      <AppContainer />
-    </SafeAreaView>
+      <View style={{flex:1}}>
+        <View style={{height:20}}></View>
+        <AppContainer />
+      </View>
     )
   }
 }
