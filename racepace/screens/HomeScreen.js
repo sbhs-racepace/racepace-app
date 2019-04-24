@@ -16,7 +16,8 @@ const STYLES = StyleSheet.create({
     borderRadius:10,
   },
   button_text: {
-    padding:"1%"
+    padding:"1%",
+    fontSize: 16
   },
   logo: {
     margin:"5%",
