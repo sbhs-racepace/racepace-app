@@ -56,8 +56,10 @@ export function login() {
       })
       .then(
         res => {
-          if (check_login(res)) {
-            storeUserInfo(res)
+          console.log('Login response received from server');
+          let login_response = check_login(res)
+          if (login_response) {
+            storeUserInfo(login_response)
             this.props.navigation.navigate('FeedFollowing');
           }
         },
@@ -93,8 +95,9 @@ export function register() {
       .then(
         res => {
           console.log('Login response received from server');
-          if (check_login(res)) {
-            storeUserInfo(res)
+          let login_response = check_login(res)
+          if (login_response) {
+            storeUserInfo(login_response)
             this.props.navigation.navigate('FeedFollowing');
           }
         },
