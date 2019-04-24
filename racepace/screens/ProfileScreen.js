@@ -112,12 +112,12 @@ export default class ProfileScreen extends React.Component {
                 <Button
                   style={{ flex: 1 }}
                   text="9 Following"
-                  onPress={() => this.props.navigation.navigate('Following')}
+                  onPress={() => this.props.navigation.navigate('FollowList')}
                 />
                 <Button
                   style={{ flex: 1 }}
                   text="3 Followers"
-                  onPress={() => this.props.navigation.navigate('Follower')}
+                  onPress={() => this.props.navigation.navigate('FollowList')}
                 />
               </View>
               <Button style={{ flex: 1 }} text="Edit Profile" />

@@ -9,7 +9,7 @@ class Follower extends React.Component {
   }
 
   render() {
-    const STYLES = StyleSheet.cerate({
+    const STYLES = StyleSheet.create({
       profile_image: { 
         height: 60, 
         width: 60, 
@@ -17,12 +17,12 @@ class Follower extends React.Component {
       },
     })
     return (
-      <View style={{flexDirection: "row"}}>
+      <View style={{flexDirection: "row", justifyContent: "space-between",height:70,padding:"2%"}}>
         <Image
           style={STYLES.profile_image}
           source={this.props.img}
         />
-        <Text>{this.props.name}</Text>
+        <Text style={{width:"70%"}}>{this.props.name}</Text>
         {this.props.removeBtn && <Button text="Remove"/>}
       </View>
     )
@@ -43,7 +43,7 @@ class FollowingScreen extends React.Component {
   render() {
     return (
       <View>
-        {this.state.following.map(e=>{<Follower img={e.img} name={e.name}/>})}
+        {this.state.following.map(e=>{return <Follower img={e.img} name={e.name}removeBtn={true}/> })}
       </View>
     )
   }
@@ -63,17 +63,17 @@ class FollowerScreen extends React.Component {
   render() {
     return (
       <View>
-        {this.state.following.map(e=>{<Follower img={e.img} name={e.name}/>})}
+        {this.state.following.map(e=>{return <Follower img={e.img} name={e.name}/>})}
       </View>
     )
   }
 }
 
-export class FollowListScreen extends React.Component {
+export default class FollowListScreen extends React.Component {
   render() {
     const Nav = createMaterialTopTabNavigator({
-      Following: FollowingScreen,
-      Follower: FollowerScreen,
+      Following: {screen: FollowingScreen},
+      Follower: {screen: FollowerScreen},
     })
     const AppContainer = createAppContainer(Nav);
     return (
