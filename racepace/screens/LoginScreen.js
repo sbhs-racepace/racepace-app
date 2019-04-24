@@ -49,8 +49,8 @@ export default class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "",
-      pword: "",
+      email: "Jasonemail5",
+      pword: "jasonpassword",
       isSigninInProgress: false,
     };
   }
@@ -75,6 +75,7 @@ export default class LoginScreen extends React.Component {
         <TextInput
           autoCorrect={false}
           style = {STYLES.input}
+          defaultValue={'Jasonemail5'}
           ref={el => {
             this.email = el;
           }}
@@ -88,6 +89,7 @@ export default class LoginScreen extends React.Component {
         />
         <TextInput
           autoCorrect={false}
+          defaultValue={'jasonpassword'}
           style = {STYLES.input}
           ref={el => {
             this.pword = el;
