@@ -4,11 +4,10 @@ global.login_status = {
   user_id: false
 };
 global.user = {
-  name:"guest",
+  full_name:"guest",
   username:"guest",
   dob:"None",
   routes: [],
-  email:'None',
 }
 global.serverURL = "http://racepace-sbhs.herokuapp.com"
 global.googleLoginID = {android: "Insert key here",

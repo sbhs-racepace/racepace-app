@@ -13,29 +13,45 @@ import '../assets/cat.jpeg';
 const STYLES = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection:"column"
+    flexDirection:"column",
+    justifyContent:"space-evenly"
   },
   profile_image: { 
     height: 100, 
     width: 100, 
     borderRadius:50 
   },
-  profile_data_box: {
-    flex: 1,
+  other_data_box: {
     padding:"3%"
   },
-  profile_box: {
-    flexDirection: 'row',
+  profile_image_box: {
+    flexDirection: 'column',
     padding: "3%",
-    flex:1
   },
-  thebuttons: {
+  text: {
+    fontSize:20,
+  },
+  button: {
     fontSize:20,
     borderWidth: 1,
-    width:"80%",
     borderRadius:10,
+    margin:"3%"
   }
 });
+
+function logout() {
+  global.login_status = {
+    success: false, 
+    token: false, 
+    user_id: false
+  };
+  global.user = {
+    name:"guest",
+    username:"guest",
+    dob:"None",
+    routes: [],
+  }
+}
 
 export default class ProfileScreen extends React.Component {
   constructor(props) {
@@ -59,42 +75,44 @@ export default class ProfileScreen extends React.Component {
   render() {
     return (
       <View style={STYLES.container}>
-        <View style={STYLES.profile_box}>
-          <Image
-            style={STYLES.profile_image}
-            source={require('../assets/cat.jpeg')}
-          />
-          <View style={STYLES.profile_data_box}>
-            <Text>{this.state.name}</Text>
+        <View style={{height:150}}>
+          <View style={{flexDirection:"row", flex:1, justifyContent:"space-evenly"}}>
+            <View style={STYLES.profile_image_box}>
+              <Image
+                style={STYLES.profile_image}
+                source={require('../assets/cat.jpeg')}
+              />
+              <Text style={[{padding:"3%"},STYLES.text]}>Name: {this.state.name}</Text>
+            </View>
+            <View style={{flexDirection:'column', flex:1, justifyContent:"space-evenly"}}>
+              <View style={{flexDirection:'row', flex:1, justifyContent:"space-evenly"}}>
+                <Button style={STYLES.button} text="8 Runs"/>
+                <Button style={STYLES.button} text="9 Following"/>
+                <Button style={STYLES.button} text="3 Followers"/>
+              </View>
+              <Button style={STYLES.button} text="Edit Profile"/>
+            </View>
           </View>
         </View>
 
-        <Text>Username: {this.state.username}</Text>
-        <Text>Age: {this.state.age}</Text>
-        <Text>Email: {this.state.email}</Text>
-        <Text>Country: {global.region.name}</Text>
-              
+        <View style={{flexDirection:'column', flex:1}}>
+          <View>
+            <Text>Username: {this.state.username}</Text>
+            <Text>Age: {this.state.age}</Text>
+            <Text>Country: {global.region.name}</Text>
+          </View>
+                
 
-        <Button text="9 Following"/>
-        <Button text="3 Followers"/>
-        <Button text="Find Friends"/>
-        <Button
-          text="Logout"
-          onPress={()=>{
-            global.login_status = {
-              success: false, 
-              token: false, 
-              user_id: false
-            };
-            global.user = {
-              name:'guest',
-              routes: [],
-            }
-            this.props.navigation.navigate("Home")
-          }}
-        />
-
-
+          <Button style={STYLES.button} text="Find Friends"/>
+          <Button
+            style={STYLES.button} 
+            text="Logout"
+            onPress={()=>{
+              logout()
+              this.props.navigation.navigate("Home")
+            }}
+          />
+        </View>
       </View>
     );
   }
