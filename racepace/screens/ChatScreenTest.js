@@ -19,9 +19,12 @@ export default class ChatScreenTest extends React.Component {
 
     this.socket = SocketIOClient('http://localhost:3000');
     this.socket.on('message', this.onReceivedMessage);
+    this.socket.on('connect', this.onConnect)
     this.determineUser();
 
   }
+
+
 
   determineUser() {
     AsyncStorage.getItem(USER_ID)
