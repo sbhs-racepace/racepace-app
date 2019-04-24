@@ -1,5 +1,4 @@
 import React from 'react';
-import Button from './components/Button';
 import {
   createStackNavigator,
   createAppContainer,
@@ -10,6 +9,7 @@ import {
 import EditScreen from './screens/EditScreen'
 import FeedFollowingScreen from './screens/FeedFollowingScreen';
 import FeedYouScreen from './screens/FeedYouScreen'
+import HomeScreen from './screens/HomeScreen'
 import MapScreen from './screens/MapScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import LoginScreen from './screens/LoginScreen';
@@ -20,12 +20,15 @@ import FollowScreen from './screens/FollowScreen';
 import RunSetupScreen from './screens/RunSetupScreen';
 import GroupScreen from './screens/GroupScreen';
 import ChatScreenTest from './screens/ChatScreenTest';
-import './global.js';
 
 const LoginNavigator = createStackNavigator({
+  Home: {
+    screen: HomeScreen,
+    navigationOptions: { header: null },
+  },
   Login: { 
     screen: LoginScreen, 
-    navigationOptions: {header: null }
+    navigationOptions: { header: null }
   },
   Register: {
     screen: RegisterScreen,
@@ -43,7 +46,7 @@ const LoginNavigator = createStackNavigator({
         Map: { screen: MapScreen },
         Group: { screen: GroupScreen },
         Chat: { screen: ChatScreen },
-        ChatTest: {screen: ChatScreenTest},
+        ChatTest: { screen: ChatScreenTest },
         Profile: { screen: ProfileScreen },      
     }),
     navigationOptions: {

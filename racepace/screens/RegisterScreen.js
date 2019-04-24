@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Image,
   Alert,
+  Dimensions
 } from 'react-native';
 import Button from '../components/Button.js'
 import DatePicker from 'react-native-datepicker';
@@ -14,16 +15,33 @@ import {register} from "../login"
 import '../global';
 
 const STYLES = StyleSheet.create({
-  general: {
-    marginTop: 5,
-    width:"80%"
-  },
   input: {
     fontSize:20,
     borderWidth: 1,
     width:"80%",
     borderRadius:10,
     padding:"1%",
+  },
+  button: {
+    width:"80%",
+    borderRadius:10,
+  },
+  button_text: {
+    padding:"1%",
+    fontSize:16,
+  },
+  back_btn: {
+    width:40,
+    height:"5%",
+    left:5,
+    top:20,
+    borderRadius:10,
+  },
+  logo: {
+    margin:"5%",
+    width: Dimensions.get('window').width * 0.5,
+    height: Dimensions.get('window').width * 0.5,
+    borderRadius: Dimensions.get('window').width * 0.5 / 2,
   },
   dob: {
     width:'80%'
@@ -47,8 +65,15 @@ export default class RegisterScreen extends React.Component {
 
   render() {
     return (
-      <View style={{alignItems:"center",justifyContent:"space-evenly", flexDirection:"column", flex:1}}>
-        <Image style={STYLES.general} source={require('../assets/cat.jpeg')} />
+      <View>
+      <Button
+          style={STYLES.back_btn}
+          text="Back"
+          text_style={STYLES.button_text}
+          onPress={()=>this.props.navigation.goBack()}
+      />
+      <View style={{alignItems:"center",height:"95%",justifyContent: 'space-evenly'}}>
+        <Image style={STYLES.logo} source={require('../assets/running.jpg')} />
         <TextInput
           autoCorrect={false}
           onChangeText={name_ => {
@@ -100,7 +125,13 @@ export default class RegisterScreen extends React.Component {
           secureTextEntry={true}
           placeholderTextColor="rgba(225,225,225,0.8)"
         />
-        <Button style={STYLES.general} text="Register" onPress={register.bind(this)} />
+        <Button
+          style={STYLES.button}
+          text_style={STYLES.button_text}
+          text="Register"
+          onPress={register.bind(this)}
+        />
+      </View>
       </View>
     );
   }

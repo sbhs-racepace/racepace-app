@@ -78,6 +78,21 @@ export default class ProfileScreen extends React.Component {
         <Button text="9 Following"/>
         <Button text="3 Followers"/>
         <Button text="Find Friends"/>
+        <Button
+          text="Logout"
+          onPress={()=>{
+            global.login_status = {
+              success: false, 
+              token: false, 
+              user_id: false
+            };
+            global.user = {
+              name:'guest',
+              routes: [],
+            }
+            this.props.navigation.navigate("Home")
+          }}
+        />
 
 
       </View>
