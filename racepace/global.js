@@ -8,7 +8,7 @@ global.user = {
   username:"guest",
   dob:"None",
   routes: [],
-
+  email:'None',
 }
 global.serverURL = "http://racepace-sbhs.herokuapp.com"
 global.googleLoginID = {android: "Insert key here",
