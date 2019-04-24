@@ -42,9 +42,9 @@ export default class ProfileScreen extends React.Component {
     super(props);
     this.state = {
       name: global.user.full_name,
-      username: 'jyuuuk',
+      username: global.user.username,
       age: 16,
-      email: 'jasonyu0100@gmail.com',
+      email: global.user.email,
       statistics: {
         fastest_100: 9.4,
         total_distance_run: 100,
