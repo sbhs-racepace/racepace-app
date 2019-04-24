@@ -49,14 +49,10 @@ export default class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "",
-      pword: "",
+      email: 'aaa',
+      pword: 'bbb',
       isSigninInProgress: false,
     };
-  }
-
-  componentDidUpdate() {
-    console.log("update")
   }
 
   render() {
@@ -74,10 +70,8 @@ export default class LoginScreen extends React.Component {
         <Image style={STYLES.logo} source={require('../assets/running.jpg')} />
         <TextInput
           autoCorrect={false}
+          defaultValue="aaa"
           style = {STYLES.input}
-          ref={el => {
-            this.email = el;
-          }}
           onChangeText={email => {
             this.setState({ email: email });
           }}
@@ -88,10 +82,8 @@ export default class LoginScreen extends React.Component {
         />
         <TextInput
           autoCorrect={false}
+          defaultValue="bbb"
           style = {STYLES.input}
-          ref={el => {
-            this.pword = el;
-          }}
           onChangeText={pword => {
             this.setState({ pword });
           }}
@@ -101,6 +93,16 @@ export default class LoginScreen extends React.Component {
           placeholderTextColor="rgba(225,225,225,0.8)"
         />
         <Button style={STYLES.button} text_style={STYLES.button_text} onPress={login.bind(this)} text="Login" />
+        <Button
+          style={STYLES.button}
+          text_style={STYLES.button_text}
+          onPress={() => {
+            global.login_status = { success: true };
+            this.props.navigation.navigate('Main');
+          }}
+          text="Login as guest"
+        />
+        <Button style={STYLES.button} text_style={STYLES.button_text} onPress={googleLogin} text="Login with Google" />
       </View>
       </View>
     );
