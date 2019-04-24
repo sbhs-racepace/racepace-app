@@ -22,12 +22,19 @@ const STYLES = StyleSheet.create({
     padding:"1%",
   },
   button: {
-    fontSize:20,
     width:"80%",
     borderRadius:10,
   },
   button_text: {
-    padding:"1%"
+    padding:"1%",
+    fontSize:16,
+  },
+  back_btn: {
+    width:40,
+    height:"5%",
+    left:5,
+    top:20,
+    borderRadius:10,
   },
   logo: {
     margin:"5%",
@@ -35,11 +42,6 @@ const STYLES = StyleSheet.create({
     height: Dimensions.get('window').width * 0.5,
     borderRadius: Dimensions.get('window').width * 0.5 / 2,
   },
-  title: {
-    fontSize:50,
-    fontFamily:"Courier New",
-    fontStyle:'italic',
-  }
 })
 
 export default class LoginScreen extends React.Component {
@@ -59,10 +61,16 @@ export default class LoginScreen extends React.Component {
 
   render() {
     return (
+      <View>
+      <Button
+          style={STYLES.back_btn}
+          text="Back"
+          text_style={STYLES.button_text}
+          onPress={()=>this.props.navigation.goBack()}
+      />
       <View 
-        style={{alignItems:"center", flexDirection:"column",flex:1,justifyContent: 'space-evenly'}}
+        style={{alignItems:"center", flexDirection:"column",height:"95%",justifyContent: 'space-evenly'}}
       >
-        <Text style={STYLES.title}>Racepace</Text>
         <Image style={STYLES.logo} source={require('../assets/running.jpg')} />
         <TextInput
           autoCorrect={false}
@@ -104,8 +112,8 @@ export default class LoginScreen extends React.Component {
           }}
           text="Login as guest"
         />
-        <Button style={STYLES.button} text_style={STYLES.button_text} onPress = {() => this.props.navigation.navigate('Register')} text="Register" />
         <Button style={STYLES.button} text_style={STYLES.button_text} onPress={googleLogin} text="Login with Google" />
+      </View>
       </View>
     );
   }
