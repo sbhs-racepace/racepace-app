@@ -15,6 +15,7 @@ import MainScreenHeader from './components/MainScreenHeader'
 import EditScreen from './screens/EditScreen'
 import FeedFollowingScreen from './screens/FeedFollowingScreen';
 import FeedYouScreen from './screens/FeedYouScreen'
+import FollowListScreen from './screens/Following'
 import HomeScreen from './screens/HomeScreen'
 import MapScreen from './screens/MapScreen';
 import ProfileScreen from './screens/ProfileScreen';
@@ -25,7 +26,7 @@ import RouteListScreen from './screens/RouteListScreen';
 import FollowScreen from './screens/FollowScreen';
 import RunSetupScreen from './screens/RunSetupScreen';
 import GroupScreen from './screens/GroupScreen';
-import ChatScreenTest from './screens/ChatScreenTest';
+//import ChatScreenTest from './screens/ChatScreenTest';
 
 const LoginNavigator = createStackNavigator({
   Home: {
@@ -47,6 +48,7 @@ const LoginNavigator = createStackNavigator({
     screen: FollowScreen, 
   },
   Routes: { screen: RouteListScreen },
+  FollowList: {screen: FollowListScreen},
   Main: { screen: createBottomTabNavigator({
 		Feed: createMaterialTopTabNavigator({
 		  FeedFollowing: {screen: FeedFollowingScreen, navigationOptions: {title: "Following"}},
