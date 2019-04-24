@@ -10,7 +10,7 @@ export default class GroupScreen extends React.Component {
         {
           group_name: "Running Group 1",
           members: ["a", "b", "c"],
-          discription: "abcdefg this is cool",
+          description: "abcdefg this is cool",
           messages: [
           {
             author:"a",
@@ -29,7 +29,7 @@ export default class GroupScreen extends React.Component {
         {
           group_name: "Running Group 2",
           members: ["d", "e", "f"],
-          discription: "abcdefg this is cool",
+          description: "abcdefg this is cool",
           messages: [
           {
             author:"d",
@@ -66,11 +66,24 @@ class Group extends React.Component{
 
 
   render() {
+    const STYLES = StyleSheet.create({
+      name: {
+        fontSize:16,
+        fontWeight:"bold"
+      },
+      border: {
+        borderWidth:1,
+        padding:"3%",
+        marginTop:5,
+        marginLeft:"2%",
+        width:"96%",
+      }
+    })
     return (
-      <TouchableOpacity style={{borderWidth:1,padding:"3%"}}>
-        <Text>Group Name: {this.props.group.group_name}</Text>
+      <TouchableOpacity style={STYLES.border}>
+        <Text style={STYLES.name}>{this.props.group.group_name}</Text>
         <Text>Group Length: {this.props.group.members.length}</Text>
-        <Text>Discription: {this.props.group.discription}</Text>
+        <Text>Description: {this.props.group.description}</Text>
         <View>{this.props.group.members.map(member => <Text>{member}</Text>)}</View>
       </TouchableOpacity>
     )
