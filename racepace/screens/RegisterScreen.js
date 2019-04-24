@@ -10,7 +10,7 @@ import {
   Dimensions
 } from 'react-native';
 import Button from '../components/Button.js'
-import PickTwo from '../components/PickTwo'
+import DatePicker from 'react-native-datepicker';
 import {register} from "../login"
 import '../global';
 
@@ -43,6 +43,9 @@ const STYLES = StyleSheet.create({
     height: Dimensions.get('window').width * 0.5,
     borderRadius: Dimensions.get('window').width * 0.5 / 2,
   },
+  dob: {
+    width:'80%'
+  }
 })
 
 export default class RegisterScreen extends React.Component {
@@ -55,6 +58,8 @@ export default class RegisterScreen extends React.Component {
       full_name: "",
       email: "",
       pword: "",
+      dob:"",
+      username: "",
     };
   }
 
@@ -81,6 +86,16 @@ export default class RegisterScreen extends React.Component {
         />
         <TextInput
           autoCorrect={false}
+          onChangeText={username => {
+            this.setState({ username: username });
+          }}
+          style={STYLES.input}
+          returnKeyType="go"
+          placeholder="Username"
+          placeholderTextColor="rgba(225,225,225,0.8)"
+        />
+        <TextInput
+          autoCorrect={false}
           onChangeText={email => {
             this.setState({ email: email });
           }}
@@ -89,6 +104,15 @@ export default class RegisterScreen extends React.Component {
           returnKeyType="go"
           placeholder="Email"
           placeholderTextColor="rgba(225,225,225,0.8)"
+        />
+        <DatePicker
+          style={STYLES.dob}
+          mode="date" //The enum of date, datetime and time
+          placeholder="Enter Date of Birth"
+          format="DD-MM-YYYY"
+          confirmBtnText="Confirm"
+          cancelBtnText="Cancel"
+          onDateChange={(date) => {this.setState({date: date})}}
         />
         <TextInput
           autoCorrect={false}

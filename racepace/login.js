@@ -3,6 +3,7 @@ import './global';
 import { Alert } from 'react-native';
 import Expo from 'expo';
 
+
 function check_login(res) {
   //Read response from server
   if (!res) {
@@ -22,6 +23,22 @@ function check_login(res) {
   return res['success'];
 }
 
+function storeUserInfo(res) {
+  console.log('Login success');
+  let data = {'user_id':global.login_status.user_id}
+  let info_url = global.serverURL + '/api/get_info'
+  fetch(info_url, {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: new Headers({
+      'Authorization': global.login_status.token,
+    })
+  }).then(res => {
+    // Store user info
+    global.user = JSON.parse(res._bodyText).info
+  })
+}
+
 export function login() {
   //Sends login request to server
   let data = {
@@ -39,23 +56,8 @@ export function login() {
       })
       .then(
         res => {
-          console.log('Login response received from server');
           if (check_login(res)) {
-            //Checking response from server
-            console.log('Login success');
-            let data = {'user':global.login_status.user_id}
-            let info_url = global.serverURL + '/api/get_info'
-            fetch(url, {
-              method: 'GET',
-              body: JSON.stringify(data),
-              headers: new Headers({
-                'Authorization': global.login_status.token,
-              })
-            }).then(res => {
-              global.user = res.info
-              console.log(res.info.full_name)
-            })
-
+            storeUserInfo(res)
             this.props.navigation.navigate('FeedFollowing');
           }
         },
@@ -75,7 +77,9 @@ export function register() {
   let data = {
     email: this.state.email,
     password: this.state.pword,
-    full_name: this.state.full_name
+    full_name: this.state.full_name,
+    dob: this.state.dob,
+    username: this.state.username,
   };
   let url = global.serverURL + '/api/register';
   try {
@@ -90,8 +94,7 @@ export function register() {
         res => {
           console.log('Login response received from server');
           if (check_login(res)) {
-            //Checking response from server
-            console.log('Login success');
+            storeUserInfo(res)
             this.props.navigation.navigate('FeedFollowing');
           }
         },
