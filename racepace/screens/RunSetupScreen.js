@@ -4,7 +4,6 @@ import Button from "../components/Button"
 import RouteTypeRadio from "../components/RouteTypeRadio"
 import "../global.js"
 import {Location,Permissions} from 'expo';
-import RadioForm from 'react-native-simple-radio-button';
 
 const STYLES = StyleSheet.create({
   text_style: {
