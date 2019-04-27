@@ -16,6 +16,7 @@
     "react-native-google-signin": "1.0.2",
     "react-native-maps": "^0.23.0",
     "react-native-paper": "2.2.8",
+    "react-native-simple-radio-button": "^2.7.3",
     "react-navigation": "3.0.9",
     "socket.io": "^2.2.0"
   }
