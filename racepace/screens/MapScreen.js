@@ -190,6 +190,7 @@ export default class MapScreen extends React.Component {
         <MapView
           style={generateMapStyle()}
           showsUserLocation={true}
+	  showsMyLocationButton={false}
           region={this.state.region}
           onRegionChangeComplete={this.onRegionChange.bind(this)}
         >
