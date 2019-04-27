@@ -13,7 +13,7 @@ const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 const STYLES = StyleSheet.create({
   header: {
     top:20,
-    width:"80%",
+    width:"90%",
     height:30,
     zIndex:2,
     elevation: 2,
@@ -25,7 +25,7 @@ const STYLES = StyleSheet.create({
     borderWidth: 1,
     paddingLeft: 3,
     backgroundColor: "white",
-    width:"90%",
+    width:"80%",
     height:30,
   },
   search_btn: {
@@ -174,6 +174,9 @@ export default class MapScreen extends React.Component {
   }
 
   runHere(name, coords) {
+    if (!name) {
+      Alert.alert("Error","Please enter an address in the search box")
+    }
     this.props.navigation.navigate("Run", {
       name: name,
       coords: coords
