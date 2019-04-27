@@ -17,19 +17,19 @@ export default class FeedYouScreen extends React.Component {
           <FeedRoute 
             routeName="Run number 1"
             postTime="10am"
-            length="1km"
+            length="1"
             time="7"
           /> 
           <FeedRoute 
             routeName="Run number 1"
             postTime="10am"
-            length="1km"
+            length="1"
             time="7"
           /> 
           <FeedRoute 
             routeName="Run number 1"
             postTime="10am"
-            length="1km"
+            length="1"
             time="7"
           /> 
         </ScrollView>
