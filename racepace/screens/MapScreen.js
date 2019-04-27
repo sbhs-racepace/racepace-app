@@ -47,13 +47,14 @@ const STYLES = StyleSheet.create({
     borderRadius: 20,
     borderWidth:1,
     zIndex: 2,
-    top: windowHeight-90,
+    top: 0.75*windowHeight,
     right: 5,
   },
   compass_img: {
     width:"100%",
     height:"100%",
     borderRadius: 20,
+    borderColor:"white",
   }
 })
 
@@ -172,6 +173,13 @@ export default class MapScreen extends React.Component {
     }
   }
 
+  runHere(name, coords) {
+    this.props.navigation.navigate("Run", {
+      name: name,
+      coords: coords
+    })
+  }
+
   render() {
     return (
       <View style={{alignItems:"center"}}>
@@ -186,11 +194,16 @@ export default class MapScreen extends React.Component {
             img_style={STYLES.search_img}
             onPress={()=>this.goToLocation(this.state.searchStr)}
           />
+          <Button img={require("../assets/icons/run.png")}
+            style={STYLES.search_btn}
+            img_style={STYLES.search_img}
+            onPress={()=>this.runHere(this.state.searchStr,this.state.searchLoc)}
+          />
         </View>
         <MapView
           style={generateMapStyle()}
           showsUserLocation={true}
-	  showsMyLocationButton={false}
+          showsMyLocationButton={false}
           region={this.state.region}
           onRegionChangeComplete={this.onRegionChange.bind(this)}
         >
