@@ -173,7 +173,7 @@ export default class MapScreen extends React.Component {
     }
   }
 
-  runHere(name, coords) {
+  runHere(name,coords) {
     if (!name) {
       Alert.alert("Error","Please enter an address in the search box")
     }

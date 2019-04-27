@@ -154,14 +154,15 @@ export default class RunSetupScreen extends React.Component {
           <Text style={[STYLES.text_style,{textAlign:"center"}]}>Plan your route</Text>
           <TextInput 
             style={[STYLES.text_style,STYLES.input_view]} 
-            placeholder="start"
+            placeholder="Start"
             onChangeText={start => {
               this.setState({ start: start });
             }}
           />
           <TextInput 
             style={[STYLES.text_style,STYLES.input_view]} 
-            placeholder="end"
+            placeholder="End"
+            defaultValue={this.props.navigation.state.params.name}
             onChangeText={end => {
               this.setState({ end: end });
             }}
