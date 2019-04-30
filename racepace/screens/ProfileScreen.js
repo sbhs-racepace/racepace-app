@@ -112,15 +112,20 @@ export default class ProfileScreen extends React.Component {
                 <Button
                   style={{ flex: 1 }}
                   text="9 Following"
-                  onPress={() => this.props.navigation.navigate('FollowList')}
+                  onPress={() => this.props.navigation.navigate('FollowList', {screen: "Following"})}
                 />
                 <Button
                   style={{ flex: 1 }}
                   text="3 Followers"
-                  onPress={() => this.props.navigation.navigate('FollowList')}
+                  onPress={() => this.props.navigation.navigate('FollowList', {screen: "Followers"})}
                 />
               </View>
-              <Button style={{ flex: 1 }} text="Edit Profile" />
+              <Button style={{ flex: 1 }}
+                text="Edit Profile"
+                onPress={()=>{console.log(global.login_status.success)
+                  this.props.navigation.navigate("Edit")}}
+                disabled={!global.login_status.success}
+              />
             </View>
           </View>
         </View>
@@ -153,9 +158,9 @@ export default class ProfileScreen extends React.Component {
 
           <Button text="Find Friends" />
           <Button
-            text="Logout"
+            text={global.login_status.success ? "Logout" : "Login"}
             onPress={() => {
-              logout();
+              if (global.login_status.success) logout();
               this.props.navigation.navigate('Home');
             }}
           />

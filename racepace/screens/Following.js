@@ -73,11 +73,22 @@ export default class FollowListScreen extends React.Component {
   render() {
     const Nav = createMaterialTopTabNavigator({
       Following: {screen: FollowingScreen},
-      Follower: {screen: FollowerScreen},
-    })
+      Followers: {screen: FollowerScreen},
+    }, {initialRouteName: this.props.navigation.state.params==undefined ? "Following" : this.props.navigation.state.params.screen})
+    const BACK_BTN = {
+      width: 40,
+      height: "5%",
+      left: 5,
+      borderRadius: 10,
+      alignItems: "center",
+      justifyContent: "center",
+    }
     const AppContainer = createAppContainer(Nav);
     return (
-      <AppContainer />
+      <View style={{flex: 1}}>
+      <Button text="Back" onPress={()=>this.props.navigation.goBack()} style={BACK_BTN} />
+      <AppContainer style={{flex:1}}/>
+      </View>
     )
   }
 }

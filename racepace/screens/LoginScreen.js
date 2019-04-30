@@ -35,6 +35,8 @@ const STYLES = StyleSheet.create({
     left:5,
     top:20,
     borderRadius:10,
+    alignItems: "center",
+    justifyContent: "center",
   },
   logo: {
     margin:"5%",
