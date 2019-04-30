@@ -8,7 +8,8 @@ export default class Button extends React.Component {
   render() {
     let styles = StyleSheet.create({
       button: {
-        backgroundColor: 'rgb(0, 153, 255)',
+        backgroundColor: this.props.disabled ? 'rgb(192,192,192)' : 'rgb(0, 153, 255)',
+        //^^ Doesn't work
         borderWidth: 1,
       },
       text: {
@@ -21,7 +22,8 @@ export default class Button extends React.Component {
     return (
       <TouchableOpacity
         style={StyleSheet.flatten([styles.button, this.props.style])}
-        onPress={this.props.onPress}>
+        onPress={this.props.onPress}
+        disabled={this.props.disabled}>
         {this.props.img && 
           <Image
             source={this.props.img}
