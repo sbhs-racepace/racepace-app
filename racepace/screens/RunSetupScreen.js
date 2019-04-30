@@ -133,7 +133,6 @@ export default class RunSetupScreen extends React.Component {
   }
   
   render() {
-    console.log(this.props.navigation.state)
     return(
       <View style={{flex:1}}>
         <View style={[STYLES.container, {flex:2}]}>
@@ -149,7 +148,7 @@ export default class RunSetupScreen extends React.Component {
           <TextInput 
             style={[STYLES.text_style,STYLES.input_view]}
             placeholder="End"
-            defaultValue={this.props.navigation.state.params==undefined ? this.state.end : this.props.navigation.state.params.name}
+            defaultValue={this.props.navigation.state.params.name ? this.props.navigation.state.params.name : this.state.end}
             onChangeText={end => {
               this.setState({ end: end });
             }}
@@ -202,8 +201,7 @@ export default class RunSetupScreen extends React.Component {
           <Button 
             style={{borderRadius:10,padding:"2%"}} 
             text="Start Run"
-            onPress={() => {
-            }}
+            onPress={() => {}}
           />
         </View>
       </View>
