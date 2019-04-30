@@ -8,7 +8,6 @@ import {
 import { View, Text } from 'react-native';
 
 import MainScreenHeader from './components/MainScreenHeader';
-
 import EditScreen from './screens/EditScreen';
 import FeedFollowingScreen from './screens/FeedFollowingScreen';
 import FeedYouScreen from './screens/FeedYouScreen';
@@ -23,7 +22,7 @@ import RouteListScreen from './screens/RouteListScreen';
 import FollowScreen from './screens/FollowScreen';
 import RunSetupScreen from './screens/RunSetupScreen';
 import GroupScreen from './screens/GroupScreen';
-//import ChatScreenTest from './screens/ChatScreenTest';
+import ChatScreenTest from './screens/ChatScreenTest';
 
 const LoginNavigator = createStackNavigator({
   Home: {
@@ -72,7 +71,7 @@ const LoginNavigator = createStackNavigator({
       Run: { screen: RunSetupScreen },
       Map: { screen: MapScreen },
       Group: { screen: GroupScreen },
-      //ChatTest: { screen: ChatScreenTest },
+      ChatTest: { screen: ChatScreenTest },
       Profile: { screen: ProfileScreen },
     }),
     navigationOptions: { header: null },
