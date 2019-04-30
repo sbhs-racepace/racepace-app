@@ -5,6 +5,9 @@ import Button from "../components/Button"
 
 export default class FeedYouScreen extends React.Component {
   render() {
+    if (!global.login_status.success) {
+      return <Text>Please login to see your feed</Text>
+    }
     return (
       <View style={{flex:1}}>
         <Button 

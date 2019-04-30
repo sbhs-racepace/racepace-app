@@ -29,9 +29,9 @@ const STYLES = StyleSheet.create({
     height:30,
   },
   search_btn: {
-    width:"10%",
-    height: "100%",
-    borderRadius: 0.08*windowWidth,
+    width:0.1*windowWidth,
+    height: 0.1*windowWidth,
+    borderRadius: 0.05*windowWidth,
     borderWidth: 1,
     backgroundColor:"white"
   },

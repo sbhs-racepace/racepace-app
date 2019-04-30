@@ -1,6 +1,7 @@
 import React from 'react';
 import { ScrollView, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import Button from "../components/Button"
+import "../global"
 
 export default class GroupScreen extends React.Component {
   constructor(props) {
@@ -50,6 +51,9 @@ export default class GroupScreen extends React.Component {
   }
 
   render() {
+    if (!global.login_status.success) {
+      return <Text>Please login to see your groups</Text>
+    }
     return (
       <View>
         {this.state.groups.map(group => <Group group={group}></Group>)}
