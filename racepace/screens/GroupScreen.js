@@ -57,6 +57,7 @@ export default class GroupScreen extends React.Component {
     return (
       <View>
         {this.state.groups.map(group => <Group group={group}></Group>)}
+        <Button text="Tracking" onPress={()=>this.props.navigation.navigate("Track")} />
       </View>
     );
   }
