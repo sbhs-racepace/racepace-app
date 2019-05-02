@@ -148,7 +148,7 @@ export default class RunSetupScreen extends React.Component {
           <TextInput 
             style={[STYLES.text_style,STYLES.input_view]}
             placeholder="End"
-            defaultValue={this.props.navigation.state.params.name ? this.props.navigation.state.params.name : this.state.end}
+            defaultValue={this.props.navigation.state.params==undefined ? this.state.end : this.props.navigation.state.params.name}
             onChangeText={end => {
               this.setState({ end: end });
             }}
