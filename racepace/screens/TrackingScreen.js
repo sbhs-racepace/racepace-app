@@ -10,6 +10,7 @@ import {
 import Button from '../components/Button'
 import MapView from 'react-native-maps';
 import { Marker, Polyline } from 'react-native-maps';
+import {Location,Permissions} from 'expo';
 
 const LATITUDE_DELTA = 0.0922*1.5
 const LONGITUDE_DELTA = 0.0421*1.5
@@ -50,6 +51,45 @@ export default class TrackingScreen extends React.Component {
     } catch (err) {
       //Catch any other errors
       Alert.alert('Error', err);
+    }
+  }
+
+  componentDidMount() {
+    const url = global.serverURL + '/api/send_real_time_location';
+    let {status} = Permissions.askAsync(Permissions.LOCATION);
+    if (status) { //Check whether permission granted
+      Location.watchPositionAsync(
+        {
+          accuracy: 4, //Accurate to 10m
+          timeInterval: 5000,
+          distanceInterval: 10
+        },
+        (location) => {
+          try {
+            fetch(url, {
+              method: 'POST',
+              body: JSON.stringify(location.coords),
+              headers: {
+                'Authorization': global.login_status.token,
+              }
+            })
+              .catch(res => {
+                Alert.alert('Error connecting to server', res);
+              })
+              .then(
+                res => {
+                  console.log('Success')
+                },
+                reason => {
+                  console.log('Promise rejected');
+                }
+              );
+          } catch (err) {
+            //Catch any other errors
+            Alert.alert('Error', err);
+          }         
+        }
+      )
     }
   }
 
