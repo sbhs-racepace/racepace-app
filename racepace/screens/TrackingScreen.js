@@ -7,6 +7,7 @@ import {
   Alert,
   ScrollView,
 } from 'react-native';
+import Button from '../components/Button'
 import MapView from 'react-native-maps';
 import { Marker, Polyline } from 'react-native-maps';
 
@@ -63,6 +64,16 @@ export default class TrackingScreen extends React.Component {
         height: windowHeight,
         zIndex: 1,
       },
+      back_btn: {
+        width: 40,
+        height: "5%",
+        top: 5,
+        left: 5,
+        borderRadius: 10,
+        alignItems: "center",
+        justifyContent: "center",
+        zIndex: 2,
+      },
     });
     if (this.props.navigation.state.params == undefined && !global.TEST) {
       return (
@@ -85,7 +96,7 @@ export default class TrackingScreen extends React.Component {
       setInterval(this.updateLocations, 10000);
     }
     return (
-      <View>
+      <View style={{flex:1}}>
         <MapView
           style={STYLES.map}
           showsUserLocation={true}
@@ -100,6 +111,7 @@ export default class TrackingScreen extends React.Component {
             />
           ))}
         </MapView>
+        <Button text="Back" onPress={()=>this.props.navigation.goBack()} style={STYLES.back_btn} />
       </View>
     );
   }

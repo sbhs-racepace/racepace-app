@@ -51,7 +51,7 @@ export default class GroupScreen extends React.Component {
   }
 
   render() {
-    if (!global.login_status.success) {
+    if (!global.login_status.success && !global.TEST) {
       return <View><Text>Please login to see your groups</Text><Button text="Tracking" onPress={()=>this.props.navigation.navigate("Track")} /></View>
     }
     return (
