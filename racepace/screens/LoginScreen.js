@@ -51,8 +51,8 @@ export default class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "Jasonemail5",
-      pword: "jasonpassword",
+      email: "email",
+      pword: "password",
       isSigninInProgress: false,
     };
   }
@@ -74,18 +74,19 @@ export default class LoginScreen extends React.Component {
             autoCorrect={false}
             defaultValue="aaa"
             style = {STYLES.input}
-            defaultValue={'Jasonemail5'}
+            defaultValue={'email'}
             onChangeText={email => {
               this.setState({ email: email });
             }}
             keyboardType="email-address"
+            autoCapitalize='none'
             returnKeyType="go"
             placeholder="Email or Mobile Num"
             placeholderTextColor="rgba(225,225,225,0.8)"
           />
           <TextInput
             autoCorrect={false}
-            defaultValue={'jasonpassword'}
+            defaultValue={'password'}
             style = {STYLES.input}
             onChangeText={pword => {
               this.setState({ pword });
@@ -93,6 +94,7 @@ export default class LoginScreen extends React.Component {
             returnKeyType="go"
             secureTextEntry={true}
             placeholder="Password"
+            autoCapitalize='none'
             placeholderTextColor="rgba(225,225,225,0.8)"
           />
           <Button style={STYLES.button} text_style={STYLES.button_text} onPress={login.bind(this)} text="Login" />
