@@ -1,3 +1,4 @@
+global.TEST = true
 global.login_status = {
   success: false, 
   token: false, 

@@ -5,7 +5,7 @@ import {
   createBottomTabNavigator,
   createMaterialTopTabNavigator,
 } from 'react-navigation';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 
 import MainScreenHeader from './components/MainScreenHeader';
 import EditScreen from './screens/EditScreen';
@@ -22,7 +22,8 @@ import RouteListScreen from './screens/RouteListScreen';
 import FollowScreen from './screens/FollowScreen';
 import RunSetupScreen from './screens/RunSetupScreen';
 import GroupScreen from './screens/GroupScreen';
-import ChatScreenTest from './screens/ChatScreenTest';
+import TrackingScreen from './screens/TrackingScreen';
+//import ChatScreenTest from './screens/ChatScreenTest';
 
 const LoginNavigator = createStackNavigator({
   Home: {
@@ -43,6 +44,10 @@ const LoginNavigator = createStackNavigator({
   },
   Follow: {
     screen: FollowScreen,
+    navigationOptions: { header: null },
+  },
+  Track: {
+    screen: TrackingScreen,
     navigationOptions: { header: null },
   },
   Routes: { screen: RouteListScreen, navigationOptions: { header: null } },
@@ -71,7 +76,7 @@ const LoginNavigator = createStackNavigator({
       Run: { screen: RunSetupScreen },
       Map: { screen: MapScreen },
       Group: { screen: GroupScreen },
-      ChatTest: { screen: ChatScreenTest },
+      //ChatTest: { screen: ChatScreenTest },
       Profile: { screen: ProfileScreen },
     }),
     navigationOptions: { header: null },

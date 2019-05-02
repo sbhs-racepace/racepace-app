@@ -124,7 +124,7 @@ export default class ProfileScreen extends React.Component {
                 text="Edit Profile"
                 onPress={()=>{console.log(global.login_status.success)
                   this.props.navigation.navigate("Edit")}}
-                disabled={!global.login_status.success}
+                disabled={!global.login_status.success && !global.TEST}
               />
             </View>
           </View>

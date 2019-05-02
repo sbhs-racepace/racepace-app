@@ -10,7 +10,7 @@ export default class FeedFollowingScreen extends React.Component {
     super(state);
   }
   render() {
-    if (!global.login_status.success) {
+    if (!global.login_status.success && !global.TEST) {
       return <Text>Please login to see your feed</Text>
     }
     return (

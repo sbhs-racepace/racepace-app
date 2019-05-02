@@ -2,7 +2,7 @@
 import './global';
 import { Alert } from 'react-native';
 import Expo from 'expo';
-import io from 'socket.io-client';
+//import io from 'socket.io-client';
 
 
 function check_login(res) {
@@ -23,7 +23,7 @@ function check_login(res) {
   }
   return res['success'];
 }
-
+/*
 function storeUserInfo(res) {
   console.log('Login success');
   let data = {'user_id':global.login_status.user_id}
@@ -47,7 +47,7 @@ function storeUserInfo(res) {
 
   })
 }
-
+*/
 export function login() {
   //Sends login request to server
   let data = {
@@ -68,7 +68,7 @@ export function login() {
           console.log('Login response received from server');
           let login_response = check_login(res)
           if (login_response) {
-            storeUserInfo(login_response)
+            //storeUserInfo(login_response)
             this.props.navigation.navigate('FeedFollowing');
           }
         },
@@ -106,7 +106,7 @@ export function register() {
           console.log('Login response received from server');
           let login_response = check_login(res)
           if (login_response) {
-            storeUserInfo(login_response)
+            //storeUserInfo(login_response)
             this.props.navigation.navigate('FeedFollowing');
           }
         },
