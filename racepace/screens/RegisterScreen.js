@@ -83,6 +83,7 @@ export default class RegisterScreen extends React.Component {
           }}
           style={STYLES.input}
           returnKeyType="go"
+          autoCapitalize='none'
           placeholder="Name"
           placeholderTextColor="rgba(225,225,225,0.8)"
         />
@@ -93,6 +94,7 @@ export default class RegisterScreen extends React.Component {
           }}
           style={STYLES.input}
           returnKeyType="go"
+          autoCapitalize='none'
           placeholder="Username"
           placeholderTextColor="rgba(225,225,225,0.8)"
         />
@@ -103,6 +105,7 @@ export default class RegisterScreen extends React.Component {
           }}
           style={STYLES.input}
           keyboardType="email-address"
+          autoCapitalize='none'
           returnKeyType="go"
           placeholder="Email"
           placeholderTextColor="rgba(225,225,225,0.8)"
@@ -124,6 +127,7 @@ export default class RegisterScreen extends React.Component {
           style={STYLES.input}
           returnKeyType="go"
           placeholder="Password"
+          autoCapitalize='none'
           secureTextEntry={true}
           placeholderTextColor="rgba(225,225,225,0.8)"
         />
