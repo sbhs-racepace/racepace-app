@@ -11,6 +11,12 @@ const LONGITUDE_DELTA = 0.0421*1.5
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
 const STYLES = StyleSheet.create({
+  map: {
+    ...StyleSheet.absoluteFillObject,
+    width: windowWidth,
+    height: windowHeight,
+    zIndex: 1,
+  },
   header: {
     top:20,
     width:"90%",
@@ -57,15 +63,6 @@ const STYLES = StyleSheet.create({
     borderColor:"white",
   }
 })
-
-function generateMapStyle() {
-  return {
-    ...StyleSheet.absoluteFillObject,
-    width: windowWidth,
-    height: windowHeight,
-    zIndex: 1,
-  }
-}
 
 export default class MapScreen extends React.Component {
   constructor(props) {
@@ -204,7 +201,7 @@ export default class MapScreen extends React.Component {
           />
         </View>
         <MapView
-          style={generateMapStyle()}
+          style={STYLES.map}
           showsUserLocation={true}
           showsMyLocationButton={false}
           region={this.state.region}
