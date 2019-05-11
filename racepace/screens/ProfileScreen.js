@@ -97,7 +97,7 @@ export default class ProfileScreen extends React.Component {
               }}>
               <Image
                 style={STYLES.profile_image}
-                source={require('../assets/cat.jpeg')}
+                source={{uri: global.serverURL+"/api/get_user_image/"+global.login_status.user_id}}
               />
               <Text style={STYLES.text}>{this.state.name}</Text>
             </View>
