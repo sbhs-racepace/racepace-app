@@ -23,6 +23,7 @@ import FollowScreen from './screens/FollowScreen';
 import RunSetupScreen from './screens/RunSetupScreen';
 import GroupScreen from './screens/GroupScreen';
 import TrackingScreen from './screens/TrackingScreen';
+import RealTimeRouteScreen from './screens/RealTimeRouteScreen';
 //import ChatScreenTest from './screens/ChatScreenTest';
 
 const LoginNavigator = createStackNavigator({
@@ -48,6 +49,10 @@ const LoginNavigator = createStackNavigator({
   },
   Track: {
     screen: TrackingScreen,
+    navigationOptions: { header: null },
+  },
+  RealTimeRoute: {
+    screen: RealTimeRouteScreen,
     navigationOptions: { header: null },
   },
   Routes: { screen: RouteListScreen, navigationOptions: { header: null } },
@@ -76,10 +81,10 @@ const LoginNavigator = createStackNavigator({
       Run: { screen: RunSetupScreen },
       Map: { screen: MapScreen },
       Group: { screen: GroupScreen },
-      //ChatTest: { screen: ChatScreenTest },
+      RealTimeRoute: { screen: RealTimeRouteScreen },
       Profile: { screen: ProfileScreen },
     }),
-    navigationOptions: { header: null },
+    navigationOptions: { header: null, gesturesEnabled: false, },
   },
 });
 
