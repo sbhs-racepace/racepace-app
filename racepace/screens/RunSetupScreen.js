@@ -82,7 +82,7 @@ export default class RunSetupScreen extends React.Component {
     else if (startCoord == endCoord) {
       //^This condition is met as both start and end have the city appended
       //The geocoding will ignore the part it can't understand and just read the city
-      Alert.Alert("Error","Start or end position couldn't be understood");
+      Alert.alert("Error","Start or end position couldn't be understood");
     }
     else {
       this.getRouteFromCoords(startCoord,endCoord);
@@ -98,11 +98,12 @@ export default class RunSetupScreen extends React.Component {
     })
     .catch(error => Alert.alert("Error connecting to server",error))
     .then(res => res.json())
-    .then(res => {
+    .then(res => 
+      {
         console.log("Got response from server:");
         console.log(res);
         if (!res.success) {
-          Alert.Alert("Error",res.error);
+          Alert.alert("Error",res.error);
         }
         else {
           this.setState({
@@ -120,7 +121,7 @@ export default class RunSetupScreen extends React.Component {
   }
 
   setupRoute(start, end) {
-    let coordPattern = /\-?[0-9]+,\-?[0-9]+/
+    let coordPattern = /\-?[0-9]+,\-?[0-9]+/ // Checking for coords
     if (coordPattern.test(start) && coordPattern.test(end)) {
       this.getRouteFromCoords(start,end)
     } else {
