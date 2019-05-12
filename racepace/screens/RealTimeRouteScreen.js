@@ -5,64 +5,80 @@ import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import "../global.js"
 
 const STYLES = StyleSheet.create({
+
 })
 
 class DefaultScreen extends React.Component {
-
+  constructor(state) {
+    super(state);
+    this.state = {
+      pace: {minutes:5, seconds:3},
+      distance: 10,
+    }
+  }
+  render() {
+    return (
+      <View>      
+        <Text style={{fontSize:30}}>Pace: {this.state.pace.minutes} :{this.state.pace.seconds}</Text>
+        <Text style={{fontSize:30}}>Distance: {this.state.distance}</Text>
+        <Text style={{fontSize:30}}>Timer: 15 seconds</Text>
+        <Text style={{fontSize:30}}>Time</Text>
+      </View>
+    )
+  }
 }
+
+class AdvancedScreen extends React.Component {
+  render() {
+    return (
+      <View>      
+        <Text>Some advanced stuff in here</Text>
+      </View>
+    )
+  }
+}
+
 
 export default class RealTimeRouteScreen extends React.Component {
   constructor(state) {
     super(state);
     this.state = {
-      pace: {minutes:5, seconds:3},
-      myText: 'none',
-      gestureName: 'none',
-      backgroundColor: '#fff',
-      screenName:'default',
+      currentScreen: 'default',
     }
-  }
-
-  onSwipeUp(gestureState) {
-    this.setState({myText: 'You swiped up!'});
-  }
- 
-  onSwipeDown(gestureState) {
-    this.setState({myText: 'You swiped down!'});
   }
  
   onSwipeLeft(gestureState) {
-    this.setState({myText: 'You swiped left!'});
+    if (this.state.currentScreen == 'default') {
+      this.setState({currentScreen: 'advanced'});
+    } else if (this.state.currentScreen == 'tracking') {
+      this.setState({currentScreen: 'default'});
+    }
   }
  
   onSwipeRight(gestureState) {
-    this.setState({myText: 'You swiped right!'});
+    if (this.state.currentScreen == 'advanced') {
+      this.setState({currentScreen: 'default'})
+    } else if (this.state.currentScreen == 'default') {
+      this.setState({currentScreen: 'tracking'});
+    }
   }
 
-  onSwipe(gestureName, gestureState) {
-    const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
-    this.setState({gestureName: gestureName});
-    switch (gestureName) {
-      case SWIPE_UP:
-        this.setState({backgroundColor: 'red'});
-        break;
-      case SWIPE_DOWN:
-        this.setState({backgroundColor: 'green'});
-        break;
-      case SWIPE_LEFT:
-        this.setState({backgroundColor: 'blue'});
-        break;
-      case SWIPE_RIGHT:
-        this.setState({backgroundColor: 'yellow'});
-        break;
+  showCurrentScreen() {
+    if (this.state.currentScreen == 'default') {
+      return <DefaultScreen/>;
+    } else if (this.state.currentScreen =='advanced') {
+      return <AdvancedScreen/>;
+    } else if (this.state.currentScreen =='tracking') {
+      this.props.navigation.navigate("Track")
+      return <DefaultScreen/>; 
+    } else {
+      return <DefaultScreen/>; 
     }
   }
   
   render() {
     return (
       <GestureRecognizer
-      onSwipeUp={(state) => this.onSwipeUp(state)}
-      onSwipeDown={(state) => this.onSwipeDown(state)}
       onSwipeLeft={(state) => this.onSwipeLeft(state)}
       onSwipeRight={(state) => this.onSwipeRight(state)}
       style={{
@@ -70,13 +86,7 @@ export default class RealTimeRouteScreen extends React.Component {
         backgroundColor: this.state.backgroundColor
       }}
       >
-      <Text>{this.state.myText}</Text>
-      <Text>onSwipe callback received gesture: {this.state.gestureName}</Text>
-      <Text style={{fontSize:30}}>Pace: {this.state.pace.minutes} :{this.state.pace.seconds}</Text>
-      <Text style={{fontSize:30}}>Distance: {this.state.distace}</Text>
-      <Text style={{fontSize:30}}>Timer: 15 seconds</Text>
-      <Text style={{fontSize:30}}>Time: 509</Text>
-      <Text style={{fontSize:30}}>Calories Burnt: 509</Text>
+      <View style={{flex:7}}>{this.showCurrentScreen()}</View>
     </GestureRecognizer>
     )
   
