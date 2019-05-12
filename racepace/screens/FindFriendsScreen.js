@@ -1,6 +1,7 @@
 import React from 'react';
 import { Component } from 'react';
 import {
+  Alert,
   View,
   Image,
   ScrollView,
@@ -36,11 +37,38 @@ export default class FindFriendsScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchResults: [{id:1,name:"Test",bio:"This is a bio"},
-      {id:2,name:"TestUser2",bio:"Another bio"}],
+      searchResults: [
+        { id: 1, name: 'Test', bio: 'This is a bio' },
+        { id: 2, name: 'TestUser2', bio: 'Another bio' },
+      ],
       recommended: true,
     };
     this.searchString = '';
+  }
+
+  sendRequest() {
+    try {
+      fetch(global.serverURL+"/api/find_friends", {
+        method: 'POST',
+        body: "name="+this.searchString,
+      })
+        .catch(res => {
+          Alert.alert('Error connecting to server', res);
+        })
+        .then(
+          res => {
+            res = JSON.parse(res._bodyText); //Parse response as JSON
+            this.setState({searchResults: res});
+          },
+          reason => {
+            console.log('Promise rejected');
+            Alert.alert('Error connecting to server', reason);
+          }
+        );
+    } catch (err) {
+      //Catch any other errors
+      Alert.alert('Error', err);
+    }
   }
 
   render() {
@@ -108,7 +136,7 @@ export default class FindFriendsScreen extends React.Component {
               img={require('../assets/icons/search.png')}
               style={STYLES.search_btn}
               img_style={STYLES.search_img}
-              onPress={() => {}}
+              onPress={this.sendRequest.bind(this)}
             />
           </View>
           <Button />
