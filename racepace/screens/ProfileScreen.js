@@ -158,10 +158,13 @@ export default class ProfileScreen extends React.Component {
 
           <Button text="Find Friends" />
           <Button
-            text={global.login_status.success ? "Logout" : "Login"}
+            text={global.login_status.success ? "Logout" : "Login or Register as New"}
             onPress={() => {
-              if (global.login_status.success) logout();
-              this.props.navigation.navigate('Home');
+              if (global.login_status.success) {
+                logout();
+              } else {
+                this.props.navigation.navigate('Splash');
+              }
             }}
           />
         </View>

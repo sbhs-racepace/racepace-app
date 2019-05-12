@@ -12,7 +12,7 @@ import EditScreen from './screens/EditScreen';
 import FeedFollowingScreen from './screens/FeedFollowingScreen';
 import FeedYouScreen from './screens/FeedYouScreen';
 import FollowListScreen from './screens/Following';
-import HomeScreen from './screens/HomeScreen';
+import SplashScreen from './screens/SplashScreen';
 import MapScreen from './screens/MapScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import LoginScreen from './screens/LoginScreen';
@@ -27,8 +27,8 @@ import RealTimeRouteScreen from './screens/RealTimeRouteScreen';
 //import ChatScreenTest from './screens/ChatScreenTest';
 
 const LoginNavigator = createStackNavigator({
-  Home: {
-    screen: HomeScreen,
+  Splash: {
+    screen: SplashScreen,
     navigationOptions: { header: null },
   },
   Login: {
