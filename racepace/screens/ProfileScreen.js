@@ -67,12 +67,12 @@ export default class ProfileScreen extends React.Component {
         average_pace: 3.4,
       },
       imageurl: '../assets/cat.jpeg',
-      showCancel: true,
+      screenVariable: true,
     };
   }
 
-  _renderCancel() {
-    if (this.state.showCancel) {
+  showCurrentScreen() {
+    if (this.state.screenVariable) {
       return <StatsScreen />;
     } else {
       return <RouteListScreen />;
@@ -140,7 +140,7 @@ export default class ProfileScreen extends React.Component {
               text="Stats"
               onPress={() => {
                 this.setState({
-                  showCancel: true,
+                  screenVariable: true,
                 });
               }}
             />
@@ -149,19 +149,24 @@ export default class ProfileScreen extends React.Component {
               text="Runs"
               onPress={() => {
                 this.setState({
-                  showCancel: false,
+                  screenVariable: false,
                 });
               }}
             />
           </View>
-          <View style={{ flex: 7 }}>{this._renderCancel()}</View>
+          <View style={{ flex: 7 }}>{this.showCurrentScreen()}</View>
 
-          <Button text="Find Friends" />
+          <Button text="Find Friends"
+            onPress={() => this.props.navigation.navigate('FindFriends')}
+           />
           <Button
-            text={global.login_status.success ? "Logout" : "Login"}
+            text={global.login_status.success ? "Logout" : "Login or Register as New"}
             onPress={() => {
-              if (global.login_status.success) logout();
-              this.props.navigation.navigate('Home');
+              if (global.login_status.success) {
+                logout();
+              } else {
+                this.props.navigation.navigate('Splash');
+              }
             }}
           />
         </View>

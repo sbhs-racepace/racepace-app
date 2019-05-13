@@ -7,8 +7,6 @@ global.login_status = {
 global.user = {
   full_name:"guest",
   username:"guest",
-  dob:"None",
-  routes: [],
 }
 global.serverURL = "http://racepace-sbhs.herokuapp.com"
 global.googleLoginID = {android: "Insert key here",

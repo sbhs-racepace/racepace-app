@@ -61,27 +61,17 @@ export default class FollowScreen extends React.Component {
     super(props);
     this.state = {
       follow_requests : ['Jamie','George','Josh'],
-      recommended_follow: ['Jason', 'Jenny', 'Jeremiah']
     }
   }
 
   render() {
     return (
-      <View style={{flex:1}}>
         <View style={STYLES.follow_requests}>
-          <Text>Pending Follow Requests</Text>
-          <ScrollView>
+          <Text style={{'textAlign': "center", "fontSize": 20}}>Pending Follow Requests</Text>
+          <ScrollView style={{flex:1}}>
             {this.state.follow_requests.map(name => <FollowRequest name={name}/>)}
           </ScrollView>
         </View>
-
-        <View style={STYLES.recommended_follows}>
-          <Text style={{alignContent:"center"}}>Suggested for You</Text>
-          <ScrollView>
-            {this.state.recommended_follow.map(name => <RecommendedFollow name={name}/>)}
-          </ScrollView>
-        </View>
-      </View>
     )
   }
 }

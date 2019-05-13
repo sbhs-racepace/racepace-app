@@ -21,9 +21,9 @@ const STYLES = StyleSheet.create({
   },
   logo: {
     margin:"5%",
-    width: Dimensions.get('window').width * 0.5,
-    height: Dimensions.get('window').width * 0.5,
-    borderRadius: Dimensions.get('window').width * 0.5 / 2,
+    width: Dimensions.get('window').width * 0.8,
+    height: Dimensions.get('window').width * 0.8,
+    borderRadius: Dimensions.get('window').width * 0.8 / 2,
   },
   title: {
     fontSize:50,
@@ -32,7 +32,7 @@ const STYLES = StyleSheet.create({
   }
 })
 
-export default class HomeScreen extends React.Component {
+export default class SplashScreen extends React.Component {
   render() {
     return (
       <View style={{alignItems:"center", flexDirection:"column",flex:1,justifyContent: 'space-evenly'}}>
