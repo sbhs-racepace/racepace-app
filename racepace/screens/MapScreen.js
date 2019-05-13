@@ -17,8 +17,14 @@ const STYLES = StyleSheet.create({
     height:30,
     zIndex:2,
     elevation: 2,
-    flexDirection:"row",
     alignItems:"center"
+  },
+  header_text: {
+    backgroundColor:"white",
+    fontSize: 16,
+    flexWrap: "wrap",
+    flexShrink: 1,
+    flex: 1,
   },
   search: {
     borderRadius: 5,
@@ -184,9 +190,10 @@ export default class MapScreen extends React.Component {
   }
 
   render() {
-    return (
-      <View style={{alignItems:"center"}}>
-        <View style={STYLES.header}>
+    let header;
+    if (this.props.navigation.state.params==undefined) {
+      header = (
+        <View style={{...STYLES.header, flexDirection:"row"}}>
           <TextInput 
             placeholder="Search"
             style = {STYLES.search}
@@ -203,6 +210,21 @@ export default class MapScreen extends React.Component {
             onPress={()=>this.runHere(this.state.searchStr,this.state.searchLoc)}
           />
         </View>
+      );
+    }
+    else {
+      header = (
+        <View style={STYLES.header}>
+        <Button text="Close" onPress={()=>this.props.navigation.navigate("Map")} />
+        <Text style={STYLES.header_text}>{this.props.navigation.state.params.start} to {this.props.navigation.state.params.end}</Text>
+        
+        </View>
+      )
+    }
+
+    return (
+      <View style={{alignItems:"center"}}>
+        {header}
         <MapView
           style={generateMapStyle()}
           showsUserLocation={true}
@@ -214,6 +236,12 @@ export default class MapScreen extends React.Component {
             <Marker
               coordinate={this.state.searchLoc}
               pinColor="#9900FF"
+            />
+          }
+          {this.props.navigation.state.params!=undefined &&
+            <Polyline
+              coordinates={this.props.navigation.state.params.route}
+              strokeColor="#9900FF"
             />
           }
         </MapView>

@@ -9,9 +9,6 @@ const STYLES = StyleSheet.create({
   text_style: {
     fontSize: 20,
   },
-  route_info : {
-    borderWidth:1,
-  },
   container: {
     borderWidth:1,
     padding:"3%",
@@ -38,7 +35,7 @@ export default class RunSetupScreen extends React.Component {
     this.state = {
       route_type : 0,
       start: "-33.878363,151.104490", //Burwood
-      end: "-33.912466, 151.103120", //Campsi
+      end: "-33.912466,151.103120", //Campsie
       goal_pace: {minutes: "5", seconds: "0"},
       time: {minutes: 0, seconds: 0},
       distance: 0,
@@ -69,7 +66,6 @@ export default class RunSetupScreen extends React.Component {
 
   async getRouteFromAddress(start,end) {
     console.log("Geolocation with "+start+","+end);
-    console.log(await Location.geocodeAsync(end+","+global.region));
     let {latitude:s_lat, longitude:s_lon} = (await Location.geocodeAsync(start+","+global.region))[0];
     let startCoord = `${s_lat},${s_lon}`;
     let {latitude:e_lat, longitude:e_lon} = (await Location.geocodeAsync(end+","+global.region))[0];
@@ -82,7 +78,7 @@ export default class RunSetupScreen extends React.Component {
     else if (startCoord == endCoord) {
       //^This condition is met as both start and end have the city appended
       //The geocoding will ignore the part it can't understand and just read the city
-      Alert.Alert("Error","Start or end position couldn't be understood");
+      Alert.alert("Error","Start or end position couldn't be understood");
     }
     else {
       this.getRouteFromCoords(startCoord,endCoord);
@@ -98,11 +94,12 @@ export default class RunSetupScreen extends React.Component {
     })
     .catch(error => Alert.alert("Error connecting to server",error))
     .then(res => res.json())
-    .then(res => {
+    .then(res => 
+      {
         console.log("Got response from server:");
         console.log(res);
         if (!res.success) {
-          Alert.Alert("Error",res.error);
+          Alert.alert("Error",res.error);
         }
         else {
           this.setState({
@@ -113,14 +110,14 @@ export default class RunSetupScreen extends React.Component {
       },
       reason => Alert.alert("Error",reason)
     );
-    let points = this.calculatePoints(this.state.distance, this.state.goal_pace)
-    let time = this.calculateTime(this.state.distance, this.state.goal_pace)
-    let calories = this.calculateCaloriesBurnt(this.state.distance)
-    this.setState({points:points, time: time, calories: calories})
+    let points = this.calculatePoints(this.state.distance, this.state.goal_pace);
+    let time = this.calculateTime(this.state.distance, this.state.goal_pace);
+    let calories = this.calculateCaloriesBurnt(this.state.distance);
+    this.setState({points:points, time: time, calories: calories});
   }
 
   setupRoute(start, end) {
-    let coordPattern = /\-?[0-9]+,\-?[0-9]+/
+    let coordPattern = /\-?[0-9]+,\-?[0-9]+/ // Checking for coords
     if (coordPattern.test(start) && coordPattern.test(end)) {
       this.getRouteFromCoords(start,end)
     } else {
@@ -200,8 +197,9 @@ export default class RunSetupScreen extends React.Component {
         <View style={STYLES.container}>
           <Button 
             style={{borderRadius:10,padding:"2%"}} 
-            text="Start Run"
-            onPress={() => {}}
+            text="Show on map"
+            onPress={() => this.props.navigation.navigate("Map",{route: this.state.route, start:this.state.start, end: this.state.end})}
+            disabled={!this.state.route}
           />
         </View>
       </View>
