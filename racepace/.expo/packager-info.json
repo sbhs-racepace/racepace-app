@@ -1,9 +1,9 @@
 {
   "expoServerPort": 19000,
-  "expoServerNgrokUrl": "https://m4-tqi.jyuuuk.racepace.exp.direct",
-  "packagerNgrokUrl": "https://packager.m4-tqi.jyuuuk.racepace.exp.direct",
-  "ngrokPid": 57587,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "devToolsPort": 19002,
   "packagerPort": 19003,
-  "packagerPid": 57567
+  "packagerPid": 40273
 }
