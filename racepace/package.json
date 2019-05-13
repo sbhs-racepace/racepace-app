@@ -1,5 +1,5 @@
 {
-  "name": "github.com/sbhs-racepace/racepace-app:racepace",
+  "name": "racepace",
   "version": "0.0.0",
   "description": "sbhs-racepace/racepace-app @ May 2, 2019",
   "author": null,
@@ -7,15 +7,16 @@
   "main": "node_modules/expo/AppEntry.js",
   "dependencies": {
     "expo": "^32.0.0",
+    "prop-types": "^15.5.10",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
-    "prop-types": "^15.5.10",
     "react-native-code-push": "5.5.2",
     "react-native-datepicker": "^1.7.2",
     "react-native-gifted-chat": "^0.7.3",
     "react-native-google-signin": "1.0.2",
     "react-native-paper": "2.2.8",
     "react-native-simple-radio-button": "^2.7.3",
+    "react-native-swipe-gestures": "^1.0.3",
     "react-navigation": "3.0.9",
     "socket.io": "^2.2.0"
   }

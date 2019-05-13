@@ -12,7 +12,7 @@ import EditScreen from './screens/EditScreen';
 import FeedFollowingScreen from './screens/FeedFollowingScreen';
 import FeedYouScreen from './screens/FeedYouScreen';
 import FollowListScreen from './screens/Following';
-import HomeScreen from './screens/HomeScreen';
+import SplashScreen from './screens/SplashScreen';
 import MapScreen from './screens/MapScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import LoginScreen from './screens/LoginScreen';
@@ -23,11 +23,13 @@ import FollowScreen from './screens/FollowScreen';
 import RunSetupScreen from './screens/RunSetupScreen';
 import GroupScreen from './screens/GroupScreen';
 import TrackingScreen from './screens/TrackingScreen';
+import RealTimeRouteScreen from './screens/RealTimeRouteScreen';
+import FindFriendsScreen from './screens/FindFriendsScreen';
 //import ChatScreenTest from './screens/ChatScreenTest';
 
 const LoginNavigator = createStackNavigator({
-  Home: {
-    screen: HomeScreen,
+  Splash: {
+    screen: SplashScreen,
     navigationOptions: { header: null },
   },
   Login: {
@@ -48,6 +50,10 @@ const LoginNavigator = createStackNavigator({
   },
   Track: {
     screen: TrackingScreen,
+    navigationOptions: { header: null },
+  },
+  FindFriends: {
+    screen: FindFriendsScreen,
     navigationOptions: { header: null },
   },
   Routes: { screen: RouteListScreen, navigationOptions: { header: null } },
@@ -76,6 +82,7 @@ const LoginNavigator = createStackNavigator({
       Run: { screen: RunSetupScreen },
       Map: { screen: MapScreen },
       Group: { screen: GroupScreen },
+      RealTimeRoute: { screen: RealTimeRouteScreen },
       //ChatTest: { screen: ChatScreenTest },
       Profile: { screen: ProfileScreen },
     }),
