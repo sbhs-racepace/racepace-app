@@ -2,26 +2,21 @@
 import './global';
 import { Alert } from 'react-native';
 import Expo from 'expo';
-//import io from 'socket.io-client';
+import io from 'socket.io-client';
 
 
 function check_login(res) {
-  //Read response from server
-  if (!res) {
-    //Check for empty response
+  if (!res) { //Check for empty response
     Alert.alert('Error',"Server didn't respond");
     return false;
   }
-  res = JSON.parse(res._bodyText); //Parse response as JSON
-  console.log(res);
-  if (res['success']) {
-    //Credentials correct
-    global.login_status = res; //Save response (contains user id, token)
-  } else {
-    //Credentials incorrect
-    Alert.alert('Error', res.error);
+  res_json = JSON.parse(res._bodyText); //Parse response as JSON
+  if (res_json['success']) { //Credentials correct
+    global.login_status = res_json; 
+  } else { //Credentials incorrect
+    Alert.alert('Error', res_json.error);
   }
-  return res['success'];
+  return res_json['success'];
 }
 
 function storeUserInfo(res) {
@@ -38,7 +33,7 @@ function storeUserInfo(res) {
     // Store user info
     global.user = JSON.parse(res._bodyText).info
     global.socket = socket = io(
-        `http://127.0.0.1:8000?token=${global.login_status.token}`,
+        `${global.serverURL}?token=${global.login_status.token}`,
         {transports: ['websocket']}
         )
     console.log('authenticating websocket')
