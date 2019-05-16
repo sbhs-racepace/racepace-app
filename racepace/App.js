@@ -25,7 +25,8 @@ import GroupScreen from './screens/GroupScreen';
 import TrackingScreen from './screens/TrackingScreen';
 import RealTimeRouteScreen from './screens/RealTimeRouteScreen';
 import FindFriendsScreen from './screens/FindFriendsScreen';
-//import ChatScreenTest from './screens/ChatScreenTest';
+import RealTimeRouteAdvancedScreen from './screens/RealTimeRouteAdvancedScreen';
+import RealTimeRouteDefaultScreen from './screens/RealTimeRouteDefaultScreen';
 
 const LoginNavigator = createStackNavigator({
   Splash: {
@@ -56,6 +57,14 @@ const LoginNavigator = createStackNavigator({
     screen: FindFriendsScreen,
     navigationOptions: { header: null },
   },
+  RealTimeRouteDefaultScreen: {
+    screen: RealTimeRouteDefaultScreen,
+    navigationOptions: { header: null },
+  },
+  RealTimeRouteAdvancedScreen: {
+    screen: RealTimeRouteAdvancedScreen,
+    navigationOptions: { header: null },
+  },
   Routes: { screen: RouteListScreen, navigationOptions: { header: null } },
   FollowList: { screen: FollowListScreen, navigationOptions: { header: null } },
   Main: {
@@ -83,10 +92,9 @@ const LoginNavigator = createStackNavigator({
       Map: { screen: MapScreen },
       Group: { screen: GroupScreen },
       RealTimeRoute: { screen: RealTimeRouteScreen },
-      //ChatTest: { screen: ChatScreenTest },
       Profile: { screen: ProfileScreen },
     }),
-    navigationOptions: { header: null },
+    navigationOptions: { header: null, gesturesEnabled: false },
   },
 });
 
