@@ -113,14 +113,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'center',
-    marginLeft: 8,
-    marginRight: 8,
+    marginLeft: 10,
+    marginRight: 10,
   },
   slackAvatar: {
     // The bottom should roughly line up with the first line of message text.
     height: 40,
     width: 40,
-    borderRadius: 40/2,
+    borderRadius: 40/2
   },
 });
 
