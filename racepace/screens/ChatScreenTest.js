@@ -10,21 +10,16 @@ export default class ChatScreenTest extends React.Component {
     super(props);
     this.state = {
       messages: [],
-      userId: null
+      userId: global.login_status.user_id
     };
-    this.determineUser = this.determineUser.bind(this);
     this.onReceivedMessage = this.onReceivedMessage.bind(this);
     this.onSend = this.onSend.bind(this);
     this._storeMessages = this._storeMessages.bind(this);
 
     this.socket = global.socket;
-    this.socket.on('message', this.onReceivedMessage);
+    this.socket.on('global_message', this.onReceivedMessage);
     this.socket.on('connect', this.onConnect)
-    this.determineUser();
-
   }
-
-
 
   determineUser() {
     AsyncStorage.getItem(USER_ID)
@@ -44,12 +39,33 @@ export default class ChatScreenTest extends React.Component {
       .catch((e) => alert(e));
   }
 
-  onReceivedMessage(messages) {
-    this._storeMessages(messages);
+  onReceivedMessage(data) {
+
+    msg = {
+        _id: data._id,
+        createdAt: data.created_at,
+        text: data.content,
+        user: {
+            _id: data.author.id,
+            userName: data.author.username,
+            avatarUrl: data.author.avatar_url
+        }
+    }
+
+    this._storeMessages([msg]);
   }
 
   onSend(messages = []) {
-    this.socket.emit('message', messages[0]);
+
+    msg = messages[0]
+
+    payload = {
+        group_id: 'global',
+        content: msg.text,
+        image: null
+    }
+
+    this.socket.emit('global_message', payload);
     this._storeMessages(messages);
   }
 
@@ -57,7 +73,7 @@ export default class ChatScreenTest extends React.Component {
   _storeMessages(messages) {
     this.setState((previousState) => {
       return {
-        messages: GiftedChat.append(previousState.messages, messages),
+       messages: GiftedChat.append(previousState.messages, messages),
       };
     });
   }
