@@ -3,6 +3,8 @@ import { Platform, StyleSheet, View, Text, Alert, ScrollView } from 'react-nativ
 import { Constants, Location, Permissions } from 'expo';
 import Button from "../components/Button"
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+import RealTimeRouteDefaultScreen from './RealTimeRouteDefaultScreen'
+import RealTimeRouteAdvancedScreen from './RealTimeRouteAdvancedScreen'
 import "../global.js"
 
 const STYLES = StyleSheet.create({
@@ -21,32 +23,23 @@ class DefaultScreen extends React.Component {
         <Text style={{fontSize:30}}>Distance: {this.props.distance}</Text>
         <Text style={{fontSize:30}}>Timer: 15 seconds</Text>
         <Text style={{fontSize:30}}>Time</Text>
+        <Button 
+          text="Save Running Route"
+          onPress={() => {
+            Alert.alert('End Route')
+          }}
+        />
+        <Button 
+          text="Stop Run"
+          onPress={() => {
+            Alert.alert('Stop Route')
+            this.props.navigation.navigate('FeedFollowing')
+          }}
+        />
       </View>
     )
   }
 }
-
-class AdvancedScreen extends React.Component {
-  constructor(state) {
-    super(state);
-  }
-
-  render() {
-    return (
-      <View>      
-        <Text style={{fontSize:30}}>Advanced Stats</Text>
-        <Text style={{fontSize:30}}>Elevation</Text>
-        <Text style={{fontSize:30}}>Heart Beat</Text>
-        <Text style={{fontSize:30}}>Goal Pace</Text>
-        <Text style={{fontSize:30}}>Points</Text>
-        <Text style={{fontSize:30}}>Average Pace</Text>
-        <Text style={{fontSize:30}}>Calories Burnt</Text>
-        <Text style={{fontSize:30}}>% Effort</Text>
-      </View>
-    )
-  }
-}
-
 
 export default class RealTimeRouteScreen extends React.Component {
   constructor(state) {
@@ -104,14 +97,14 @@ export default class RealTimeRouteScreen extends React.Component {
 
   showCurrentScreen() {
     if (this.state.currentScreen == 'default') {
-      return <DefaultScreen pace={this.state.pace} distance={this.state.distance}/>;
+      return <RealTimeRouteDefaultScreen pace={this.state.pace} distance={this.state.distance}/>;
     } else if (this.state.currentScreen =='advanced') {
-      return <AdvancedScreen/>;
+      return <RealTimeRouteAdvancedScreen/>;
     } else if (this.state.currentScreen =='tracking') {
       this.props.navigation.navigate("Track")
-      return <DefaultScreen pace={this.state.pace} distance={this.state.distance}/>; 
+      return <RealTimeRouteDefaultScreen pace={this.state.pace} distance={this.state.distance}/>; 
     } else {
-      return <DefaultScreen pace={this.state.pace} distance={this.state.distance}/>; 
+      return <RealTimeRouteDefaultScreen pace={this.state.pace} distance={this.state.distance}/>; 
     }
   }
   
