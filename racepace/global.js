@@ -11,6 +11,21 @@ global.socket = null;
 global.user = {
   full_name:"guest",
   username:"guest",
+  stats: {
+    num_runs: 0,
+    total_distance: 0,
+    longest_distance_ran: null,
+    fastest_km : null,
+    fastest_5km: null,
+    fastest_10km : null,
+    fastest_marathon: null,
+    estimated_v02_max: null,
+    average_heart_rate: null,
+    cadence: null,
+    points: 0,
+  },
+  following: [],
+  followers: [],
 }
 
 global.serverURL = "http://racepace-sbhs.herokuapp.com"
