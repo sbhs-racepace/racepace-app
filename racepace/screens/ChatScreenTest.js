@@ -12,6 +12,7 @@ export default class ChatScreenTest extends React.Component {
     };
     this.onReceivedMessage = this.onReceivedMessage.bind(this);
     this.onSend = this.onSend.bind(this);
+
     this._storeMessages = this._storeMessages.bind(this);
 
     this.socket = global.socket;
@@ -19,9 +20,8 @@ export default class ChatScreenTest extends React.Component {
     this.socket.on('connect', this.onConnect)
   }
 
-  onReceivedMessage(data) {
-
-    msg = {
+  static transformMessage(data) {
+      return {
         _id: data._id,
         createdAt: new Date(data.created_at*1000),
         text: data.content,
@@ -31,7 +31,42 @@ export default class ChatScreenTest extends React.Component {
             avatar: data.author.avatar_url
         }
     }
+  }
 
+  componentWillMount() {
+    let messagesURL = global.serverURL + '/api/groups/global/messages?before=' + (new Date()).toUTCString()
+    fetch(messagesURL, {
+        method: 'GET',
+        headers: new Headers({
+          'Authorization': global.login_status.token,
+        })
+      }).then(res => res.json()).then(data => { 
+            console.log(data)
+            let messages = []
+            for (let msg of data) {
+                console.log(msg.created_at)
+                messages.push({
+                    _id: msg._id,
+                    createdAt: new Date(msg.created_at*1000),
+                    text: msg.content,
+                    user: {
+                        _id: msg.author.id,
+                        name: msg.author.username,
+                        avatar: msg.author.avatar_url
+                    }
+                })
+            }
+            this.setState((previousState) => {
+                return {
+                 messages: GiftedChat.prepend(previousState.messages, messages),
+                };
+              });
+        });
+    }
+
+  onReceivedMessage(data) {
+
+    let msg = this.transformMessage(data)
     this._storeMessages([msg]);
   }
 
@@ -60,7 +95,6 @@ export default class ChatScreenTest extends React.Component {
 
   renderMessage(props) {
 
-    console.log(props)
     const { currentMessage: { text: currText } } = props;
 
     let messageTextStyle;

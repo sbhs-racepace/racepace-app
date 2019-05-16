@@ -10,7 +10,7 @@ export default class Button extends React.Component {
       button: {
         backgroundColor: this.props.disabled ? 'rgb(192,192,192)' : 'rgb(0, 153, 255)',
         //^^ Doesn't work
-        borderWidth: 1,
+        borderWidth: 0,
       },
       text: {
         textAlign: 'center',
