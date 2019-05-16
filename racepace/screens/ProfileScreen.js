@@ -58,7 +58,6 @@ export default class ProfileScreen extends React.Component {
       name: global.user.full_name,
       username: global.user.username,
       age: 16,
-      email: global.user.email,
       statistics: {
         fastest_100: 9.4,
         total_distance_run: 100,
@@ -97,7 +96,7 @@ export default class ProfileScreen extends React.Component {
               }}>
               <Image
                 style={STYLES.profile_image}
-                source={{uri: global.serverURL+"/api/get_user_image/"+global.login_status.user_id}}
+                source={{uri: global.serverURL+"/api/avatars/"+global.login_status.user_id+".png"}}
               />
               <Text style={STYLES.text}>{this.state.name}</Text>
             </View>
@@ -161,6 +160,7 @@ export default class ProfileScreen extends React.Component {
             text={global.login_status.success ? "Logout" : "Login or Register as New"}
             onPress={() => {
               if (global.login_status.success) {
+                global.socket.emit('disconnect')
                 logout();
               } else {
                 this.props.navigation.navigate('Splash');
