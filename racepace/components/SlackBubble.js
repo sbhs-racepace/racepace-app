@@ -177,7 +177,7 @@ export default class Bubble extends React.Component {
 // The "right" position is only used in the default Bubble.
 const styles = StyleSheet.create({
   standardFont: {
-    fontSize: 15,
+    fontSize: 15
   },
   slackMessageText: {
     marginLeft: 0,
@@ -188,12 +188,13 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   wrapper: {
-    marginRight: 60,
+    marginRight: 30,
     minHeight: 20,
     justifyContent: 'flex-end',
   },
   username: {
     fontWeight: 'bold',
+    color: "#484848"
   },
   time: {
     textAlign: 'left',

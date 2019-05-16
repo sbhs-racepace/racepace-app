@@ -62,7 +62,31 @@ export default class Message extends React.Component {
   }
 
   render() {
-    const marginBottom = isSameUser(this.props.currentMessage, this.props.nextMessage) ? 2 : 10;
+
+    let marginStyle;
+
+
+    marginStyle = {
+        marginBottom: isSameUser(this.props.currentMessage, this.props.nextMessage) ? 0 : 5,
+        paddingBottom: isSameUser(this.props.currentMessage, this.props.nextMessage) ? 0 : 7,
+        marginTop: isSameUser(this.props.currentMessage, this.props.previousMessage) ? -7 : 10,
+        
+    }
+    
+
+    let extraStyle
+
+    if ( (this.props.nextMessage.user !== undefined) &&
+        !isSameUser(this.props.currentMessage, this.props.nextMessage)
+        || !isSameDay(this.props.currentMessage, this.props.nextMessage)
+      ) {
+          console.log(this.props.nextMessage.text)
+          console.log(this.props.nextMessage.user !== undefined)
+          extraStyle = {
+              borderBottomWidth: 1,
+              borderColor: "#F0F0F0"
+            }
+      } 
 
     return (
       <View>
@@ -70,7 +94,8 @@ export default class Message extends React.Component {
         <View
           style={[
             styles.container,
-            { marginBottom },
+            marginStyle,
+            extraStyle,
             this.props.containerStyle,
           ]}
         >
@@ -86,16 +111,16 @@ export default class Message extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    alignItems: 'flex-end',
-    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
     marginLeft: 8,
-    marginRight: 0,
+    marginRight: 8,
   },
   slackAvatar: {
     // The bottom should roughly line up with the first line of message text.
     height: 40,
     width: 40,
-    borderRadius: 3,
+    borderRadius: 40/2,
   },
 });
 

@@ -20,18 +20,6 @@ export default class ChatScreenTest extends React.Component {
     this.socket.on('connect', this.onConnect)
   }
 
-  static transformMessage(data) {
-      return {
-        _id: data._id,
-        createdAt: new Date(data.created_at*1000),
-        text: data.content,
-        user: {
-            _id: data.author.id,
-            name: data.author.username,
-            avatar: data.author.avatar_url
-        }
-    }
-  }
 
   componentWillMount() {
     let messagesURL = global.serverURL + '/api/groups/global/messages?before=' + (new Date()).toUTCString()
@@ -41,18 +29,16 @@ export default class ChatScreenTest extends React.Component {
           'Authorization': global.login_status.token,
         })
       }).then(res => res.json()).then(data => { 
-            console.log(data)
             let messages = []
             for (let msg of data) {
-                console.log(msg.created_at)
                 messages.push({
                     _id: msg._id,
                     createdAt: new Date(msg.created_at*1000),
                     text: msg.content,
                     user: {
-                        _id: msg.author.id,
+                        _id: msg.author._id,
                         name: msg.author.username,
-                        avatar: msg.author.avatar_url
+                        avatar: `${global.serverURL}/api/avatars/${msg.author._id}.png`
                     }
                 })
             }
@@ -66,7 +52,17 @@ export default class ChatScreenTest extends React.Component {
 
   onReceivedMessage(data) {
 
-    let msg = this.transformMessage(data)
+    let msg = {
+        _id: data._id,
+        createdAt: new Date(data.created_at*1000),
+        text: data.content,
+        user: {
+            _id: data.author._id,
+            name: data.author.username,
+            avatar: `${global.serverURL}/api/avatars/${data.author._id}.png`
+        }
+    }
+
     this._storeMessages([msg]);
   }
 
@@ -126,6 +122,7 @@ export default class ChatScreenTest extends React.Component {
         renderMessage={this.renderMessage}
         showUserAvatar={true}
         showAvatarForEveryMessage={true}
+        renderAvatarOnTop={true}
       />
     );
   }
