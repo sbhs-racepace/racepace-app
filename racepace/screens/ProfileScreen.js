@@ -107,15 +107,17 @@ export default class ProfileScreen extends React.Component {
                 justifyContent: 'space-between',
               }}>
               <View style={{ flexDirection: 'row', flex: 2 }}>
-                <Button style={{ flex: 1 }} text="8 Pace Points" />
+                <Button 
+                  style={{ flex: 1 }} 
+                  text={`${global.user.stats.points} Pace Points`} />
                 <Button
                   style={{ flex: 1 }}
-                  text="9 Following"
+                  text={`${global.user.following.length} Following`}
                   onPress={() => this.props.navigation.navigate('FollowList', {screen: "Following"})}
                 />
                 <Button
                   style={{ flex: 1 }}
-                  text="3 Followers"
+                  text={`${global.user.followers.length} Followers`}
                   onPress={() => this.props.navigation.navigate('FollowList', {screen: "Followers"})}
                 />
               </View>
