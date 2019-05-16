@@ -1,16 +1,26 @@
 global.TEST = true
+
 global.login_status = {
   success: false, 
   token: false, 
   user_id: false
 };
+
+global.socket = null;
+
 global.user = {
   full_name:"guest",
   username:"guest",
 }
+
 global.serverURL = "http://racepace-sbhs.herokuapp.com"
-global.googleLoginID = {android: "Insert key here",
-ios: "Insert key here"};
+
+global.googleLoginID = {
+  android: "Insert key here", 
+  ios: "Insert key here"
+};
+
+
 global.user_routes = [
   {
     start: "Circular Quay",
