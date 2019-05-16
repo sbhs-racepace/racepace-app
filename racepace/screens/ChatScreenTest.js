@@ -1,16 +1,14 @@
 import '../global';
 import React from "react";
 import { GiftedChat } from "react-native-gifted-chat";
-import { View, Text, AsyncStorage } from 'react-native';
-
-const USER_ID = '@userId';
+import SlackMessage from '../components/SlackMessage';
+import emojiUtils from 'emoji-utils';
 
 export default class ChatScreenTest extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       messages: [],
-      userId: global.login_status.user_id
     };
     this.onReceivedMessage = this.onReceivedMessage.bind(this);
     this.onSend = this.onSend.bind(this);
@@ -21,34 +19,16 @@ export default class ChatScreenTest extends React.Component {
     this.socket.on('connect', this.onConnect)
   }
 
-  determineUser() {
-    AsyncStorage.getItem(USER_ID)
-      .then((userId) => {
-        // If there isn't a stored userId, then fetch one from the server.
-        if (!userId) {
-          this.socket.emit('userJoined', null);
-          this.socket.on('userJoined', (userId) => {
-            AsyncStorage.setItem(USER_ID, userId);
-            this.setState({ userId });
-          });
-        } else {
-          this.socket.emit('userJoined', userId);
-          this.setState({ userId });
-        }
-      })
-      .catch((e) => alert(e));
-  }
-
   onReceivedMessage(data) {
 
     msg = {
         _id: data._id,
-        createdAt: data.created_at,
+        createdAt: new Date(data.created_at*1000),
         text: data.content,
         user: {
             _id: data.author.id,
-            userName: data.author.username,
-            avatarUrl: data.author.avatar_url
+            name: data.author.username,
+            avatar: data.author.avatar_url
         }
     }
 
@@ -78,14 +58,40 @@ export default class ChatScreenTest extends React.Component {
     });
   }
 
+  renderMessage(props) {
+
+    console.log(props)
+    const { currentMessage: { text: currText } } = props;
+
+    let messageTextStyle;
+
+    // Make "pure emoji" messages much bigger than plain text.
+    if (currText && emojiUtils.isPureEmojiString(currText)) {
+      messageTextStyle = {
+        fontSize: 28,
+        // Emoji get clipped if lineHeight isn't increased; make it consistent across platforms.
+        lineHeight: Platform.OS === 'android' ? 34 : 30,
+      };
+    }
+
+    return (
+      <SlackMessage {...props} messageTextStyle={messageTextStyle} />
+    );
+  }
+
   render() {
     return (
       <GiftedChat
         messages={this.state.messages}
         onSend={messages => this.onSend(messages)}
         user={{
-          _id: 1
+          _id: global.login_status.user_id,
+          avatar: `${global.serverURL}/api/avatars/${global.login_status.user_id}.png`,
+          name: global.user.username
         }}
+        renderMessage={this.renderMessage}
+        showUserAvatar={true}
+        showAvatarForEveryMessage={true}
       />
     );
   }
