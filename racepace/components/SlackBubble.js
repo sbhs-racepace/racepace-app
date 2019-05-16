@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
   timeContainer: {
     marginLeft: 0,
     marginRight: 0,
-    marginBottom: 0,
+    marginBottom: 5,
   },
   headerItem: {
     marginRight: 10,
