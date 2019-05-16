@@ -155,7 +155,9 @@ export default class ProfileScreen extends React.Component {
           </View>
           <View style={{ flex: 7 }}>{this.showCurrentScreen()}</View>
 
-          <Button text="Find Friends" />
+          <Button text="Find Friends"
+            onPress={() => this.props.navigation.navigate('FindFriends')}
+           />
           <Button
             text={global.login_status.success ? "Logout" : "Login or Register as New"}
             onPress={() => {
