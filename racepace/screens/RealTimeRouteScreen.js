@@ -30,7 +30,7 @@ export default class RealTimeRouteScreen extends React.Component {
     super(state);
     this.state = {
       currentScreen: 'default',
-      pace: {minutes:5, seconds:0},
+      pace: {minutes:'NA', seconds:'NA'},
       distance: 0,
     }
   }
