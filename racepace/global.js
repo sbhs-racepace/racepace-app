@@ -6,6 +6,8 @@ global.login_status = {
   user_id: false
 };
 
+global.current_route = null;
+
 global.socket = null;
 
 global.user = {
