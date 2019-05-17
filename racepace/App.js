@@ -25,8 +25,7 @@ import GroupScreen from './screens/GroupScreen';
 import TrackingScreen from './screens/TrackingScreen';
 import RealTimeRouteScreen from './screens/RealTimeRouteScreen';
 import FindFriendsScreen from './screens/FindFriendsScreen';
-import RealTimeRouteAdvancedScreen from './screens/RealTimeRouteAdvancedScreen';
-import RealTimeRouteDefaultScreen from './screens/RealTimeRouteDefaultScreen';
+import SaveRunScreen from './screens/SaveRunScreen';
 
 const LoginNavigator = createStackNavigator({
   Splash: {
@@ -57,12 +56,8 @@ const LoginNavigator = createStackNavigator({
     screen: FindFriendsScreen,
     navigationOptions: { header: null },
   },
-  RealTimeRouteDefaultScreen: {
-    screen: RealTimeRouteDefaultScreen,
-    navigationOptions: { header: null },
-  },
-  RealTimeRouteAdvancedScreen: {
-    screen: RealTimeRouteAdvancedScreen,
+  SaveRun: {
+    screen: SaveRunScreen,
     navigationOptions: { header: null },
   },
   Routes: { screen: RouteListScreen, navigationOptions: { header: null } },
