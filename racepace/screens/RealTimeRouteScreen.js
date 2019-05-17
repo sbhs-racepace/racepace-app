@@ -2,16 +2,13 @@ import React from 'react';
 import { Platform, StyleSheet, View, Text, Alert, ScrollView } from 'react-native';
 import { Constants, Location, Permissions } from 'expo';
 import Button from "../components/Button"
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
-import RealTimeRouteDefaultScreen from './RealTimeRouteDefaultScreen'
-import RealTimeRouteAdvancedScreen from './RealTimeRouteAdvancedScreen'
 import "../global.js"
 
 const STYLES = StyleSheet.create({
 
 })
 
-class DefaultScreen extends React.Component {
+class RealTimeRouteDefaultScreen extends React.Component {
   constructor(state) {
     super(state);
   }
@@ -23,19 +20,6 @@ class DefaultScreen extends React.Component {
         <Text style={{fontSize:30}}>Distance: {this.props.distance}</Text>
         <Text style={{fontSize:30}}>Timer: 15 seconds</Text>
         <Text style={{fontSize:30}}>Time</Text>
-        <Button 
-          text="Save Running Route"
-          onPress={() => {
-            Alert.alert('End Route')
-          }}
-        />
-        <Button 
-          text="Stop Run"
-          onPress={() => {
-            Alert.alert('Stop Route')
-            this.props.navigation.navigate('FeedFollowing')
-          }}
-        />
       </View>
     )
   }
@@ -55,7 +39,7 @@ export default class RealTimeRouteScreen extends React.Component {
     if (Platform.OS === 'android' && !Constants.isDevice) {
       Alert.alert('Device is not of valid type to record location.')
     } else {
-      global.socket.emit('run_start');
+      global.socket.emit('start_run');
       this._getLocationAsync();
     }
   }
@@ -77,49 +61,26 @@ export default class RealTimeRouteScreen extends React.Component {
     console.log(data.time)
     global.socket.emit('location_update',data);
   };
-
- 
-  onSwipeLeft(gestureState) {
-    if (this.state.currentScreen == 'default') {
-      this.setState({currentScreen: 'advanced'});
-    } else if (this.state.currentScreen == 'tracking') {
-      this.setState({currentScreen: 'default'});
-    }
-  }
- 
-  onSwipeRight(gestureState) {
-    if (this.state.currentScreen == 'advanced') {
-      this.setState({currentScreen: 'default'})
-    } else if (this.state.currentScreen == 'default') {
-      this.setState({currentScreen: 'tracking'});
-    }
-  }
-
-  showCurrentScreen() {
-    if (this.state.currentScreen == 'default') {
-      return <RealTimeRouteDefaultScreen pace={this.state.pace} distance={this.state.distance}/>;
-    } else if (this.state.currentScreen =='advanced') {
-      return <RealTimeRouteAdvancedScreen/>;
-    } else if (this.state.currentScreen =='tracking') {
-      this.props.navigation.navigate("Track")
-      return <RealTimeRouteDefaultScreen pace={this.state.pace} distance={this.state.distance}/>; 
-    } else {
-      return <RealTimeRouteDefaultScreen pace={this.state.pace} distance={this.state.distance}/>; 
-    }
-  }
   
   render() {
     return (
-      <GestureRecognizer
-        onSwipeLeft={(state) => this.onSwipeLeft(state)}
-        onSwipeRight={(state) => this.onSwipeRight(state)}
-        style={{
-          flex: 1,
-          backgroundColor: this.state.backgroundColor
-        }}
-      >
-        <View>{this.showCurrentScreen()}</View>
-      </GestureRecognizer>
+      <View>
+        <RealTimeRouteDefaultScreen pace={this.state.pace} distance={this.state.distance}></RealTimeRouteDefaultScreen>
+        <Button 
+          text="Save Running Route"
+          onPress={() => {
+            Alert.alert('End Route')
+            this.props.navigation.navigate('SaveRun');
+          }}
+        />
+        <Button 
+          text="Stop Run"
+          onPress={() => {
+            Alert.alert('Stop Route')
+            this.props.navigation.navigate('FeedFollowing');
+          }}
+        />
+      </View>
     )
   
   }
