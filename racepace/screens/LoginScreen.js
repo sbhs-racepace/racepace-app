@@ -89,7 +89,7 @@ export default class LoginScreen extends React.Component {
             defaultValue={'password'}
             style = {STYLES.input}
             onChangeText={pword => {
-              this.setState({ pword });
+              this.setState({ pword: pword });
             }}
             returnKeyType="go"
             secureTextEntry={true}
