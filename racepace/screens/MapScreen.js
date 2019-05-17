@@ -248,7 +248,7 @@ export default class MapScreen extends React.Component {
         </View>
         <View style={{flexDirection: "row"}}>
           <Timer />
-          <Button text="Save Route" onPress={this.saveRoute}
+          <Button text="Save Route" onPress={this.saveRoute} />
         </View>
         </View>
       )
