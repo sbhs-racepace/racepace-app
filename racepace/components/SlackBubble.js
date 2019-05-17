@@ -178,6 +178,7 @@ export default class Bubble extends React.Component {
 const styles = StyleSheet.create({
   standardFont: {
     fontSize: 15,
+    color: "#4f4f4f"
   },
   slackMessageText: {
     marginLeft: 0,
@@ -188,12 +189,14 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   wrapper: {
-    marginRight: 60,
+    marginRight: 30,
+    marginLeft: 10,
     minHeight: 20,
     justifyContent: 'flex-end',
   },
   username: {
     fontWeight: 'bold',
+    color: "#484848"
   },
   time: {
     textAlign: 'left',
@@ -202,7 +205,7 @@ const styles = StyleSheet.create({
   timeContainer: {
     marginLeft: 0,
     marginRight: 0,
-    marginBottom: 0,
+    marginBottom: 5,
   },
   headerItem: {
     marginRight: 10,

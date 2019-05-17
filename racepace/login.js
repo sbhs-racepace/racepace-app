@@ -23,6 +23,7 @@ function storeUserInfo(res) {
   console.log('Login success');
   let data = {'user_id':global.login_status.user_id}
   let info_url = global.serverURL + '/api/get_info'
+  console.log(global.login_status.token)
   fetch(info_url, {
     method: 'POST',
     body: JSON.stringify(data),

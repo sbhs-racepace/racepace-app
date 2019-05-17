@@ -12,6 +12,7 @@ export default class ChatScreenTest extends React.Component {
     };
     this.onReceivedMessage = this.onReceivedMessage.bind(this);
     this.onSend = this.onSend.bind(this);
+
     this._storeMessages = this._storeMessages.bind(this);
 
     this.socket = global.socket;
@@ -19,16 +20,46 @@ export default class ChatScreenTest extends React.Component {
     this.socket.on('connect', this.onConnect)
   }
 
+
+  componentWillMount() {
+    let messagesURL = global.serverURL + '/api/groups/global/messages?before=' + (new Date()).toUTCString()
+    fetch(messagesURL, {
+        method: 'GET',
+        headers: new Headers({
+          'Authorization': global.login_status.token,
+        })
+      }).then(res => res.json()).then(data => { 
+            let messages = []
+            for (let msg of data) {
+                messages.push({
+                    _id: msg._id,
+                    createdAt: new Date(msg.created_at*1000),
+                    text: msg.content,
+                    user: {
+                        _id: msg.author._id,
+                        name: msg.author.username,
+                        avatar: `${global.serverURL}/api/avatars/${msg.author._id}.png`
+                    }
+                })
+            }
+            this.setState((previousState) => {
+                return {
+                 messages: GiftedChat.prepend(previousState.messages, messages),
+                };
+              });
+        });
+    }
+
   onReceivedMessage(data) {
 
-    msg = {
+    let msg = {
         _id: data._id,
         createdAt: new Date(data.created_at*1000),
         text: data.content,
         user: {
-            _id: data.author.id,
+            _id: data.author._id,
             name: data.author.username,
-            avatar: data.author.avatar_url
+            avatar: `${global.serverURL}/api/avatars/${data.author._id}.png`
         }
     }
 
@@ -60,7 +91,6 @@ export default class ChatScreenTest extends React.Component {
 
   renderMessage(props) {
 
-    console.log(props)
     const { currentMessage: { text: currText } } = props;
 
     let messageTextStyle;
@@ -92,6 +122,7 @@ export default class ChatScreenTest extends React.Component {
         renderMessage={this.renderMessage}
         showUserAvatar={true}
         showAvatarForEveryMessage={true}
+        renderAvatarOnTop={true}
       />
     );
   }
