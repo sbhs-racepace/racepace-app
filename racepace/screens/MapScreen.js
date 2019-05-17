@@ -3,6 +3,7 @@ import MapView from 'react-native-maps';
 import { Marker, Polyline } from 'react-native-maps';
 import { Alert, View, Text, TextInput, StyleSheet, Dimensions } from "react-native";
 import Button from '../components/Button'
+import Timer from '../components/Timer'
 import {Location,Permissions} from 'expo';
 import "../global"
 
@@ -189,6 +190,32 @@ export default class MapScreen extends React.Component {
     })
   }
 
+  saveRoute() {
+    const url = `${global.serverURL}/api/save_route`;
+    const data = {};
+    try {
+      fetch(url, {
+        method: 'POST',
+        body: JSON.stringify(data),
+      })
+        .catch(res => {
+          Alert.alert('Error connecting to server', res);
+        })
+        .then(
+          res => {
+            console.log('Login response received from server');
+          },
+          reason => {
+            console.log('Promise rejected');
+            Alert.alert('Error connecting to server', reason);
+          }
+        );
+    } catch (err) {
+      //Catch any other errors
+      Alert.alert('Error', err);
+    }
+  }
+
   render() {
     let header;
     if (this.props.navigation.state.params==undefined) {
@@ -215,9 +242,14 @@ export default class MapScreen extends React.Component {
     else {
       header = (
         <View style={STYLES.header}>
-        <Button text="Close" onPress={()=>this.props.navigation.navigate("Map")} />
-        <Text style={STYLES.header_text}>{this.props.navigation.state.params.start} to {this.props.navigation.state.params.end}</Text>
-        
+        <View style={{flexDirection: "row"}}>
+          <Button text="Close" onPress={()=>this.props.navigation.navigate("Map")} />
+          <Text style={STYLES.header_text}>{this.props.navigation.state.params.start} to {this.props.navigation.state.params.end}</Text>
+        </View>
+        <View style={{flexDirection: "row"}}>
+          <Timer />
+          <Button text="Save Route" onPress={this.saveRoute}
+        </View>
         </View>
       )
     }
