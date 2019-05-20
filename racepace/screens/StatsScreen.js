@@ -16,18 +16,19 @@ export default class StatsScreen extends React.Component {
   }
   
   render() {
+    let stats = global.user.stats
     return (
       <ScrollView>
-        <Text style={STYLES.text}>Runs made: 10</Text>
-        <Text style={STYLES.text}>Distance Ran Altogether: 10</Text>
-        <Text style={STYLES.text}>Longest Distance Ran: 10</Text>
-        <Text style={STYLES.text}>Fastest 1km: 10</Text>
-        <Text style={STYLES.text}>Fastest 5km: 10</Text>
-        <Text style={STYLES.text}>Fastest 10km: 10</Text>
-        <Text style={STYLES.text}>Fastest Marathon: 20</Text>
-        <Text style={STYLES.text}>Estimated V02 Max: 50</Text>
-        <Text style={STYLES.text}>Average Heart Rate: 50</Text>
-        <Text style={STYLES.text}>Cadence: 150</Text>
+        <Text style={STYLES.text}>Runs made: {stats.num_runs}</Text>
+        <Text style={STYLES.text}>Distance Ran Altogether: {stats.total_distance}</Text>
+        <Text style={STYLES.text}>Longest Distance Ran: {stats.longest_distance_ran ? stats.longest_distance_ran : 'None'}</Text>
+        <Text style={STYLES.text}>Fastest 1km: {stats.fastest_km ? stats.fastest_km : 'None'}</Text>
+        <Text style={STYLES.text}>Fastest 5km: {stats.fastest_5km ? stats.fastest_5km : 'None'}</Text>
+        <Text style={STYLES.text}>Fastest 10km: {stats.fastest_10km ? stats.fastest_10km : 'None'}</Text>
+        <Text style={STYLES.text}>Fastest Marathon: {stats.fastest_marathon ? stats.fastest_marathon : 'None'}</Text>
+        <Text style={STYLES.text}>Estimated V02 Max: {stats.estimated_v02_max ? stats.estimated_v02_max : 'None'}</Text>
+        <Text style={STYLES.text}>Average Heart Rate: {stats.average_heart_rate ? stats.average_heart_rate : 'None'}</Text>
+        <Text style={STYLES.text}>Cadence: {stats.cadence ? stats.cadence : 'None'}</Text>
       </ScrollView>
     );
   }

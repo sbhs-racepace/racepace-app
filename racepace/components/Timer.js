@@ -35,7 +35,7 @@ export default class Timer extends React.Component {
       <View style={{flexDirection: "row", width:"100%"}}>
       <Text>{this.state.hour==0 ? "" : this.state.hour+":"}{this.zFill(this.state.min)}:{this.zFill(this.state.sec)}</Text>
       <Button
-        text={this.state.enable ? "▷" : "◼"}
+        text={this.state.enable ? "◼" : "▷"}
         onPress={()=>{
             this.setState(
                 (prevState)=>{return {enable: !prevState.enable}}
