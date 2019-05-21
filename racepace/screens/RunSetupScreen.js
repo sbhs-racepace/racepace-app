@@ -66,9 +66,9 @@ export default class RunSetupScreen extends React.Component {
 
   async getRouteFromAddress(start,end) {
     console.log("Geolocation with "+start+","+end);
-    let {latitude:s_lat, longitude:s_lon} = (await Location.geocodeAsync(start+","+global.region))[0];
+    let {latitude:s_lat, longitude:s_lon} = (await Location.geocodeAsync(start+","+global.region.name))[0];
     let startCoord = `${s_lat},${s_lon}`;
-    let {latitude:e_lat, longitude:e_lon} = (await Location.geocodeAsync(end+","+global.region))[0];
+    let {latitude:e_lat, longitude:e_lon} = (await Location.geocodeAsync(end+","+global.region.name))[0];
     let endCoord = `${e_lat},${e_lon}`;
     console.log(start+"&"+end);
 
