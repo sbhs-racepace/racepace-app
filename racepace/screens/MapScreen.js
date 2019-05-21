@@ -1,7 +1,6 @@
 import React from 'react';
 import MapView from 'react-native-maps';
 import { Marker, Polyline } from 'react-native-maps';
-<<<<<<< HEAD
 import {
   Alert,
   View,
@@ -218,32 +217,6 @@ export default class MapScreen extends React.Component {
       route: this.props.navigation.state.params.route
     };
     let url = global.serverURL + '/api/save_route';
-    try {
-      fetch(url, {
-        method: 'POST',
-        body: JSON.stringify(data),
-      })
-        .catch(res => {
-          Alert.alert('Error connecting to server', res);
-        })
-        .then(
-          res => {
-            console.log('Login response received from server');
-          },
-          reason => {
-            console.log('Promise rejected');
-            Alert.alert('Error connecting to server', reason);
-          }
-        );
-    } catch (err) {
-      //Catch any other errors
-      Alert.alert('Error', err);
-    }
-  }
-
-  saveRoute() {
-    const url = `${global.serverURL}/api/save_route`;
-    const data = {};
     try {
       fetch(url, {
         method: 'POST',
