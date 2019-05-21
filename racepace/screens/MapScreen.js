@@ -70,16 +70,23 @@ const STYLES = StyleSheet.create({
     borderRadius: 20,
     borderColor: 'white',
   },
-});
-
-function generateMapStyle() {
-  return {
+  save_dialog: {
+    height: "30%",
+    width: "90%",
+    left: "5%",
+    top: "40%",
+    borderRadius: 10,
+    backgroundColor: "white",
+    padding: 10,
+    zIndex: 3,
+  },
+  map: {
     ...StyleSheet.absoluteFillObject,
     width: windowWidth,
     height: windowHeight,
     zIndex: 1,
-  };
-}
+  }
+});
 
 export default class MapScreen extends React.Component {
   constructor(props) {
@@ -94,6 +101,7 @@ export default class MapScreen extends React.Component {
       viewHeight: 0,
       moveToCurrentLoc: false,
       showSearch: false,
+      showSaveDialog: false,
       searchStr: '',
       searchLoc: {
         latitude: -33.9672563,
@@ -238,6 +246,7 @@ export default class MapScreen extends React.Component {
       //Catch any other errors
       Alert.alert('Error', err);
     }
+    this.setState({showSaveDialog: false}) //Close save dialog
   }
 
   render() {
@@ -281,7 +290,7 @@ export default class MapScreen extends React.Component {
           </View>
           <View style={{ flexDirection: 'row' }}>
             <Timer />
-            <Button text="Save Route" onPress={this.saveRoute.bind(this)} />
+            <Button text="Save Route" onPress={()=>this.setState({showSaveDialog: true})} />
           </View>
         </View>
       );
@@ -291,7 +300,7 @@ export default class MapScreen extends React.Component {
       <View style={{ alignItems: 'center' }}>
         {header}
         <MapView
-          style={generateMapStyle()}
+          style={STYLES.map}
           showsUserLocation={true}
           showsMyLocationButton={false}
           region={this.state.region}
@@ -315,6 +324,16 @@ export default class MapScreen extends React.Component {
             this.goToCurrent();
           }}
         />
+        {this.state.showSaveDialog &&
+          <View style={STYLES.save_dialog}>
+            <Text>Save Route</Text>
+            <TextInput placeholder="Route Name" style={STYLES.search} />
+            <View style={{flexDirection: "row"}}>
+              <Button text="Cancel" style={STYLES.save_btn} onPress={()=>this.setState({showSaveDialog: false})} />
+              <Button text="Save" style={STYLES.save_btn} />
+            </View>
+          </View>
+        }
       </View>
     );
   }
