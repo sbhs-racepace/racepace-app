@@ -22,10 +22,11 @@ const STYLES = StyleSheet.create({
   header: {
     top: 20,
     width: '90%',
-    height: 30,
+    height: 40,
     zIndex: 2,
     elevation: 2,
     alignItems: 'center',
+    justifyContent:"center",
   },
   header_text: {
     backgroundColor: 'white',
@@ -278,17 +279,17 @@ export default class MapScreen extends React.Component {
     } else {
       header = (
         <View style={STYLES.header}>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{ flexDirection: 'row', justifyContent:"center"}}>
             <Button
               text="Close"
-              onPress={() => this.props.navigation.navigate('Map')}
+              onPress={() => {this.props.navigation.push('Map');this.setState({search})}}
             />
             <Text style={STYLES.header_text}>
               {this.props.navigation.state.params.start} to{' '}
               {this.props.navigation.state.params.end}
             </Text>
           </View>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{ width:"100%", flexDirection: 'row', justifyContent:"space-between"}}>
             <Timer />
             <Button text="Save Route" onPress={()=>this.setState({showSaveDialog: true})} />
           </View>
