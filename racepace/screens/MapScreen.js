@@ -1,9 +1,9 @@
 import React from "react";
 import MapView from 'react-native-maps';
 import { Marker, Polyline } from 'react-native-maps';
-import { Alert, View, Text, TextInput, StyleSheet, Dimensions } from "react-native";
+import { Alert, View, Text, TextInput, StyleSheet, Dimensions, Platform, } from "react-native";
 import Button from '../components/Button'
-import {Location,Permissions} from 'expo';
+import { Location, Permissions} from 'expo';
 import "../global"
 
 const LATITUDE_DELTA = 0.0922*1.5
@@ -77,6 +77,7 @@ export default class MapScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      // Map Screen State Variables
       region: {
         latitude: -33.9672563,
         longitude: 151.1002119,
@@ -90,32 +91,105 @@ export default class MapScreen extends React.Component {
       searchLoc: {
         latitude: -33.9672563,
         longitude: 151.1002119,
-      }
+      },
+      // Race Tracking Info
+      pace: {minutes:'NA', seconds:'NA'},
+      distance: 0,
     };
   }
 
-  componentDidMount() {
-    let {status} = Permissions.askAsync(Permissions.LOCATION);
+  updateRunInfo() {
+    let data = {'period': 5}
+    let pace_url = global.serverURL + '/api/get_run_info'
+    fetch(pace_url, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: new Headers({
+        'Authorization': global.login_status.token,
+      })
+    }).then(res => res.json()).then(data => { 
+      let pace = data.pace
+      let distance = data.distance
+      this.setState({'pace':pace,'distance':distance})
+    });
+  }
+
+  userTracking() {
+    this.setState(prevState => ({
+      region: {
+        ...prevState.region, //Copy in other parts of the object
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude
+      }
+    }))
+  }
+
+  defaultLocationAsync() {
+    let { status } = Permissions.askAsync(Permissions.LOCATION);
     if (status) { //Check whether permission granted
       Location.watchPositionAsync(
         {
           accuracy: 4, //Accurate to 10m
           timeInterval: 5000,
-          distanceInterval: 10
         },
         (location) => {
-          //Move to current location on map
+          // Always moves to current location if activated
           if (this.state.moveToCurrentLoc) {
-            this.setState(prevState => ({
-              region: {
-                ...prevState.region, //Copy in other parts of the object
-                latitude: location.coords.latitude,
-                longitude: location.coords.longitude
-              }
-            }))
+            this.userTracking();
           }
         }
       )
+    }
+  }
+
+  runTrackingAsync() {
+    let current_time = new Date();
+    let start_time = {
+      'year':current_time.getFullYear(),
+      'month':current_time.getMonth(),
+      'day':current_time.getDate(),
+      'hours':current_time.getHours(),
+      'minutes':current_time.getMinutes(),
+      'seconds':current_time.getSeconds(),
+    }
+    global.socket.emit('start_run', start_time);
+
+    // Asking location permission and creating location loop
+    let { status } = Permissions.askAsync(Permissions.LOCATION);
+    if (status) { //Check whether permission granted
+      Location.watchPositionAsync(
+        {
+          accuracy: 4, //Accurate to 10m
+          timeInterval: 5000,
+        },
+        (location) => {
+          let current_time = new Date();
+          let data = {
+            'location': location,
+            'time': (current_time.getTime() / 1000), // Conversion to seconds
+          }
+          global.socket.emit('location_update',data);
+          this.updateRunInfo(); // Updates pace even with only 
+
+          // Always moves to current location if activated
+          if (this.state.moveToCurrentLoc) {
+            this.userTracking();
+          }
+        }
+      )
+    }
+
+  }
+
+  componentDidMount() {
+    if (Platform.OS === 'android' && !Constants.isDevice) {
+      Alert.alert('Device is not of valid type to record location.')
+    } else {
+      if (this.props.navigation.state.params==undefined) {
+        this.runTrackingAsync();
+      } else {
+        this.defaultLocationAsync();
+      }
     }
   }
 
