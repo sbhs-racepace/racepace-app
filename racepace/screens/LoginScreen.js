@@ -72,12 +72,9 @@ export default class LoginScreen extends React.Component {
           <Image style={STYLES.logo} source={require('../assets/running.jpg')} />
           <TextInput
             autoCorrect={false}
-            defaultValue="aaa"
             style = {STYLES.input}
-            defaultValue={'email'}
-            onChangeText={email => {
-              this.setState({ email: email });
-            }}
+            defaultValue='email'
+            onChangeText={email => this.setState({ email })}
             keyboardType="email-address"
             autoCapitalize='none'
             returnKeyType="go"
@@ -88,9 +85,7 @@ export default class LoginScreen extends React.Component {
             autoCorrect={false}
             defaultValue={'password'}
             style = {STYLES.input}
-            onChangeText={pword => {
-              this.setState({ pword: pword });
-            }}
+            onChangeText={pword => this.setState({ pword })}
             returnKeyType="go"
             secureTextEntry={true}
             placeholder="Password"

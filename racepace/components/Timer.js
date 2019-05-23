@@ -7,8 +7,17 @@ export default class Timer extends React.Component {
     this.state = {hour:0, min:0, sec: 0, enable: false}
   }
   
+  zFill(num) {
+    if (num < 10) {
+      return "0"+num
+    }
+    else {
+      return num
+    }
+  }
+
   incrementTimer() {
-      {hour,min,sec} = this.state;
+      let {hour,min,sec} = this.state;
       sec++;
       if (sec == 60) {
           min++;
@@ -24,20 +33,20 @@ export default class Timer extends React.Component {
   render() {
     return (
       <View style={{flexDirection: "row"}}>
-      <Text>{this.state.hour==0 ? "" : this.state.hour+":"}{this.state.min}:{this.state.sec}</Text>
+      <Text>{this.state.hour==0 ? "" : this.state.hour+":"}{this.zFill(this.state.min)}:{this.zFill(this.state.sec)}</Text>
       <Button
-        text={this.state.enable ? "▷" : "◼"}
+        text={this.state.enable ? "◼" : "▷"}
         onPress={()=>{
-            this.setState(
-                (prevState)=>{{enable: !prevState.enable}}
-            )}
             if (this.state.enable) {
-                this.interval = setInterval(this.incrementTimer.bind(this),1000);
+              clearInterval(this.interval);
             }
             else {
-                clearInterval(this.interval);
+              this.interval = setInterval(this.incrementTimer.bind(this),1000);
             }
-        }
+            this.setState(
+                (prevState)=>{return {enable: !prevState.enable}}
+            )
+        }}
       />
       </View>
     )
