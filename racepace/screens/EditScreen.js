@@ -37,6 +37,13 @@ const STYLES = StyleSheet.create({
   },
 });
 export default class EditScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      uri: global.serverURL + `/api/avatars/${global.login_status.user_id}.png`,
+    };
+  }
+
   updateServer(username, password, profilePicture) {
     let url = global.serverURL + '/api/users/' + global.login_status.user_id;
     try {
@@ -64,6 +71,8 @@ export default class EditScreen extends React.Component {
   render() {
     return (
       <KeyboardAvoidingView>
+      <View style={{flexDirection: 'row'}}>
+      <TextInput/>
         <View style={{ alignSelf: 'flex-start' }}>
           <Button
             text="Back"
@@ -73,17 +82,21 @@ export default class EditScreen extends React.Component {
           <Image
             style={STYLES.profile_image}
             source={{
-              uri:
-                global.serverURL +
-                `/api/avatars/${global.login_status.user_id}.png`,
+              uri: this.state.uri,
             }}
           />
           <Button
             text="Choose File"
-            onPress={() => {
-              let result = DocumentPicker.getDocumentAsync({ type: 'image/*' });
+            onPress={async () => {
+              let { uri, type } = await DocumentPicker.getDocumentAsync({
+                type: 'image/*',
+              });
+              if (type == 'success') {
+                this.setState({ uri });
+              }
             }}
           />
+        </View>
         </View>
         <View style={{ alignItems: 'center' }}>
           <Text style={{ fontSize: 30 }}> Change Password</Text>
