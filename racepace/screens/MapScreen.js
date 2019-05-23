@@ -2,7 +2,7 @@ import React from 'react';
 import MapView from 'react-native-maps';
 import { Marker, Polyline } from 'react-native-maps';
 import { Alert, View, Text, TextInput, StyleSheet, Dimensions, Platform, } from "react-native";
-import { Location, Permissions} from 'expo';
+import { Location, Permissions, Constants } from 'expo';
 import "../global"
 import Button from '../components/Button';
 import Timer from '../components/Timer';
