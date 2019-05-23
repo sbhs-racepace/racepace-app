@@ -15,16 +15,20 @@ export default class Button extends React.Component {
   }
 
   render() {
-    let styles = StyleSheet.create({
+    const STYLES = StyleSheet.create({
+      input: {
+        
+      }
     });
 
     return (
-      <View>
+      <View style={this.props.style}>
         {this.state.placeholderAbove &&
           <Text>{this.props.placeholder}</Text>
         }
         <TextInput
           {...this.props}
+          style={StyleSheet.flatten(STYLES.input, this.props.input_style)}
           onChangeText={text => {
             this.props.onChangeText(text);
             this.setState({ placeholderAbove: text != '' });
