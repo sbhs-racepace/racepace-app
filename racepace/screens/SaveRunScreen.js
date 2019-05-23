@@ -16,8 +16,8 @@ export default class SaveRunScreen extends React.Component {
   constructor(state) {
     super(state);
     this.state = {
-      'name': name,
-      'description': description,
+      'name': 'name',
+      'description': 'description',
     }
   }
 
@@ -26,13 +26,15 @@ export default class SaveRunScreen extends React.Component {
     let data = {
       name: this.state.name,
       description: this.state.description,
-      route: global.current_route,
     }
     let url = `${global.serverURL}/api/save_route`
     try {
       fetch(url, {
         method: 'POST',
         body: JSON.stringify(data),
+        headers: new Headers({
+          'Authorization': global.login_status.token,
+        })
       })
         .catch(res => {
           Alert.alert('Error connecting to server', res);
@@ -72,6 +74,7 @@ export default class SaveRunScreen extends React.Component {
           onClick={()=> {
             Alert.alert("Saving Run")
             this.saveRun()
+            console.log('navigating to feed following')
             this.props.navigation.navigate('FeedFollowing');
           }}
         />
