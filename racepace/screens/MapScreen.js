@@ -64,16 +64,6 @@ const STYLES = StyleSheet.create({
     borderRadius: 20,
     borderColor: 'white',
   },
-  save_dialog: {
-    height: "30%",
-    width: "90%",
-    left: "5%",
-    top: "40%",
-    borderRadius: 10,
-    backgroundColor: "white",
-    padding: 10,
-    zIndex: 3,
-  },
   map: {
     ...StyleSheet.absoluteFillObject,
     width: windowWidth,
@@ -124,7 +114,7 @@ export default class MapScreen extends React.Component {
     });
   }
 
-  userTracking() {
+  userTracking(location) {
     this.setState(prevState => ({
       region: {
         ...prevState.region, //Copy in other parts of the object
@@ -145,7 +135,7 @@ export default class MapScreen extends React.Component {
         (location) => {
           // Always moves to current location if activated
           if (this.state.moveToCurrentLoc) {
-            this.userTracking();
+            this.userTracking(location);
           }
         }
       )
@@ -183,7 +173,7 @@ export default class MapScreen extends React.Component {
 
           // Always moves to current location if activated
           if (this.state.moveToCurrentLoc) {
-            this.userTracking();
+            this.userTracking(location);
           }
         }
       );
@@ -195,7 +185,7 @@ export default class MapScreen extends React.Component {
     if (Platform.OS === 'android' && !Constants.isDevice) {
       Alert.alert('Device is not of valid type to record location.')
     } else {
-      if (this.props.navigation.state.params==undefined) {
+      if (global.login_status.success) {
         this.runTrackingAsync();
       } else {
         this.defaultLocationAsync();
@@ -318,7 +308,7 @@ export default class MapScreen extends React.Component {
 
   render() {
     let header;
-    if (this.props.navigation.state.params == undefined) {
+    if (!this.props.navigation.getParams('start',null)) {
       header = (
         <View style={{ ...STYLES.header, flexDirection: 'row' }}>
           <TextInput
@@ -348,7 +338,7 @@ export default class MapScreen extends React.Component {
           <View style={{ flexDirection: 'row', justifyContent:"center"}}>
             <Button
               text="Close"
-              onPress={() => {this.props.navigation.push('Map');this.setState({search})}}
+              onPress={() => {this.props.navigation.setParams({start:null,end:null,route:null})}}
             />
             <Text style={STYLES.header_text}>
               {this.props.navigation.state.params.start} to{' '}
@@ -357,7 +347,7 @@ export default class MapScreen extends React.Component {
           </View>
           <View style={{ width:"100%", flexDirection: 'row', justifyContent:"space-between"}}>
             <Timer />
-            <Button text="Save Route" onPress={()=>this.setState({showSaveDialog: true})} />
+            <Button text="Save Route" onPress={()=>this.props.navigation.navigate("SaveRun", this.props.navigation.state.params)} />
           </View>
         </View>
       );
@@ -391,16 +381,6 @@ export default class MapScreen extends React.Component {
             this.goToCurrent();
           }}
         />
-        {this.state.showSaveDialog &&
-          <View style={STYLES.save_dialog}>
-            <Text>Save Route</Text>
-            <TextInput placeholder="Route Name" style={STYLES.search} />
-            <View style={{flexDirection: "row"}}>
-              <Button text="Cancel" style={STYLES.save_btn} onPress={()=>this.setState({showSaveDialog: false})} />
-              <Button text="Save" style={STYLES.save_btn} />
-            </View>
-          </View>
-        }
       </View>
     );
   }
