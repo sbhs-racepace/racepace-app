@@ -10,17 +10,15 @@ export default class Button extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      placeholderAbove: false
+      placeholderAbove: Boolean(this.props.placeholder)
     }
   }
 
   render() {
     const STYLES = StyleSheet.create({
       input: {
-        
       }
     });
-
     return (
       <View style={this.props.style}>
         {this.state.placeholderAbove &&
@@ -28,7 +26,7 @@ export default class Button extends React.Component {
         }
         <TextInput
           {...this.props}
-          style={StyleSheet.flatten(STYLES.input, this.props.input_style)}
+          style={StyleSheet.flatten(this.props.input_style,STYLES.input)}
           onChangeText={text => {
             this.props.onChangeText(text);
             this.setState({ placeholderAbove: text != '' });
