@@ -308,7 +308,7 @@ export default class MapScreen extends React.Component {
 
   render() {
     let header;
-    if (!this.props.navigation.getParams('start',null)) {
+    if (!this.props.navigation.getParam('start',null)) {
       header = (
         <View style={{ ...STYLES.header, flexDirection: 'row' }}>
           <TextInput
