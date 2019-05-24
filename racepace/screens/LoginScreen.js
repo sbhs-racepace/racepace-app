@@ -7,15 +7,6 @@ import TextInputCustom from '../components/TextInput';
 import '../global';
 
 const STYLES = StyleSheet.create({
-  input: {
-    width: '80%',
-  },
-  input_inner: {
-    borderRadius: 10,
-    padding: '1%',
-    fontSize: 20,
-    borderWidth: 1,
-  },
   button: {
     width: '80%',
     borderRadius: 10,
@@ -73,8 +64,6 @@ export default class LoginScreen extends React.Component {
           />
           <TextInputCustom
             autoCorrect={false}
-            style={STYLES.input}
-            input_style={STYLES.input_inner}
             defaultValue="email"
             onChangeText={email => this.setState({ email })}
             keyboardType="email-address"
@@ -86,8 +75,6 @@ export default class LoginScreen extends React.Component {
           <TextInputCustom
             autoCorrect={false}
             defaultValue={'password'}
-            style={STYLES.input}
-            input_style={STYLES.input_inner}
             onChangeText={pword => this.setState({ pword })}
             returnKeyType="go"
             secureTextEntry={true}
