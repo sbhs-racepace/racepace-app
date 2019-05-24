@@ -1,18 +1,11 @@
 import React from 'react';
 import MapView from 'react-native-maps';
 import { Marker, Polyline } from 'react-native-maps';
-import {
-  Alert,
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  Dimensions,
-} from 'react-native';
+import { Alert, View, Text, TextInput, StyleSheet, Dimensions, Platform, } from "react-native";
+import { Location, Permissions, Constants } from 'expo';
+import "../global"
 import Button from '../components/Button';
 import Timer from '../components/Timer';
-import { Location, Permissions } from 'expo';
-import '../global';
 
 const LATITUDE_DELTA = 0.0922 * 1.5;
 const LONGITUDE_DELTA = 0.0421 * 1.5;
@@ -22,10 +15,11 @@ const STYLES = StyleSheet.create({
   header: {
     top: 20,
     width: '90%',
-    height: 30,
+    height: 40,
     zIndex: 2,
     elevation: 2,
     alignItems: 'center',
+    justifyContent:"center",
   },
   header_text: {
     backgroundColor: 'white',
@@ -70,16 +64,6 @@ const STYLES = StyleSheet.create({
     borderRadius: 20,
     borderColor: 'white',
   },
-  save_dialog: {
-    height: "30%",
-    width: "90%",
-    left: "5%",
-    top: "40%",
-    borderRadius: 10,
-    backgroundColor: "white",
-    padding: 10,
-    zIndex: 3,
-  },
   map: {
     ...StyleSheet.absoluteFillObject,
     width: windowWidth,
@@ -92,6 +76,7 @@ export default class MapScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      // Map Screen State Variables
       region: {
         latitude: -33.9672563,
         longitude: 151.1002119,
@@ -107,32 +92,104 @@ export default class MapScreen extends React.Component {
         latitude: -33.9672563,
         longitude: 151.1002119,
       },
+      // Race Tracking Info
+      pace: {minutes:'NA', seconds:'NA'},
+      distance: 0,
     };
   }
 
-  componentDidMount() {
+  updateRunInfo() {
+    let data = {'period': 5}
+    let pace_url = global.serverURL + '/api/get_run_info'
+    fetch(pace_url, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: new Headers({
+        'Authorization': global.login_status.token,
+      })
+    }).then(res => res.json()).then(data => { 
+      let pace = data.pace
+      let distance = data.distance
+      this.setState({'pace':pace,'distance':distance})
+    });
+  }
+
+  userTracking(location) {
+    this.setState(prevState => ({
+      region: {
+        ...prevState.region, //Copy in other parts of the object
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude
+      }
+    }))
+  }
+
+  defaultLocationAsync() {
     let { status } = Permissions.askAsync(Permissions.LOCATION);
-    if (status) {
-      //Check whether permission granted
+    if (status) { //Check whether permission granted
       Location.watchPositionAsync(
         {
           accuracy: 4, //Accurate to 10m
           timeInterval: 5000,
-          distanceInterval: 10,
         },
-        location => {
-          //Move to current location on map
+        (location) => {
+          // Always moves to current location if activated
           if (this.state.moveToCurrentLoc) {
-            this.setState(prevState => ({
-              region: {
-                ...prevState.region, //Copy in other parts of the object
-                latitude: location.coords.latitude,
-                longitude: location.coords.longitude,
-              },
-            }));
+            this.userTracking(location);
+          }
+        }
+      )
+    }
+  }
+
+  runTrackingAsync() {
+    let current_time = new Date();
+    let start_time = {
+      'year':current_time.getFullYear(),
+      'month':current_time.getMonth(),
+      'day':current_time.getDate(),
+      'hours':current_time.getHours(),
+      'minutes':current_time.getMinutes(),
+      'seconds':current_time.getSeconds(),
+    }
+    global.socket.emit('start_run', start_time);
+
+    // Asking location permission and creating location loop
+    let { status } = Permissions.askAsync(Permissions.LOCATION);
+    if (status) { //Check whether permission granted
+      Location.watchPositionAsync(
+        {
+          accuracy: 4, //Accurate to 10m
+          timeInterval: 5000,
+        },
+        (location) => {
+          let current_time = new Date();
+          let data = {
+            'location': location,
+            'time': (current_time.getTime() / 1000), // Conversion to seconds
+          }
+          global.socket.emit('location_update',data);
+          this.updateRunInfo(); // Updates pace even with only 
+
+          // Always moves to current location if activated
+          if (this.state.moveToCurrentLoc) {
+            this.userTracking(location);
           }
         }
       );
+    }
+
+  }
+
+  componentDidMount() {
+    if (Platform.OS === 'android' && !Constants.isDevice) {
+      Alert.alert('Device is not of valid type to record location.')
+    } else {
+      if (global.login_status.success) {
+        this.runTrackingAsync();
+      } else {
+        this.defaultLocationAsync();
+      }
     }
   }
 
@@ -251,7 +308,7 @@ export default class MapScreen extends React.Component {
 
   render() {
     let header;
-    if (this.props.navigation.state.params == undefined) {
+    if (!this.props.navigation.getParam('start',null)) {
       header = (
         <View style={{ ...STYLES.header, flexDirection: 'row' }}>
           <TextInput
@@ -278,19 +335,19 @@ export default class MapScreen extends React.Component {
     } else {
       header = (
         <View style={STYLES.header}>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{ flexDirection: 'row', justifyContent:"center"}}>
             <Button
               text="Close"
-              onPress={() => this.props.navigation.navigate('Map')}
+              onPress={() => {this.props.navigation.setParams({start:null,end:null,route:null})}}
             />
             <Text style={STYLES.header_text}>
               {this.props.navigation.state.params.start} to{' '}
               {this.props.navigation.state.params.end}
             </Text>
           </View>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{ width:"100%", flexDirection: 'row', justifyContent:"space-between"}}>
             <Timer />
-            <Button text="Save Route" onPress={()=>this.setState({showSaveDialog: true})} />
+            <Button text="Save Route" onPress={()=>this.props.navigation.navigate("SaveRun", this.props.navigation.state.params)} />
           </View>
         </View>
       );
@@ -324,16 +381,6 @@ export default class MapScreen extends React.Component {
             this.goToCurrent();
           }}
         />
-        {this.state.showSaveDialog &&
-          <View style={STYLES.save_dialog}>
-            <Text>Save Route</Text>
-            <TextInput placeholder="Route Name" style={STYLES.search} />
-            <View style={{flexDirection: "row"}}>
-              <Button text="Cancel" style={STYLES.save_btn} onPress={()=>this.setState({showSaveDialog: false})} />
-              <Button text="Save" style={STYLES.save_btn} />
-            </View>
-          </View>
-        }
       </View>
     );
   }

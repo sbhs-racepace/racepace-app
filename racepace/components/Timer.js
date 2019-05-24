@@ -32,20 +32,20 @@ export default class Timer extends React.Component {
   
   render() {
     return (
-      <View style={{flexDirection: "row", width:"100%"}}>
+      <View style={{flexDirection: "row"}}>
       <Text>{this.state.hour==0 ? "" : this.state.hour+":"}{this.zFill(this.state.min)}:{this.zFill(this.state.sec)}</Text>
       <Button
         text={this.state.enable ? "◼" : "▷"}
         onPress={()=>{
+            if (this.state.enable) {
+              clearInterval(this.interval);
+            }
+            else {
+              this.interval = setInterval(this.incrementTimer.bind(this),1000);
+            }
             this.setState(
                 (prevState)=>{return {enable: !prevState.enable}}
             )
-            if (this.state.enable) {
-                this.interval = setInterval(this.incrementTimer.bind(this),1000);
-            }
-            else {
-                clearInterval(this.interval);
-            }
         }}
       />
       </View>

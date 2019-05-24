@@ -184,3 +184,4 @@ venv.bak/
 # mypy
 .mypy_cache/
 racepace/.expo/packager-info.json
+racepace/.expo/settings.json
