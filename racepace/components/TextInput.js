@@ -6,25 +6,27 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-export default class Button extends React.Component {
+export default class TextInputCustom extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      placeholderAbove: false
+      placeholderAbove: Boolean(this.props.placeholder)
     }
   }
 
   render() {
-    let styles = StyleSheet.create({
+    const STYLES = StyleSheet.create({
+      input: {
+      }
     });
-
     return (
-      <View>
+      <View style={this.props.style}>
         {this.state.placeholderAbove &&
           <Text>{this.props.placeholder}</Text>
         }
         <TextInput
           {...this.props}
+          style={StyleSheet.flatten(this.props.input_style,STYLES.input)}
           onChangeText={text => {
             this.props.onChangeText(text);
             this.setState({ placeholderAbove: text != '' });
