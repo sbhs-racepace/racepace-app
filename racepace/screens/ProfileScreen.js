@@ -106,17 +106,19 @@ export default class ProfileScreen extends React.Component {
                 flex: 2,
                 justifyContent: 'space-between',
               }}>
-              <View style={{ flexDirection: 'row', flex: 2 }}>
+              <View style={{ flexDirection: 'row', flex: 2}}>
                 <Button 
-                  style={{ flex: 1 }} 
-                  text={`${global.user.stats.points} Pace Points`} />
+                  style={{ flex: 1, margin: 1 }} 
+                  text={`${global.user.stats.points} Pace Points`}
+                  onPress={() => this.props.navigation.navigate('Level')}
+                />
                 <Button
-                  style={{ flex: 1 }}
+                  style={{ flex: 1, margin: 1 }}
                   text={`${global.user.following.length} Following`}
                   onPress={() => this.props.navigation.navigate('FollowList', {screen: "Following"})}
                 />
                 <Button
-                  style={{ flex: 1 }}
+                  style={{ flex: 1, margin: 1 }}
                   text={`${global.user.followers.length} Followers`}
                   onPress={() => this.props.navigation.navigate('FollowList', {screen: "Followers"})}
                 />
