@@ -25,9 +25,12 @@ export default class FeedYouScreen extends React.Component {
       return <Text>Please login to see your feed</Text>;
     }
 
-    let resp = JSON.parse(request('/api/get_recent_routes', "POST", {}, true)._bodyText);
-    resp = resp.recent_routes;
-
+    if (!global.TEST) {
+      let resp = JSON.parse(
+        request('/api/get_recent_routes', 'POST', {}, true)._bodyText
+      );
+      resp = resp.recent_routes;
+    }
     const test_data = (
       <ScrollView
         contentContainerStyle={{
