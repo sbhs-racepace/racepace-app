@@ -108,8 +108,10 @@ export default class ProfileScreen extends React.Component {
               }}>
               <View style={{ flexDirection: 'row', flex: 2 }}>
                 <Button 
-                  style={{ flex: 1 }} 
-                  text={`${global.user.stats.points} Pace Points`} />
+                  style={{ flex: 1, }} 
+                  text={`${global.user.stats.points} Pace Points`}
+                  onPress={() => this.props.navigation.navigate('Level')}
+                />
                 <Button
                   style={{ flex: 1 }}
                   text={`${global.user.following.length} Following`}

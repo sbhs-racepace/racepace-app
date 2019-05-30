@@ -26,6 +26,7 @@ import TrackingScreen from './screens/TrackingScreen';
 import RealTimeRouteScreen from './screens/RealTimeRouteScreen';
 import FindFriendsScreen from './screens/FindFriendsScreen';
 import SaveRunScreen from './screens/SaveRunScreen';
+import LevelScreen from './screens/LevelScreen';
 
 const LoginNavigator = createStackNavigator({
   Splash: {
@@ -58,6 +59,10 @@ const LoginNavigator = createStackNavigator({
   },
   SaveRun: {
     screen: SaveRunScreen,
+    navigationOptions: { header: null },
+  },
+  Level: {
+    screen: LevelScreen,
     navigationOptions: { header: null },
   },
   Routes: { screen: RouteListScreen, navigationOptions: { header: null } },
