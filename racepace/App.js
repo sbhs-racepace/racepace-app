@@ -99,8 +99,7 @@ const AppContainer = createAppContainer(LoginNavigator);
 export default class App extends React.Component {
   render() {
     return (
-      <View style={{ flex: 1 }}>
-        <View style={{ height: 20 }} />
+      <View style={{ flex: 1, marginTop: 20 }}>
         <AppContainer />
       </View>
     );
