@@ -85,7 +85,7 @@ export default class LoginScreen extends React.Component {
           <Button
             style={STYLES.button}
             text_style={STYLES.button_text}
-            onPress={() => login.bind(this, this.state.email, this.state.pword)}
+            onPress={login.bind(this, this.state.email, this.state.pword)}
             text="Login"
           />
           <Button

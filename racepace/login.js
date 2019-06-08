@@ -46,10 +46,10 @@ function storeUserInfo(res) {
 
 export function login(email,password) {
   //Sends login request to server
-  const data = {
+  let data = {
     email, password
   };
-  const url = global.serverURL + '/api/login';
+  let url = global.serverURL + '/api/login';
   try {
     fetch(url, {
       method: 'POST',
