@@ -53,7 +53,7 @@ export default class RegisterScreen extends React.Component {
 
   render() {
     return (
-      <View>
+      <View style={global.styles.background}>
         <Button
           style={STYLES.back_btn}
           text="Back"

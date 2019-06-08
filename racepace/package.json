@@ -8,6 +8,7 @@
   "dependencies": {
     "emoji-utils": "^1.0.1",
     "expo": "^32.0.0",
+    "expo-font": "^5.0.1",
     "prop-types": "^15.5.10",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
@@ -15,6 +16,7 @@
     "react-native-datepicker": "^1.7.2",
     "react-native-gifted-chat": "^0.7.3",
     "react-native-google-signin": "1.0.2",
+    "react-native-maps": "^0.24.2",
     "react-native-paper": "2.2.8",
     "react-native-simple-radio-button": "^2.7.3",
     "react-native-swipe-gestures": "^1.0.3",

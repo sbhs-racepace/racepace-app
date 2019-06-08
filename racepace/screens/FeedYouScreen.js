@@ -3,6 +3,7 @@ import { ScrollView, Text, View, StyleSheet } from 'react-native';
 import FeedRoute from '../components/FeedRoute';
 import Button from '../components/Button';
 import request from '../request';
+import '../global'
 
 const STYLES = StyleSheet.create({
   requestsBtn: {
@@ -16,6 +17,7 @@ const STYLES = StyleSheet.create({
     justifyContent: 'flex-start',
     width: '100%',
     alignItems: 'center',
+    backgroundColor:global.styles.lighterBackground.backgroundColor,
   },
 });
 
@@ -31,13 +33,11 @@ export default class FeedYouScreen extends React.Component {
       );
       resp = resp.recent_routes;
     }
+
     const test_data = (
       <ScrollView
-        contentContainerStyle={{
-          justifyContent: 'flex-start',
-          width: '100%',
-          alignItems: 'center',
-        }}>
+        contentContainerStyle={STYLES.scrollView}
+      >
         <FeedRoute
           routeName="Run number 1"
           postTime="10am"
@@ -60,15 +60,16 @@ export default class FeedYouScreen extends React.Component {
     );
 
     return (
-      <View style={{ flex: 1 }}>
+      <View style={[{ flex: 1 }, global.styles.lighterBackground]}>
         <Button
           text="Follow Requests"
+          style={{width:"80%"}}
           text_style={{ padding: '1%' }}
-          style={STYLES.requestsBtn}
           onPress={() => this.props.navigation.navigate('Follow')}
         />
         {global.TEST && test_data}
-        {!global.TEST && (
+
+        {/* {global.TEST && (
           <ScrollView contentContainerStyle={STYLES.scrollView}>
             {resp.map(route => {
               {
@@ -83,7 +84,8 @@ export default class FeedYouScreen extends React.Component {
               }
             })}
           </ScrollView>
-        )}
+        )} */}
+
       </View>
     );
   }

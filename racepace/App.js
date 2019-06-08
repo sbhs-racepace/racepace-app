@@ -6,7 +6,6 @@ import {
   createMaterialTopTabNavigator,
 } from 'react-navigation';
 import { View } from 'react-native';
-
 import MainScreenHeader from './components/MainScreenHeader';
 import EditScreen from './screens/EditScreen';
 import FeedFollowingScreen from './screens/FeedFollowingScreen';
@@ -27,6 +26,7 @@ import RealTimeRouteScreen from './screens/RealTimeRouteScreen';
 import FindFriendsScreen from './screens/FindFriendsScreen';
 import SaveRunScreen from './screens/SaveRunScreen';
 import LevelScreen from './screens/LevelScreen';
+import './global'
 
 const LoginNavigator = createStackNavigator({
   Splash: {
@@ -104,7 +104,7 @@ const AppContainer = createAppContainer(LoginNavigator);
 export default class App extends React.Component {
   render() {
     return (
-      <View style={{ flex: 1, marginTop: 20 }}>
+      <View style={{ flex: 1, marginTop: 20,}}>
         <AppContainer />
       </View>
     );

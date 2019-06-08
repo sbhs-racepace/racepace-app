@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Text, TextInput, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Button from "./Button"
+import "../global"
 
 const STYLES = StyleSheet.create({
 	feed_item : {
@@ -29,6 +30,9 @@ const STYLES = StyleSheet.create({
     width:"40%",
 		borderWidth:0,
 	},
+	text: {
+		color: global.styles.textColor.color
+	}
 })
 
 export class FeedItem extends React.Component {
@@ -42,27 +46,26 @@ export class FeedItem extends React.Component {
 				<View style={STYLES.user_profile}>
 					<Image source={require('../assets/cat.jpeg')} style={STYLES.profilePic}/>
 					<View style={STYLES.user_info}>
-						<Text>{this.props.username}</Text>
-						<Text>{this.props.posttime}</Text>
+						<Text style={STYLES.text}>{this.props.username}</Text>
+						<Text style={STYLES.text}>{this.props.posttime}</Text>
 					</View>
 				</View>
 
 				<View style={{margin:"3%"}}>
-					<Text>{this.props.routename}</Text>
-					<Text>Description: {this.props.description}</Text>
-					<Text>Stats: {this.props.length}km {this.props.time}m</Text>
+					<Text style={STYLES.text}>{this.props.routename}</Text>
+					<Text style={STYLES.text}>Description: {this.props.description}</Text>
+					<Text style={STYLES.text}>Stats: {this.props.length}km {this.props.time}m</Text>
 				</View>
 				
 				<Image source={require('../assets/cat.jpeg')} style={STYLES.routePic} />
 				<View
 					style={{flexDirection: "row", justifyContent: 'space-between', width:"100%", margin:"2%"}}
 				>
-					<Text>0 Likes</Text>
-					<Text>0 Comments</Text>
+					<Text style={STYLES.text}>0 Likes</Text>
+					<Text style={STYLES.text}>0 Comments</Text>
 				</View>
 				<View style={{flexDirection: "row", justifyContent: 'space-between', width:"100%", backgroundColor: "rgb(0, 153, 255)", borderRadius:10,padding:"3%"}}>
 					<Button text="Like" style={STYLES.button}/>
-					<Text>|</Text>
 					<Button text="Comment" style={STYLES.button} />
 				</View>
 

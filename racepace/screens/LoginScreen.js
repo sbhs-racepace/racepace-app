@@ -44,7 +44,7 @@ export default class LoginScreen extends React.Component {
 
   render() {
     return (
-      <View>
+      <View style={global.styles.background}>
         <Button
           style={STYLES.back_btn}
           text="Back"

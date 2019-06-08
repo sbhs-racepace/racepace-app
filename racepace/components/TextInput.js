@@ -6,6 +6,8 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
+import '../global'
+
 export default class TextInputCustom extends React.Component {
   constructor(props) {
     super(props);
@@ -19,9 +21,11 @@ export default class TextInputCustom extends React.Component {
       view: {
         width: "80%",
         borderRadius: 10,
+        backgroundColor: global.styles.textInputColor.color,
         ...this.props.style
       },
       text: {
+        color: global.styles.textColor.color,
         ...this.placeholder_style
       },
       input: {
@@ -30,6 +34,7 @@ export default class TextInputCustom extends React.Component {
         borderWidth: 1,
         padding: 1,
         fontSize:20,
+        color: global.styles.textColor.color,
         ...this.props.input_style,
       }
     });

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Image, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { withNavigation } from 'react-navigation';
+import '../global.js'
 
 class Button extends React.Component {
   constructor(props) {
@@ -11,8 +12,9 @@ class Button extends React.Component {
     const styles = StyleSheet.create({
       button: {
         backgroundColor: this.props.disabled
-          ? 'rgb(192,192,192)'
-          : 'rgb(0, 153, 255)',
+          ? global.styles.grey.color
+          : global.styles.genericColor.color
+        ,
         width: this.props.back_btn ? 40 : "80%",
         height: 30,
         flexDirection: "row",
@@ -21,7 +23,7 @@ class Button extends React.Component {
       },
       text: {
         textAlign: 'center',
-        color: 'white',
+        color: global.styles.genericColorTwo.color,
         ...this.props.text_style,
       },
       img: {
