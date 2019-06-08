@@ -22,6 +22,14 @@ const STYLES = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  chsfile: {
+    width: 80,
+    height: 30,
+    left: 5,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   input: {
     fontSize: 20,
     borderWidth: 1,
@@ -37,6 +45,13 @@ const STYLES = StyleSheet.create({
   },
 });
 export default class EditScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      uri: global.serverURL + `/api/avatars/${global.login_status.user_id}.png`,
+    };
+  }
+
   updateServer(username, password, profilePicture) {
     let url = global.serverURL + '/api/users/' + global.login_status.user_id;
     try {
@@ -63,40 +78,73 @@ export default class EditScreen extends React.Component {
   }
   render() {
     return (
-      <KeyboardAvoidingView>
-        <View style={{ alignSelf: 'flex-start' }}>
+      <KeyboardAvoidingView
+        style={{
+          flex: 1,
+          justifyContent: 'space-between',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}>
+        <View style={{ flex: 1, alignSelf: 'flex-start' }}>
           <Button
             text="Back"
             onPress={() => this.props.navigation.goBack()}
             style={STYLES.backbtn}
           />
-          <Image
-            style={STYLES.profile_image}
-            source={{
-              uri:
-                global.serverURL +
-                `/api/avatars/${global.login_status.user_id}.png`,
-            }}
-          />
+        </View>
+        <View style={{ flex: 5, flexDirection: 'row' }}>
+          <View style={{ flex: 1 }}>
+            <Image
+              style={STYLES.profile_image}
+              source={{
+                uri: this.state.uri,
+              }}
+            />
+            <Button
+              text="Choose File"
+              style={STYLES.chsfile}
+              onPress={async () => {
+                let { uri, type } = await DocumentPicker.getDocumentAsync({
+                  type: 'image/*',
+                });
+                if (type == 'success') {
+                  this.setState({ uri });
+                }
+              }}
+            />
+          </View>
+          <View style={{ flex: 2 }}>
+            <TextInput placeholder="Name" style={STYLES.input} />
+            <TextInput
+              placeholder="Enter Bio"
+              style={{ ...STYLES.input, height: 100, fontSize: 12 }}
+              multiline={true}
+            />
+          </View>
+        </View>
+        <Text style={{ fontSize: 30 }}> Change Password</Text>
+        <TextInput placeholder="Current Password" style={STYLES.input} />
+        <TextInput placeholder="New Password" style={STYLES.input} />
+        <TextInput placeholder="Confirm New Password" style={STYLES.input} />
+        <Text style={{ fontSize: 30 }}> Change Username</Text>
+        <Text style={{ fontSize: 15 }}>
+          {' '}
+          Current Username: {global.user.username}{' '}
+        </Text>
+        <TextInput placeholder="New Username" style={STYLES.input} />
+        <View style={{ flex: 5 }} />
+   
           <Button
-            text="Choose File"
-            onPress={() => {
-              let result = DocumentPicker.getDocumentAsync({ type: 'image/*' });
+            text="Save Changes"
+            style={{
+              width: '50%',
+              height: 30,
+              bottom: 50,
+              borderRadius: 10,
+              fontSize: 14,
             }}
           />
-        </View>
-        <View style={{ alignItems: 'center' }}>
-          <Text style={{ fontSize: 30 }}> Change Password</Text>
-          <TextInput placeholder="Current Password" style={STYLES.input} />
-          <TextInput placeholder="New Password" style={STYLES.input} />
-          <TextInput placeholder="Confirm New Password" style={STYLES.input} />
-          <Text style={{ fontSize: 30 }}> Change Username</Text>
-          <Text style={{ fontSize: 15 }}>
-            {' '}
-            Current Username: {global.user.username}{' '}
-          </Text>
-          <TextInput placeholder="New Username" style={STYLES.input} />
-        </View>
+   
       </KeyboardAvoidingView>
     );
   }
