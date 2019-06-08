@@ -173,14 +173,14 @@ export default class RunSetupScreen extends React.Component {
               keyboardType="number-pad"
             />
           </View>
-          {/* <Text style={[STYLES.text_style,{textAlign:"center"}]}>Select a route typing</Text>
+          <Text style={[STYLES.text_style,{textAlign:"center"}]}>Select a route typing</Text>
           <RadioForm
             radio_props={this.radio_props}
             initial={0}
             formHorizontal={true}
             labelHorizontal={true}
             onPress={(route_type) => {this.setState({route_type:route_type})}}
-          /> */}
+          />
           <Button 
             style={{borderRadius:10,padding:"2%"}} 
             text="Generate Route Info"

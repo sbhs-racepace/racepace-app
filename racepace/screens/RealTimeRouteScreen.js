@@ -29,9 +29,8 @@ export default class RealTimeRouteScreen extends React.Component {
   constructor(state) {
     super(state);
     this.state = {
-      pace: {minutes:'--', seconds:'--'},
+      pace: {minutes:'NA', seconds:'NA'},
       distance: 0,
-      interval_id: null,
     }
   }
 
@@ -45,62 +44,55 @@ export default class RealTimeRouteScreen extends React.Component {
         'Authorization': global.login_status.token,
       })
     }).then(res => res.json()).then(data => { 
-      console.log(data)
-      this.setState({pace:data.pace,distance:data.distance})
+      let pace = data.pace
+      let distance = data.distance
+      this.setState({'pace':pace,'distance':distance})
     });
   }
 
-  startRun() {
-    let current_time = new Date();
-    let start_time = {
-      year:current_time.getFullYear(),
-      month:current_time.getMonth(),
-      day:current_time.getDate(),
-      hours:current_time.getHours(),
-      minutes:current_time.getMinutes(),
-      seconds:current_time.getSeconds(),
-    }
-    let data = {
-      start_time: start_time,
-      route: global.current_route,
-    }
-    global.socket.emit('start_run', start_time);
-  }
-
-  async componentDidMount() {
-    Alert.alert('mounted')
+  componentDidMount() {
     if (Platform.OS === 'android' && !Constants.isDevice) {
       Alert.alert('Device is not of valid type to record location.')
     } else {
       // Getting start time and intializing the real time route
-      this.startRun()
+      Alert.alert('real_time_route_screen did mount')
+      let current_time = new Date();
+      let start_time = {
+        'year':current_time.getFullYear(),
+        'month':current_time.getMonth(),
+        'day':current_time.getDate(),
+        'hours':current_time.getHours(),
+        'minutes':current_time.getMinutes(),
+        'seconds':current_time.getSeconds(),
+      }
+      let data = {
+        'start_time': start_time,
+        'route': global.current_route,
+      }
+      global.socket.emit('start_run', start_time);
+
       // Asking location permission and creating location loop
-      let { status } = await Permissions.askAsync(Permissions.LOCATION);
+      let { status } = Permissions.askAsync(Permissions.LOCATION);
       if (status) { //Check whether permission granted
         Location.watchPositionAsync(
           {
             accuracy: 4, //Accurate to 10m
-            timeInterval: 10000,
-            distanceInterval:10,
+            timeInterval: 5000,
           },
           (location) => {
             let current_time = new Date();
             let data = {
-              location: location.coords,
-              time: (current_time.getTime() / 1000), // Conversion to seconds
+              'location': location,
+              'time': (current_time.getTime() / 1000), // Conversion to seconds
             }
             global.socket.emit('location_update',data);
+            console.log('updating location')
+            console.log(location);
+            this.updateRunInfo(); // Updates pace even with only 
           }
         )
-        this.state.interval_id = setInterval(this.updateRunInfo.bind(this), 10000);
       }
     }
-  }
-
-  stop_tracking() {
-    global.socket.emit('end_run');
-    global.current_route = null;
-    clearInterval(this.state.interval_id);
   }
   
   render() {
@@ -111,7 +103,8 @@ export default class RealTimeRouteScreen extends React.Component {
           text="Save Running Route"
           onPress={() => {
             Alert.alert('End Route')
-            this.stop_tracking()
+            global.socket.emit('end_run');
+            global.current_route = null;
             this.props.navigation.navigate('SaveRun');
           }}
         />
@@ -119,7 +112,8 @@ export default class RealTimeRouteScreen extends React.Component {
           text="Stop Run"
           onPress={() => {
             Alert.alert('Stop Route')
-            this.stop_tracking()
+            global.socket.emit('end_run');
+            global.current_route = null;
             this.props.navigation.navigate('FeedFollowing');
           }}
         />

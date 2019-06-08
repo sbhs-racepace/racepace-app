@@ -5,6 +5,7 @@ import { Alert, View, Text, TextInput, StyleSheet, Dimensions, Platform, } from 
 import { Location, Permissions} from 'expo';
 import "../global"
 import Button from '../components/Button'
+import Button from '../components/Button';
 import Timer from '../components/Timer';
 
 const LATITUDE_DELTA = 0.0922 * 1.5;
@@ -141,7 +142,6 @@ export default class MapScreen extends React.Component {
         {
           accuracy: 4, //Accurate to 10m
           timeInterval: 5000,
-          distanceInterval:10,
         },
         (location) => {
           // Always moves to current location if activated
