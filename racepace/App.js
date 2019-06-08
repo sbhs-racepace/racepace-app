@@ -26,6 +26,7 @@ import TrackingScreen from './screens/TrackingScreen';
 import RealTimeRouteScreen from './screens/RealTimeRouteScreen';
 import FindFriendsScreen from './screens/FindFriendsScreen';
 import SaveRunScreen from './screens/SaveRunScreen';
+import LevelScreen from './screens/LevelScreen';
 
 const LoginNavigator = createStackNavigator({
   Splash: {
@@ -58,6 +59,10 @@ const LoginNavigator = createStackNavigator({
   },
   SaveRun: {
     screen: SaveRunScreen,
+    navigationOptions: { header: null },
+  },
+  Level: {
+    screen: LevelScreen,
     navigationOptions: { header: null },
   },
   Routes: { screen: RouteListScreen, navigationOptions: { header: null } },
@@ -99,8 +104,7 @@ const AppContainer = createAppContainer(LoginNavigator);
 export default class App extends React.Component {
   render() {
     return (
-      <View style={{ flex: 1 }}>
-        <View style={{ height: 20 }} />
+      <View style={{ flex: 1, marginTop: 20 }}>
         <AppContainer />
       </View>
     );

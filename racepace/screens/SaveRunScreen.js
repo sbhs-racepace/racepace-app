@@ -9,31 +9,32 @@ import {
   StyleSheet,
   Alert,
 } from 'react-native';
-import Button from '../components/Button.js'
-import "../global.js"
+import Button from '../components/Button.js';
+import '../global.js';
 
 export default class SaveRunScreen extends React.Component {
   constructor(state) {
     super(state);
     this.state = {
-      'name': 'name',
-      'description': 'description',
-    }
+      name: 'name',
+      description: 'description',
+    };
   }
 
   saveRun() {
     let data = {
       name: this.state.name,
       description: this.state.description,
-    }
-    let url = `${global.serverURL}/api/save_route`
+      route: this.props.navigation.state.params
+    };
+    let url = `${global.serverURL}/api/save_route`;
     try {
       fetch(url, {
         method: 'POST',
         body: JSON.stringify(data),
         headers: new Headers({
-          'Authorization': global.login_status.token,
-        })
+          Authorization: global.login_status.token,
+        }),
       })
         .catch(res => {
           Alert.alert('Error connecting to server', res);
@@ -126,6 +127,6 @@ export default class SaveRunScreen extends React.Component {
       <View>
         {view}
       </View>
-    )
+    );
   }
 }
