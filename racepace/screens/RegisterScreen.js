@@ -1,54 +1,40 @@
 import React from 'react';
 import { Component } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  Image,
-  Alert,
-  Dimensions
-} from 'react-native';
-import Button from '../components/Button.js'
+import { View, Text, StyleSheet, Image, Alert, Dimensions } from 'react-native';
+import TextInputCustom from '../components/TextInput';
+import Button from '../components/Button';
 import DatePicker from 'react-native-datepicker';
-import {register} from "../login"
+import { register } from '../login';
 import '../global';
 
 const STYLES = StyleSheet.create({
-  input: {
-    fontSize:20,
-    borderWidth: 1,
-    width:"80%",
-    borderRadius:10,
-    padding:"1%",
-  },
   button: {
-    width:"80%",
-    borderRadius:10,
+    width: '80%',
+    borderRadius: 10,
   },
   button_text: {
-    padding:"1%",
-    fontSize:16,
+    padding: '1%',
+    fontSize: 16,
   },
   back_btn: {
-    width:40,
-    height:"5%",
-    left:5,
-    top:20,
-    borderRadius:10,
-    alignItems: "center",
-    justifyContent: "center",
+    width: 40,
+    height: '5%',
+    left: 5,
+    top: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   logo: {
-    margin:"5%",
+    margin: '5%',
     width: Dimensions.get('window').width * 0.5,
     height: Dimensions.get('window').width * 0.5,
-    borderRadius: Dimensions.get('window').width * 0.5 / 2,
+    borderRadius: (Dimensions.get('window').width * 0.5) / 2,
   },
   dob: {
-    width:'80%'
-  }
-})
+    width: '80%',
+  },
+});
 
 export default class RegisterScreen extends React.Component {
   static navigationOptions = {
@@ -57,87 +43,95 @@ export default class RegisterScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      full_name: "",
-      email: "",
-      pword: "",
-      dob:"",
-      username: "",
+      full_name: '',
+      email: '',
+      pword: '',
+      dob: '',
+      username: '',
     };
   }
 
   render() {
     return (
-      <View>
-      <Button
+      <View style={global.styles.background}>
+        <Button
           style={STYLES.back_btn}
           text="Back"
           text_style={STYLES.button_text}
-          onPress={()=>this.props.navigation.goBack()}
-      />
-      <View style={{alignItems:"center",height:"95%",justifyContent: 'space-evenly'}}>
-        <Image style={STYLES.logo} source={require('../assets/running.jpg')} />
-        <TextInput
-          autoCorrect={false}
-          onChangeText={name_ => {
-            this.setState({ full_name: name_ });
-          }}
-          style={STYLES.input}
-          returnKeyType="go"
-          autoCapitalize='none'
-          placeholder="Name"
-          placeholderTextColor="rgba(225,225,225,0.8)"
+          onPress={() => this.props.navigation.goBack()}
         />
-        <TextInput
-          autoCorrect={false}
-          onChangeText={username => {
-            this.setState({ username: username });
-          }}
-          style={STYLES.input}
-          returnKeyType="go"
-          autoCapitalize='none'
-          placeholder="Username"
-          placeholderTextColor="rgba(225,225,225,0.8)"
-        />
-        <TextInput
-          autoCorrect={false}
-          onChangeText={email => {
-            this.setState({ email: email });
-          }}
-          style={STYLES.input}
-          keyboardType="email-address"
-          autoCapitalize='none'
-          returnKeyType="go"
-          placeholder="Email"
-          placeholderTextColor="rgba(225,225,225,0.8)"
-        />
-        <DatePicker
-          style={STYLES.dob}
-          mode="date" //The enum of date, datetime and time
-          placeholder="Enter Date of Birth"
-          format="DD-MM-YYYY"
-          confirmBtnText="Confirm"
-          cancelBtnText="Cancel"
-          onDateChange={(date) => {this.setState({date: date})}}
-        />
-        <TextInput
-          autoCorrect={false}
-          onChangeText={pword => {
-            this.setState({ pword });
-          }}
-          style={STYLES.input}
-          returnKeyType="go"
-          placeholder="Password"
-          autoCapitalize='none'
-          secureTextEntry={true}
-          placeholderTextColor="rgba(225,225,225,0.8)"
-        />
-        <Button
-          style={STYLES.button}
-          text_style={STYLES.button_text}
-          text="Register"
-          onPress={register.bind(this)}
-        />
-      </View>
+        <View
+          style={{
+            alignItems: 'center',
+            height: '95%',
+            justifyContent: 'space-evenly',
+          }}>
+          <Image
+            style={STYLES.logo}
+            source={require('../assets/running.jpg')}
+          />
+          <TextInputCustom
+            autoCorrect={false}
+            onChangeText={name_ => {
+              this.setState({ full_name: name_ });
+            }}
+            style={STYLES.input}
+            returnKeyType="go"
+            autoCapitalize="none"
+            placeholder="Name"
+            placeholderTextColor="rgba(225,225,225,0.8)"
+          />
+          <TextInputCustom
+            autoCorrect={false}
+            onChangeText={username => {
+              this.setState({ username: username });
+            }}
+            style={STYLES.input}
+            returnKeyType="go"
+            autoCapitalize="none"
+            placeholder="Username"
+            placeholderTextColor="rgba(225,225,225,0.8)"
+          />
+          <TextInputCustom
+            autoCorrect={false}
+            onChangeText={email => {
+              this.setState({ email: email });
+            }}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            returnKeyType="go"
+            placeholder="Email"
+            placeholderTextColor="rgba(225,225,225,0.8)"
+          />
+          <DatePicker
+            style={STYLES.dob}
+            mode="date" //The enum of date, datetime and time
+            placeholder="Enter Date of Birth"
+            format="DD-MM-YYYY"
+            confirmBtnText="Confirm"
+            cancelBtnText="Cancel"
+            onDateChange={date => {
+              this.setState({ date: date });
+            }}
+          />
+          <TextInputCustom
+            autoCorrect={false}
+            onChangeText={pword => {
+              this.setState({ pword });
+            }}
+            returnKeyType="go"
+            placeholder="Password"
+            autoCapitalize="none"
+            secureTextEntry={true}
+            placeholderTextColor="rgba(225,225,225,0.8)"
+          />
+          <Button
+            style={STYLES.button}
+            text_style={STYLES.button_text}
+            text="Register"
+            onPress={register.bind(this)}
+          />
+        </View>
       </View>
     );
   }

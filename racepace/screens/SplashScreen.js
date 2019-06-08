@@ -6,8 +6,11 @@ import {
   Text,
   Dimensions,
   StyleSheet,
+  Alert,
 } from 'react-native';
 import Button from '../components/Button.js'
+import { Font } from 'expo'
+import '../global.js'
 
 const STYLES = StyleSheet.create({
   button: {
@@ -25,18 +28,29 @@ const STYLES = StyleSheet.create({
     height: Dimensions.get('window').width * 0.8,
     borderRadius: Dimensions.get('window').width * 0.8 / 2,
   },
-  title: {
-    fontSize:50,
-    fontFamily:"Courier New",
-    fontStyle:'italic',
-  }
 })
 
 export default class SplashScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {fontLoaded:false}
+  }
+
+  async componentDidMount() {
+    await Font.loadAsync({
+      'RobotoCondensed-BoldItalic': require('../assets/fonts/RobotoCondensed-BoldItalic.ttf'),
+    });
+    this.setState({ fontLoaded: true });
+  }
+
   render() {
     return (
-      <View style={{alignItems:"center", flexDirection:"column",flex:1,justifyContent: 'space-evenly'}}>
-        <Text style={STYLES.title}>Racepace</Text>
+      <View style={[{alignItems:"center", flexDirection:"column",flex:1,justifyContent: 'space-evenly'},global.styles.background]}>
+          {
+            this.state.fontLoaded ? (
+              <Text style={[{fontFamily:'RobotoCondensed-BoldItalic',fontSize:60},global.styles.genericColor]}>Racepace</Text>
+            ) : <Text>Expo Loading</Text>
+          }
         <Image style={STYLES.logo} source={require('../assets/running.jpg')} />
         <Button
           text="Register"

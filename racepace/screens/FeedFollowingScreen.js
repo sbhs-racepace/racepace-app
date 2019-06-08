@@ -14,7 +14,7 @@ export default class FeedFollowingScreen extends React.Component {
       return <Text>Please login to see your feed</Text>
     }
     return (
-      <ScrollView>
+      <ScrollView contentContainerStyle={global.styles.lighterBackground}>
         <FeedItem
           username="Test User"
           posttime="3 hours ago"

@@ -1,42 +1,65 @@
 import * as React from 'react';
 import { Image, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
-export default class Button extends React.Component {
+import { withNavigation } from 'react-navigation';
+import '../global.js'
+
+class Button extends React.Component {
   constructor(props) {
     super(props);
   }
 
   render() {
-    let styles = StyleSheet.create({
+    const styles = StyleSheet.create({
       button: {
-        backgroundColor: this.props.disabled ? 'rgb(192,192,192)' : 'rgb(0, 153, 255)',
-        //^^ Doesn't work
-        borderWidth: 0,
+        backgroundColor: this.props.disabled
+          ? global.styles.grey.color
+          : global.styles.genericColor.color
+        ,
+        width: this.props.back_btn ? 40 : "80%",
+        height: 30,
+        flexDirection: "row",
+        justifyContent: "center",
+        ...this.props.style,
       },
       text: {
         textAlign: 'center',
-        color: 'white',
+        color: global.styles.genericColorTwo.color,
+        ...this.props.text_style,
       },
-      img: {},
+      img: {
+        ...this.props.img_style,
+      },
     });
 
     return (
       <TouchableOpacity
-        style={StyleSheet.flatten([styles.button, this.props.style])}
-        onPress={this.props.onPress}
-        disabled={this.props.disabled}>
+        {...this.props}
+        style={styles.button}
+        onPress={
+          this.props.back_btn
+            ? () => this.props.navigation.goBack()
+            : this.props.onPress
+        }
+        >
         {this.props.img && 
           <Image
             source={this.props.img}
-            style={StyleSheet.flatten([styles.img, this.props.img_style])}
+            style={styles.img}
           />
         }
-        {this.props.text && 
-          <Text style={StyleSheet.flatten([styles.text, this.props.text_style])}>
+        {this.props.text &&
+          <Text
+            style={styles.text}>
             {this.props.text}
           </Text>
+        }
+        {!this.props.text && this.props.back_btn &&
+          <Text style={styles.text}>Back</Text>
         }
         {this.props.children}
       </TouchableOpacity>
     );
   }
 }
+
+export default withNavigation(Button);

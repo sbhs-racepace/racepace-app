@@ -2,8 +2,8 @@ import React from 'react';
 import MapView from 'react-native-maps';
 import { Marker, Polyline } from 'react-native-maps';
 import { Alert, View, Text, TextInput, StyleSheet, Dimensions, Platform, } from "react-native";
-import { Location, Permissions} from 'expo';
-import "../global"
+import { Location, Permissions, Constants } from 'expo';
+import "../global";
 import Button from '../components/Button';
 import Timer from '../components/Timer';
 
@@ -131,6 +131,7 @@ export default class MapScreen extends React.Component {
         {
           accuracy: 4, //Accurate to 10m
           timeInterval: 5000,
+          distanceInterval:10,
         },
         (location) => {
           // Always moves to current location if activated
@@ -308,7 +309,7 @@ export default class MapScreen extends React.Component {
 
   render() {
     let header;
-    if (!this.props.navigation.getParams('start',null)) {
+    if (!this.props.navigation.getParam('start',null)) {
       header = (
         <View style={{ ...STYLES.header, flexDirection: 'row' }}>
           <TextInput
