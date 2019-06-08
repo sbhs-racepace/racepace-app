@@ -60,3 +60,32 @@ global.user_routes = [
 ]
 global.region = {name:"NSW Australia",
 coords:"-32.3010715,146.746138"}
+
+import {
+  StyleSheet,
+} from 'react-native';
+
+global.styles = StyleSheet.create({
+  background: {
+    backgroundColor:'rgb(25,25,55)',
+  },
+  lighterBackground: {
+    backgroundColor:"rgb(55,55,80)"
+  },
+  genericColor: { // Lighter Contrast Color
+    color:"rgb(0, 153, 255)"
+  },
+  genericColorTwo: { // Same Colour as background
+    color:"rgb(25,25,55)"
+  },
+  grey: {
+    color:"rgb(192,192,192)"
+  },
+  textInputColor: { // Lighter than background color
+    color:"rgb(55,55,80)"
+  },
+  textColor: { // Magenta ish color
+    color:"rgb(200,200,255)"
+  }
+
+})
