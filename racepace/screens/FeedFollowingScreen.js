@@ -1,6 +1,6 @@
 import React from 'react';
 import { Prompt, display_prompt } from '../components/Prompt';
-import { ScrollView, View, Text, Alert } from 'react-native';
+import { ScrollView, View, Text, Alert, KeyboardAvoidingView } from 'react-native';
 import Button from "../components/Button"
 import {FeedItem} from "../components/FeedItem"
 import "../global.js"
@@ -14,6 +14,7 @@ export default class FeedFollowingScreen extends React.Component {
       return <Text>Please login to see your feed</Text>
     }
     return (
+      <KeyboardAvoidingView keyboardVerticalOffset={100} behavior="position">
       <ScrollView>
         <FeedItem
           username="Test User"
@@ -32,6 +33,7 @@ export default class FeedFollowingScreen extends React.Component {
           time="30"
         />
       </ScrollView>
+      </KeyboardAvoidingView>
     );
   }
 }
