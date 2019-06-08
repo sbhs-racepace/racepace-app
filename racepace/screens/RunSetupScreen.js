@@ -3,30 +3,20 @@ import { StyleSheet, View, Text, Alert, ScrollView, TextInput, Dimensions } from
 import Button from "../components/Button"
 import "../global.js"
 import {Location,Permissions} from 'expo';
+import TextInputCustom from '../components/TextInput';
 import RadioForm from 'react-native-simple-radio-button';
 
 const STYLES = StyleSheet.create({
-  text_style: {
-    fontSize: 20,
-  },
   container: {
     borderWidth:1,
     padding:"3%",
     justifyContent:"space-evenly", 
-    flexDirection:"column"
+    flexDirection:"column",
+    alignContent:'center',
   },
-  input_view: {
-    borderWidth: 1,
-    borderRadius:10,
-    margin:"3%"
-  },
-  pace_view: {
-    borderWidth: 1,
-    borderRadius:10,
-    flexDirection:"row",
-    alignItems:"center",
-    margin:"3%"
-  },
+  text_style: {
+    color: global.styles.textColor.color
+  }
 })
 
 export default class RunSetupScreen extends React.Component {
@@ -131,28 +121,26 @@ export default class RunSetupScreen extends React.Component {
   
   render() {
     return(
-      <View style={{flex:1}}>
-        <View style={[STYLES.container, {flex:2}]}>
+      <View style={[{flex:1},global.styles.lighterBackground]}>
+        <View style={[STYLES.container, {flex:2, alignItems:"center"}]}>
           <Text style={[STYLES.text_style,{textAlign:"center"}]}>Plan your route</Text>
-          <TextInput 
-            style={[STYLES.text_style,STYLES.input_view]}
+          <TextInputCustom 
             placeholder="Start"
             defaultValue={this.state.start}
             onChangeText={start => {
               this.setState({ start: start });
             }}
           />
-          <TextInput 
-            style={[STYLES.text_style,STYLES.input_view]}
+          <TextInputCustom 
             placeholder="End"
             defaultValue={this.props.navigation.state.params==undefined ? this.state.end : this.props.navigation.state.params.name}
             onChangeText={end => {
               this.setState({ end: end });
             }}
           />
-          <View style={STYLES.pace_view}>
-            <TextInput 
-            style={STYLES.text_style} 
+          <View style={{flexDirection:'row'}}>
+            <TextInputCustom 
+              style={{width:"40%"}}
               placeholder="minutes"
               onChangeText={minutes => {
                 this.setState({ goal_pace: {minutes: minutes} });
@@ -161,9 +149,8 @@ export default class RunSetupScreen extends React.Component {
               keyboardType="number-pad"
               returnKeyType="go"
             />
-            <Text style={STYLES.text_style}>:</Text>
-            <TextInput 
-              style={STYLES.text_style} 
+            <TextInputCustom 
+              style={{width:"40%"}}
               placeholder="seconds"
               onChangeText={seconds => {
                 this.setState({ goal_pace: {seconds: seconds} });
@@ -173,6 +160,12 @@ export default class RunSetupScreen extends React.Component {
               keyboardType="number-pad"
             />
           </View>
+          <Button 
+            style={{borderRadius:10,padding:"2%"}} 
+            text="Generate Route Info"
+            onPress={() => {this.setupRoute(this.state.start,this.state.end)}}
+          />
+
           {/* <Text style={[STYLES.text_style,{textAlign:"center"}]}>Select a route typing</Text>
           <RadioForm
             radio_props={this.radio_props}
@@ -181,20 +174,16 @@ export default class RunSetupScreen extends React.Component {
             labelHorizontal={true}
             onPress={(route_type) => {this.setState({route_type:route_type})}}
           /> */}
-          <Button 
-            style={{borderRadius:10,padding:"2%"}} 
-            text="Generate Route Info"
-            onPress={() => {this.setupRoute(this.state.start,this.state.end)}}
-          />
+
         </View>
-        <View style={[STYLES.container, {flex:1}]}>
+        <View style={[STYLES.container, {flex:1, alignItems:'center'}]}>
           <Text style={[STYLES.text_style,{textAlign:"center"}]}>Route Information</Text>
           <Text style={STYLES.text_style}>Time: {this.state.time.minutes} minutes {this.state.time.seconds} seconds</Text>
           <Text style={STYLES.text_style}>Total Distance: {this.state.distance}km</Text>
           <Text style={STYLES.text_style}>Calories Burnt/Kilojoules Burnt: {this.state.calories} Cal/ {Math.floor(this.state.calories *4.184)} Kj</Text>
           <Text style={STYLES.text_style}>Points: {this.state.points}</Text>
         </View>
-        <View style={STYLES.container}>
+        <View style={[STYLES.container,{alignItems:'center'}]}>
           <Button 
             style={{borderRadius:10,padding:"2%"}} 
             text="Show on map"
