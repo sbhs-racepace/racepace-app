@@ -17,8 +17,8 @@ export default class LevelScreen extends React.Component {
     super(props);
     this.state = {
       level: 1,
-      points: 24659,
-      remainder: 5341,
+      points: 24759,
+      remainder: 5241,
     };
   }
 
@@ -41,9 +41,15 @@ export default class LevelScreen extends React.Component {
           textAlign: 'center', 
           width: '80%',
       },
+      header: {
+      top: '0%',
+      borderWidth: 1,
+      },
     });
 
     return (
+      <View style={{flex:1}}>
+        <Button style={STYLES.header} back_btn={true} />
       <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
         <Text style={{ fontSize: 40 }}>You are level {this.state.level}</Text>
         <View style={STYLES.progressBar}>
@@ -52,6 +58,7 @@ export default class LevelScreen extends React.Component {
         <Text style={STYLES.remainderText}>
           {this.state.remainder} more points are required to level up. Race on!
         </Text>
+      </View>
       </View>
     );
   }
