@@ -182,7 +182,7 @@ export default class RunSetupScreen extends React.Component {
             onPress={(route_type) => {this.setState({route_type:route_type})}}
           /> */}
           <Button 
-            style={{borderRadius:10,padding:"2%"}} 
+            style={{borderRadius:10,padding:"2%", alignSelf: "center"}} 
             text="Generate Route Info"
             onPress={() => {this.setupRoute(this.state.start,this.state.end)}}
           />
@@ -196,7 +196,7 @@ export default class RunSetupScreen extends React.Component {
         </View>
         <View style={STYLES.container}>
           <Button 
-            style={{borderRadius:10,padding:"2%"}} 
+            style={{borderRadius:10,padding:"2%", alignSelf:"center"}} 
             text="Show on map"
             onPress={() => this.props.navigation.navigate("Map",{route: this.state.route, start:this.state.start, end: this.state.end})}
             disabled={!this.state.route}
