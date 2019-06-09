@@ -11,8 +11,10 @@ const STYLES = StyleSheet.create({
 	},
   routeName: {
     fontSize: 20
+	},
+	text: {
+		color:global.colors.textColor
 	}
-  
 })
 
 export default class FeedRoute extends React.Component {
@@ -23,9 +25,9 @@ export default class FeedRoute extends React.Component {
 	render() {
 		return (
 			<View style={STYLES.feed_item}>
-      	<Text style={[STYLES.routeName,{color:global.styles.textColor.color}]}>{this.props.routeName}</Text>
-        <Text style={{color:global.styles.textColor.color}}>{this.props.postTime}</Text>
-      	<Text style={{color:global.styles.textColor.color}}>Stats: {this.props.length}km {this.props.time}m</Text>
+      	<Text style={[STYLES.routeName,STYLES.text]}>{this.props.routeName}</Text>
+        <Text style={STYLES.text}>{this.props.postTime}</Text>
+      	<Text style={STYLES.text}>Stats: {this.props.length}km {this.props.time}m</Text>
 			</View>
 		)
 	}

@@ -8,6 +8,7 @@ const STYLES = StyleSheet.create({
 		borderWidth:1,
 		padding: "5%",
 		width:"100%",
+		backgroundColor: global.colors.lightBackground
 	},
   profilePic: {
     width:60,
@@ -25,13 +26,20 @@ const STYLES = StyleSheet.create({
   routePic: {
 		width:"100%",
   },
-  button: {
+  likeCommentButton: {
     fontSize:20,
     width:"40%",
 		borderWidth:0,
 	},
 	text: {
-		color: global.styles.textColor.color
+		color: global.colors.textColor
+	},
+	likeCommentCombo: {
+		flexDirection: "row", 
+		justifyContent: 'space-between', 
+		width:"100%", 
+		backgroundColor: global.colors.primaryColor, 
+		borderRadius:10,padding:"3%"
 	}
 })
 
@@ -59,16 +67,15 @@ export class FeedItem extends React.Component {
 				
 				<Image source={require('../assets/cat.jpeg')} style={STYLES.routePic} />
 				<View
-					style={{flexDirection: "row", justifyContent: 'space-between', width:"100%", margin:"2%"}}
+					style={global.view_styles.rowView}
 				>
 					<Text style={STYLES.text}>0 Likes</Text>
 					<Text style={STYLES.text}>0 Comments</Text>
 				</View>
-				<View style={{flexDirection: "row", justifyContent: 'space-between', width:"100%", backgroundColor: "rgb(0, 153, 255)", borderRadius:10,padding:"3%"}}>
-					<Button text="Like" style={STYLES.button}/>
-					<Button text="Comment" style={STYLES.button} />
+				<View style={STYLES.likeCommentCombo}>
+					<Button text="Like" style={STYLES.likeCommentButton}/>
+					<Button text="Comment" style={STYLES.likeCommentButton} />
 				</View>
-
 			</View>
 		)
 	}

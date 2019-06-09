@@ -6,18 +6,10 @@ import request from '../request';
 import '../global'
 
 const STYLES = StyleSheet.create({
-  requestsBtn: {
-    width: '90%',
-    height: 40,
-    borderWidth: 0,
-    borderRadius: 10,
-    margin: '5 5%',
-  },
   scrollView: {
-    justifyContent: 'flex-start',
     width: '100%',
     alignItems: 'center',
-    backgroundColor:global.styles.lighterBackground.backgroundColor,
+    backgroundColor:global.colors.lightBackground,
   },
 });
 
@@ -35,9 +27,7 @@ export default class FeedYouScreen extends React.Component {
     }
 
     const test_data = (
-      <ScrollView
-        contentContainerStyle={STYLES.scrollView}
-      >
+      <ScrollView contentContainerStyle={STYLES.scrollView}>
         <FeedRoute
           routeName="Run number 1"
           postTime="10am"
@@ -60,33 +50,33 @@ export default class FeedYouScreen extends React.Component {
     );
 
     return (
-      <View style={[{ flex: 1 }, global.styles.lighterBackground]}>
-        <Button
-          text="Follow Requests"
-          style={{width:"100%", backgroundColor:global.styles.background.backgroundColor}}
-          text_style={{ padding: '1%', color: global.styles.textColor.color }}
-          onPress={() => this.props.navigation.navigate('Follow')}
-        />
-        {global.TEST && test_data}
-
-        {/* {global.TEST && (
-          <ScrollView contentContainerStyle={STYLES.scrollView}>
-            {resp.map(route => {
-              {
-                route.real_time_route.active && (
-                  <FeedRoute
-                    routeName=""
-                    postTime={route.real_time_route.start_time}
-                    length={route.real_time_route.current_distance}
-                    time={route.real_time_route.current_duration}
-                  />
-                );
-              }
-            })}
-          </ScrollView>
-        )} */}
-
+      <View style={{flex:1,backgroundColor:global.colors.lightBackground}}>
+          <Button
+            text="Follow Requests"
+            style={{width:"100%", backgroundColor:global.colors.darkBackground}}
+            text_style={{color: global.colors.offColor, padding:"3%"}}
+            onPress={() => this.props.navigation.navigate('Follow')}
+          />
+          {test_data}
       </View>
     );
   }
 }
+
+
+{/* {global.TEST && (
+  <ScrollView contentContainerStyle={STYLES.scrollView}>
+    {resp.map(route => {
+      {
+        route.real_time_route.active && (
+          <FeedRoute
+            routeName=""
+            postTime={route.real_time_route.start_time}
+            length={route.real_time_route.current_distance}
+            time={route.real_time_route.current_duration}
+          />
+        );
+      }
+    })}
+  </ScrollView>
+)} */}

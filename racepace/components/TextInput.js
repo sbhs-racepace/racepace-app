@@ -21,11 +21,11 @@ export default class TextInputCustom extends React.Component {
       view: {
         width: "80%",
         borderRadius: 10,
-        backgroundColor: global.styles.textInputColor.color,
+        backgroundColor: global.colors.inputColor,
         ...this.props.style
       },
       text: {
-        color: global.styles.textColor.color,
+        color: global.colors.textColor,
         ...this.placeholder_style
       },
       input: {
@@ -34,7 +34,7 @@ export default class TextInputCustom extends React.Component {
         borderWidth: 1,
         padding: 1,
         fontSize:20,
-        color: global.styles.textColor.color,
+        color: global.colors.textColor,
         ...this.props.input_style,
       }
     });

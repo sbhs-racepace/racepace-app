@@ -7,10 +7,6 @@ import TextInputCustom from '../components/TextInput';
 import '../global';
 
 const STYLES = StyleSheet.create({
-  button: {
-    width: '80%',
-    borderRadius: 10,
-  },
   button_text: {
     padding: '1%',
     fontSize: 16,
@@ -44,7 +40,7 @@ export default class LoginScreen extends React.Component {
 
   render() {
     return (
-      <View style={global.styles.background}>
+      <View style={{backgroundColor: global.colors.darkBackground}}>
         <Button
           style={STYLES.back_btn}
           text="Back"
@@ -83,13 +79,13 @@ export default class LoginScreen extends React.Component {
             placeholderTextColor="rgba(225,225,225,0.8)"
           />
           <Button
-            style={STYLES.button}
+            style={global.component_styles.roundedButton}
             text_style={STYLES.button_text}
             onPress={login.bind(this, this.state.email, this.state.pword)}
             text="Login"
           />
           <Button
-            style={STYLES.button}
+            style={global.component_styles.roundedButton}
             text_style={STYLES.button_text}
             onPress={googleLogin}
             text="Login with Google"

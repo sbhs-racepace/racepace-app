@@ -15,15 +15,20 @@ const STYLES = StyleSheet.create({
     alignContent:'center',
   },
   text_style: {
-    color: global.styles.textColor.color
-  }
+    color: global.colors.textColor
+  },
+  title_style: {
+    fontSize:30,
+    fontFamily: 'RobotoCondensed-BoldItalic',
+    textAlign:"center",
+    color: global.colors.primaryColor
+  },
 })
 
 export default class RunSetupScreen extends React.Component {
   constructor(state) {
     super(state);
     this.state = {
-      route_type : 0,
       start: "-33.878363,151.104490", //Burwood
       end: "-33.912466,151.103120", //Campsie
       goal_pace: {minutes: "5", seconds: "0"},
@@ -121,9 +126,9 @@ export default class RunSetupScreen extends React.Component {
   
   render() {
     return(
-      <View style={[{flex:1},global.styles.lighterBackground]}>
+      <View style={{flex:1, backgroundColor: global.colors.lightBackground}}>
         <View style={[STYLES.container, {flex:2, alignItems:"center"}]}>
-          <Text style={[STYLES.text_style,{textAlign:"center"}]}>Plan your route</Text>
+          <Text style={STYLES.title_style}>Plan your route</Text>
           <TextInputCustom 
             placeholder="Start"
             defaultValue={this.state.start}
@@ -165,16 +170,6 @@ export default class RunSetupScreen extends React.Component {
             text="Generate Route Info"
             onPress={() => {this.setupRoute(this.state.start,this.state.end)}}
           />
-
-          {/* <Text style={[STYLES.text_style,{textAlign:"center"}]}>Select a route typing</Text>
-          <RadioForm
-            radio_props={this.radio_props}
-            initial={0}
-            formHorizontal={true}
-            labelHorizontal={true}
-            onPress={(route_type) => {this.setState({route_type:route_type})}}
-          /> */}
-
         </View>
         <View style={[STYLES.container, {flex:1, alignItems:'center'}]}>
           <Text style={[STYLES.text_style,{textAlign:"center"}]}>Route Information</Text>

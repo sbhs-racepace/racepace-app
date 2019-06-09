@@ -14,13 +14,15 @@ import '../global.js'
 
 const STYLES = StyleSheet.create({
   button: {
-    fontSize:20,
     width:"80%",
     borderRadius:10,
   },
   button_text: {
-    padding:"1%",
+    padding:"2%",
     fontSize: 16
+  },
+  title: {
+    fontFamily:'RobotoCondensed-BoldItalic',fontSize:60,color:global.colors.primaryColor
   },
   logo: {
     margin:"5%",
@@ -45,10 +47,10 @@ export default class SplashScreen extends React.Component {
 
   render() {
     return (
-      <View style={[{alignItems:"center", flexDirection:"column",flex:1,justifyContent: 'space-evenly'},global.styles.background]}>
+      <View style={[global.view_styles.columnCenterView,{backgroundColor:global.colors.darkBackground, justifyContent:'space-evenly'}]}>
           {
             this.state.fontLoaded ? (
-              <Text style={[{fontFamily:'RobotoCondensed-BoldItalic',fontSize:60},global.styles.genericColor]}>Racepace</Text>
+              <Text style={STYLES.title}>Racepace</Text>
             ) : <Text>Expo Loading</Text>
           }
         <Image style={STYLES.logo} source={require('../assets/running.jpg')} />

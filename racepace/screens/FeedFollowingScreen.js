@@ -14,24 +14,26 @@ export default class FeedFollowingScreen extends React.Component {
       return <Text>Please login to see your feed</Text>
     }
     return (
-      <ScrollView contentContainerStyle={global.styles.lighterBackground}>
-        <FeedItem
-          username="Test User"
-          posttime="3 hours ago"
-          routename="Test Route"
-          description="This is a great route"
-          length="2.2"
-          time="30"
-        />
-        <FeedItem
-          username="Test User"
-          posttime="3 hours ago"
-          routename="Test Route"
-          description="This is a great route"
-          length="2.2"
-          time="30"
-        />
-      </ScrollView>
+      <View style={{backgroundColor:global.colors.lightBackground, flex:1}}>
+        <ScrollView contentContainerStyle={global.colors.lightBackground}>
+          <FeedItem
+            username="Test User"
+            posttime="3 hours ago"
+            routename="Test Route"
+            description="This is a great route"
+            length="2.2"
+            time="30"
+          />
+          <FeedItem
+            username="Test User"
+            posttime="3 hours ago"
+            routename="Test Route"
+            description="This is a great route"
+            length="2.2"
+            time="30"
+          />
+        </ScrollView>
+      </View>
     );
   }
 }

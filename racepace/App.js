@@ -82,9 +82,9 @@ const LoginNavigator = createStackNavigator({
         },
         {
           tabBarOptions: {
-            style: {
-              backgroundColor: global.styles.background.backgroundColor,
-            },
+            activeTintColor: global.colors.textColor,
+            inactiveTintColor: global.colors.offColor,
+            style: {backgroundColor: global.colors.darkBackground},
           },
         }
       ),
@@ -94,12 +94,16 @@ const LoginNavigator = createStackNavigator({
       RealTimeRoute: { screen: RealTimeRouteScreen },
       Chat: { screen: ChatScreenTest },
       Profile: { screen: ProfileScreen },
-    }, {
-      navigationOptions: { header: null, gesturesEnabled: false },
+    },
+    {
+      navigationOptions: { 
+        header: null, 
+        gesturesEnabled: false 
+      },
       tabBarOptions: {
-        activeTintColor: global.styles.textColor.color,
-        inactiveTintColor: global.styles.grey.color,
-        tabStyle: global.styles.background,
+        activeTintColor: global.colors.textColor,
+        inactiveTintColor: global.colors.offColor,
+        style: { backgroundColor: global.colors.darkBackground },
       }
     })
   },
@@ -110,8 +114,8 @@ const AppContainer = createAppContainer(LoginNavigator);
 export default class App extends React.Component {
   render() {
     return (
-      <View style={[{ flex: 1, marginTop: 20,},global.styles.lighterBackground]}>
-        <AppContainer />
+      <View style={{ flex: 1, marginTop: 20, backgroundColor:global.colors.darkBackground}}>
+        <AppContainer style={{backgroundColor:global.colors.darkBackground}}/>
       </View>
     );
   }

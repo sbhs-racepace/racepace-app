@@ -12,8 +12,8 @@ class Button extends React.Component {
     const styles = StyleSheet.create({
       button: {
         backgroundColor: this.props.disabled
-          ? global.styles.grey.color
-          : global.styles.genericColor.color
+          ? global.colors.offColor
+          : global.colors.primaryColor
         ,
         width: this.props.back_btn ? 40 : "80%",
         height: 30,
@@ -23,7 +23,7 @@ class Button extends React.Component {
       },
       text: {
         textAlign: 'center',
-        color: global.styles.genericColorTwo.color,
+        color: global.colors.textColor,
         ...this.props.text_style,
       },
       img: {

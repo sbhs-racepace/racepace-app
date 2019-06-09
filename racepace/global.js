@@ -30,6 +30,9 @@ global.user = {
   followers: [],
 }
 
+global.region = {name:"NSW Australia",
+coords:"-32.3010715,146.746138"}
+
 global.serverURL = "http://racepace-sbhs.herokuapp.com"
 
 global.googleLoginID = {
@@ -58,34 +61,30 @@ global.user_routes = [
     nodes: [(34,121),(34,122)]
   }
 ]
-global.region = {name:"NSW Australia",
-coords:"-32.3010715,146.746138"}
 
 import {
   StyleSheet,
 } from 'react-native';
 
-global.styles = StyleSheet.create({
-  background: {
-    backgroundColor:'rgb(25,25,55)',
-  },
-  lighterBackground: {
-    backgroundColor:"rgb(55,55,80)"
-  },
-  genericColor: { // Lighter Contrast Color
-    color:"rgb(0, 153, 255)"
-  },
-  genericColorTwo: { // Same Colour as background
-    color:"rgb(25,25,55)"
-  },
-  grey: {
-    color:"rgb(192,192,192)"
-  },
-  textInputColor: { // Lighter than background color
-    color:"rgb(55,55,80)"
-  },
-  textColor: { // Magenta ish color
-    color:"rgb(200,200,255)"
-  }
 
+global.colors = {
+  darkBackground:'rgb(25,25,55)',
+  lightBackground:"rgb(55,55,80)",
+  primaryColor:"rgb(0, 153, 255)",
+  offColor:"rgb(120,120,140)",
+  inputColor:"rgb(55,55,80)",
+  textColor: "rgb(200,200,255)",
+  secondaryTextColor: "rgb(150,150,200)"
+}
+
+global.view_styles = StyleSheet.create({
+  columnCenterView:{ alignItems:"center", flexDirection:"column",flex:1},
+  rowView: {flexDirection: "row", justifyContent: 'space-between', width:"100%"},
+})
+
+global.component_styles = StyleSheet.create({
+  roundedButton: {
+      width: '80%',
+      borderRadius: 10,
+  }
 })
