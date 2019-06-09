@@ -40,7 +40,7 @@ export default class FeedFollowingScreen extends React.Component {
             length="2.2"
             time="30"
           />
-          <View style={{height:Dimensions.get('window').height * 0.25, alignItems:'center'}}>
+          <View style={{height:Dimensions.get('window').height * 0.3, alignItems:'center'}}>
             <Button
               style={global.component_styles.roundedButton}
               text_style={{

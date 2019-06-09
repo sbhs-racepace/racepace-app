@@ -16,7 +16,7 @@ class Button extends React.Component {
           : global.colors.primaryColor
         ,
         width: this.props.back_btn ? 40 : "80%",
-        height: 30,
+        height: 40,
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
