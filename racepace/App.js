@@ -16,7 +16,7 @@ import MapScreen from './screens/MapScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
-import ChatScreenTest from './screens/ChatScreenTest';
+import ChatScreen from './screens/ChatScreen';
 import RouteListScreen from './screens/RouteListScreen';
 import FollowScreen from './screens/FollowScreen';
 import RunSetupScreen from './screens/RunSetupScreen';
@@ -92,7 +92,7 @@ const LoginNavigator = createStackNavigator({
       Map: { screen: MapScreen },
       Group: { screen: GroupScreen },
       RealTimeRoute: { screen: RealTimeRouteScreen },
-      Chat: { screen: ChatScreenTest },
+      Chat: { screen: ChatScreen },
       Profile: { screen: ProfileScreen },
     },
     {

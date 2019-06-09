@@ -12,6 +12,7 @@ import {
   Image,
 } from 'react-native';
 import Button from '../components/Button';
+import BackButton from '../components/BackButton'
 import '../global.js';
 const STYLES = StyleSheet.create({
   backbtn: {
@@ -81,59 +82,60 @@ export default class EditScreen extends React.Component {
       <KeyboardAvoidingView
         style={{
           flex: 1,
-          justifyContent: 'space-between',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}>
-        <View style={{ flex: 1, alignSelf: 'flex-start' }}>
-          <Button
-            text="Back"
-            onPress={() => this.props.navigation.goBack()}
-            style={STYLES.backbtn}
-          />
-        </View>
-        <View style={{ flex: 5, flexDirection: 'row' }}>
-          <View style={{ flex: 1 }}>
-            <Image
-              style={STYLES.profile_image}
-              source={{
-                uri: this.state.uri,
-              }}
-            />
-            <Button
-              text="Choose File"
-              style={STYLES.chsfile}
-              onPress={async () => {
-                let { uri, type } = await DocumentPicker.getDocumentAsync({
-                  type: 'image/*',
-                });
-                if (type == 'success') {
-                  this.setState({ uri });
-                }
-              }}
-            />
+          backgroundColor:global.colors.lightBackground
+        }}
+      >
+        <BackButton
+          onPress={this.props.navigation.goBack}
+        />
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <View style={{ flex: 5, flexDirection: 'row' }}>
+            <View style={{ flex: 1 }}>
+              <Image
+                style={STYLES.profile_image}
+                source={{
+                  uri: this.state.uri,
+                }}
+              />
+              <Button
+                text="Choose File"
+                style={STYLES.chsfile}
+                onPress={async () => {
+                  let { uri, type } = await DocumentPicker.getDocumentAsync({
+                    type: 'image/*',
+                  });
+                  if (type == 'success') {
+                    this.setState({ uri });
+                  }
+                }}
+              />
+            </View>
+            <View style={{ flex: 2 }}>
+              <TextInput placeholder="Name" style={STYLES.input} />
+              <TextInput
+                placeholder="Enter Bio"
+                style={{ ...STYLES.input, height: 100, fontSize: 12 }}
+                multiline={true}
+              />
+            </View>
           </View>
-          <View style={{ flex: 2 }}>
-            <TextInput placeholder="Name" style={STYLES.input} />
-            <TextInput
-              placeholder="Enter Bio"
-              style={{ ...STYLES.input, height: 100, fontSize: 12 }}
-              multiline={true}
-            />
-          </View>
-        </View>
-        <Text style={{ fontSize: 30 }}> Change Password</Text>
-        <TextInput placeholder="Current Password" style={STYLES.input} />
-        <TextInput placeholder="New Password" style={STYLES.input} />
-        <TextInput placeholder="Confirm New Password" style={STYLES.input} />
-        <Text style={{ fontSize: 30 }}> Change Username</Text>
-        <Text style={{ fontSize: 15 }}>
-          {' '}
-          Current Username: {global.user.username}{' '}
-        </Text>
-        <TextInput placeholder="New Username" style={STYLES.input} />
-        <View style={{ flex: 5 }} />
-   
+          <Text style={{ fontSize: 30 }}> Change Password</Text>
+          <TextInput placeholder="Current Password" style={STYLES.input} />
+          <TextInput placeholder="New Password" style={STYLES.input} />
+          <TextInput placeholder="Confirm New Password" style={STYLES.input} />
+          <Text style={{ fontSize: 30 }}> Change Username</Text>
+          <Text style={{ fontSize: 15 }}>
+            {' '}
+            Current Username: {global.user.username}{' '}
+          </Text>
+          <TextInput placeholder="New Username" style={STYLES.input} />
+          <View style={{ flex: 5 }}>
           <Button
             text="Save Changes"
             style={{
@@ -144,7 +146,8 @@ export default class EditScreen extends React.Component {
               fontSize: 14,
             }}
           />
-   
+          </View>
+        </View>
       </KeyboardAvoidingView>
     );
   }

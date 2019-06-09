@@ -11,6 +11,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import Button from '../components/Button.js';
+import BackButton from '../components/BackButton'
 
 class FriendBox extends React.Component {
   constructor(props) {
@@ -90,13 +91,6 @@ export default class FindFriendsScreen extends React.Component {
         height: '100%',
         borderRadius: 0.135 * windowWidth,
       },
-      back_btn: {
-        width: 40,
-        height: '100%',
-        borderRadius: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-      },
       search_box: {
         fontSize: 20,
         borderWidth: 1,
@@ -108,14 +102,11 @@ export default class FindFriendsScreen extends React.Component {
     };
     return (
       <View style={{ flex: 1 }}>
+        <BackButton
+          onPress={this.props.navigation.goBack}
+        />
         <View style={{ height: '20%', width: '100%' }}>
           <View style={{ height: '30%', flexDirection: 'row' }}>
-            <Button
-              style={STYLES.back_btn}
-              text="Back"
-              text_style={STYLES.button_text}
-              onPress={() => this.props.navigation.goBack()}
-            />
             <Text>Find Friends</Text>
           </View>
           <View

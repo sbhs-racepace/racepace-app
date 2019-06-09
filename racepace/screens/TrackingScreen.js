@@ -8,6 +8,7 @@ import {
   ScrollView,
 } from 'react-native';
 import Button from '../components/Button'
+import BackButton from '../components/BackButton'
 import MapView from 'react-native-maps';
 import { Marker, Polyline } from 'react-native-maps';
 import {Location,Permissions} from 'expo';
@@ -151,7 +152,9 @@ export default class TrackingScreen extends React.Component {
             />
           ))}
         </MapView>
-        <Button text="Back" onPress={()=>this.props.navigation.goBack()} style={STYLES.back_btn} />
+        <BackButton
+          onPress={this.props.navigation.goBack}
+        />
       </View>
     );
   }

@@ -19,6 +19,7 @@ class Button extends React.Component {
         height: 30,
         flexDirection: "row",
         justifyContent: "center",
+        alignItems: "center",
         ...this.props.style,
       },
       text: {

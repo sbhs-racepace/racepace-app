@@ -13,6 +13,11 @@ const STYLES = StyleSheet.create({
     borderStyle:"solid",
     borderRadius:20,
     flexDirection:"column",
+  },  
+  text: {
+    fontSize:15,
+    padding:"3%",
+    color:global.colors.textColor
   }
 })
 
@@ -24,8 +29,8 @@ class RouteItem extends React.Component {
   render() {
     return (
       <View style={STYLES.route_item}>
-        <Text>{this.props.route.start} to {this.props.route.end}</Text>
-        <Text>{this.props.route.dist}km</Text>
+        <Text style={STYLES.text}>{this.props.route.start} to {this.props.route.end}</Text>
+        <Text style={STYLES.text}>{this.props.route.dist}km</Text>
       </View>
     )
   }

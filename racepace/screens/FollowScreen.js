@@ -33,11 +33,11 @@ class FollowRequest extends React.Component {
     return (
       <View style={{width:'100%',alignItems:'center',flex:1, flexDirection:'row', padding:'3%'}}>
         <View style={{flex:1,flexDirection:'column'}}>
-        <Image
-                style={STYLES.profile_image}
-                source={{uri: `${global.serverURL}/api/avatars/${global.login_status.user_id}.png`}}
-              />
-        </View>
+          <Image
+              style={STYLES.profile_image}
+              source={{uri: `${global.serverURL}/api/avatars/${global.login_status.user_id}.png`}}
+            />
+          </View>
         <View style={{flex:2,flexDirection:'column', justifyItems:'center'}}>
           <Text style={STYLES.text}>{this.props.name} wants to follow you!</Text>
           <Button 

@@ -18,6 +18,7 @@ const STYLES = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-evenly',
+    backgroundColor: global.colors.lightBackground
   },
   profile_image: {
     height: 100,
@@ -29,6 +30,7 @@ const STYLES = StyleSheet.create({
   },
   text: {
     fontSize: 15,
+    color:global.colors.textColor
   },
   button: {
     fontSize: 20,
@@ -67,6 +69,7 @@ export default class ProfileScreen extends React.Component {
       },
       imageurl: '../assets/cat.jpeg',
       screenVariable: true,
+      bio: 'Hi! My name is Jason and I am not a runner. I am 58 :)',
     };
   }
 
@@ -132,8 +135,8 @@ export default class ProfileScreen extends React.Component {
             </View>
           </View>
         </View>
-        <Text multiline={true} style={{ fontSize: 10, padding: '3%' }}>
-          Hi! My name is Jason and I am not a runner. I am 58 :)
+        <Text multiline={true} style={[STYLES.text, {padding:"2%"}]}>
+          {this.state.bio}
         </Text>
 
         <View style={{ flexDirection: 'column', flex: 1, padding: '3%' }}>

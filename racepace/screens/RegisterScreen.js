@@ -3,6 +3,7 @@ import { Component } from 'react';
 import { View, Text, StyleSheet, Image, Alert, Dimensions } from 'react-native';
 import TextInputCustom from '../components/TextInput';
 import Button from '../components/Button';
+import BackButton from '../components/BackButton'
 import DatePicker from 'react-native-datepicker';
 import { register } from '../login';
 import '../global';
@@ -54,11 +55,8 @@ export default class RegisterScreen extends React.Component {
   render() {
     return (
       <View style={{backgroundColor:global.colors.darkBackground}}>
-        <Button
-          style={STYLES.back_btn}
-          text="Back"
-          text_style={STYLES.button_text}
-          onPress={() => this.props.navigation.goBack()}
+        <BackButton
+          onPress={this.props.navigation.goBack}
         />
         <View
           style={{

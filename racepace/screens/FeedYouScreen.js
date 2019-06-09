@@ -51,12 +51,14 @@ export default class FeedYouScreen extends React.Component {
 
     return (
       <View style={{flex:1,backgroundColor:global.colors.lightBackground}}>
+        <View style={{height:40}}>
           <Button
             text="Follow Requests"
-            style={{width:"100%", backgroundColor:global.colors.darkBackground}}
+            style={{height:"100%",width:"100%", backgroundColor:global.colors.darkBackground}}
             text_style={{color: global.colors.offColor, padding:"3%"}}
             onPress={() => this.props.navigation.navigate('Follow')}
           />
+        </View>
           {test_data}
       </View>
     );

@@ -27,7 +27,6 @@ const STYLES = StyleSheet.create({
 		width:"100%",
   },
   likeCommentButton: {
-    fontSize:20,
     width:"40%",
 		borderWidth:0,
 	},
@@ -39,7 +38,7 @@ const STYLES = StyleSheet.create({
 		justifyContent: 'space-between', 
 		width:"100%", 
 		backgroundColor: global.colors.primaryColor, 
-		borderRadius:10,padding:"3%"
+		borderRadius:10,padding:"1%"
 	}
 })
 
@@ -52,7 +51,10 @@ export class FeedItem extends React.Component {
 		return (
 			<View style={STYLES.feed_item}>
 				<View style={STYLES.user_profile}>
-					<Image source={require('../assets/cat.jpeg')} style={STYLES.profilePic}/>
+					<Image
+						style={STYLES.profilePic}
+						source={{uri: `${global.serverURL}/api/avatars/${global.login_status.user_id}.png`}}
+          />
 					<View style={STYLES.user_info}>
 						<Text style={STYLES.text}>{this.props.username}</Text>
 						<Text style={STYLES.text}>{this.props.posttime}</Text>
@@ -67,7 +69,7 @@ export class FeedItem extends React.Component {
 				
 				<Image source={require('../assets/cat.jpeg')} style={STYLES.routePic} />
 				<View
-					style={global.view_styles.rowView}
+					style={[global.view_styles.rowView,{margin:10}]}
 				>
 					<Text style={STYLES.text}>0 Likes</Text>
 					<Text style={STYLES.text}>0 Comments</Text>

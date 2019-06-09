@@ -5,20 +5,12 @@ import { login, googleLogin } from '../login';
 import Button from '../components/Button.js';
 import TextInputCustom from '../components/TextInput';
 import '../global';
+import BackButton from '../components/BackButton'
 
 const STYLES = StyleSheet.create({
   button_text: {
     padding: '1%',
     fontSize: 16,
-  },
-  back_btn: {
-    width: 40,
-    height: '5%',
-    left: 5,
-    top: 20,
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   logo: {
     margin: '5%',
@@ -41,19 +33,17 @@ export default class LoginScreen extends React.Component {
   render() {
     return (
       <View style={{backgroundColor: global.colors.darkBackground}}>
-        <Button
-          style={STYLES.back_btn}
-          text="Back"
-          text_style={STYLES.button_text}
-          onPress={() => this.props.navigation.goBack()}
+        <BackButton
+          onPress={this.props.navigation.goBack}
         />
         <View
           style={{
             alignItems: 'center',
             flexDirection: 'column',
-            height: '95%',
+            height: '100%',
             justifyContent: 'space-evenly',
-          }}>
+          }}
+        >
           <Image
             style={STYLES.logo}
             source={require('../assets/running.jpg')}

@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import Button from '../components/Button';
 import '../global';
+import BackButton from '../components/BackButton';
 
 export default class LevelScreen extends React.Component {
   constructor(props) {
@@ -48,17 +49,19 @@ export default class LevelScreen extends React.Component {
     });
 
     return (
-      <View style={{flex:1}}>
-        <Button style={STYLES.header} back_btn={true} />
-      <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
-        <Text style={{ fontSize: 40 }}>You are level {this.state.level}</Text>
-        <View style={STYLES.progressBar}>
-          <View style={STYLES.progressBarFill} />
+      <View style={{flex:1, backgroundColor:global.colors.lightBackground}}>
+        <BackButton
+          onPress={this.props.navigation.goBack}
+        />
+        <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+          <Text style={{ fontSize: 40 }}>You are level {this.state.level}</Text>
+          <View style={STYLES.progressBar}>
+            <View style={STYLES.progressBarFill} />
+          </View>
+          <Text style={STYLES.remainderText}>
+            {this.state.remainder} more points are required to level up. Race on!
+          </Text>
         </View>
-        <Text style={STYLES.remainderText}>
-          {this.state.remainder} more points are required to level up. Race on!
-        </Text>
-      </View>
       </View>
     );
   }

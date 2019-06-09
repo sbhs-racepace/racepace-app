@@ -6,7 +6,8 @@ import "../global.js"
 const STYLES = StyleSheet.create({
   text: {
     fontSize:15,
-    padding:"3%"
+    padding:"3%",
+    color:global.colors.textColor
   }
 })
 

@@ -4,7 +4,7 @@ import { GiftedChat } from "react-native-gifted-chat";
 import SlackMessage from '../components/SlackMessage';
 import emojiUtils from 'emoji-utils';
 
-export default class ChatScreenTest extends React.Component {
+export default class ChatScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {

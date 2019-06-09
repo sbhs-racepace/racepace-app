@@ -1,6 +1,8 @@
 import React from 'react';
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import Button from "../components/Button"
+import BackButton from '../components/BackButton'
+import '../global'
 import {createMaterialTopTabNavigator,createAppContainer} from 'react-navigation'
 
 class Follower extends React.Component {
@@ -42,7 +44,7 @@ class FollowingScreen extends React.Component {
   }
   render() {
     return (
-      <View>
+      <View style={{backgroundColor:global.colors.lightBackground}}>
         {this.state.following.map(e=>{return <Follower img={e.img} name={e.name}removeBtn={true}/> })}
       </View>
     )
@@ -62,7 +64,7 @@ class FollowerScreen extends React.Component {
   }
   render() {
     return (
-      <View>
+      <View style={{backgroundColor:global.colors.lightBackground}}>
         {this.state.following.map(e=>{return <Follower img={e.img} name={e.name}/>})}
       </View>
     )
@@ -75,18 +77,12 @@ export default class FollowListScreen extends React.Component {
       Following: {screen: FollowingScreen},
       Followers: {screen: FollowerScreen},
     }, {initialRouteName: this.props.navigation.state.params==undefined ? "Following" : this.props.navigation.state.params.screen})
-    const BACK_BTN = {
-      width: 40,
-      height: "5%",
-      left: 5,
-      borderRadius: 10,
-      alignItems: "center",
-      justifyContent: "center",
-    }
     const AppContainer = createAppContainer(Nav);
     return (
-      <View style={{flex: 1}}>
-      <Button text="Back" onPress={()=>this.props.navigation.goBack()} style={BACK_BTN} />
+      <View style={{flex: 1, backgroundColor:global.colors.lightBackground}}>
+      <BackButton
+        onPress={this.props.navigation.goBack}
+      />
       <AppContainer style={{flex:1}}/>
       </View>
     )
