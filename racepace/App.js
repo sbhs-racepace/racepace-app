@@ -26,9 +26,14 @@ import RealTimeRouteScreen from './screens/RealTimeRouteScreen';
 import FindFriendsScreen from './screens/FindFriendsScreen';
 import SaveRunScreen from './screens/SaveRunScreen';
 import LevelScreen from './screens/LevelScreen';
+import LoadScreen from './screens/LoadScreen';
 import './global'
 
 const LoginNavigator = createStackNavigator({
+  LoadScreen: {
+    screen: LoadScreen,
+    navigationOptions: { header: null },
+  },
   Splash: {
     screen: SplashScreen,
     navigationOptions: { header: null },

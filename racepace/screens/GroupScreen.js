@@ -55,9 +55,12 @@ export default class GroupScreen extends React.Component {
       return <View><Text>Please login to see your groups</Text><Button text="Tracking" onPress={()=>this.props.navigation.navigate("Track")} /></View>
     }
     return (
-      <View>
-        {this.state.groups.map(group => <Group group={group}></Group>)}
-        <Button text="Tracking" onPress={()=>this.props.navigation.navigate("Track")} />
+      <View style={{flex:1, backgroundColor:global.colors.lightBackground}}>
+        <Text style={{fontFamily:'RobotoCondensed-BoldItalic',fontSize:40,padding:"3%",color:global.colors.primaryColor}}>Running Groups</Text>
+        <View style={{flex:9}}>
+          {this.state.groups.map(group => <Group group={group}></Group>)}
+        </View>
+        <Button style={{width:"100%"}} text="Tracking" onPress={()=>this.props.navigation.navigate("Track")} />
       </View>
     );
   }
@@ -72,10 +75,6 @@ class Group extends React.Component{
 
   render() {
     const STYLES = StyleSheet.create({
-      name: {
-        fontSize:16,
-        fontWeight:"bold"
-      },
       border: {
         borderWidth:1,
         paddingLeft:"3%",
@@ -83,6 +82,9 @@ class Group extends React.Component{
         marginTop:5,
         marginLeft:"2%",
         width:"96%",
+      },
+      text: {
+        color: global.colors.textColor,
       }
     })
 
@@ -104,10 +106,10 @@ class Group extends React.Component{
 
     return (
       <TouchableOpacity style={STYLES.border}>
-        <Text style={STYLES.name}>{this.props.group.group_name}</Text>
-        <Text>Members: {members_str}</Text>
-        <Text>Description: {this.props.group.description}</Text>
-        <Text>Last Message: {last_mess}</Text>
+        <Text style={[STYLES.text,{fontSize:16}]}>{this.props.group.group_name}</Text>
+        <Text style={STYLES.text}>Members: {members_str}</Text>
+        <Text style={STYLES.text}>Description: {this.props.group.description}</Text>
+        <Text style={STYLES.text}>Last Message: {last_mess}</Text>
       </TouchableOpacity>
     )
   }

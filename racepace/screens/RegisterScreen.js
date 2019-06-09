@@ -54,20 +54,16 @@ export default class RegisterScreen extends React.Component {
 
   render() {
     return (
-      <View style={{backgroundColor:global.colors.darkBackground}}>
+      <View style={{backgroundColor:global.colors.darkBackground, flex:1}}>
         <BackButton
           onPress={this.props.navigation.goBack}
         />
         <View
           style={{
             alignItems: 'center',
-            height: '95%',
+            flex:1,
             justifyContent: 'space-evenly',
           }}>
-          <Image
-            style={STYLES.logo}
-            source={require('../assets/running.jpg')}
-          />
           <TextInputCustom
             autoCorrect={false}
             onChangeText={name_ => {

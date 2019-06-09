@@ -12,6 +12,45 @@ import {
 } from 'react-native';
 import Button from '../components/Button.js';
 import BackButton from '../components/BackButton'
+import '../global'
+
+const { width: windowWidth, height: windowHeight } = Dimensions.get(
+  'window'
+);
+
+const STYLES = StyleSheet.create({
+  search_btn: {
+    width: 30,
+    height: 30,
+    borderRadius: 0.135 * windowWidth,
+    borderWidth: 1,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  img_style: {
+    width:30,
+    height:30,
+    borderRadius: 0.135 * windowWidth
+  },
+  search_box: {
+    height:30,
+    fontSize: 20,
+    borderWidth: 1,
+    width: '70%',
+    borderRadius: 10,
+    padding: '1%',
+  },
+  text: {
+    fontSize: 15,
+    color:global.colors.textColor,
+    alignItems:'center',
+  },
+  title: {
+    fontFamily:'RobotoCondensed-BoldItalic',fontSize:40,color:global.colors.primaryColor, textAlign:'center',
+  },
+});
+
 
 class FriendBox extends React.Component {
   constructor(props) {
@@ -26,8 +65,8 @@ class FriendBox extends React.Component {
           style={{ height: 100, width: 100, borderRadius: 50 }}
         />
         <View flexDirection="column">
-          <Text>{this.props.name}</Text>
-          <Text>{this.props.bio}</Text>
+          <Text style={STYLES.text}>{this.props.name}</Text>
+          <Text style={STYLES.text}>{this.props.bio}</Text>
         </View>
       </View>
     );
@@ -73,50 +112,14 @@ export default class FindFriendsScreen extends React.Component {
   }
 
   render() {
-    const { width: windowWidth, height: windowHeight } = Dimensions.get(
-      'window'
-    );
-    const STYLES = {
-      search_btn: {
-        width: '15%',
-        height: '100%',
-        borderRadius: 0.135 * windowWidth,
-        borderWidth: 1,
-        backgroundColor: 'white',
-        alignItems: 'center',
-        justifyContent: 'center',
-      },
-      search_img: {
-        width: '100%',
-        height: '100%',
-        borderRadius: 0.135 * windowWidth,
-      },
-      search_box: {
-        fontSize: 20,
-        borderWidth: 1,
-        width: '85%',
-        height: '100%',
-        borderRadius: 10,
-        padding: '1%',
-      },
-    };
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1 , backgroundColor:global.colors.lightBackground}}>
         <BackButton
           onPress={this.props.navigation.goBack}
         />
-        <View style={{ height: '20%', width: '100%' }}>
-          <View style={{ height: '30%', flexDirection: 'row' }}>
-            <Text>Find Friends</Text>
-          </View>
-          <View
-            style={{
-              marginLeft: '5%',
-              width: '90%',
-              height: '30%',
-              flex: 1,
-              flexDirection: 'row',
-            }}>
+        <View style={{ flex:1, width: '100%', alignItems:'center', justifyContent:'space-evenly'}}>
+          <Text style={STYLES.title}>Find Friends</Text>
+          <View style={{flexDirection: 'row',justifyContent:'space-evenly'}}>
             <TextInput
               style={STYLES.search_box}
               onChangeText={text => {
@@ -125,17 +128,18 @@ export default class FindFriendsScreen extends React.Component {
             />
             <Button
               img={require('../assets/icons/search.png')}
+              img_style={STYLES.img_style}
               style={STYLES.search_btn}
-              img_style={STYLES.search_img}
               onPress={this.sendRequest.bind(this)}
             />
           </View>
-          <Button />
-          {this.state.recommended && (
-            <Text style={{ height: '30%' }}>Recommended</Text>
-          )}
+          <Button
+            style={global.component_styles.roundedButton}
+            text="Refresh"
+            onPress={() => (Alert.alert('Not Implemented'))}
+          />
         </View>
-        <ScrollView style={{ height: '70%', width: '100%' }}>
+        <ScrollView style={{ width: '100%' }}>
           {this.state.searchResults.map(user => (
             <FriendBox
               name={user.name}

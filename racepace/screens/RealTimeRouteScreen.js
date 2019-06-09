@@ -5,7 +5,20 @@ import Button from "../components/Button"
 import "../global.js"
 
 const STYLES = StyleSheet.create({
-
+  text: {
+    fontSize:40,
+    color:global.colors.textColor,
+    width:"100%",
+    flex:2,
+    fontFamily:'Roboto-Thin',
+    textAlign:'center',
+  },
+  title: {
+    fontFamily:'RobotoCondensed-BoldItalic',fontSize:50,color:global.colors.primaryColor,
+    borderColor:'white',
+    flex:3,
+    justifyContent:'center'
+  },
 })
 
 class RealTimeRouteDefaultScreen extends React.Component {
@@ -15,11 +28,12 @@ class RealTimeRouteDefaultScreen extends React.Component {
 
   render() {
     return (
-      <View>      
-        <Text style={{fontSize:30}}>Pace: {this.props.pace.minutes} :{this.props.pace.seconds}</Text>
-        <Text style={{fontSize:30}}>Distance: {this.props.distance}</Text>
-        <Text style={{fontSize:30}}>Timer: 15 seconds</Text>
-        <Text style={{fontSize:30}}>Time</Text>
+      <View style={{flex:1, alignItems:'center'}}>
+        <Text style={STYLES.title}>Real Time Info</Text>      
+        <Text style={STYLES.text}>Pace: {this.props.pace.minutes} :{this.props.pace.seconds}</Text>
+        <Text style={STYLES.text}>Distance: {this.props.distance}</Text>
+        <Text style={STYLES.text}>Timer: 15 seconds</Text>
+        <Text style={STYLES.text}>Time</Text>
       </View>
     )
   }
@@ -68,7 +82,6 @@ export default class RealTimeRouteScreen extends React.Component {
   }
 
   async componentDidMount() {
-    Alert.alert('mounted')
     if (Platform.OS === 'android' && !Constants.isDevice) {
       Alert.alert('Device is not of valid type to record location.')
     } else {
@@ -105,10 +118,13 @@ export default class RealTimeRouteScreen extends React.Component {
   
   render() {
     return (
-      <View>
-        <RealTimeRouteDefaultScreen pace={this.state.pace} distance={this.state.distance}></RealTimeRouteDefaultScreen>
+      <View style={{backgroundColor:global.colors.lightBackground, flex:1}}>
+        <View style={{flex:9}}>
+          <RealTimeRouteDefaultScreen pace={this.state.pace} distance={this.state.distance}></RealTimeRouteDefaultScreen>
+        </View>
         <Button 
           text="Save Running Route"
+          style={{width:"100%"}}
           onPress={() => {
             Alert.alert('End Route')
             this.stop_tracking()
@@ -117,6 +133,7 @@ export default class RealTimeRouteScreen extends React.Component {
         />
         <Button 
           text="Stop Run"
+          style={{width:"100%"}}
           onPress={() => {
             Alert.alert('Stop Route')
             this.stop_tracking()

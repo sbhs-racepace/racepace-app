@@ -14,9 +14,12 @@ const STYLES = StyleSheet.create({
   },
   logo: {
     margin: '5%',
-    width: Dimensions.get('window').width * 0.5,
-    height: Dimensions.get('window').width * 0.5,
-    borderRadius: (Dimensions.get('window').width * 0.5) / 2,
+    width: Dimensions.get('window').width * 0.7,
+    height: Dimensions.get('window').width * 0.7,
+    borderRadius: (Dimensions.get('window').width * 0.7) / 2,
+  },
+  title: {
+    fontFamily:'RobotoCondensed-BoldItalic',fontSize:60,color:global.colors.primaryColor,
   },
 });
 
@@ -32,7 +35,7 @@ export default class LoginScreen extends React.Component {
 
   render() {
     return (
-      <View style={{backgroundColor: global.colors.darkBackground}}>
+      <View style={{backgroundColor: global.colors.darkBackground, flex:1}}>
         <BackButton
           onPress={this.props.navigation.goBack}
         />
@@ -40,14 +43,11 @@ export default class LoginScreen extends React.Component {
           style={{
             alignItems: 'center',
             flexDirection: 'column',
-            height: '100%',
+            flex:1,
             justifyContent: 'space-evenly',
           }}
         >
-          <Image
-            style={STYLES.logo}
-            source={require('../assets/running.jpg')}
-          />
+          <Text style={[STYLES.title]}>Racepace</Text>
           <TextInputCustom
             autoCorrect={false}
             defaultValue="email"

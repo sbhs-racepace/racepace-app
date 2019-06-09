@@ -5,6 +5,7 @@ import {
   ViewPropTypes,
   StyleSheet,
 } from 'react-native';
+import '../global'
 
 import { Avatar, Day, utils } from 'react-native-gifted-chat';
 import Bubble from './SlackBubble';
@@ -89,7 +90,7 @@ export default class Message extends React.Component {
       } 
 
     return (
-      <View>
+      <View style={{backgroundColor:global.colors.lightBackground}}>
         {this.renderDay()}
         <View
           style={[

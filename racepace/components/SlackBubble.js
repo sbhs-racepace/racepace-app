@@ -9,6 +9,7 @@ import {
   ViewPropTypes,
   Platform,
 } from 'react-native';
+import '../global'
 
 import { MessageText, MessageImage, Time, utils } from 'react-native-gifted-chat';
 

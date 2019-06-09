@@ -89,7 +89,6 @@ export default class ProfileScreen extends React.Component {
             style={{
               flexDirection: 'row',
               flex: 1,
-              justifyContent: 'space-between',
             }}>
             <View
               style={{
@@ -101,13 +100,13 @@ export default class ProfileScreen extends React.Component {
                 style={STYLES.profile_image}
                 source={{uri: `${global.serverURL}/api/avatars/${global.login_status.user_id}.png`}}
               />
-              <Text style={STYLES.text}>{this.state.name}</Text>
+              <Text style={[STYLES.text,{fontSize:20}]}>{this.state.name}</Text>
             </View>
             <View
               style={{
                 flexDirection: 'column',
                 flex: 2,
-                justifyContent: 'space-between',
+                justifyContent: 'space-evenly',
               }}>
               <View style={{ flexDirection: 'row', flex: 2}}>
                 <Button 
@@ -126,7 +125,7 @@ export default class ProfileScreen extends React.Component {
                   onPress={() => this.props.navigation.navigate('FollowList', {screen: "Followers"})}
                 />
               </View>
-              <Button style={{ flex: 1 }}
+              <Button style={{ flex: 1, width:'100%'}}
                 text="Edit Profile"
                 onPress={()=>{console.log(global.login_status.success)
                   this.props.navigation.navigate("Edit")}}
@@ -135,10 +134,7 @@ export default class ProfileScreen extends React.Component {
             </View>
           </View>
         </View>
-        <Text multiline={true} style={[STYLES.text, {padding:"2%"}]}>
-          {this.state.bio}
-        </Text>
-
+        <Text multiline={true} style={[STYLES.text, {padding:"2%"}]}>Bio: {this.state.bio}</Text>
         <View style={{ flexDirection: 'column', flex: 1, padding: '3%' }}>
           <View style={{ flexDirection: 'row', flex: 1 }}>
             <Button
@@ -163,9 +159,11 @@ export default class ProfileScreen extends React.Component {
           <View style={{ flex: 7 }}>{this.showCurrentScreen()}</View>
 
           <Button text="Find Friends"
+            style={{width:'100%'}}
             onPress={() => this.props.navigation.navigate('FindFriends')}
            />
           <Button
+            style={{width:'100%'}}
             text={global.login_status.success ? "Logout" : "Login or Register as New"}
             onPress={() => {
               if (global.login_status.success) {
