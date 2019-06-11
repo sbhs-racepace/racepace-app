@@ -50,15 +50,30 @@ export default class EditScreen extends React.Component {
     super(props);
     this.state = {
       uri: global.serverURL + `/api/avatars/${global.login_status.user_id}.png`,
+      username: null,
+      password: null,
+      full_name: null,
+      image_null: null,
     };
   }
 
   updateServer(username, password, profilePicture) {
-    let url = global.serverURL + '/api/users/' + global.login_status.user_id;
+    let url = global.serverURL + '/api/update_profile';
+    data = {
+      username: this.state.username, 
+      password: this.state.password, 
+      full_name: this.state.full_name, 
+      bio: this.state.bio, 
+      profile_image: this.state.profile_image,
+
+    }
     try {
       fetch(url, {
         method: 'POST',
-        body: JSON.stringify({ username, password, profilePicture }),
+        body: JSON.stringify(data),
+        headers: new Headers({
+          Authorization: global.login_status.token,
+        }),
       })
         .catch(res => {
           Alert.alert('Error connecting to server', res);
@@ -77,6 +92,9 @@ export default class EditScreen extends React.Component {
       Alert.alert('Error', err);
     }
   }
+
+
+
   render() {
     return (
       <KeyboardAvoidingView

@@ -51,6 +51,7 @@ export default class SaveRunScreen extends React.Component {
     } catch (err) {
       Alert.alert('Error', err);
     }
+    global.current_route = null;
   }
 
   saveRecentRun() {
@@ -65,7 +66,7 @@ export default class SaveRunScreen extends React.Component {
         .catch(res => {
           Alert.alert('Error connecting to server', res);
         })
-        .then(
+        .then (
           res => {
             console.log('Success Saving Recent Route');
           },
@@ -88,7 +89,6 @@ export default class SaveRunScreen extends React.Component {
           <Button 
             text="Save Run"
             onPress={()=> {
-              Alert.alert("Saving your Run")
               this.saveRecentRun()
               this.props.navigation.navigate('FeedFollowing');
             }}
@@ -114,9 +114,7 @@ export default class SaveRunScreen extends React.Component {
           <Button 
             text="Save Run"
             onPress={()=> {
-              Alert.alert("Saving your Run")
               this.saveRun()
-              console.log('navigating to feed following')
               this.props.navigation.navigate('FeedFollowing');
             }}
           />
