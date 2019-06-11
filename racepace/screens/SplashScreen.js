@@ -18,7 +18,7 @@ const STYLES = StyleSheet.create({
   },
   button_text: {
     padding:"2%",
-    fontSize: 16
+    fontSize: 20,
   },
   title: {
     fontFamily:'RobotoCondensed-BoldItalic',fontSize:70,color:global.colors.primaryColor,
