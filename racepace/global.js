@@ -28,6 +28,7 @@ global.user = {
   },
   following: [],
   followers: [],
+  bio: "No Bio",
 }
 
 global.region = {name:"NSW Australia",

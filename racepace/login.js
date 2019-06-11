@@ -39,7 +39,6 @@ function storeUserInfo(res) {
       `${global.serverURL}?token=${global.login_status.token}`,
       { transports: ['websocket'] }
     );
-    console.log('authenticating websocket');
     socket.emit('authenticate', global.login_status.token);
   });
 }

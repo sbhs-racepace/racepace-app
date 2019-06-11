@@ -69,7 +69,7 @@ export default class ProfileScreen extends React.Component {
       },
       imageurl: '../assets/cat.jpeg',
       screenVariable: true,
-      bio: 'Hi! My name is Jason and I am not a runner. I am 58 :)',
+      bio: global.user.bio,
     };
   }
 
