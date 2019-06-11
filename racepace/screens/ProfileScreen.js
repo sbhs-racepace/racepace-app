@@ -18,24 +18,21 @@ const STYLES = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-evenly',
-    backgroundColor: global.colors.lightBackground
+    backgroundColor: global.colors.lightBackground,
   },
   profile_image: {
     height: 100,
     width: 100,
     borderRadius: 50,
   },
-  other_data_box: {
-    padding: '3%',
-  },
   text: {
     fontSize: 15,
-    color:global.colors.textColor
+    color: global.colors.textColor,
   },
-  button: {
-    fontSize: 20,
-    borderWidth: 1,
-    borderRadius: 10,
+  stat_btn: {
+    flex: 1,
+    margin: 1,
+    height: '70%',
   },
 });
 
@@ -98,9 +95,15 @@ export default class ProfileScreen extends React.Component {
               }}>
               <Image
                 style={STYLES.profile_image}
-                source={{uri: `${global.serverURL}/api/avatars/${global.login_status.user_id}.png`}}
+                source={{
+                  uri: `${global.serverURL}/api/avatars/${
+                    global.login_status.user_id
+                  }.png`,
+                }}
               />
-              <Text style={[STYLES.text,{fontSize:20}]}>{this.state.name}</Text>
+              <Text style={[STYLES.text, { fontSize: 20 }]}>
+                {this.state.name}
+              </Text>
             </View>
             <View
               style={{
@@ -108,35 +111,58 @@ export default class ProfileScreen extends React.Component {
                 flex: 2,
                 justifyContent: 'space-evenly',
               }}>
-              <View style={{ flexDirection: 'row', flex: 2}}>
-                <Button 
-                  style={{ flex: 1, margin: 1 }} 
+              <View style={{ flexDirection: 'row', flex: 2 }}>
+                <Button
+                  style={STYLES.stat_btn}
                   text={`${global.user.stats.points} Pace Points`}
                   onPress={() => this.props.navigation.navigate('Level')}
                 />
                 <Button
-                  style={{ flex: 1, margin: 1 }}
+                  style={STYLES.stat_btn}
                   text={`${global.user.following.length} Following`}
-                  onPress={() => this.props.navigation.navigate('FollowList', {screen: "Following"})}
+                  onPress={() =>
+                    this.props.navigation.navigate('FollowList', {
+                      screen: 'Following',
+                    })
+                  }
                 />
                 <Button
-                  style={{ flex: 1, margin: 1 }}
+                  style={STYLES.stat_btn}
                   text={`${global.user.followers.length} Followers`}
-                  onPress={() => this.props.navigation.navigate('FollowList', {screen: "Followers"})}
+                  onPress={() =>
+                    this.props.navigation.navigate('FollowList', {
+                      screen: 'Followers',
+                    })
+                  }
                 />
               </View>
-              <Button style={{ flex: 1, width:'100%'}}
+              <Button
+                style={{ flex: 1, width: '100%' }}
                 text="Edit Profile"
-                onPress={()=>{console.log(global.login_status.success)
-                  this.props.navigation.navigate("Edit")}}
+                onPress={() => {
+                  console.log(global.login_status.success);
+                  this.props.navigation.navigate('Edit');
+                }}
                 disabled={!global.login_status.success && !global.TEST}
               />
             </View>
           </View>
         </View>
-        <Text multiline={true} style={[STYLES.text, {padding:"2%"}]}>Bio: {this.state.bio}</Text>
+        <Text multiline={true} style={[STYLES.text, { padding: '2%' }]}>
+          Bio: {this.state.bio}
+        </Text>
         <View style={{ flexDirection: 'column', flex: 1, padding: '3%' }}>
-          <View style={{ flexDirection: 'row', flex: 1 }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              height: 40,
+              width: '100%',
+              backgroundColor: 'rgb(0, 153, 255)',
+              borderRadius: 10,
+              padding: '3%',
+            }}>
             <Button
               style={{ flex: 1 }}
               text="Stats"
@@ -146,6 +172,7 @@ export default class ProfileScreen extends React.Component {
                 });
               }}
             />
+            <Text>|</Text>
             <Button
               style={{ flex: 1 }}
               text="Runs"
@@ -158,16 +185,21 @@ export default class ProfileScreen extends React.Component {
           </View>
           <View style={{ flex: 7 }}>{this.showCurrentScreen()}</View>
 
-          <Button text="Find Friends"
-            style={{width:'100%'}}
-            onPress={() => this.props.navigation.navigate('FindFriends')}
-           />
           <Button
-            style={{width:'100%'}}
-            text={global.login_status.success ? "Logout" : "Login or Register as New"}
+            style={{ alignSelf: 'center' }}
+            text="Find Friends"
+            onPress={() => this.props.navigation.navigate('FindFriends')}
+          />
+          <Button
+            style={{ alignSelf: 'center', marginTop: 5 }}
+            text={
+              global.login_status.success
+                ? 'Logout'
+                : 'Login or Register as New'
+            }
             onPress={() => {
               if (global.login_status.success) {
-                global.socket.emit('disconnect')
+                global.socket.emit('disconnect');
                 logout();
               } else {
                 this.props.navigation.navigate('Splash');
