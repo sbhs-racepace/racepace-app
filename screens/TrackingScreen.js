@@ -11,7 +11,8 @@ import Button from '../components/Button'
 import BackButton from '../components/BackButton'
 import MapView from 'react-native-maps';
 import { Marker, Polyline } from 'react-native-maps';
-import {Location,Permissions} from 'expo';
+import * as Location from 'expo-location'
+import * as Permissions from 'expo-permissions'
 
 const LATITUDE_DELTA = 0.0922*1.5
 const LONGITUDE_DELTA = 0.0421*1.5

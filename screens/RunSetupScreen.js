@@ -2,9 +2,9 @@ import React from 'react';
 import { StyleSheet, View, Text, Alert, ScrollView, TextInput, Dimensions } from 'react-native';
 import Button from "../components/Button"
 import "../global.js"
-import {Location,Permissions} from 'expo';
+import * as Location from 'expo-location'
+import * as Permissions from 'expo-permissions'
 import TextInputCustom from '../components/TextInput';
-import RadioForm from 'react-native-simple-radio-button';
 
 const STYLES = StyleSheet.create({
   container: {

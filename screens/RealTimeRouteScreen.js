@@ -1,6 +1,8 @@
 import React from 'react';
 import { Platform, StyleSheet, View, Text, Alert, ScrollView } from 'react-native';
-import { Constants, Location, Permissions } from 'expo';
+import { Constants } from 'expo';
+import * as Location from 'expo-location'
+import * as Permissions from 'expo-permissions'
 import Button from "../components/Button"
 import "../global.js"
 
