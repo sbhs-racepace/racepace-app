@@ -1,8 +1,8 @@
 import React from 'react';
 import { Component } from 'react';
 import { View, Text, StyleSheet, Image, Alert, Dimensions } from 'react-native';
-import '../global';
 import { Font } from 'expo'
+import '../global';
 
 export default class LoadScreen extends React.Component {
   constructor(props) {
