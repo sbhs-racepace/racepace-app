@@ -1,9 +1,9 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": 19000,
-  "expoServerNgrokUrl": "https://m8-y9a.jyuuuk.racepace.exp.direct",
-  "packagerNgrokUrl": "https://packager.m8-y9a.jyuuuk.racepace.exp.direct",
-  "ngrokPid": 1872,
-  "packagerPort": 19001,
-  "packagerPid": 1858
+  "expoServerPort": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
+  "packagerPort": null,
+  "packagerPid": null
 }
