@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import Button from '../components/Button';
 import '../global';
+import Color from '../constants/Color'
 import BackButton from '../components/BackButton';
 
 export default class LevelScreen extends React.Component {
@@ -47,7 +48,7 @@ export default class LevelScreen extends React.Component {
     });
 
     return (
-      <View style={{flex:1, backgroundColor:global.colors.lightBackground}}>
+      <View style={{flex:1, backgroundColor:Color.lightBackground}}>
         <BackButton
           onPress={this.props.navigation.goBack}
         />

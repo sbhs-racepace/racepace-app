@@ -11,13 +11,14 @@ import {
 import Button from './Button';
 import request from '../functions/request';
 import '../global';
+import Color from '../constants/Color'
 
 const STYLES = StyleSheet.create({
   feed_item: {
     borderWidth: 1,
     padding: '5%',
     width: '100%',
-    backgroundColor: global.colors.lightBackground,
+    backgroundColor: Color.lightBackground,
   },
   profilePic: {
     width: 60,
@@ -41,13 +42,13 @@ const STYLES = StyleSheet.create({
     borderWidth: 0,
   },
   text: {
-    color: global.colors.textColor,
+    color: Color.textColor,
   },
   likeCommentCombo: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
-    backgroundColor: global.colors.primaryColor,
+    backgroundColor: Color.primaryColor,
     borderRadius: 10,
     padding: '1%',
   },

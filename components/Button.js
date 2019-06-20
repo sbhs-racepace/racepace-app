@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Image, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { withNavigation } from 'react-navigation';
+import Color from '../constants/Color'
 import '../global.js'
 
 class Button extends React.Component {
@@ -12,8 +13,8 @@ class Button extends React.Component {
     const styles = StyleSheet.create({
       button: {
         backgroundColor: this.props.disabled
-          ? global.colors.offColor
-          : global.colors.primaryColor
+          ? Color.offColor
+          : Color.primaryColor
         ,
         width: this.props.back_btn ? 40 : "80%",
         height: 40,
@@ -24,7 +25,7 @@ class Button extends React.Component {
       },
       text: {
         textAlign: 'center',
-        color: global.colors.textColor,
+        color: Color.textColor,
         ...this.props.text_style,
       },
       img: {

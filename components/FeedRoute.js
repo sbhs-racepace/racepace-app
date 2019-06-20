@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Text, TextInput, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Button from "./Button"
+import Color from '../constants/Color'
 import '../global'
 
 const STYLES = StyleSheet.create({
@@ -13,7 +14,7 @@ const STYLES = StyleSheet.create({
     fontSize: 20
 	},
 	text: {
-		color:global.colors.textColor
+		color:Color.textColor
 	}
 })
 

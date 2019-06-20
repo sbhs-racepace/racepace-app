@@ -2,6 +2,7 @@ import React from 'react';
 import { ScrollView, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import Button from "../components/Button"
 import "../global"
+import Color from '../constants/Color'
 
 export default class GroupScreen extends React.Component {
   constructor(props) {
@@ -55,8 +56,8 @@ export default class GroupScreen extends React.Component {
       return <View><Text>Please login to see your groups</Text><Button text="Tracking" onPress={()=>this.props.navigation.navigate("Track")} /></View>
     }
     return (
-      <View style={{flex:1, backgroundColor:global.colors.lightBackground}}>
-        <Text style={{fontFamily:'RobotoCondensed-BoldItalic',fontSize:40,padding:"3%",color:global.colors.primaryColor}}>Running Groups</Text>
+      <View style={{flex:1, backgroundColor:Color.lightBackground}}>
+        <Text style={{fontFamily:'RobotoCondensed-BoldItalic',fontSize:40,padding:"3%",color:Color.primaryColor}}>Running Groups</Text>
         <View style={{flex:9}}>
           {this.state.groups.map(group => <Group group={group}></Group>)}
         </View>
@@ -84,7 +85,7 @@ class Group extends React.Component{
         width:"96%",
       },
       text: {
-        color: global.colors.textColor,
+        color: Color.textColor,
       }
     })
 

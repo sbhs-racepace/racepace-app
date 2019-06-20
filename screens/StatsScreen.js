@@ -3,11 +3,12 @@ import { StyleSheet, View, Text, Alert, ScrollView } from 'react-native';
 import Button from "../components/Button"
 import "../global.js"
 
+import Color from '../constants/Color'
 const STYLES = StyleSheet.create({
   text: {
     fontSize:15,
     padding:"3%",
-    color:global.colors.textColor
+    color:Color.textColor
   }
 })
 

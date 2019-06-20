@@ -1,10 +1,12 @@
 import React from 'react';
+
 import {
   createStackNavigator,
   createAppContainer,
   createBottomTabNavigator,
   createMaterialTopTabNavigator,
 } from 'react-navigation';
+
 import { View } from 'react-native';
 import MainScreenHeader from './components/MainScreenHeader';
 import EditScreen from './screens/EditScreen';
@@ -27,7 +29,8 @@ import FindFriendsScreen from './screens/FindFriendsScreen';
 import SaveRunScreen from './screens/SaveRunScreen';
 import LevelScreen from './screens/LevelScreen';
 import LoadScreen from './screens/LoadScreen';
-import './global'
+
+import Color from './constants/Color'
 
 const LoginNavigator = createStackNavigator({
   LoadScreen: {
@@ -87,9 +90,9 @@ const LoginNavigator = createStackNavigator({
         },
         {
           tabBarOptions: {
-            activeTintColor: global.colors.textColor,
-            inactiveTintColor: global.colors.offColor,
-            style: {backgroundColor: global.colors.darkBackground},
+            activeTintColor: Color.textColor,
+            inactiveTintColor: Color.offColor,
+            style: {backgroundColor: Color.darkBackground},
           },
         }
       ),
@@ -106,9 +109,9 @@ const LoginNavigator = createStackNavigator({
         gesturesEnabled: false 
       },
       tabBarOptions: {
-        activeTintColor: global.colors.textColor,
-        inactiveTintColor: global.colors.offColor,
-        style: { backgroundColor: global.colors.darkBackground },
+        activeTintColor: Color.textColor,
+        inactiveTintColor: Color.offColor,
+        style: { backgroundColor: Color.darkBackground },
       }
     })
   },
@@ -119,8 +122,8 @@ const AppContainer = createAppContainer(LoginNavigator);
 export default class App extends React.Component {
   render() {
     return (
-      <View style={{ flex: 1, marginTop: 20, backgroundColor:global.colors.darkBackground}}>
-        <AppContainer style={{backgroundColor:global.colors.darkBackground}}/>
+      <View style={{ flex: 1, marginTop: 20, backgroundColor:Color.darkBackground}}>
+        <AppContainer style={{backgroundColor:Color.darkBackground}}/>
       </View>
     );
   }

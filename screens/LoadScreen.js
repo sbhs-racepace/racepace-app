@@ -3,6 +3,7 @@ import { Component } from 'react';
 import { View, Text, StyleSheet, Image, Alert, Dimensions } from 'react-native';
 import '../global';
 import * as Font from 'expo-font'
+import Color from '../constants/Color'
 
 export default class LoadScreen extends React.Component {
   constructor(props) {
@@ -21,7 +22,7 @@ export default class LoadScreen extends React.Component {
 
   render() {
     return (
-      <View style={{flex:1, backgroundColor:global.colors.darkBackground}}>
+      <View style={{flex:1, backgroundColor:Color.darkBackground}}>
       </View>
     )
   }

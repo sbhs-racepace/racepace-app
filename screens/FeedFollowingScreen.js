@@ -11,6 +11,7 @@ import {
 import Button from '../components/Button';
 import { FeedItem } from '../components/FeedItem';
 import '../global.js';
+import Color from '../constants/Color'
 
 export default class FeedFollowingScreen extends React.Component {
   constructor(state) {
@@ -24,7 +25,7 @@ export default class FeedFollowingScreen extends React.Component {
       <KeyboardAvoidingView keyboardVerticalOffset={100} behavior="position">
         <ScrollView
           contentContainerStyle={{
-            backgroundColor: global.colors.lightBackground,
+            backgroundColor: Color.lightBackground,
           }}>
           <FeedItem
             username="Test User"

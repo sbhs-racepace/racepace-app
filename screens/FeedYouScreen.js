@@ -4,12 +4,13 @@ import FeedRoute from '../components/FeedRoute';
 import Button from '../components/Button';
 import request from '../functions/request';
 import '../global'
+import Color from '../constants/Color'
 
 const STYLES = StyleSheet.create({
   scrollView: {
     width: '100%',
     alignItems: 'center',
-    backgroundColor:global.colors.lightBackground,
+    backgroundColor:Color.lightBackground,
   },
 });
 
@@ -50,12 +51,12 @@ export default class FeedYouScreen extends React.Component {
     );
 
     return (
-      <View style={{flex:1,backgroundColor:global.colors.lightBackground}}>
+      <View style={{flex:1,backgroundColor:Color.lightBackground}}>
         <View style={{height:40}}>
           <Button
             text="Follow Requests"
-            style={{height:"100%",width:"100%", backgroundColor:global.colors.darkBackground}}
-            text_style={{color: global.colors.offColor, padding:"3%"}}
+            style={{height:"100%",width:"100%", backgroundColor:Color.darkBackground}}
+            text_style={{color: Color.offColor, padding:"3%"}}
             onPress={() => this.props.navigation.navigate('Follow')}
           />
         </View>

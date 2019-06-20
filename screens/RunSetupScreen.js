@@ -5,6 +5,7 @@ import "../global.js"
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
 import TextInputCustom from '../components/TextInput';
+import Color from '../constants/Color'
 
 const STYLES = StyleSheet.create({
   container: {
@@ -15,13 +16,13 @@ const STYLES = StyleSheet.create({
     alignContent:'center',
   },
   text_style: {
-    color: global.colors.textColor
+    color: Color.textColor
   },
   title_style: {
     fontSize:30,
     fontFamily: 'RobotoCondensed-BoldItalic',
     textAlign:"center",
-    color: global.colors.primaryColor
+    color: Color.primaryColor
   },
 })
 
@@ -126,7 +127,7 @@ export default class RunSetupScreen extends React.Component {
   
   render() {
     return(
-      <View style={{flex:1, backgroundColor: global.colors.lightBackground}}>
+      <View style={{flex:1, backgroundColor: Color.lightBackground}}>
         <View style={[STYLES.container, {flex:2, alignItems:"center"}]}>
           <Text style={STYLES.title_style}>Plan your route</Text>
           <TextInputCustom 

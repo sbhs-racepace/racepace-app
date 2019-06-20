@@ -1,10 +1,12 @@
 import React from 'react';
 import { Component } from 'react';
+import Color from '../constants/Color'
 import { View, Text, StyleSheet, Image, Alert, Dimensions } from 'react-native';
 import { login, googleLogin } from '../functions/login';
 import Button from '../components/Button.js';
 import TextInputCustom from '../components/TextInput';
 import '../global';
+import Color from '../constants/Color'
 import BackButton from '../components/BackButton'
 
 const STYLES = StyleSheet.create({
@@ -19,7 +21,7 @@ const STYLES = StyleSheet.create({
     borderRadius: (Dimensions.get('window').width * 0.7) / 2,
   },
   title: {
-    fontFamily:'RobotoCondensed-BoldItalic',fontSize:60,color:global.colors.primaryColor,
+    fontFamily:'RobotoCondensed-BoldItalic',fontSize:60,color: Color.primaryColor,
   },
 });
 
@@ -35,7 +37,7 @@ export default class LoginScreen extends React.Component {
 
   render() {
     return (
-      <View style={{backgroundColor: global.colors.darkBackground, flex:1}}>
+      <View style={{backgroundColor: Color.darkBackground, flex:1}}>
         <BackButton
           onPress={this.props.navigation.goBack}
         />

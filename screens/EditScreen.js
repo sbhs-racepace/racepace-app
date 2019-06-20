@@ -13,7 +13,9 @@ import {
 } from 'react-native';
 import Button from '../components/Button';
 import BackButton from '../components/BackButton'
+import Color from '../constants/Color'
 import '../global.js';
+
 const STYLES = StyleSheet.create({
   backbtn: {
     width: 40,
@@ -100,7 +102,7 @@ export default class EditScreen extends React.Component {
       <KeyboardAvoidingView
         style={{
           flex: 1,
-          backgroundColor:global.colors.lightBackground
+          backgroundColor:Color.lightBackground
         }}
       >
         <BackButton

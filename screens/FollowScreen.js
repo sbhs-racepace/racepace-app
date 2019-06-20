@@ -2,20 +2,21 @@ import React from 'react';
 import { ScrollView, View, Text, Alert, StyleSheet,Image } from 'react-native';
 import Button from "../components/Button"
 import "../global.js"
+import Color from '../constants/Color'
 
 const STYLES = StyleSheet.create({
   total_view : {
     padding:"3%", 
-    backgroundColor:global.colors.lightBackground
+    backgroundColor:Color.lightBackground
   },
   title : {
     textAlign: "center", 
     fontSize: 30,
     fontFamily:'RobotoCondensed-BoldItalic',
-    color: global.colors.primaryColor
+    color: Color.primaryColor
   },
   text: {
-    color: global.colors.textColor,
+    color: Color.textColor,
   },
   profile_image: {
     height: 100,
@@ -60,9 +61,9 @@ export default class FollowScreen extends React.Component {
 
   render() {
     return (
-      <View style={{backgroundColor:global.colors.lightBackground, flex:1}}>
+      <View style={{backgroundColor:Color.lightBackground, flex:1}}>
         <Text style={STYLES.title}>Pending Follow Requests</Text>
-        <ScrollView contentContainerStyle={global.colors.lightBackground}>
+        <ScrollView contentContainerStyle={Color.lightBackground}>
           {this.state.follow_requests.map(name => <FollowRequest name={name}/>)}
         </ScrollView>
       </View>

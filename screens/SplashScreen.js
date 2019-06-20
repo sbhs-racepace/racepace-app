@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import Button from '../components/Button.js'
 import '../global.js'
+import Color from '../constants/Color'
 
 const STYLES = StyleSheet.create({
   button: {
@@ -21,7 +22,7 @@ const STYLES = StyleSheet.create({
     fontSize: 16
   },
   title: {
-    fontFamily:'RobotoCondensed-BoldItalic',fontSize:70,color:global.colors.primaryColor,
+    fontFamily:'RobotoCondensed-BoldItalic',fontSize:70,color:Color.primaryColor,
   },
   subTitle: {
     fontFamily:'RobotoCondensed-BoldItalic',fontSize:30,color:'white',
@@ -44,7 +45,7 @@ export default class SplashScreen extends React.Component {
 
   render() {
     return (
-      <View style={[global.view_styles.columnCenterView,{backgroundColor:global.colors.darkBackground, justifyContent:'space-evenly'}]}>
+      <View style={[global.view_styles.columnCenterView,{backgroundColor:Color.darkBackground, justifyContent:'space-evenly'}]}>
         <Text style={[STYLES.title]}>Racepace</Text>
         <Image style={STYLES.logo} source={require('../assets/running.jpg')} />
         <Button

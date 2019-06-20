@@ -5,18 +5,19 @@ import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
 import Button from "../components/Button"
 import "../global.js"
+import Color from '../constants/Color'
 
 const STYLES = StyleSheet.create({
   text: {
     fontSize:40,
-    color:global.colors.textColor,
+    color:Color.textColor,
     width:"100%",
     flex:2,
     fontFamily:'Roboto-Thin',
     textAlign:'center',
   },
   title: {
-    fontFamily:'RobotoCondensed-BoldItalic',fontSize:50,color:global.colors.primaryColor,
+    fontFamily:'RobotoCondensed-BoldItalic',fontSize:50,color:Color.primaryColor,
     borderColor:'white',
     flex:3,
     justifyContent:'center'
@@ -120,7 +121,7 @@ export default class RealTimeRouteScreen extends React.Component {
   
   render() {
     return (
-      <View style={{backgroundColor:global.colors.lightBackground, flex:1}}>
+      <View style={{backgroundColor:Color.lightBackground, flex:1}}>
         <View style={{flex:9}}>
           <RealTimeRouteDefaultScreen pace={this.state.pace} distance={this.state.distance}></RealTimeRouteDefaultScreen>
         </View>

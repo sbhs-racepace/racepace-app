@@ -7,6 +7,7 @@ import BackButton from '../components/BackButton'
 import DatePicker from 'react-native-datepicker';
 import { register } from '../functions/login';
 import '../global';
+import Color from '../constants/Color'
 
 const STYLES = StyleSheet.create({
   button: {
@@ -54,7 +55,7 @@ export default class RegisterScreen extends React.Component {
 
   render() {
     return (
-      <View style={{backgroundColor:global.colors.darkBackground, flex:1}}>
+      <View style={{backgroundColor:Color.darkBackground, flex:1}}>
         <BackButton
           onPress={this.props.navigation.goBack}
         />

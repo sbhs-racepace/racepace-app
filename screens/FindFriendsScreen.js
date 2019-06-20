@@ -13,6 +13,7 @@ import {
 import Button from '../components/Button.js';
 import BackButton from '../components/BackButton'
 import '../global'
+import Color from '../constants/Color'
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get(
   'window'
@@ -43,11 +44,11 @@ const STYLES = StyleSheet.create({
   },
   text: {
     fontSize: 15,
-    color:global.colors.textColor,
+    color:Color.textColor,
     alignItems:'center',
   },
   title: {
-    fontFamily:'RobotoCondensed-BoldItalic',fontSize:40,color:global.colors.primaryColor, textAlign:'center',
+    fontFamily:'RobotoCondensed-BoldItalic',fontSize:40,color:Color.primaryColor, textAlign:'center',
   },
 });
 
@@ -113,7 +114,7 @@ export default class FindFriendsScreen extends React.Component {
 
   render() {
     return (
-      <View style={{ flex: 1 , backgroundColor:global.colors.lightBackground}}>
+      <View style={{ flex: 1 , backgroundColor:Color.lightBackground}}>
         <BackButton
           onPress={this.props.navigation.goBack}
         />

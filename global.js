@@ -64,16 +64,6 @@ global.user_routes = [
   }
 ]
 
-global.colors = {
-  darkBackground:'rgb(25,25,55)',
-  lightBackground:"rgb(55,55,80)",
-  primaryColor:"rgb(0, 153, 255)",
-  offColor:"rgb(120,120,140)",
-  inputColor:"rgb(55,55,80)",
-  textColor: "rgb(200,200,255)",
-  secondaryTextColor: "rgb(150,150,200)"
-}
-
 global.view_styles = StyleSheet.create({
   columnCenterView:{ alignItems:"center", flexDirection:"column",flex:1},
   rowView: {flexDirection: "row", justifyContent: 'space-between', width:"100%"},

@@ -8,6 +8,8 @@ import {
 } from 'react-native';
 import '../global'
 
+import Color from '../constants/Color'
+
 export default class TextInputCustom extends React.Component {
   constructor(props) {
     super(props);
@@ -21,11 +23,11 @@ export default class TextInputCustom extends React.Component {
       view: {
         width: "80%",
         borderRadius: 10,
-        backgroundColor: global.colors.inputColor,
+        backgroundColor: Color.inputColor,
         ...this.props.style
       },
       text: {
-        color: global.colors.textColor,
+        color: Color.textColor,
         ...this.placeholder_style
       },
       input: {
@@ -34,7 +36,7 @@ export default class TextInputCustom extends React.Component {
         borderWidth: 1,
         padding: 1,
         fontSize:20,
-        color: global.colors.textColor,
+        color: Color.textColor,
         ...this.props.input_style,
       }
     });

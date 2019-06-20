@@ -12,13 +12,14 @@ import '../global';
 import '../assets/cat.jpeg';
 import RouteListScreen from './RouteListScreen';
 import StatsScreen from './StatsScreen';
+import Color from '../constants/Color'
 
 const STYLES = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-evenly',
-    backgroundColor: global.colors.lightBackground,
+    backgroundColor: Color.lightBackground,
   },
   profile_image: {
     height: 100,
@@ -27,7 +28,7 @@ const STYLES = StyleSheet.create({
   },
   text: {
     fontSize: 15,
-    color: global.colors.textColor,
+    color: Color.textColor,
   },
   stat_btn: {
     flex: 1,

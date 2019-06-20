@@ -4,6 +4,7 @@ import Button from "../components/Button"
 import BackButton from '../components/BackButton'
 import '../global'
 import {createMaterialTopTabNavigator,createAppContainer} from 'react-navigation'
+import Color from '../constants/Color'
 
 class Follower extends React.Component {
   constructor(props) {
@@ -44,7 +45,7 @@ class FollowingScreen extends React.Component {
   }
   render() {
     return (
-      <View style={{backgroundColor:global.colors.lightBackground}}>
+      <View style={{backgroundColor:Color.lightBackground}}>
         {this.state.following.map(e=>{return <Follower img={e.img} name={e.name}removeBtn={true}/> })}
       </View>
     )
@@ -64,7 +65,7 @@ class FollowerScreen extends React.Component {
   }
   render() {
     return (
-      <View style={{backgroundColor:global.colors.lightBackground}}>
+      <View style={{backgroundColor:Color.lightBackground}}>
         {this.state.following.map(e=>{return <Follower img={e.img} name={e.name}/>})}
       </View>
     )
@@ -79,7 +80,7 @@ export default class FollowListScreen extends React.Component {
     }, {initialRouteName: this.props.navigation.state.params==undefined ? "Following" : this.props.navigation.state.params.screen})
     const AppContainer = createAppContainer(Nav);
     return (
-      <View style={{flex: 1, backgroundColor:global.colors.lightBackground}}>
+      <View style={{flex: 1, backgroundColor:Color.lightBackground}}>
       <BackButton
         onPress={this.props.navigation.goBack}
       />
