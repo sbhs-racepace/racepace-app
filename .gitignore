@@ -185,3 +185,6 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+.expo/packager-info.json
+.expo/settings.json
