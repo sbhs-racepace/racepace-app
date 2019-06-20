@@ -22,8 +22,10 @@ function check_login(res) {
 }
 
 function storeUserInfo(res) {
+  console.log('Login success');
   let data = { user_id: global.login_status.user_id };
   let info_url = global.serverURL + '/api/get_info';
+  console.log(global.login_status.token);
   fetch(info_url, {
     method: 'POST',
     body: JSON.stringify(data),
@@ -46,7 +48,7 @@ export function login(email,password) {
   let data = {
     email, password
   };
-  let url = global.serverURL + '/api/users/login';
+  let url = global.serverURL + '/api/login';
   try {
     fetch(url, {
       method: 'POST',
@@ -57,6 +59,7 @@ export function login(email,password) {
       })
       .then(
         res => {
+          console.log('Login response received from server');
           let login_response = check_login(res);
           if (login_response) {
             storeUserInfo(login_response);
@@ -64,6 +67,7 @@ export function login(email,password) {
           }
         },
         reason => {
+          console.log('Promise rejected');
           Alert.alert('Error connecting to server', reason);
         }
       );
@@ -82,7 +86,7 @@ export function register() {
     dob: this.state.dob,
     username: this.state.username,
   };
-  const url = global.serverURL + '/api/users/register';
+  const url = global.serverURL + '/api/register';
   try {
     fetch(url, {
       method: 'POST',
@@ -93,6 +97,7 @@ export function register() {
       })
       .then(
         res => {
+          console.log('Login response received from server');
           let login_response = check_login(res);
           if (login_response) {
             storeUserInfo(login_response);
@@ -100,6 +105,7 @@ export function register() {
           }
         },
         reason => {
+          console.log('Promise rejected');
           Alert.alert('Error connecting to server', reason);
         }
       );
@@ -111,7 +117,7 @@ export function register() {
 
 export async function googleLogin() {
   try {
-    const url = global.serverURL + '/api/users/google_login'
+    const url = global.serverURL + '/api/google_login'
     const result = await Expo.Google.logInAsync({
       androidClientId: global.googleLoginID.android,
     });
@@ -125,6 +131,7 @@ export async function googleLogin() {
         })
         .then(
           res => {
+            console.log('Login response received from server');
             let login_response = check_login(res);
             if (login_response) {
               storeUserInfo(login_response);

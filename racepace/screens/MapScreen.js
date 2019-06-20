@@ -76,6 +76,7 @@ export default class MapScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      // Map Screen State Variables
       region: {
         latitude: -33.9672563,
         longitude: 151.1002119,
@@ -91,7 +92,8 @@ export default class MapScreen extends React.Component {
         latitude: -33.9672563,
         longitude: 151.1002119,
       },
-      pace: {minutes:'-', seconds:'-'},
+      // Race Tracking Info
+      pace: {minutes:'NA', seconds:'NA'},
       distance: 0,
     };
   }

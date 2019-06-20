@@ -1,5 +1,3 @@
-import {StyleSheet} from 'react-native';
-
 global.TEST = true
 
 global.login_status = {
@@ -33,7 +31,8 @@ global.user = {
   bio: "No Bio",
 }
 
-global.region = { name:"NSW Australia", coords:"-32.3010715,146.746138" }
+global.region = {name:"NSW Australia",
+coords:"-32.3010715,146.746138"}
 
 global.serverURL = "http://racepace-sbhs.herokuapp.com"
 
@@ -63,6 +62,11 @@ global.user_routes = [
     nodes: [(34,121),(34,122)]
   }
 ]
+
+import {
+  StyleSheet,
+} from 'react-native';
+
 
 global.colors = {
   darkBackground:'rgb(25,25,55)',
