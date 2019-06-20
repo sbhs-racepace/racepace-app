@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView, Text, View, StyleSheet } from 'react-native';
 import FeedRoute from '../components/FeedRoute';
 import Button from '../components/Button';
-import request from '../request';
+import request from '../functions/request';
 import '../global'
 
 const STYLES = StyleSheet.create({

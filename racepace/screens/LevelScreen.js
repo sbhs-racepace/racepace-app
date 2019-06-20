@@ -1,5 +1,3 @@
-//Write a request to backend for level and points
-
 import React from 'react';
 import {
   View,

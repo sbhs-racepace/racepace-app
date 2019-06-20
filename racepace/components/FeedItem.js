@@ -9,7 +9,7 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import Button from './Button';
-import request from '../request';
+import request from '../functions/request';
 import '../global';
 
 const STYLES = StyleSheet.create({

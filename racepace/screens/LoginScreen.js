@@ -1,7 +1,7 @@
 import React from 'react';
 import { Component } from 'react';
 import { View, Text, StyleSheet, Image, Alert, Dimensions } from 'react-native';
-import { login, googleLogin } from '../login';
+import { login, googleLogin } from '../functions/login';
 import Button from '../components/Button.js';
 import TextInputCustom from '../components/TextInput';
 import '../global';

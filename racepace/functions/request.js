@@ -1,5 +1,5 @@
 import { Alert } from 'react-native';
-import './global';
+import '../global';
 
 export default function request(
   endpoint,

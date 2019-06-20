@@ -7,7 +7,7 @@
   "main": "node_modules/expo/AppEntry.js",
   "dependencies": {
     "emoji-utils": "^1.0.1",
-    "expo": "^32.0.0",
+    "expo": "^32.0.6",
     "expo-font": "^5.0.1",
     "prop-types": "^15.5.10",
     "react": "16.5.0",

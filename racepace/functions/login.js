@@ -1,5 +1,5 @@
 //SY
-import './global';
+import '../global';
 import { Alert } from 'react-native';
 import Expo from 'expo';
 import io from 'socket.io-client';

@@ -5,7 +5,7 @@ import TextInputCustom from '../components/TextInput';
 import Button from '../components/Button';
 import BackButton from '../components/BackButton'
 import DatePicker from 'react-native-datepicker';
-import { register } from '../login';
+import { register } from '../functions/login';
 import '../global';
 
 const STYLES = StyleSheet.create({
