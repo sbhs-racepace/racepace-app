@@ -12,9 +12,9 @@ export default class LoadScreen extends React.Component {
 
   async componentDidMount() {
     await Font.loadAsync({
-      'RobotoCondensed-BoldItalic': require('../assets/fonts/RobotoCondensed-BoldItalic.ttf'),
-      'Roboto-Thin': require('../assets/fonts/Roboto-Thin.ttf'),
-      'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf')
+      'RobotoCondensed-BoldItalic' : require('../assets/fonts/RobotoCondensed-BoldItalic.ttf'),
+      'Roboto-Thin' : require('../assets/fonts/Roboto-Thin.ttf'),
+      'Roboto-Bold' : require('../assets/fonts/Roboto-Bold.ttf')
     });
     this.props.navigation.navigate("Splash")
   }
