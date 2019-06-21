@@ -35,7 +35,7 @@ global.user = {
 
 global.region = { name:"NSW Australia", coords:"-32.3010715,146.746138" }
 
-global.serverURL = "http://racepace-sbhs.herokuapp.com"
+global.serverURL = "https://racepace-sbhs.herokuapp.com"
 
 global.googleLoginID = {
   android: "Insert key here", 
