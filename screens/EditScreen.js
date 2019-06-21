@@ -17,14 +17,6 @@ import Color from '../constants/Color';
 import '../global.js';
 
 const STYLES = StyleSheet.create({
-  backbtn: {
-    width: 40,
-    height: 30,
-    left: 5,
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   chsfile: {
     width: 80,
     height: 30,
@@ -40,6 +32,8 @@ const STYLES = StyleSheet.create({
     borderRadius: 10,
     padding: '1%',
     marginTop: 5,
+    color: Color.inputColor,
+    backgroundColor: Color.darkBackground,
   },
   profile_image: {
     height: 100,
@@ -80,7 +74,7 @@ export default class EditScreen extends React.Component {
           Alert.alert('Error connecting to server', res);
         })
         .then(
-          async res => {
+          res => {
             console.log('Login response received from server');
           },
           reason => {
@@ -103,7 +97,6 @@ export default class EditScreen extends React.Component {
           justifyContent: 'space-between',
           flexDirection: 'column',
           alignItems: 'center',
-          
         }}>
         <BackButton onPress={this.props.navigation.goBack} />
         <View style={{ flex: 1, alignSelf: 'flex-start' }} />
@@ -137,12 +130,12 @@ export default class EditScreen extends React.Component {
             />
           </View>
         </View>
-        <Text style={{ fontSize: 30 }}> Change Password</Text>
+        <Text style={{ fontSize: 30, color: 'white' }}> Change Password</Text>
         <TextInput placeholder="Current Password" style={STYLES.input} />
         <TextInput placeholder="New Password" style={STYLES.input} />
         <TextInput placeholder="Confirm New Password" style={STYLES.input} />
-        <Text style={{ fontSize: 30 }}> Change Username</Text>
-        <Text style={{ fontSize: 15 }}>
+        <Text style={{ fontSize: 30, color: 'white' }}> Change Username</Text>
+        <Text style={{ fontSize: 15, color: 'white' }}>
           {' '}
           Current Username: {global.user.username}{' '}
         </Text>
