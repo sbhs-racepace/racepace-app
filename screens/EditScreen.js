@@ -59,39 +59,8 @@ export default class EditScreen extends React.Component {
     };
   }
 
-  updateServer(username, password, profilePicture) {
-    let url = global.serverURL + '/api/update_profile';
-    data = {
-      username: this.state.username,
-      password: this.state.password,
-      full_name: this.state.full_name,
-      bio: this.state.bio,
-      profile_image: this.state.profile_image,
-    };
-    try {
-      fetch(url, {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: new Headers({
-          Authorization: global.login_status.token,
-        }),
-      })
-        .catch(res => {
-          Alert.alert('Error connecting to server', res);
-        })
-        .then(
-          async res => {
-            console.log('Login response received from server');
-          },
-          reason => {
-            console.log('Promise rejected');
-            Alert.alert('Error connecting to server', reason);
-          }
-        );
-    } catch (err) {
-      //Catch any other errors
-      Alert.alert('Error', err);
-    }
+  saveChanges() {
+    return 0
   }
 
   render() {
@@ -158,6 +127,7 @@ export default class EditScreen extends React.Component {
             borderRadius: 10,
             fontSize: 14,
           }}
+          onPress={this.saveChanges}
         />
       </KeyboardAvoidingView>
     );

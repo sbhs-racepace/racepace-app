@@ -7,6 +7,7 @@ import Button from '../components/Button.js';
 import TextInputCustom from '../components/TextInput';
 import '../global';
 import BackButton from '../components/BackButton'
+import BackButtonHeader from '../components/BackButtonHeader'
 
 const STYLES = StyleSheet.create({
   button_text: {
@@ -37,7 +38,8 @@ export default class LoginScreen extends React.Component {
   render() {
     return (
       <View style={{backgroundColor: Color.darkBackground, flex:1}}>
-        <BackButton
+        <BackButtonHeader
+          title="Login Screen"
           onPress={this.props.navigation.goBack}
         />
         <View
