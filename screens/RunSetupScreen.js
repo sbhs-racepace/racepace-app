@@ -16,13 +16,14 @@ const STYLES = StyleSheet.create({
     alignContent:'center',
   },
   text_style: {
-    color: Color.textColor
+    color: Color.textColor,
+    fontSize:20,
   },
   title_style: {
     fontSize:30,
-    fontFamily: 'RobotoCondensed-BoldItalic',
+    fontFamily: 'Roboto',
     textAlign:"center",
-    color: Color.primaryColor
+    color: Color.textColor
   },
 })
 
@@ -173,7 +174,7 @@ export default class RunSetupScreen extends React.Component {
           />
         </View>
         <View style={[STYLES.container, {flex:1, alignItems:'center'}]}>
-          <Text style={[STYLES.text_style,{textAlign:"center"}]}>Route Information</Text>
+          <Text style={STYLES.title_style}>Current Route Information</Text>
           <Text style={STYLES.text_style}>Time: {this.state.time.minutes} minutes {this.state.time.seconds} seconds</Text>
           <Text style={STYLES.text_style}>Total Distance: {this.state.distance}km</Text>
           <Text style={STYLES.text_style}>Calories Burnt/Kilojoules Burnt: {this.state.calories} Cal/ {Math.floor(this.state.calories *4.184)} Kj</Text>

@@ -10,7 +10,31 @@ import {
   Alert,
 } from 'react-native';
 import Button from '../components/Button.js';
+import Color from '../constants/Color.js'
 import '../global.js';
+
+const STYLES = StyleSheet.create({
+  text_style: {
+    color: Color.textColor,
+    fontSize:20,
+  },
+  title_style: {
+    fontSize:30,
+    fontFamily: 'Roboto',
+    textAlign:"center",
+    color: Color.textColor
+  },
+  input: {
+    fontSize: 20,
+    borderWidth: 1,
+    width: '80%',
+    borderRadius: 10,
+    padding: '1%',
+    marginTop: 5,
+    color: Color.textColor,
+    backgroundColor: Color.lightBackground,
+  },
+})
 
 export default class SaveRunScreen extends React.Component {
   constructor(state) {
@@ -51,79 +75,41 @@ export default class SaveRunScreen extends React.Component {
     } catch (err) {
       Alert.alert('Error', err);
     }
-    global.current_route = null;
-  }
-
-  saveRecentRun() {
-    let url = `${global.serverURL}/api/save_recent_route`
-    try {
-      fetch(url, {
-        method: 'POST',
-        headers: new Headers({
-          'Authorization': global.login_status.token,
-        })
-      })
-        .catch(res => {
-          Alert.alert('Error connecting to server', res);
-        })
-        .then (
-          async res => {
-            console.log('Success Saving Recent Route');
-          },
-          reason => {
-            console.log('Promise rejected');
-            Alert.alert('Error connecting to server', reason);
-          }
-        );
-    } catch (err) {
-      Alert.alert('Error', err);
-    }
+    global.current_route = null; // Resetting current_route
   }
 
   render() {
-    let view;
-    if (global.current_route == null) {
-      view = (
-        <View>
-          <Text>Save Run Screen</Text>
-          <Button 
-            text="Save Run"
-            onPress={()=> {
-              this.saveRecentRun()
-              this.props.navigation.navigate('FeedFollowing');
-            }}
-          />
+    return (
+      <View style={{flex:1, backgroundColor:Color.lightBackground}}>
+        <View style={{flex:1, justifyContent:'space-evenly'}}>
+          <Text style={STYLES.title_style}>Save Run Screen</Text>
+          <Text style={STYLES.text_style}>Good job on your run!</Text>
+          <Text style={STYLES.text_style}>Here are some stats.</Text>
         </View>
-      );
-    } else {
-      view = (
-        <View>
-          <Text>Save Run Screen</Text>
+        <View style={{flex:1, justifyContent:'space-evenly'}}>
+          <Text style={STYLES.title_style}>Saved Run Description</Text>
           <TextInput
+            wwwstyle={STYLES.input}
             onChangeText={name => {
               this.setState({ name: name });
             }}
             defaultValue='Name'
           />
           <TextInput
+            style={STYLES.input}
             onChangeText={description => {
               this.setState({ description: description });
             }}
             defaultValue='Description'
           />
-          <Button 
-            text="Save Run"
-            onPress={()=> {
-              this.saveRun()
-              this.props.navigation.navigate('FeedFollowing');
-            }}
-          />
         </View>
-      );
-    }
-    return (
-      <View>
-        {view}
+        <Button 
+          text="Save Run"
+          onPress={()=> {
+            this.saveRun()
+            this.props.navigation.navigate('FeedFollowing');
+          }}
+        />
       </View>
     );
   }

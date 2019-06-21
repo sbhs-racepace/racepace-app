@@ -23,7 +23,7 @@ export default class TextInputCustom extends React.Component {
       view: {
         width: "80%",
         borderRadius: 10,
-        backgroundColor: Color.inputColor,
+        backgroundColor: Color.lightBackground,
         ...this.props.style
       },
       text: {

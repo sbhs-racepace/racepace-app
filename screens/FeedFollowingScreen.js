@@ -22,7 +22,7 @@ export default class FeedFollowingScreen extends React.Component {
       return <Text>Please login to see your feed</Text>;
     }
     return (
-      <KeyboardAvoidingView keyboardVerticalOffset={100} behavior="position">
+      <KeyboardAvoidingView keyboardVerticalOffset={100} behavior="position" style={{backgroundColor: Color.lightBackground}}>
         <ScrollView
           contentContainerStyle={{
             backgroundColor: Color.lightBackground,
@@ -51,22 +51,15 @@ export default class FeedFollowingScreen extends React.Component {
             length="2.2"
             time="30"
           />
-          <View
-            style={{
-              height: Dimensions.get('window').height * 0.3,
-              alignItems: 'center',
-            }}>
-            <Button
-              style={global.component_styles.roundedButton}
-              text_style={{
-                padding: '1%',
-                fontSize: 16,
-                textAlign: 'center',
-              }}
-              onPress={() => Alert.alert('Not Implemented')}
-              text="Refresh"
-            />
-          </View>
+          <Button
+            style={{...global.component_styles.roundedButton, alignSelf:'center'}}
+            text_style={{
+              padding: '1%',
+              fontSize: 16,
+            }}
+            onPress={() => Alert.alert('Not Implemented')}
+            text="Refresh"
+          />
         </ScrollView>
       </KeyboardAvoidingView>
     );

@@ -10,6 +10,7 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   Image,
+  Dimensions
 } from 'react-native';
 import { login } from '../functions/login'
 import Button from '../components/Button';
@@ -17,30 +18,46 @@ import BackButtonHeader from '../components/BackButtonHeader';
 import Color from '../constants/Color';
 import '../global.js';
 
+const window_width = Dimensions.get("window").width
+const window_height = Dimensions.get("window").height
+
 const STYLES = StyleSheet.create({
   chsfile: {
     width: 80,
     height: 30,
-    left: 5,
     borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignSelf: 'center'
   },
   input: {
     fontSize: 20,
     borderWidth: 1,
-    width: '80%',
+    width: window_width * 0.8,
     borderRadius: 10,
     padding: '1%',
     marginTop: 5,
     color: Color.textColor,
-    backgroundColor: Color.lightBackground,
+    backgroundColor: Color.lightBackground2,
   },
   profile_image: {
-    height: 100,
-    width: 100,
-    borderRadius: 50,
+    height: window_width * 0.35,
+    width: window_width * 0.35,
+    borderRadius: window_width * 0.35 / 2,
+    alignSelf: 'center'
   },
+  container : {
+    flex: 1,
+    backgroundColor: Color.lightBackground,
+    justifyContent: 'space-between',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  saveButton: {
+    width: '80%',
+    height: 30,
+    bottom: 50,
+    borderRadius: 10,
+    fontSize: 14,
+  }
 });
 export default class EditScreen extends React.Component {
   constructor(props) {
@@ -104,18 +121,10 @@ export default class EditScreen extends React.Component {
 
   render() {
     return (
-      <KeyboardAvoidingView
-        style={{
-          flex: 1,
-          backgroundColor: Color.darkBackground,
-          justifyContent: 'space-between',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}>
+      <KeyboardAvoidingView style={STYLES.container}>
         <BackButtonHeader title='Edit Screen' onPress={this.props.navigation.goBack} />
-        <View style={{ flex: 1, alignSelf: 'flex-start' }} />
-        <View style={{ flex: 5, flexDirection: 'row' }}>
-          <View style={{ flex: 1 }}>
+        <View style={{flexDirection: 'row', justifyContent:'space-around' }}>
+          <View style={{width: window_width * 0.4}}>
             <Image
               style={STYLES.profile_image}
               source={{
@@ -135,53 +144,51 @@ export default class EditScreen extends React.Component {
               }}
             />
           </View>
-          <View style={{ flex: 2 }}>
+          <View style={{ width: window_width * 0.5 }}>
             <TextInput 
-              placeholder="Name" style={STYLES.input} 
+              placeholder="Name" 
+              style={{ ...STYLES.input, width: window_width * 0.5 }}
               onChangeText={full_name => this.setState({ full_name })}
             />
             <TextInput
               placeholder="Enter Bio"
               onChangeText={bio => this.setState({ bio })}
-              style={{ ...STYLES.input, height: 100, fontSize: 12 }}
+              style={{ ...STYLES.input, height: window_width * 0.3, fontSize: 12, width: window_width * 0.5 }}
               multiline={true}
             />
           </View>
         </View>
-        <Text style={{ fontSize: 30, color: 'white' }}> Change Password</Text>
-        <TextInput 
-          placeholder="Current Password" style={STYLES.input} 
-          onChangeText={current_password => this.setState({ current_password })}
-        />
-        <TextInput 
-          placeholder="New Password" style={STYLES.input} 
-          onChangeText={password => this.setState({ password })}
-        />
-        <TextInput 
-          placeholder="Confirm New Password" style={STYLES.input} 
-          onChangeText={confirmation_pword => this.setState({ confirmation_pword })}
-        />
-        
-        <Text style={{ fontSize: 30, color: 'white' }}> Change Username</Text>
-        <Text style={{ fontSize: 15, color: 'white' }}>
-          {' '}
-          Current Username: {global.user.username}{' '}
-        </Text>
-        <TextInput 
-          placeholder="New Username" style={STYLES.input} 
-          onChangeText={username => this.setState({ username })} 
-        />
-        <View style={{ flex: 5 }} />
+
+        <View style={{alignItems:'center'}}>
+          <Text style={{ fontSize: 30, color: 'white' }}> Change Password</Text>
+          <TextInput 
+            placeholder="Current Password" 
+            style={STYLES.input} 
+            onChangeText={current_password => this.setState({ current_password })}
+          />
+          <TextInput 
+            placeholder="New Password" 
+            style={STYLES.input} 
+            onChangeText={password => this.setState({ password })}
+          />
+          <TextInput 
+            placeholder="Confirm New Password" 
+            style={STYLES.input} 
+            onChangeText={confirmation_pword => this.setState({ confirmation_pword })}
+          />
+          
+          <Text style={{ fontSize: 30, color: 'white' }}>Change Username</Text>
+          <Text style={{ fontSize: 15, color: 'white' }}>Current Username: {global.user.username}</Text>
+          <TextInput 
+            style={STYLES.input} 
+            placeholder="New Username"
+            onChangeText={username => this.setState({ username })} 
+          />
+        </View>
 
         <Button
           text="Save Changes"
-          style={{
-            width: '50%',
-            height: 30,
-            bottom: 50,
-            borderRadius: 10,
-            fontSize: 14,
-          }}
+          style={STYLES.saveButton}
           onPress={this.saveChanges}
         />
       </KeyboardAvoidingView>

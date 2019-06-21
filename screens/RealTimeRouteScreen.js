@@ -5,7 +5,7 @@ import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
 import Button from "../components/Button"
 import "../global.js"
-import Color from '../constants/Color'
+import Color from '../constants/Color.js'
 
 const STYLES = StyleSheet.create({
   text: {
@@ -131,7 +131,11 @@ export default class RealTimeRouteScreen extends React.Component {
           onPress={() => {
             Alert.alert('End Route')
             this.stop_tracking()
-            this.props.navigation.navigate('SaveRun');
+            if (global.route != null) {
+              this.props.navigation.navigate('SaveRecentRun');
+            } else {
+              this.props.navigation.navigate('SaveRun');
+            }
           }}
         />
         <Button 
