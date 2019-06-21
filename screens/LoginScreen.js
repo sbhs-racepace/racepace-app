@@ -2,7 +2,7 @@ import React from 'react';
 import { Component } from 'react';
 import Color from '../constants/Color'
 import { View, Text, StyleSheet, Image, Alert, Dimensions } from 'react-native';
-import { login, googleLogin } from '../functions/login';
+import { login, execute_login, googleLogin } from '../functions/login';
 import Button from '../components/Button.js';
 import TextInputCustom from '../components/TextInput';
 import '../global';
@@ -74,7 +74,7 @@ export default class LoginScreen extends React.Component {
           <Button
             style={global.component_styles.roundedButton}
             text_style={STYLES.button_text}
-            onPress={login.bind(this, this.state.email, this.state.pword)}
+            onPress={execute_login.bind(this, this.state.email, this.state.pword)}
             text="Login"
           />
           <Button

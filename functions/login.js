@@ -33,22 +33,33 @@ async function storeUserInfo(res) {
     // Store user info
     res = await res.json()
     global.user = res['info']
-    global.socket = socket = io(
-      `${global.serverURL}?token=${global.login_status.token}`,
-      { transports: ['websocket'] }
-    );
-    socket.emit('authenticate', global.login_status.token);
+    // Adding Websocket
+    global.socket = io(`${global.serverURL}?token=${global.login_status.token}`, { transports: ['websocket'] });
+    global.socket.emit('authenticate', global.login_status.token);
   });
+}
+
+export async function execute_login(email,password) {
+  let login_response = await login(email,password)
+  if (login_response != false) {
+    if (check_login(login_response)) {
+      storeUserInfo(login_response);
+      this.props.navigation.navigate('FeedFollowing');
+    } else {
+      Alert.alert('Invalid Username or Password')
+    }
+  }
 }
 
 export async function login(email,password) {
   //Sends login request to server
   let data = {
-    email, password
+    email: email, password: password
   };
+  let login_response = false;
   let url = global.serverURL + '/api/login';
   try {
-    fetch(url, {
+    await fetch(url, {
       method: 'POST',
       body: JSON.stringify(data),
     })
@@ -57,12 +68,7 @@ export async function login(email,password) {
       })
       .then(
         async res => {
-          res = await res.json()
-          let login_response = check_login(res);
-          if (login_response) {
-            storeUserInfo(login_response);
-            this.props.navigation.navigate('FeedFollowing');
-          }
+          login_response = await res.json()
         },
         reason => {
           Alert.alert('Error connecting to server', reason);
@@ -72,6 +78,7 @@ export async function login(email,password) {
     //Catch any other errors
     Alert.alert('Error', err);
   }
+  return login_response;
 }
 
 export function register() {

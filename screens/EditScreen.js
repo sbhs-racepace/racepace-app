@@ -11,6 +11,7 @@ import {
   KeyboardAvoidingView,
   Image,
 } from 'react-native';
+import { login } from '../functions/login'
 import Button from '../components/Button';
 import BackButton from '../components/BackButton';
 import Color from '../constants/Color';
@@ -50,40 +51,54 @@ export default class EditScreen extends React.Component {
       password: null,
       bio: null,
       full_name: null,
-      image_null: null,
+      image: null,
       current_password: null,
+      confirmation_password: null,
     };
   }
 
   saveChanges() {
-    let data = {
-      email: email, password: password
-    };
-    let url = global.serverURL + '/api/login';
-    try {
-      fetch(url, {
-        method: 'POST',
-        body: JSON.stringify(data),
-      })
-        .catch(res => {
-          Alert.alert('Error connecting to server', res);
-        })
-        .then(
-          async res => {
-            res = await res.json()
-            let login_response = check_login(res);
-            if (login_response) {
-              storeUserInfo(login_response);
-              this.props.navigation.navigate('FeedFollowing');
-            }
-          },
-          reason => {
-            Alert.alert('Error connecting to server', reason);
-          }
-        );
-    } catch (err) {
-      //Catch any other errors
-      Alert.alert('Error', err);
+    let login_check = login.login(global.email, this.state.current_password)
+    if (login_check != false) {
+      if (this.state.passowrd == this.state.confirmation_password) {
+        let data = {
+          username: this.state.username,
+          password: this.state.password,
+          bio: this.state.bio,
+          full_name: this.state.full_name,
+          image: this.state.image,
+        };
+        let url = global.serverURL + '/api/update_profile';
+        try {
+          fetch(url, {
+            method: 'POST',
+            body: JSON.stringify(data),
+          })
+            .catch(res => {
+              Alert.alert('Error connecting to server', res);
+            })
+            .then(
+              async res => {
+                res = await res.json()
+                if (res.success == true) {
+                  Alert.alert('Changed details')
+                } else {
+                  Alert.alert('Could not change details')
+                }
+              },
+              reason => {
+                Alert.alert('Error connecting to server', reason);
+              }
+            );
+        } catch (err) {
+          //Catch any other errors
+          Alert.alert('Error', err);
+        }
+      } else {
+        Alert.alert('New Password does not match')
+      }
+    } else {
+      Alert.alert('Current Password was not correct')
     }
   }
 
@@ -134,19 +149,28 @@ export default class EditScreen extends React.Component {
           </View>
         </View>
         <Text style={{ fontSize: 30, color: 'white' }}> Change Password</Text>
-        <TextInput placeholder="Current Password" style={STYLES.input} 
-        onChangeText={pword => this.setState({ current_password })}/>
-        <TextInput placeholder="New Password" style={STYLES.input} 
-        onChangeText={pword => this.setState({ pword })}/>
-        <TextInput placeholder="Confirm New Password" style={STYLES.input} />
+        <TextInput 
+          placeholder="Current Password" style={STYLES.input} 
+          onChangeText={current_password => this.setState({ current_password })}
+        />
+        <TextInput 
+          placeholder="New Password" style={STYLES.input} 
+          onChangeText={password => this.setState({ password })}
+        />
+        <TextInput 
+          placeholder="Confirm New Password" style={STYLES.input} 
+          onChangeText={confirmation_pword => this.setState({ confirmation_pword })}
+        />
         
         <Text style={{ fontSize: 30, color: 'white' }}> Change Username</Text>
         <Text style={{ fontSize: 15, color: 'white' }}>
           {' '}
           Current Username: {global.user.username}{' '}
         </Text>
-        <TextInput placeholder="New Username" style={STYLES.input} 
-        onChangeText={username => this.setState({ username })} />
+        <TextInput 
+          placeholder="New Username" style={STYLES.input} 
+          onChangeText={username => this.setState({ username })} 
+        />
         <View style={{ flex: 5 }} />
 
         <Button
