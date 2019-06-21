@@ -20,14 +20,12 @@ const STYLES = StyleSheet.create({
 export default class BackButton extends React.Component {
   render() {
     return (
-      <View style={{alignSelf: 'flex-start', padding:"2%"}}>
-        <Button
-          style={STYLES.back_btn}
-          text="Back"
-          text_style={STYLES.button_text}
-          onPress={() => this.props.onPress()}
-        />
-      </View>
+      <Button
+        style={STYLES.back_btn}
+        text="Back"
+        text_style={STYLES.button_text}
+        onPress={() => this.props.onPress()}
+      />
     )
   }
 }
