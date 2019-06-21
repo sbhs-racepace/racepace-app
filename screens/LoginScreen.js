@@ -6,7 +6,6 @@ import { login, execute_login, googleLogin } from '../functions/login';
 import Button from '../components/Button.js';
 import TextInputCustom from '../components/TextInput';
 import '../global';
-import BackButton from '../components/BackButton'
 import BackButtonHeader from '../components/BackButtonHeader'
 
 const STYLES = StyleSheet.create({
@@ -21,7 +20,7 @@ const STYLES = StyleSheet.create({
     borderRadius: (Dimensions.get('window').width * 0.7) / 2,
   },
   title: {
-    fontFamily:'RobotoCondensed-BoldItalic',fontSize:60,color: Color.primaryColor,
+    fontFamily:'Roboto-Bold',fontSize:60,color: Color.primaryColor,
   },
 });
 

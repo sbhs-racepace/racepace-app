@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { login } from '../functions/login'
 import Button from '../components/Button';
-import BackButton from '../components/BackButton';
+import BackButtonHeader from '../components/BackButtonHeader';
 import Color from '../constants/Color';
 import '../global.js';
 
@@ -33,8 +33,8 @@ const STYLES = StyleSheet.create({
     borderRadius: 10,
     padding: '1%',
     marginTop: 5,
-    color: Color.inputColor,
-    backgroundColor: Color.darkBackground,
+    color: Color.textColor,
+    backgroundColor: Color.lightBackground,
   },
   profile_image: {
     height: 100,
@@ -107,12 +107,12 @@ export default class EditScreen extends React.Component {
       <KeyboardAvoidingView
         style={{
           flex: 1,
-          backgroundColor: Color.lightBackground,
+          backgroundColor: Color.darkBackground,
           justifyContent: 'space-between',
           flexDirection: 'column',
           alignItems: 'center',
         }}>
-        <BackButton onPress={this.props.navigation.goBack} />
+        <BackButtonHeader title='Edit Screen' onPress={this.props.navigation.goBack} />
         <View style={{ flex: 1, alignSelf: 'flex-start' }} />
         <View style={{ flex: 5, flexDirection: 'row' }}>
           <View style={{ flex: 1 }}>

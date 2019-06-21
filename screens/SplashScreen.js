@@ -22,13 +22,7 @@ const STYLES = StyleSheet.create({
     fontSize: 16
   },
   title: {
-    fontFamily:'RobotoCondensed-BoldItalic',fontSize:70,color:Color.primaryColor,
-  },
-  subTitle: {
-    fontFamily:'RobotoCondensed-BoldItalic',fontSize:30,color:'white',
-  },
-  subTitle2: {
-    fontFamily:'Roboto-Thin',fontSize:25,color:'white',
+    fontFamily:'Roboto-Bold',fontSize:70,color:Color.primaryColor,
   },
   logo: {
     width: Dimensions.get('window').width * 0.8,

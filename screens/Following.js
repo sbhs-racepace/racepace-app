@@ -1,7 +1,7 @@
 import React from 'react';
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import Button from "../components/Button"
-import BackButton from '../components/BackButton'
+import BackButtonHeader from '../components/BackButtonHeader'
 import '../global'
 import {createMaterialTopTabNavigator,createAppContainer} from 'react-navigation'
 import Color from '../constants/Color'
@@ -81,8 +81,9 @@ export default class FollowListScreen extends React.Component {
     const AppContainer = createAppContainer(Nav);
     return (
       <View style={{flex: 1, backgroundColor:Color.lightBackground}}>
-      <BackButton
+      <BackButtonHeader
         onPress={this.props.navigation.goBack}
+        title='Following'
       />
       <AppContainer style={{flex:1}}/>
       </View>

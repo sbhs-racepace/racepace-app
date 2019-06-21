@@ -5,11 +5,10 @@ import Button from './Button.js';
 
 const STYLES = StyleSheet.create({
   button_text: {
-    padding: '1%',
     fontSize: 16,
   },
   back_btn: {
-    width: 60,
+    width: 40,
     height: 40,
     borderRadius: 10,
     alignItems: 'center',

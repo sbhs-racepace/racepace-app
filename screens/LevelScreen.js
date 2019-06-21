@@ -10,7 +10,7 @@ import {
 import Button from '../components/Button';
 import '../global';
 import Color from '../constants/Color'
-import BackButton from '../components/BackButton';
+import BackButtonHeader from '../components/BackButtonHeader';
 
 export default class LevelScreen extends React.Component {
   constructor(props) {
@@ -49,7 +49,8 @@ export default class LevelScreen extends React.Component {
 
     return (
       <View style={{flex:1, backgroundColor:Color.lightBackground}}>
-        <BackButton
+        <BackButtonHeader
+          title='Level Screen'
           onPress={this.props.navigation.goBack}
         />
         <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>

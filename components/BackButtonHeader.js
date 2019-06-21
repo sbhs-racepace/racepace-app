@@ -1,21 +1,9 @@
 import React from 'react';
 import { Component } from 'react';
-import { View, Text, StyleSheet, Image, Alert } from 'react-native';
-import BackButton from './BackButton.js'
+import { View, Text, StyleSheet, Image, Alert, Dimensions } from 'react-native';
+import BackButton from './BackButton'
 import Color from '../constants/Color'
-
-const title = {
-  fontSize: 20,
-  color: Color.primaryColor,
-  fontFamily: 'Roboto-Thin',
-}
-
-const button = {
-  ...StyleSheet.absoluteFillObject,
-  left:0,
-  top:0,
-
-}
+import Button from './Button'
 
 export default class BackButtonHeader extends React.Component {
   constructor(props) {
@@ -23,13 +11,28 @@ export default class BackButtonHeader extends React.Component {
   }
 
   render() {
+    let STYLES = StyleSheet.create({
+      title: {
+        fontFamily:'Roboto',fontSize:20,color: Color.textColor,
+        alignSelf:'center'
+      },
+      view: {
+        width:"100%", height:50, padding:3, borderBottomColor:'yellow', borderBottomWidth:1
+      }
+    });
+
     return (
-      <View style={{height:60, width:"100%", backgroundColor:Color.lightBackground}}>
-        <View style={{flex:1, alignItems:'center', padding:2, flexDirection:'row'}}>
-          <BackButton style={{alignSelf:"flex-start"}}/>
-          <View style={{flex:1,alignItems:'center',alignSelf:'center'}}>
-            <Text style={title}>{this.props.title}</Text>
+      <View style={STYLES.view}>
+        <View style={{flex:1,flexDirection:'row'}}>
+          <View style={{justifyContent:'center'}}>
+            <BackButton
+              onPress={this.props.onPress}
+            />
           </View>
+          <View style={{flex:1, justifyContent:'center'}}>
+            <Text style={STYLES.title}>{this.props.title}</Text>
+          </View>
+          <View style={{width:40}}/>
         </View>
       </View>
     )

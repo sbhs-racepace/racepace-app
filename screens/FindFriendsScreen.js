@@ -11,7 +11,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import Button from '../components/Button.js';
-import BackButton from '../components/BackButton'
+import BackButtonHeader from '../components/BackButtonHeader'
 import '../global'
 import Color from '../constants/Color'
 
@@ -115,8 +115,9 @@ export default class FindFriendsScreen extends React.Component {
   render() {
     return (
       <View style={{ flex: 1 , backgroundColor:Color.lightBackground}}>
-        <BackButton
+        <BackButtonHeader
           onPress={this.props.navigation.goBack}
+          title='Find Friends'
         />
         <View style={{ flex:1, width: '100%', alignItems:'center', justifyContent:'space-evenly'}}>
           <Text style={STYLES.title}>Find Friends</Text>
