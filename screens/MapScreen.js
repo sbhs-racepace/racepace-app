@@ -107,7 +107,7 @@ export default class MapScreen extends React.Component {
       headers: new Headers({
         'Authorization': global.login_status.token,
       })
-    }).then(async res => await res.json()).then(data => { 
+    }).then(res => res.json()).then(data => { 
       let pace = data.pace
       let distance = data.distance
       this.setState({'pace':pace,'distance':distance})
@@ -292,7 +292,7 @@ export default class MapScreen extends React.Component {
           Alert.alert('Error connecting to server', res);
         })
         .then(
-          async res => {
+          res => {
             console.log('Login response received from server');
           },
           reason => {
@@ -338,6 +338,7 @@ export default class MapScreen extends React.Component {
         <View style={STYLES.header}>
           <View style={{ flexDirection: 'row', justifyContent:"center"}}>
             <Button
+              style={{width:50,height:"100%"}}
               text="Close"
               onPress={() => {this.props.navigation.setParams({start:null,end:null,route:null})}}
             />

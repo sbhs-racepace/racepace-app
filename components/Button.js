@@ -18,6 +18,7 @@ class Button extends React.Component {
         ,
         width: this.props.back_btn ? 40 : "80%",
         height: 40,
+        borderRadius: 10,
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
