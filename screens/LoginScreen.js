@@ -6,7 +6,6 @@ import { login, googleLogin } from '../functions/login';
 import Button from '../components/Button.js';
 import TextInputCustom from '../components/TextInput';
 import '../global';
-import Color from '../constants/Color'
 import BackButton from '../components/BackButton'
 
 const STYLES = StyleSheet.create({

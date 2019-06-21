@@ -191,3 +191,4 @@ venv.bak/
 .expo/packager-info.json
 
 .DS_Store
+.expo/packager-info.json
