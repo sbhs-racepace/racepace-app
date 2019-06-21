@@ -131,7 +131,7 @@ export default class RealTimeRouteScreen extends React.Component {
           onPress={() => {
             Alert.alert('End Route')
             this.stop_tracking()
-            if (global.route != null) {
+            if (global.route == null) {
               this.props.navigation.navigate('SaveRecentRun');
             } else {
               this.props.navigation.navigate('SaveRun');

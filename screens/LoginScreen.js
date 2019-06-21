@@ -20,7 +20,7 @@ const STYLES = StyleSheet.create({
     borderRadius: (Dimensions.get('window').width * 0.7) / 2,
   },
   title: {
-    fontFamily:'Roboto-Bold',fontSize:60,color: Color.primaryColor,
+    fontFamily:'Roboto-Bold',fontSize:70,color: Color.primaryColor,
   },
 });
 
