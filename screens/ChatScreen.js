@@ -28,7 +28,7 @@ export default class ChatScreen extends React.Component {
         headers: new Headers({
           'Authorization': global.login_status.token,
         })
-      }).then(res => res.json()).then(data => { 
+      }).then(async res => await res.json()).then(data => { 
             let messages = []
             for (let msg of data) {
                 messages.push({

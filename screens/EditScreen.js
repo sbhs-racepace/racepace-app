@@ -81,7 +81,7 @@ export default class EditScreen extends React.Component {
           Alert.alert('Error connecting to server', res);
         })
         .then(
-          res => {
+          async res => {
             console.log('Login response received from server');
           },
           reason => {

@@ -97,8 +97,8 @@ export default class FindFriendsScreen extends React.Component {
           Alert.alert('Error connecting to server', res);
         })
         .then(
-          res => {
-            res = JSON.parse(res._bodyText); //Parse response as JSON
+          async res => {
+            res = await res.json(); //Parse response as JSON
             this.setState({searchResults: res});
           },
           reason => {

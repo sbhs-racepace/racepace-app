@@ -61,7 +61,7 @@ export default class RealTimeRouteScreen extends React.Component {
       headers: new Headers({
         'Authorization': global.login_status.token,
       })
-    }).then(res => res.json()).then(data => { 
+    }).then(async res => await res.json()).then(data => { 
       console.log(data)
       this.setState({pace:data.pace,distance:data.distance})
     });

@@ -1,7 +1,7 @@
 import { Alert } from 'react-native';
 import '../global';
 
-export default function request(
+export default async function request(
   endpoint,
   method = 'POST',
   data = {},
@@ -27,8 +27,9 @@ export default function request(
         Alert.alert(errorMess, res);
       })
       .then(
-        resp => {
-          this.resp = resp;
+        async resp => {
+          
+          this.resp = await resp.json();
         },
         reason => {
           Alert.alert(errorMess, reason);

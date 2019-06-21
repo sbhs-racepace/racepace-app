@@ -41,8 +41,8 @@ export default class TrackingScreen extends React.Component {
           Alert.alert('Error connecting to server', res);
         })
         .then(
-          res => {
-            res = JSON.parse(res._bodyText);
+          async res => {
+            res = await res.json();
             this.location = res;
           },
           reason => {
@@ -79,7 +79,7 @@ export default class TrackingScreen extends React.Component {
                 Alert.alert('Error connecting to server', res);
               })
               .then(
-                res => {
+                async res => {
                   console.log('Success')
                 },
                 reason => {

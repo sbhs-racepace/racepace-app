@@ -107,7 +107,7 @@ export default class MapScreen extends React.Component {
       headers: new Headers({
         'Authorization': global.login_status.token,
       })
-    }).then(res => res.json()).then(data => { 
+    }).then(async res => await res.json()).then(data => { 
       let pace = data.pace
       let distance = data.distance
       this.setState({'pace':pace,'distance':distance})
@@ -292,7 +292,7 @@ export default class MapScreen extends React.Component {
           Alert.alert('Error connecting to server', res);
         })
         .then(
-          res => {
+          async res => {
             console.log('Login response received from server');
           },
           reason => {

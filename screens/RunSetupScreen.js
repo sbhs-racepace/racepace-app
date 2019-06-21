@@ -89,7 +89,7 @@ export default class RunSetupScreen extends React.Component {
       method: "GET"
     })
     .catch(error => Alert.alert("Error connecting to server",error))
-    .then(res => res.json())
+    .then(async res => await res.json())
     .then(res => 
       {
         console.log("Got response from server:");
