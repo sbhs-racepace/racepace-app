@@ -11,12 +11,19 @@ import {
 import Button from '../components/Button';
 import { FeedItem } from '../components/FeedItem';
 import '../global.js';
+import request from "../functions/request"
 import Color from '../constants/Color'
 
 export default class FeedFollowingScreen extends React.Component {
   constructor(state) {
     super(state);
   }
+
+  componentDidMount() {
+    this.feed = request(global.serverURL+"/get_feed", "POST", {}, true)
+    
+  }
+
   render() {
     if (!global.login_status.success && !global.TEST) {
       return <Text>Please login to see your feed</Text>;
