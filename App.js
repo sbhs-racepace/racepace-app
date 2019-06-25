@@ -8,7 +8,6 @@ import {
 } from 'react-navigation';
 
 import { View } from 'react-native';
-import MainScreenHeader from './components/MainScreenHeader';
 import EditScreen from './screens/EditScreen';
 import FeedFollowingScreen from './screens/FeedFollowingScreen';
 import FeedYouScreen from './screens/FeedYouScreen';
