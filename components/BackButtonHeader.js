@@ -5,22 +5,22 @@ import BackButton from './BackButton'
 import Color from '../constants/Color'
 import Button from './Button'
 
+let STYLES = StyleSheet.create({
+  title: {
+    fontFamily:'Roboto',fontSize:20,color: Color.textColor,
+    alignSelf:'center'
+  },
+  view: {
+    width:"100%", height:50, padding:3, borderBottomColor:'yellow', borderBottomWidth:1
+  }
+});
+
 export default class BackButtonHeader extends React.Component {
   constructor(props) {
     super(props);
   }
 
   render() {
-    let STYLES = StyleSheet.create({
-      title: {
-        fontFamily:'Roboto',fontSize:20,color: Color.textColor,
-        alignSelf:'center'
-      },
-      view: {
-        width:"100%", height:50, padding:3, borderBottomColor:'yellow', borderBottomWidth:1
-      }
-    });
-
     return (
       <View style={STYLES.view}>
         <View style={{flex:1,flexDirection:'row'}}>

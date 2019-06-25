@@ -80,8 +80,6 @@ export default class Message extends React.Component {
         !isSameUser(this.props.currentMessage, this.props.nextMessage)
         || !isSameDay(this.props.currentMessage, this.props.nextMessage)
       ) {
-          console.log(this.props.nextMessage.text)
-          console.log(this.props.nextMessage.user !== undefined)
           extraStyle = {
               borderBottomWidth: 1,
               borderColor: "#F0F0F0"
