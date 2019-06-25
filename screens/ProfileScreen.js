@@ -117,7 +117,7 @@ export default class ProfileScreen extends React.Component {
                   style={STYLES.stat_btn}
                   text={`${global.user.following.length} Following`}
                   onPress={() =>
-                    this.props.navigation.navigate('FollowList', {
+                    this.props.navigation.navigate('Follow', {
                       screen: 'Following',
                     })
                   }
@@ -126,7 +126,7 @@ export default class ProfileScreen extends React.Component {
                   style={STYLES.stat_btn}
                   text={`${global.user.followers.length} Followers`}
                   onPress={() =>
-                    this.props.navigation.navigate('FollowList', {
+                    this.props.navigation.navigate('Follow', {
                       screen: 'Followers',
                     })
                   }

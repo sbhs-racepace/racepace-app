@@ -63,7 +63,7 @@ export default class SaveRunScreen extends React.Component {
             text="Save Run"
             onPress={()=> {
               this.saveRecentRun()
-              this.props.navigation.navigate('FeedFollowing');
+              this.props.navigation.navigate('Feed');
             }}
           />
       </View>

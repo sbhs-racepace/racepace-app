@@ -10,6 +10,8 @@ import TextInputCustom from '../components/TextInput';
 import '../global';
 import BackButtonHeader from '../components/BackButtonHeader'
 
+const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
+
 const STYLES = StyleSheet.create({
   button_text: {
     padding: '1%',
@@ -17,13 +19,17 @@ const STYLES = StyleSheet.create({
   },
   logo: {
     margin: '5%',
-    width: Dimensions.get('window').width * 0.7,
-    height: Dimensions.get('window').width * 0.7,
-    borderRadius: (Dimensions.get('window').width * 0.7) / 2,
+    width: windowWidth * 0.7,
+    height: windowWidth * 0.7,
+    borderRadius: windowWidth * 0.7 / 2,
   },
   title: {
     fontFamily:'Roboto-Bold',fontSize:70,color: Color.primaryColor,
-  },
+  },  
+  roundedButton: {
+    width: '80%',
+    borderRadius: 10,
+  }
 });
 
 export default class LoginScreen extends React.Component {
@@ -73,13 +79,13 @@ export default class LoginScreen extends React.Component {
             placeholderTextColor="rgba(225,225,225,0.8)"
           />
           <Button
-            style={global.component_styles.roundedButton}
+            style={STYLES.roundedButton}
             text_style={STYLES.button_text}
             onPress={execute_login.bind(this, this.state.email, this.state.pword)}
             text="Login"
           />
           <Button
-            style={global.component_styles.roundedButton}
+            style={STYLES.roundedButton}
             text_style={STYLES.button_text}
             onPress={googleLogin}
             text="Login with Google"

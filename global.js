@@ -68,10 +68,3 @@ global.view_styles = StyleSheet.create({
   columnCenterView:{ alignItems:"center", flexDirection:"column",flex:1},
   rowView: {flexDirection: "row", justifyContent: 'space-between', width:"100%"},
 })
-
-global.component_styles = StyleSheet.create({
-  roundedButton: {
-      width: '80%',
-      borderRadius: 10,
-  }
-})

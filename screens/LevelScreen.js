@@ -48,7 +48,7 @@ export default class LevelScreen extends React.Component {
     return (
       <View style={{flex:1, backgroundColor:Color.lightBackground}}>
         <BackButtonHeader
-          title='Level Screen'
+          title='Level'
           onPress={this.props.navigation.goBack}
         />
         <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>

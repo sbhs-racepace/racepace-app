@@ -52,7 +52,7 @@ export default class SplashScreen extends React.Component {
           text="Login as guest"
           style={STYLES.button}
           text_style={STYLES.button_text}
-          onPress={()=>this.props.navigation.navigate("Map")}
+          onPress={()=>this.props.navigation.navigate("Feed")}
         />
       </View>
     )

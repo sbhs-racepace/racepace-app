@@ -2,15 +2,14 @@
 
 import React from 'react';
 import { DocumentPicker } from 'expo';
-import { View, Alert, Text, ScrollView, AppRegistry, TextInput, StyleSheet, KeyboardAvoidingView, Image, Dimension } from 'react-native';
+import { View, Alert, Text, ScrollView, AppRegistry, TextInput, StyleSheet, KeyboardAvoidingView, Image, Dimensions } from 'react-native';
 import { login } from '../functions/login'
 import Button from '../components/Button';
 import BackButtonHeader from '../components/BackButtonHeader';
 import Color from '../constants/Color';
 import '../global.js';
 
-const window_width = Dimensions.get("window").width
-const window_height = Dimensions.get("window").height
+const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
 const STYLES = StyleSheet.create({
   chsfile: {
@@ -22,7 +21,7 @@ const STYLES = StyleSheet.create({
   input: {
     fontSize: 20,
     borderWidth: 1,
-    width: window_width * 0.8,
+    width: windowWidth * 0.8,
     borderRadius: 10,
     padding: '1%',
     marginTop: 5,
@@ -30,9 +29,9 @@ const STYLES = StyleSheet.create({
     backgroundColor: Color.lightBackground2,
   },
   profile_image: {
-    height: window_width * 0.35,
-    width: window_width * 0.35,
-    borderRadius: window_width * 0.35 / 2,
+    height: windowWidth * 0.35,
+    width: windowWidth * 0.35,
+    borderRadius: windowWidth * 0.35 / 2,
     alignSelf: 'center'
   },
   container : {
@@ -107,7 +106,7 @@ export default class EditScreen extends React.Component {
       <KeyboardAvoidingView style={STYLES.container}>
         <BackButtonHeader title='Edit Screen' onPress={this.props.navigation.goBack} />
         <View style={{flexDirection: 'row', justifyContent:'space-around' }}>
-          <View style={{width: window_width * 0.4}}>
+          <View style={{width: windowWidth * 0.4}}>
             <Image
               style={STYLES.profile_image}
               source={{
@@ -127,16 +126,16 @@ export default class EditScreen extends React.Component {
               }}
             />
           </View>
-          <View style={{ width: window_width * 0.5 }}>
+          <View style={{ width: windowWidth * 0.5 }}>
             <TextInput 
               placeholder="Name" 
-              style={{ ...STYLES.input, width: window_width * 0.5 }}
+              style={{ ...STYLES.input, width: windowWidth * 0.5 }}
               onChangeText={full_name => this.setState({ full_name })}
             />
             <TextInput
               placeholder="Enter Bio"
               onChangeText={bio => this.setState({ bio })}
-              style={{ ...STYLES.input, height: window_width * 0.3, fontSize: 12, width: window_width * 0.5 }}
+              style={{ ...STYLES.input, height: windowWidth * 0.3, fontSize: 12, width: windowWidth * 0.5 }}
               multiline={true}
             />
           </View>

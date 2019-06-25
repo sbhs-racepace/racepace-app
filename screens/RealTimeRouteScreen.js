@@ -26,24 +26,6 @@ const STYLES = StyleSheet.create({
   },
 })
 
-class RealTimeRouteDefaultScreen extends React.Component {
-  constructor(state) {
-    super(state);
-  }
-
-  render() {
-    return (
-      <View style={{flex:1, alignItems:'center'}}>
-        <Text style={STYLES.title}>Real Time Info</Text>      
-        <Text style={STYLES.text}>Pace: {this.props.pace.minutes} :{this.props.pace.seconds}</Text>
-        <Text style={STYLES.text}>Distance: {this.props.distance}</Text>
-        <Text style={STYLES.text}>Timer: 15 seconds</Text>
-        <Text style={STYLES.text}>Time</Text>
-      </View>
-    )
-  }
-}
-
 export default class RealTimeRouteScreen extends React.Component {
   constructor(state) {
     super(state);
@@ -124,8 +106,12 @@ export default class RealTimeRouteScreen extends React.Component {
   render() {
     return (
       <View style={{backgroundColor:Color.lightBackground, flex:1}}>
-        <View style={{flex:9}}>
-          <RealTimeRouteDefaultScreen pace={this.state.pace} distance={this.state.distance}></RealTimeRouteDefaultScreen>
+        <View style={{flex:9,alignItems:'center'}}>
+          <Text style={STYLES.title}>Real Time Info</Text>      
+          <Text style={STYLES.text}>Pace: {this.props.pace.minutes} :{this.props.pace.seconds}</Text>
+          <Text style={STYLES.text}>Distance: {this.props.distance}</Text>
+          <Text style={STYLES.text}>Timer: 15 seconds</Text>
+          <Text style={STYLES.text}>Time</Text>
         </View>
         <Button 
           text="Save Running Route"
@@ -146,7 +132,7 @@ export default class RealTimeRouteScreen extends React.Component {
           onPress={() => {
             Alert.alert('Stop Route')
             this.stop_tracking()
-            this.props.navigation.navigate('FeedFollowing');
+            this.props.navigation.navigate('Feed');
           }}
         />
       </View>

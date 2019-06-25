@@ -7,7 +7,12 @@ import { FeedItem } from '../components/FeedItem';
 import '../global.js';
 import Color from '../constants/Color'
 
-export default class FeedFollowingScreen extends React.Component {
+let roundedButton = {
+  width: '80%',
+  borderRadius: 10,
+}
+
+export default class FeedScreen extends React.Component {
   constructor(state) {
     super(state);
   }
@@ -46,7 +51,7 @@ export default class FeedFollowingScreen extends React.Component {
             time="30"
           />
           <Button
-            style={{...global.component_styles.roundedButton, alignSelf:'center'}}
+            style={{...roundedButton, alignSelf:'center'}}
             text_style={{
               padding: '1%',
               fontSize: 16,

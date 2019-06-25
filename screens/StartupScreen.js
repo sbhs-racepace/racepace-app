@@ -6,7 +6,7 @@ import '../global';
 import * as Font from 'expo-font'
 import Color from '../constants/Color'
 
-export default class LoadScreen extends React.Component {
+export default class StartupScreen extends React.Component {
   constructor(props) {
     super(props);
 

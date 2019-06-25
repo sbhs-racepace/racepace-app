@@ -15,9 +15,7 @@ import BackButtonHeader from '../components/BackButtonHeader'
 import '../global'
 import Color from '../constants/Color'
 
-const { width: windowWidth, height: windowHeight } = Dimensions.get(
-  'window'
-);
+const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
 const STYLES = StyleSheet.create({
   search_btn: {
@@ -127,7 +125,7 @@ export default class FindFriendsScreen extends React.Component {
             />
           </View>
           <Button
-            style={global.component_styles.roundedButton}
+            style={STYLES.roundedButton}
             text="Refresh"
             onPress={() => (Alert.alert('Not Implemented'))}
           />

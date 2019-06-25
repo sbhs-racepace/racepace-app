@@ -1,11 +1,13 @@
 // Jason Yu
 
 import React from 'react';
-import { ScrollView, View, Text, Alert, StyleSheet,Image } from 'react-native';
+import { ScrollView, View, Text, Alert, StyleSheet,Image, Dimensions } from 'react-native';
 import Button from "../components/Button"
 import BackButtonHeader from '../components/BackButtonHeader'
 import "../global.js"
 import Color from '../constants/Color'
+
+const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
 const STYLES = StyleSheet.create({
   total_view : {
@@ -14,12 +16,17 @@ const STYLES = StyleSheet.create({
   },
   text: {
     color: Color.textColor,
+    fontSize:20,
   },
   profile_image: {
-    height: 100,
-    width: 100,
-    borderRadius: 50,
-  },
+    height: windowWidth * 0.2,
+    width: windowWidth * 0.2,
+    borderRadius: windowWidth * 0.2 / 2,
+  },  
+  roundedButton: {
+    width: '20%',
+    borderRadius: 10,
+  }
 });
 
 class FollowRequest extends React.Component {
@@ -29,26 +36,22 @@ class FollowRequest extends React.Component {
 
   render() {
     return (
-      <View style={{width:'100%',alignItems:'center',flex:1, flexDirection:'row', padding:'3%'}}>
-        <View style={{flex:1,flexDirection:'column'}}>
-          <Image
-              style={STYLES.profile_image}
-              source={{uri: `${global.serverURL}/api/avatars/${global.login_status.user_id}.png`}}
-            />
-          </View>
-        <View style={{flex:2,flexDirection:'column', justifyItems:'center'}}>
-          <Text style={STYLES.text}>{this.props.name} wants to follow you!</Text>
-          <Button 
-            style={global.component_styles.roundedButton} 
-            text="Accept Request"
-          />
-        </View>
+      <View style={{width:'100%',alignItems:'center',flex:1, flexDirection:'row', justifyContent:'space-between', height:windowHeight*0.2}}>
+        <Image
+          style={STYLES.profile_image}
+          source={{uri: `${global.serverURL}/api/avatars/${global.login_status.user_id}.png`}}
+        />
+        <Text style={{width:"30%",fontSize:20, color:Color.textColor}}>{this.props.name} wants to follow you!</Text>
+        <Button 
+          style={STYLES.roundedButton} 
+          text="Accept Request"
+        />
       </View>
     )
   }
 }
 
-export default class FollowScreen extends React.Component {
+export default class FollowerRequestScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -60,7 +63,7 @@ export default class FollowScreen extends React.Component {
     return (
       <View style={{backgroundColor:Color.lightBackground, flex:1}}>
         <BackButtonHeader
-          title='Follow'
+          title='Follower Requests'
           onPress={this.props.navigation.goBack}
         />
         <ScrollView contentContainerStyle={Color.lightBackground}>

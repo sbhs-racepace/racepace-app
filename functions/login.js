@@ -33,25 +33,26 @@ export async function execute_login(email,password) {
   let login_response = await login(email,password)
   if (login_response.success) {
     storeUserInfo(login_response);
-    this.props.navigation.navigate('FeedFollowing');
+    this.props.navigation.navigate('Feed');
   }
 }
 
 export async function login(email,password) {
   let data = { email: email, password: password };
   let api_url = global.serverURL + '/api/login';
-  let res_data;
-  fetch(api_url, {
+  let login_response = false;
+  await fetch(api_url, {
     method: 'POST',
     body: JSON.stringify(data),
   })
   .then(async res => {
-    res_data = await res.json()
+    login_response = await res.json();
+    global.login_status = login_response;
   })
   .catch(error => {
     Alert.alert('Error ', error);
   })
-  return res_data;
+  return login_response
 }
 
 export async function register() {
@@ -72,7 +73,7 @@ export async function register() {
     let res_data = await res.json()
     if (res_data.success) {
       storeUserInfo(login_response);
-      this.props.navigation.navigate('FeedFollowing');
+      this.props.navigation.navigate('Feed');
     } else {
       Alert.alert('Error', res_data.error)
     }
@@ -94,7 +95,7 @@ export async function googleLogin() {
         let res_data = await res.json()
         if (res_data.success) {
           storeUserInfo(login_response);
-          this.props.navigation.navigate('FeedFollowing');
+          this.props.navigation.navigate('Feed');
         } else {
           Alert.alert('Error', res_data.error)
         }

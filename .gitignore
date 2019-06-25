@@ -186,8 +186,6 @@ venv.bak/
 
 .expo/packager-info.json
 .expo/settings.json
-.expo/packager-info.json
 .DS_Store
 package-lock.json
 assets/.DS_Store
-.expo/packager-info.json

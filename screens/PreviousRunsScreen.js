@@ -16,7 +16,7 @@ const STYLES = StyleSheet.create({
   },
 });
 
-export default class FeedYouScreen extends React.Component {
+export default class PreviousRunsScreen extends React.Component {
   render() {
     if (!global.login_status.success && !global.TEST) {
       return <Text>Please login to see your feed</Text>;
@@ -59,7 +59,7 @@ export default class FeedYouScreen extends React.Component {
             text="Follow Requests"
             style={{height:"100%",width:"100%", backgroundColor:Color.darkBackground}}
             text_style={{color: Color.offColor, padding:"3%"}}
-            onPress={() => this.props.navigation.navigate('Follow')}
+            onPress={() => this.props.navigation.navigate('FollowRequests')}
           />
         </View>
           {test_data}

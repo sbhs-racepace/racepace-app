@@ -1,3 +1,4 @@
+// Sunny Yan, Jason Yu
 import React from 'react';
 
 import {
@@ -9,9 +10,9 @@ import {
 
 import { View } from 'react-native';
 import EditScreen from './screens/EditScreen';
-import FeedFollowingScreen from './screens/FeedFollowingScreen';
-import FeedYouScreen from './screens/FeedYouScreen';
-import FollowListScreen from './screens/Following';
+import FeedScreen from './screens/FeedScreen';
+import PreviousRunsScreen from './screens/PreviousRunsScreen';
+import FollowingScreen from './screens/FollowingScreen';
 import SplashScreen from './screens/SplashScreen';
 import MapScreen from './screens/MapScreen';
 import ProfileScreen from './screens/ProfileScreen';
@@ -19,7 +20,7 @@ import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import ChatScreen from './screens/ChatScreen';
 import RouteListScreen from './screens/RouteListScreen';
-import FollowScreen from './screens/FollowScreen';
+import FollowerRequestScreen from './screens/FollowerRequestScreen';
 import RunSetupScreen from './screens/RunSetupScreen';
 import GroupScreen from './screens/GroupScreen';
 import TrackingScreen from './screens/TrackingScreen';
@@ -28,13 +29,13 @@ import FindFriendsScreen from './screens/FindFriendsScreen';
 import SaveRunScreen from './screens/SaveRunScreen';
 import SaveRecentRunScreen from './screens/SaveRecentRunScreen';
 import LevelScreen from './screens/LevelScreen';
-import LoadScreen from './screens/LoadScreen';
+import StartupScreen from './screens/StartupScreen';
 
 import Color from './constants/Color'
 
 const LoginNavigator = createStackNavigator({
   LoadScreen: {
-    screen: LoadScreen,
+    screen: StartupScreen,
     navigationOptions: { header: null },
   },
   Splash: {
@@ -53,8 +54,8 @@ const LoginNavigator = createStackNavigator({
     screen: EditScreen,
     navigationOptions: { header: null },
   },
-  Follow: {
-    screen: FollowScreen,
+  FollowRequests: {
+    screen: FollowerRequestScreen,
     navigationOptions: { header: null },
   },
   Track: {
@@ -78,17 +79,17 @@ const LoginNavigator = createStackNavigator({
     navigationOptions: { header: null },
   },
   Routes: { screen: RouteListScreen, navigationOptions: { header: null } },
-  FollowList: { screen: FollowListScreen, navigationOptions: { header: null } },
+  Follow: { screen: FollowingScreen, navigationOptions: { header: null } },
   Main: {
     screen: createBottomTabNavigator({
       Feed: createMaterialTopTabNavigator(
         {
-          FeedFollowing: {
-            screen: FeedFollowingScreen,
-            navigationOptions: { title: 'Following' },
+          Feed: {
+            screen: FeedScreen,
+            navigationOptions: { title: 'Feed' },
           },
-          FeedYou: {
-            screen: FeedYouScreen,
+          PreviousRuns: {
+            screen: PreviousRunsScreen,
             navigationOptions: { title: 'You' },
           },
         },
@@ -126,8 +127,8 @@ const AppContainer = createAppContainer(LoginNavigator);
 export default class App extends React.Component {
   render() {
     return (
-      <View style={{ flex: 1, marginTop: 20, backgroundColor:Color.darkBackground}}>
-        <AppContainer style={{backgroundColor:Color.darkBackground}}/>
+      <View style={{ flex: 1, marginTop: 20, backgroundColor: Color.darkBackground}}>
+        <AppContainer style={{backgroundColor: Color.darkBackground}}/>
       </View>
     );
   }
