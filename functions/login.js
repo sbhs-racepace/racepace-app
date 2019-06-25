@@ -4,81 +4,53 @@ import { Alert } from 'react-native';
 import Expo from 'expo';
 import io from 'socket.io-client';
 
-function check_login(return_val) {
-  if (!return_val) {
-    //Check for empty response
-    Alert.alert('Error', "Server didn't respond");
-    return false;
-  }
-  if (return_val['success']) {
-    //Credentials correct
-    global.login_status = return_val;
-  } else {
-    //Credentials incorrect
-    Alert.alert('Error', return_val.error);
-  }
-  return return_val['success'];
-}
-
 async function storeUserInfo(res) {
   let data = { user_id: global.login_status.user_id };
-  let info_url = global.serverURL + '/api/get_info';
-  fetch(info_url, {
+  let api_url = global.serverURL + '/api/get_info';
+  fetch(api_url, {
     method: 'POST',
     body: JSON.stringify(data),
     headers: new Headers({
       Authorization: global.login_status.token,
     }),
-  }).then(async res => {
-    // Store user info
-    res = await res.json()
-    global.user = res['info']
-    // Adding Websocket
-    global.socket = io(`${global.serverURL}?token=${global.login_status.token}`, { transports: ['websocket'] });
-    global.socket.emit('authenticate', global.login_status.token);
-  });
+  })
+  .then(async res => {
+    let res_data = await res.json()
+    if (res_data.success) {
+      global.user = res_data['info']
+      global.socket = io(`${global.serverURL}?token=${global.login_status.token}`, { transports: ['websocket'] });
+      global.socket.emit('authenticate', global.login_status.token);
+    } else {
+      Alert.alert('Error', res_data.error)
+    }
+  }).catch(error => {
+    Alert.alert('Error', error);
+  })
 }
 
 export async function execute_login(email,password) {
   let login_response = await login(email,password)
-  if (login_response != false) {
-    if (check_login(login_response)) {
-      storeUserInfo(login_response);
-      this.props.navigation.navigate('FeedFollowing');
-    } else {
-      Alert.alert('Invalid Username or Password')
-    }
+  if (login_response.success) {
+    storeUserInfo(login_response);
+    this.props.navigation.navigate('FeedFollowing');
   }
 }
 
 export async function login(email,password) {
-  //Sends login request to server
-  let data = {
-    email: email, password: password
-  };
-  let login_response = false;
-  let url = global.serverURL + '/api/login';
-  try {
-    await fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(data),
-    })
-      .catch(res => {
-        Alert.alert('Error connecting to server', res);
-      })
-      .then(
-        async res => {
-          login_response = await res.json()
-        },
-        reason => {
-          Alert.alert('Error connecting to server', reason);
-        }
-      );
-  } catch (err) {
-    //Catch any other errors
-    Alert.alert('Error', err);
-  }
-  return login_response;
+  let data = { email: email, password: password };
+  let api_url = global.serverURL + '/api/login';
+  let res_data;
+  fetch(api_url, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  })
+  .then(async res => {
+    res_data = await res.json()
+  })
+  .catch(error => {
+    Alert.alert('Error ', error);
+  })
+  return res_data;
 }
 
 export function register() {
@@ -90,64 +62,47 @@ export function register() {
     dob: this.state.dob,
     username: this.state.username,
   };
-  const url = global.serverURL + '/api/register';
-  try {
-    fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(data),
-    })
-      .catch(res => {
-        Alert.alert('Error connecting to server', res);
-      })
-      .then(
-        async res => {
-          res = await res.json()
-          let login_response = check_login(res);
-          if (login_response) {
-            storeUserInfo(login_response);
-            this.props.navigation.navigate('FeedFollowing');
-          }
-        },
-        reason => {
-          Alert.alert('Error connecting to server', reason);
-        }
-      );
-  } catch (err) {
-    //Catch any other errors
-    Alert.alert('Error', err);
-  }
+  let api_url = global.serverURL + '/api/register';
+  fetch(api_url, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  })
+  .then(async res => {
+    let res_data = await res.json()
+    if (res_data.success) {
+      storeUserInfo(login_response);
+      this.props.navigation.navigate('FeedFollowing');
+    } else {
+      Alert.alert('Error', res_data.error)
+    }
+  })
+  .catch(error => {
+    Alert.alert('Error', error);
+  })
 }
 
 export async function googleLogin() {
-  try {
-    const url = global.serverURL + '/api/google_login'
-    const result = await Expo.Google.logInAsync({
-      androidClientId: global.googleLoginID.android,
-    });
-    if (result.type == 'success') {
-      fetch(url, {
-        method: 'POST',
-        body: "idToken="+result.idToken,
-      })
-        .catch(res => {
-          Alert.alert('Error connecting to server', res);
-        })
-        .then(
-          async res => {
-            res = await res.json()
-            let login_response = check_login(res);
-            if (login_response) {
-              storeUserInfo(login_response);
-              this.props.navigation.navigate('FeedFollowing');
-            }
-          },
-          reason => {
-            console.log('Promise rejected');
-            Alert.alert('Error connecting to server', reason);
-          }
-        );
-    }
-  } catch (err) {
-    Alert.alert('Google Login Error', err);
+  let api_url = global.serverURL + '/api/google_login'
+  let result = await Expo.Google.logInAsync({ androidClientId: global.googleLoginID.android });
+  if (result.type == 'success') {
+    fetch(api_url, {
+      method: 'POST',
+      body: "idToken="+result.idToken,
+    })
+    .then(async res => {
+        let res_data = await res.json()
+        if (res_data.success) {
+          storeUserInfo(login_response);
+          this.props.navigation.navigate('FeedFollowing');
+        } else {
+          Alert.alert('Error', res_data.error)
+        }
+      }
+    )
+    .catch(error => {
+      Alert.alert('Error connecting to server', error);
+    })
+  } else {
+    Alert.alert('Error')
   }
 }

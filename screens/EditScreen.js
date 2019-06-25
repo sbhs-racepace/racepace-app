@@ -1,17 +1,6 @@
 import React from 'react';
 import { DocumentPicker } from 'expo';
-import {
-  View,
-  Alert,
-  Text,
-  ScrollView,
-  AppRegistry,
-  TextInput,
-  StyleSheet,
-  KeyboardAvoidingView,
-  Image,
-  Dimensions
-} from 'react-native';
+import { View, Alert, Text, ScrollView, AppRegistry, TextInput, StyleSheet, KeyboardAvoidingView, Image, Dimension } from 'react-native';
 import { login } from '../functions/login'
 import Button from '../components/Button';
 import BackButtonHeader from '../components/BackButtonHeader';
@@ -75,8 +64,8 @@ export default class EditScreen extends React.Component {
   }
 
   saveChanges() {
-    let login_check = login.login(global.email, this.state.current_password)
-    if (login_check != false) {
+    let login_data = login.login(global.email, this.state.current_password)
+    if (login_data.success) {
       if (this.state.passowrd == this.state.confirmation_password) {
         let data = {
           username: this.state.username,
