@@ -1,3 +1,5 @@
+// Jason Yu
+
 import React from 'react';
 import { Component } from 'react';
 import {
@@ -31,30 +33,21 @@ export default class SaveRunScreen extends React.Component {
     super(state);
   }
 
-  saveRecentRun() {
-    let url = `${global.serverURL}/api/save_recent_route`
-    try {
-      fetch(url, {
-        method: 'POST',
-        headers: new Headers({
-          'Authorization': global.login_status.token,
-        })
+  async saveRecentRun() {
+    let api_url = `${global.serverURL}/api/save_recent_route`
+    fetch(api_url, {
+      method: 'POST',
+      headers: new Headers({
+        'Authorization': global.login_status.token,
       })
-        .catch(res => {
-          Alert.alert('Error connecting to server', res);
-        })
-        .then (
-          async res => {
-            console.log('Success Saving Recent Route');
-          },
-          reason => {
-            console.log('Promise rejected');
-            Alert.alert('Error connecting to server', reason);
-          }
-        );
-    } catch (err) {
-      Alert.alert('Error', err);
-    }
+    })
+    .catch(res => {
+      Alert.alert('Error connecting to server', res);
+    })
+    .then (async res => {
+        console.log('Success Saving Recent Route');
+      }
+    );
   }
 
   render() {

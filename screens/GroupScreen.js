@@ -1,3 +1,5 @@
+// Sunny Yan, Jason Yu
+
 import React from 'react';
 import { ScrollView, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import Button from "../components/Button"

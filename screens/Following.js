@@ -1,9 +1,11 @@
+// Sunny Yan, Jason Yu
+
 import React from 'react';
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import {createMaterialTopTabNavigator,createAppContainer} from 'react-navigation'
 import Button from "../components/Button"
 import BackButtonHeader from '../components/BackButtonHeader'
 import '../global'
-import {createMaterialTopTabNavigator,createAppContainer} from 'react-navigation'
 import Color from '../constants/Color'
 
 class Follower extends React.Component {

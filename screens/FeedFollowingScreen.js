@@ -1,13 +1,7 @@
+// Jason Yu
+
 import React from 'react';
-import { Prompt, display_prompt } from '../components/Prompt';
-import {
-  ScrollView,
-  View,
-  Text,
-  Alert,
-  Dimensions,
-  KeyboardAvoidingView,
-} from 'react-native';
+import { ScrollView, Text, Alert, KeyboardAvoidingView } from 'react-native';
 import Button from '../components/Button';
 import { FeedItem } from '../components/FeedItem';
 import '../global.js';

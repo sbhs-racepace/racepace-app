@@ -1,3 +1,5 @@
+// Calvin Chang
+
 import React from 'react';
 import { DocumentPicker } from 'expo';
 import { View, Alert, Text, ScrollView, AppRegistry, TextInput, StyleSheet, KeyboardAvoidingView, Image, Dimension } from 'react-native';
@@ -63,45 +65,37 @@ export default class EditScreen extends React.Component {
     };
   }
 
-  saveChanges() {
+  async saveChanges() {
     let login_data = login.login(global.email, this.state.current_password)
+    let equivalent_new = this.state.passowrd == this.state.confirmation_password
+    let data = {
+      username: this.state.username,
+      password: this.state.password,
+      bio: this.state.bio,
+      full_name: this.state.full_name,
+      image: this.state.image,
+    };
+
     if (login_data.success) {
-      if (this.state.passowrd == this.state.confirmation_password) {
-        let data = {
-          username: this.state.username,
-          password: this.state.password,
-          bio: this.state.bio,
-          full_name: this.state.full_name,
-          image: this.state.image,
-        };
-        let url = global.serverURL + '/api/update_profile';
-        try {
-          fetch(url, {
-            method: 'POST',
-            body: JSON.stringify(data),
-          })
-            .catch(res => {
-              Alert.alert('Error connecting to server', res);
-            })
-            .then(
-              async res => {
-                res = await res.json()
-                if (res.success == true) {
-                  Alert.alert('Changed details')
-                } else {
-                  Alert.alert('Could not change details')
-                }
-              },
-              reason => {
-                Alert.alert('Error connecting to server', reason);
-              }
-            );
-        } catch (err) {
-          //Catch any other errors
-          Alert.alert('Error', err);
-        }
+      if (equivalent_new) {
+        let api_url = global.serverURL + '/api/update_profile';
+        fetch(api_url, {
+          method: 'POST',
+          body: JSON.stringify(data),
+        })
+        .catch(res => {
+          Alert.alert('Error connecting to server', res);
+        })
+        .then(async res => {
+          res = await res.json()
+          if (res.success == true) {
+            Alert.alert('Changed details')
+          } else {
+            Alert.alert('Could not change details')
+          }
+        });
       } else {
-        Alert.alert('New Password does not match')
+        Alert.alert("New Passwords don't match")
       }
     } else {
       Alert.alert('Current Password was not correct')

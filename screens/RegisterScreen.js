@@ -1,3 +1,5 @@
+// Jason Yu
+
 import React from 'react';
 import { Component } from 'react';
 import { View, Text, StyleSheet, Image, Alert, Dimensions } from 'react-native';

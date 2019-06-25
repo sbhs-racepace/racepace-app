@@ -1,3 +1,5 @@
+// Sunny Yan
+
 import React from 'react';
 import {
   Dimensions,
@@ -30,34 +32,24 @@ export default class TrackingScreen extends React.Component {
     }
   }
 
-  updateLocations() {
-    const url = global.serverURL + '/api/tracking';
-    try {
-      fetch(url, {
-        method: 'POST',
-        body: `groupName=${this.props.navigation.state.params.groupName}`,
-      })
-        .catch(res => {
-          Alert.alert('Error connecting to server', res);
-        })
-        .then(
-          async res => {
-            res = await res.json();
-            this.location = res;
-          },
-          reason => {
-            console.log('Promise rejected');
-            Alert.alert('Error connecting to server', reason);
-          }
-        );
-    } catch (err) {
-      //Catch any other errors
-      Alert.alert('Error', err);
-    }
+  async updateLocations() {
+    let api_url = global.serverURL + '/api/tracking';
+    fetch(api_url, {
+      method: 'POST',
+      body: `groupName=${this.props.navigation.state.params.groupName}`,
+    })
+    .catch(res => {
+      Alert.alert('Error connecting to server', res);
+    })
+    .then(async res => {
+        res = await res.json();
+        this.location = res;
+      }
+    );
   }
 
-  componentDidMount() {
-    const url = global.serverURL + '/api/send_real_time_location';
+  async componentDidMount() {
+    let api_url = global.serverURL + '/api/send_real_time_location';
     let {status} = Permissions.askAsync(Permissions.LOCATION);
     if (status) { //Check whether permission granted
       Location.watchPositionAsync(
@@ -67,29 +59,21 @@ export default class TrackingScreen extends React.Component {
           distanceInterval: 10
         },
         (location) => {
-          try {
-            fetch(url, {
-              method: 'POST',
-              body: JSON.stringify(location.coords),
-              headers: {
-                'Authorization': global.login_status.token,
-              }
-            })
-              .catch(res => {
-                Alert.alert('Error connecting to server', res);
-              })
-              .then(
-                async res => {
-                  console.log('Success')
-                },
-                reason => {
-                  console.log('Promise rejected');
-                }
-              );
-          } catch (err) {
-            //Catch any other errors
-            Alert.alert('Error', err);
-          }         
+          fetch(api_url, {
+            method: 'POST',
+            body: JSON.stringify(location.coords),
+            headers: {
+              'Authorization': global.login_status.token,
+            }
+          })
+          .catch(res => {
+            Alert.alert('Error connecting to server', res);
+          })
+          .then(
+            async res => {
+              console.log('Success')
+            }
+          );  
         }
       )
     }

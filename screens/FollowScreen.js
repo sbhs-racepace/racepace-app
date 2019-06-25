@@ -1,3 +1,5 @@
+// Jason Yu
+
 import React from 'react';
 import { ScrollView, View, Text, Alert, StyleSheet,Image } from 'react-native';
 import Button from "../components/Button"

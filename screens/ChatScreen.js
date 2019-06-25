@@ -1,3 +1,5 @@
+// Abdur Raqeeb
+
 import '../global';
 import React from "react";
 import { GiftedChat } from "react-native-gifted-chat";
@@ -21,34 +23,32 @@ export default class ChatScreen extends React.Component {
   }
 
 
-  componentWillMount() {
+  async componentWillMount() {
     let messagesURL = global.serverURL + '/api/groups/global/messages?before=' + (new Date()).toUTCString()
     fetch(messagesURL, {
-        method: 'GET',
-        headers: new Headers({
-          'Authorization': global.login_status.token,
-        })
-      }).then(async res => await res.json()).then(data => { 
-            let messages = []
-            for (let msg of data) {
-                messages.push({
-                    _id: msg._id,
-                    createdAt: new Date(msg.created_at*1000),
-                    text: msg.content,
-                    user: {
-                        _id: msg.author._id,
-                        name: msg.author.username,
-                        avatar: `${global.serverURL}/api/avatars/${msg.author._id}.png`
-                    }
-                })
-            }
-            this.setState((previousState) => {
-                return {
-                 messages: GiftedChat.prepend(previousState.messages, messages),
-                };
-              });
+      method: 'GET',
+      headers: new Headers({
+        'Authorization': global.login_status.token,
+      })
+    })
+    .then(async res => await res.json())
+    .then(data => { 
+      let messages = []
+      for (let msg of data) {
+        messages.push({
+          _id: msg._id,
+          createdAt: new Date(msg.created_at*1000),
+          text: msg.content,
+          user: {
+            _id: msg.author._id,
+            name: msg.author.username,
+            avatar: `${global.serverURL}/api/avatars/${msg.author._id}.png`
+          }
         });
-    }
+      }
+      this.setState((previousState) => { messages: GiftedChat.prepend(previousState.messages, messages) })
+    });
+  }
 
   onReceivedMessage(data) {
 

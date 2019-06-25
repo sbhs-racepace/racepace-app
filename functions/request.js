@@ -1,3 +1,5 @@
+// Sunny Yan
+
 import { Alert } from 'react-native';
 import '../global';
 
@@ -21,24 +23,19 @@ export default async function request(
     };
   }
 
-  try {
-    fetch(global.serverURL + endpoint, options)
-      .catch(res => {
-        Alert.alert(errorMess, res);
-      })
-      .then(
-        async resp => {
-          
-          this.resp = await resp.json();
-        },
-        reason => {
-          Alert.alert(errorMess, reason);
-        }
-      );
-  } catch (err) {
-    //Catch any other errors
-    Alert.alert(errorMess, err);
-  }
+  fetch(global.serverURL + endpoint, options)
+  .catch(res => {
+    Alert.alert(errorMess, res);
+  })
+  .then(
+    async resp => {
+      
+      this.resp = await resp.json();
+    },
+    reason => {
+      Alert.alert(errorMess, reason);
+    }
+  );
 
   return this.resp;
 }

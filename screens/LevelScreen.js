@@ -1,13 +1,11 @@
+// Roy Wu
+
 import React from 'react';
 import {
   View,
   Text,
-  Image,
   StyleSheet,
-  ScrollView,
-  TouchableHighlight,
 } from 'react-native';
-import Button from '../components/Button';
 import '../global';
 import Color from '../constants/Color'
 import BackButtonHeader from '../components/BackButtonHeader';

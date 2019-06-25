@@ -1,4 +1,5 @@
-//SY
+// Sunny Yan, Jason Yu
+
 import '../global';
 import { Alert } from 'react-native';
 import Expo from 'expo';
@@ -53,7 +54,7 @@ export async function login(email,password) {
   return res_data;
 }
 
-export function register() {
+export async function register() {
   //Sends register request to server (also logs in after user is registered)
   let data = {
     email: this.state.email,

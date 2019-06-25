@@ -1,3 +1,5 @@
+// Jason Yu
+
 import * as React from 'react';
 import { Text, TextInput, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Button from "./Button"

@@ -1,3 +1,5 @@
+// Jason Yu, Sunny Yan
+
 import React from 'react';
 import { StyleSheet, View, Text, Alert, ScrollView, TextInput, Dimensions } from 'react-native';
 import Button from "../components/Button"
@@ -83,16 +85,13 @@ export default class RunSetupScreen extends React.Component {
   }
 
   async getRouteFromCoords(start, end) {
-    let url = `${global.serverURL}/api/route?start=${start}&end=${end}`;
-    console.log("Getting route. URL:"+url);
-    
-    await fetch(url,{
+    let api_url = `${global.serverURL}/api/route?start=${start}&end=${end}`;
+    await fetch(api_url,{
       method: "GET"
     })
     .catch(error => Alert.alert("Error connecting to server",error))
     .then(async res => await res.json())
-    .then(res => 
-      {
+    .then(res => {
         console.log("Got response from server:");
         console.log(res);
         if (!res.success) {
@@ -104,8 +103,7 @@ export default class RunSetupScreen extends React.Component {
             distance: (res.dist/1000).toFixed(3),
           });
         }
-      },
-      reason => Alert.alert("Error",reason)
+      }
     );
     let points = this.calculatePoints(this.state.distance, this.state.goal_pace);
     let time = this.calculateTime(this.state.distance, this.state.goal_pace);

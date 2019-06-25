@@ -1,3 +1,5 @@
+// Jason Yu, Sunny Yan
+
 import React from 'react';
 import { Component } from 'react';
 import Color from '../constants/Color'

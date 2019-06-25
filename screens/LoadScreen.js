@@ -1,6 +1,7 @@
+// Jason Yu
+
 import React from 'react';
-import { Component } from 'react';
-import { View, Text, StyleSheet, Image, Alert, Dimensions } from 'react-native';
+import { View } from 'react-native';
 import '../global';
 import * as Font from 'expo-font'
 import Color from '../constants/Color'

@@ -1,3 +1,5 @@
+// Sunny Yan
+
 import * as React from 'react';
 import { Text, TextInput, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Button from "Button"
@@ -6,8 +8,6 @@ export class Prompt extends React.Component {
   constructor(props) {
     super(props);
   }
-
-  
 
   render() {
     const STYLES = StyleSheet.create({

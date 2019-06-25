@@ -1,3 +1,5 @@
+// Jason Yu
+
 import React from 'react';
 import { Platform, StyleSheet, View, Text, Alert, ScrollView } from 'react-native';
 import { Constants } from 'expo';
@@ -52,7 +54,7 @@ export default class RealTimeRouteScreen extends React.Component {
     }
   }
 
-  updateRunInfo() {
+  async updateRunInfo() {
     let data = {'period': 5}
     let pace_url = global.serverURL + '/api/get_run_info'
     fetch(pace_url, {
@@ -61,8 +63,8 @@ export default class RealTimeRouteScreen extends React.Component {
       headers: new Headers({
         'Authorization': global.login_status.token,
       })
-    }).then(async res => await res.json()).then(data => { 
-      console.log(data)
+    })
+    .then(async res => await res.json()).then(data => { 
       this.setState({pace:data.pace,distance:data.distance})
     });
   }

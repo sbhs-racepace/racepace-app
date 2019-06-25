@@ -1,12 +1,7 @@
+// Jason Yu
+
 import React from 'react';
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  ScrollView,
-  TouchableHighlight,
-} from 'react-native';
+import { View, Text, Image, StyleSheet} from 'react-native';
 import Button from '../components/Button';
 import '../global';
 import '../assets/cat.jpeg';

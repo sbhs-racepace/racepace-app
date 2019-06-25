@@ -1,13 +1,7 @@
+// Sunny Yan, Jason Yu
+
 import React from 'react';
-import { Component } from 'react';
-import {
-  View,
-  Image,
-  Text,
-  Dimensions,
-  StyleSheet,
-  Alert,
-} from 'react-native';
+import { View,Image,Text,Dimensions,StyleSheet } from 'react-native';
 import Button from '../components/Button.js'
 import '../global.js'
 import Color from '../constants/Color'

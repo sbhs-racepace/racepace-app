@@ -87,29 +87,20 @@ export default class FindFriendsScreen extends React.Component {
     this.searchString = '';
   }
 
-  sendRequest() {
-    try {
-      fetch(global.serverURL+"/api/find_friends", {
-        method: 'POST',
-        body: "name="+this.searchString,
-      })
-        .catch(res => {
-          Alert.alert('Error connecting to server', res);
-        })
-        .then(
-          async res => {
-            res = await res.json(); //Parse response as JSON
-            this.setState({searchResults: res});
-          },
-          reason => {
-            console.log('Promise rejected');
-            Alert.alert('Error connecting to server', reason);
-          }
-        );
-    } catch (err) {
-      //Catch any other errors
-      Alert.alert('Error', err);
-    }
+  async sendRequest() {
+    fetch(global.serverURL+"/api/find_friends", {
+      method: 'POST',
+      body: "name="+this.searchString,
+    })
+    .catch(res => {
+      Alert.alert('Error connecting to server', res);
+    })
+    .then(
+      async res => {
+        res = await res.json(); //Parse response as JSON
+        this.setState({searchResults: res});
+      }
+    );
   }
 
   render() {

@@ -1,3 +1,5 @@
+// Jason Yu
+
 import React from 'react';
 import { Component } from 'react';
 import {
@@ -45,36 +47,26 @@ export default class SaveRunScreen extends React.Component {
     };
   }
 
-  saveRun() {
+  async saveRun() {
     let data = {
       name: this.state.name,
       description: this.state.description,
       route: this.props.navigation.state.params
     };
-    let url = `${global.serverURL}/api/save_route`;
-    try {
-      fetch(url, {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: new Headers({
-          Authorization: global.login_status.token,
-        }),
-      })
-        .catch(res => {
-          Alert.alert('Error connecting to server', res);
-        })
-        .then(
-          async res => {
-            console.log('Success Saving Route');
-          },
-          reason => {
-            console.log('Promise rejected');
-            Alert.alert('Error connecting to server', reason);
-          }
-        );
-    } catch (err) {
-      Alert.alert('Error', err);
-    }
+    let api_url = `${global.serverURL}/api/save_route`;
+    fetch(api_url, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: new Headers({
+        Authorization: global.login_status.token,
+      }),
+    })
+    .catch(res => {
+      Alert.alert('Error connecting to server', res);
+    })
+    .then( async res => {
+      console.log('Success Saving Route');
+    });
     global.current_route = null; // Resetting current_route
   }
 

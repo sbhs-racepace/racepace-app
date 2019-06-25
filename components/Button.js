@@ -1,3 +1,5 @@
+// Sunny Yan
+
 import * as React from 'react';
 import { Image, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { withNavigation } from 'react-navigation';

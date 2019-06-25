@@ -1,3 +1,5 @@
+// Jason Yu Sunny Yan
+
 import React from 'react';
 import MapView from 'react-native-maps';
 import { Marker, Polyline } from 'react-native-maps';
@@ -98,7 +100,7 @@ export default class MapScreen extends React.Component {
     };
   }
 
-  updateRunInfo() {
+  async updateRunInfo() {
     let data = {'period': 5}
     let pace_url = global.serverURL + '/api/get_run_info'
     fetch(pace_url, {
@@ -107,7 +109,8 @@ export default class MapScreen extends React.Component {
       headers: new Headers({
         'Authorization': global.login_status.token,
       })
-    }).then(async res => await res.json()).then(data => { 
+    })
+    .then(async res => await res.json()).then(data => { 
       let pace = data.pace
       let distance = data.distance
       this.setState({'pace':pace,'distance':distance})
@@ -237,31 +240,27 @@ export default class MapScreen extends React.Component {
   }
 
   async goToCurrent() {
-    try {
-      Location.getCurrentPositionAsync({
-        accuracy: 4,
-        maximumAge: 5000,
-        timeout: 5000,
-      })
-        .then(
-          location => {
-            this.setState(prevState => ({
-              region: {
-                ...prevState.region, //Copy in other parts of the object
-                latitude: location.coords.latitude,
-                longitude: location.coords.longitude,
-              },
-            }));
-          },
-          reason =>
-            Alert.alert('Error', 'Location tracking failed. Error: ' + reason)
-        )
-        .catch(error =>
-          Alert.alert('Error', 'Location tracking failed. Error: ' + error)
-        );
-    } catch (error) {
-      Alert.alert('Error', 'Location tracking failed. Error: ' + error);
-    }
+    Location.getCurrentPositionAsync({
+      accuracy: 4,
+      maximumAge: 5000,
+      timeout: 5000,
+    })
+      .then(
+        location => {
+          this.setState(prevState => ({
+            region: {
+              ...prevState.region, //Copy in other parts of the object
+              latitude: location.coords.latitude,
+              longitude: location.coords.longitude,
+            },
+          }));
+        },
+        reason =>
+          Alert.alert('Error', 'Location tracking failed. Error: ' + reason)
+      )
+      .catch(error =>
+        Alert.alert('Error', 'Location tracking failed. Error: ' + error)
+      );
   }
 
   runHere(name, coords) {
@@ -274,7 +273,7 @@ export default class MapScreen extends React.Component {
     });
   }
 
-  saveRoute() {
+  async saveRoute() {
     let data = {
       name: "",
       start_time: "",
@@ -282,28 +281,23 @@ export default class MapScreen extends React.Component {
       description: "",
       route: this.props.navigation.state.params.route
     };
-    let url = global.serverURL + '/api/save_route';
-    try {
-      fetch(url, {
-        method: 'POST',
-        body: JSON.stringify(data),
-      })
-        .catch(res => {
-          Alert.alert('Error connecting to server', res);
-        })
-        .then(
-          async res => {
-            console.log('Login response received from server');
-          },
-          reason => {
-            console.log('Promise rejected');
-            Alert.alert('Error connecting to server', reason);
-          }
-        );
-    } catch (err) {
-      //Catch any other errors
-      Alert.alert('Error', err);
-    }
+    let api_url = global.serverURL + '/api/save_route';
+    fetch(api_url, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    })
+    .catch(res => {
+      Alert.alert('Error connecting to server', res);
+    })
+    .then(
+      async res => {
+        console.log('Login response received from server');
+      },
+      reason => {
+        console.log('Promise rejected');
+        Alert.alert('Error connecting to server', reason);
+      }
+    );
     this.setState({showSaveDialog: false}) //Close save dialog
   }
 
