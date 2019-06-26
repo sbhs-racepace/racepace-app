@@ -61,7 +61,7 @@ export default class GroupScreen extends React.Component {
       <View style={{flex:1, backgroundColor:Color.lightBackground}}>
         <Text style={{fontFamily:'RobotoCondensed-BoldItalic',fontSize:40,padding:"3%",color:Color.primaryColor}}>Running Groups</Text>
         <View style={{flex:9}}>
-          {this.state.groups.map(group => <Group group={group}></Group>)}
+          {this.state.groups.map(group => <Group onPress={() => {this.props.navigation.navigate('Chat')}} group={group}></Group>)}
         </View>
         <Button style={{width:"100%"}} text="Tracking" onPress={()=>this.props.navigation.navigate("Track")} />
       </View>
@@ -108,7 +108,10 @@ class Group extends React.Component{
     }
 
     return (
-      <TouchableOpacity style={STYLES.border}>
+      <TouchableOpacity 
+        style={STYLES.border}
+        onPress={() => {this.props.onPress()}}
+      >
         <Text style={[STYLES.text,{fontSize:16}]}>{this.props.group.group_name}</Text>
         <Text style={STYLES.text}>Members: {members_str}</Text>
         <Text style={STYLES.text}>Description: {this.props.group.description}</Text>

@@ -267,7 +267,7 @@ export default class MapScreen extends React.Component {
     if (!name) {
       Alert.alert('Error', 'Please enter an address in the search box');
     }
-    this.props.navigation.navigate('Run', {
+    this.props.navigation.navigate('Setup', {
       name: name,
       coords: coords,
     });

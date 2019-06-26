@@ -1,16 +1,7 @@
 // Jason Yu
 
 import React from 'react';
-import { Component } from 'react';
-import {
-  View,
-  Image,
-  Text,
-  TextInput,
-  Dimensions,
-  StyleSheet,
-  Alert,
-} from 'react-native';
+import { View, Text, TextInput, StyleSheet, Alert} from 'react-native';
 import Button from '../components/Button.js';
 import Color from '../constants/Color.js'
 import '../global.js';
@@ -64,7 +55,7 @@ export default class SaveRunScreen extends React.Component {
     .catch(res => {
       Alert.alert('Error connecting to server', res);
     })
-    .then( async res => {
+    .then( async () => {
       console.log('Success Saving Route');
     });
     global.current_route = null; // Resetting current_route

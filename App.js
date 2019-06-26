@@ -22,9 +22,11 @@ import ChatScreen from './screens/ChatScreen';
 import RouteListScreen from './screens/RouteListScreen';
 import FollowerRequestScreen from './screens/FollowerRequestScreen';
 import RunSetupScreen from './screens/RunSetupScreen';
+import RunOtherStatsScreen from './screens/RunOtherStatsScreen';
+import RunPausedScreen from './screens/RunPausedScreen';
 import GroupScreen from './screens/GroupScreen';
 import TrackingScreen from './screens/TrackingScreen';
-import RealTimeRouteScreen from './screens/RealTimeRouteScreen';
+import RunScreen from './screens/RunScreen';
 import FindFriendsScreen from './screens/FindFriendsScreen';
 import SaveRunScreen from './screens/SaveRunScreen';
 import SaveRecentRunScreen from './screens/SaveRecentRunScreen';
@@ -58,7 +60,11 @@ const LoginNavigator = createStackNavigator({
     screen: FollowerRequestScreen,
     navigationOptions: { header: null },
   },
-  Track: {
+  Chat: {
+    screen: ChatScreen,
+    navigationOptions: { header: null },
+  },
+  Tracking: {
     screen: TrackingScreen,
     navigationOptions: { header: null },
   },
@@ -68,6 +74,18 @@ const LoginNavigator = createStackNavigator({
   },
   SaveRun: {
     screen: SaveRunScreen,
+    navigationOptions: { header: null },
+  },
+  RunManager: {
+    screen: RunScreen,
+    navigationOptions: { header: null },
+  },
+  OtherStats: {
+    screen: RunOtherStatsScreen,
+    navigationOptions: { header: null },
+  },
+  Paused: {
+    screen: RunPausedScreen,
     navigationOptions: { header: null },
   },
   SaveRecentRun: {
@@ -101,11 +119,9 @@ const LoginNavigator = createStackNavigator({
           },
         }
       ),
-      Run: { screen: RunSetupScreen },
+      Setup: { screen: RunSetupScreen },
       Map: { screen: MapScreen },
-      Group: { screen: GroupScreen },
-      RealTimeRoute: { screen: RealTimeRouteScreen },
-      Chat: { screen: ChatScreen },
+      Groups: { screen: GroupScreen },
       Profile: { screen: ProfileScreen },
     },
     {
