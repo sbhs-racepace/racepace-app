@@ -3,77 +3,51 @@
 import React from 'react';
 import MapView from 'react-native-maps';
 import { Marker, Polyline } from 'react-native-maps';
-import { Alert, View, Text, TextInput, StyleSheet, Dimensions, Platform, } from "react-native";
+import { Alert, View, Text, TextInput, StyleSheet, Dimensions, Platform, TouchableOpacity, Image} from "react-native";
 import { Constants } from 'expo';
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
 import "../global";
 import Button from '../components/Button';
 import Timer from '../components/Timer';
+import Color from '../constants/Color'
 
 const LATITUDE_DELTA = 0.0922 * 1.5;
 const LONGITUDE_DELTA = 0.0421 * 1.5;
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
 const STYLES = StyleSheet.create({
-  header: {
-    top: 20,
-    width: '90%',
-    height: 40,
-    zIndex: 2,
-    elevation: 2,
-    alignItems: 'center',
-    justifyContent:"center",
-  },
-  header_text: {
-    backgroundColor: 'white',
-    fontSize: 16,
-    flexWrap: 'wrap',
-    flexShrink: 1,
-    flex: 1,
-  },
   search: {
     borderRadius: 5,
     borderWidth: 1,
-    paddingLeft: 3,
     backgroundColor: 'white',
-    width: '80%',
+    width: windowWidth*0.6,
     height: 30,
-  },
-  search_btn: {
-    width: 0.1 * windowWidth,
-    height: 0.1 * windowWidth,
-    borderRadius: 0.05 * windowWidth,
-    borderWidth: 1,
-    backgroundColor: 'white',
-  },
-  search_img: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 0.08 * windowWidth,
-  },
-  compass_btn: {
-    position: 'absolute',
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    borderWidth: 1,
-    zIndex: 2,
-    top: 0.75 * windowHeight,
-    right: 5,
-  },
-  compass_img: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 20,
-    borderColor: 'white',
   },
   map: {
     ...StyleSheet.absoluteFillObject,
     width: windowWidth,
     height: windowHeight,
     zIndex: 1,
-  }
+  },
+  circularButton:{
+    margin:5,
+    borderWidth:1,
+    backgroundColor:'blue',
+    alignItems:'center',
+    alignSelf:'center',
+    justifyContent:'center',
+  },
+  largeButton: {
+    width: windowWidth * 0.20,
+    height: windowWidth * 0.20,
+    borderRadius: windowWidth * 0.20 / 2,
+  }, 
+  smallButton: {
+    width: windowWidth * 0.10,
+    height: windowWidth * 0.10,
+    borderRadius: windowWidth * 0.10 / 2,
+  },
 });
 
 export default class MapScreen extends React.Component {
@@ -100,32 +74,6 @@ export default class MapScreen extends React.Component {
     };
   }
 
-  async updateRunInfo() {
-    let data = {'period': 5}
-    let pace_url = global.serverURL + '/api/get_run_info'
-    fetch(pace_url, {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: new Headers({
-        'Authorization': global.login_status.token,
-      })
-    })
-    .then(async res => await res.json()).then(data => { 
-      let pace = data.pace
-      let distance = data.distance
-      this.setState({'pace':pace,'distance':distance})
-    });
-  }
-
-  userTracking(location) {
-    this.setState(prevState => ({
-      region: {
-        ...prevState.region, //Copy in other parts of the object
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude
-      }
-    }))
-  }
 
   defaultLocationAsync() {
     let { status } = Permissions.askAsync(Permissions.LOCATION);
@@ -146,54 +94,11 @@ export default class MapScreen extends React.Component {
     }
   }
 
-  runTrackingAsync() {
-    let current_time = new Date();
-    let start_time = {
-      'year':current_time.getFullYear(),
-      'month':current_time.getMonth(),
-      'day':current_time.getDate(),
-      'hours':current_time.getHours(),
-      'minutes':current_time.getMinutes(),
-      'seconds':current_time.getSeconds(),
-    }
-    global.socket.emit('start_run', start_time);
-
-    // Asking location permission and creating location loop
-    let { status } = Permissions.askAsync(Permissions.LOCATION);
-    if (status) { //Check whether permission granted
-      Location.watchPositionAsync(
-        {
-          accuracy: 4, //Accurate to 10m
-          timeInterval: 5000,
-        },
-        (location) => {
-          let current_time = new Date();
-          let data = {
-            'location': location,
-            'time': (current_time.getTime() / 1000), // Conversion to seconds
-          }
-          global.socket.emit('location_update',data);
-          this.updateRunInfo(); // Updates pace even with only 
-
-          // Always moves to current location if activated
-          if (this.state.moveToCurrentLoc) {
-            this.userTracking(location);
-          }
-        }
-      );
-    }
-
-  }
-
   componentDidMount() {
     if (Platform.OS === 'android' && !Constants.isDevice) {
       Alert.alert('Device is not of valid type to record location.')
     } else {
-      if (global.login_status.success) {
-        this.runTrackingAsync();
-      } else {
-        this.defaultLocationAsync();
-      }
+      this.defaultLocationAsync();
     }
   }
 
@@ -302,55 +207,8 @@ export default class MapScreen extends React.Component {
   }
 
   render() {
-    let header;
-    if (!this.props.navigation.getParam('start',null)) {
-      header = (
-        <View style={{ ...STYLES.header, flexDirection: 'row' }}>
-          <TextInput
-            placeholder="Search"
-            style={STYLES.search}
-            onChangeText={text => this.setState({ searchStr: text })}
-          />
-          <Button
-            img={require('../assets/icons/search.png')}
-            style={STYLES.search_btn}
-            img_style={STYLES.search_img}
-            onPress={() => this.goToLocation(this.state.searchStr)}
-          />
-          <Button
-            img={require('../assets/icons/run.png')}
-            style={STYLES.search_btn}
-            img_style={STYLES.search_img}
-            onPress={() =>
-              this.runHere(this.state.searchStr, this.state.searchLoc)
-            }
-          />
-        </View>
-      );
-    } else {
-      header = (
-        <View style={STYLES.header}>
-          <View style={{ flexDirection: 'row', justifyContent:"center"}}>
-            <Button
-              text="Close"
-              onPress={() => {this.props.navigation.setParams({start:null,end:null,route:null})}}
-            />
-            <Text style={STYLES.header_text}>
-              {this.props.navigation.state.params.start} to{' '}
-              {this.props.navigation.state.params.end}
-            </Text>
-          </View>
-          <View style={{ width:"100%", flexDirection: 'row', justifyContent:"space-between"}}>
-            <Timer />
-            <Button text="Save Route" onPress={()=>this.props.navigation.navigate("SaveRun", this.props.navigation.state.params)} />
-          </View>
-        </View>
-      );
-    }
-
     return (
-      <View style={{ alignItems: 'center' }}>
-        {header}
+      <View style={{flex:1}}>
         <MapView
           style={STYLES.map}
           showsUserLocation={true}
@@ -367,16 +225,70 @@ export default class MapScreen extends React.Component {
             />
           )}
         </MapView>
-        <Button
-          img={require('../assets/icons/compass.jpg')}
-          style={STYLES.compass_btn}
-          img_style={STYLES.compass_img}
+        
+        <View style={{position:'absolute',flexDirection: 'row', top:windowHeight*0.05,left:windowWidth*0.1, zIndex:3, justifyContent:'space-evenly', alignItems:'center'}}>
+        <TextInput
+            placeholder="Search"
+            style={STYLES.search}
+            onChangeText={text => this.setState({ searchStr: text })}
+          />
+
+          <TouchableOpacity
+            style={[STYLES.circularButton, STYLES.smallButton]}
+            onPress={() => this.goToLocation(this.state.searchStr)}
+          >
+            <Image
+            style={STYLES.smallButton}
+            source = {require('../assets/icons/search.png')}
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[STYLES.circularButton, STYLES.smallButton]}
+            onPress={() => this.runHere(this.state.searchStr, this.state.searchLoc)}
+          >
+            <Image
+            style={STYLES.smallButton}
+            source = {require('../assets/icons/run.png')}
+            />
+          </TouchableOpacity>
+        </View>
+
+        <TouchableOpacity
+          style={[
+            STYLES.circularButton,STYLES.largeButton,{
+              position: 'absolute',
+              top:windowHeight*0.75,
+              left:windowWidth*0.5-windowWidth*0.1,
+              zIndex:3
+            }
+          ]}
+          onPress={()=>{this.props.navigation.navigate('RunManager')}}
+        >
+          <Text style={{fontSize:20, color:Color.textColor}}>Run (ICON)</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[
+            STYLES.circularButton,STYLES.smallButton,{
+              position: 'absolute',
+              top:windowHeight*0.75 + windowWidth*0.2 / 4,
+              left:windowWidth*0.8-windowWidth*0.1/2,
+              zIndex:3,
+            }
+          ]}
           onPress={() => {
             this.setState({ moveToCurrentLoc: true });
             this.goToCurrent();
           }}
-        />
+        >
+          <Image
+            style={STYLES.smallButton}
+            source = {require('../assets/icons/compass.jpg')}
+          />
+        </TouchableOpacity>
+
       </View>
-    );
+    )
   }
 }
