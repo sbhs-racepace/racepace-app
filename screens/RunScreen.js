@@ -153,7 +153,7 @@ export default class RunScreen extends React.Component {
             </TouchableOpacity>
             <TouchableOpacity
               style={STYLES.circularButton}
-              onPress={()=>{this.props.navigation.navigate('Map')}}
+              onPress={()=>{this.props.navigation.navigate('Tracking')}}
             >
               <Text style={{fontSize:20, color:Color.textColor}}>Map (ICON)</Text>
             </TouchableOpacity>

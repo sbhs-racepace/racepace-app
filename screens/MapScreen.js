@@ -227,7 +227,7 @@ export default class MapScreen extends React.Component {
         </MapView>
         
         <View style={{position:'absolute',flexDirection: 'row', top:windowHeight*0.05,left:windowWidth*0.1, zIndex:3, justifyContent:'space-evenly', alignItems:'center'}}>
-        <TextInput
+          <TextInput
             placeholder="Search"
             style={STYLES.search}
             onChangeText={text => this.setState({ searchStr: text })}
@@ -254,40 +254,33 @@ export default class MapScreen extends React.Component {
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity
-          style={[
-            STYLES.circularButton,STYLES.largeButton,{
-              position: 'absolute',
-              top:windowHeight*0.75,
-              left:windowWidth*0.5-windowWidth*0.1,
-              zIndex:3
-            }
-          ]}
-          onPress={()=>{this.props.navigation.navigate('RunManager')}}
-        >
-          <Text style={{fontSize:20, color:Color.textColor}}>Run (ICON)</Text>
-        </TouchableOpacity>
+        <View style={{position:'absolute',flexDirection: 'row', top:windowHeight*0.75, width:'100%', zIndex:3, alignItems:'center'}}>
+          <View style={{flex:1, alignItems:'center'}}>
 
-        <TouchableOpacity
-          style={[
-            STYLES.circularButton,STYLES.smallButton,{
-              position: 'absolute',
-              top:windowHeight*0.75 + windowWidth*0.2 / 4,
-              left:windowWidth*0.8-windowWidth*0.1/2,
-              zIndex:3,
-            }
-          ]}
-          onPress={() => {
-            this.setState({ moveToCurrentLoc: true });
-            this.goToCurrent();
-          }}
-        >
-          <Image
-            style={STYLES.smallButton}
-            source = {require('../assets/icons/compass.jpg')}
-          />
-        </TouchableOpacity>
-
+          </View>
+          <View style={{flex:1, alignItems:'center'}}>
+            <TouchableOpacity
+              style={[STYLES.circularButton,STYLES.largeButton]}
+              onPress={()=>{this.props.navigation.navigate('RunManager')}}
+            >
+              <Text style={{fontSize:20, color:Color.textColor}}>Run (ICON)</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{flex:1, alignItems:'center'}}>
+            <TouchableOpacity
+              style={[STYLES.circularButton,STYLES.smallButton]}
+              onPress={() => {
+                this.setState({ moveToCurrentLoc: true });
+                this.goToCurrent();
+              }}
+            >
+              <Image
+                style={STYLES.smallButton}
+                source = {require('../assets/icons/compass.jpg')}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
     )
   }
