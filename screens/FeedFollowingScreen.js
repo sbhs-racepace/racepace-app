@@ -20,8 +20,9 @@ export default class FeedFollowingScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.feed = request(global.serverURL+"/get_feed", "POST", {}, true)
-    
+    if (!global.login_status.success) {
+      this.feed = request(global.serverURL+"/get_feed", "POST", {}, true)
+    }
   }
 
   render() {
