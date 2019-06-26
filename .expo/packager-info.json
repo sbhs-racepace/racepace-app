@@ -1,9 +1,9 @@
 {
   "devToolsPort": 19002,
   "expoServerPort": 19000,
-  "packagerPort": 19003,
-  "packagerPid": 28297,
+  "packagerPort": 19001,
+  "packagerPid": 5300,
   "expoServerNgrokUrl": "https://sq-5f4.anonymous.racepace-app.exp.direct",
   "packagerNgrokUrl": "https://packager.sq-5f4.anonymous.racepace-app.exp.direct",
-  "ngrokPid": 28314
+  "ngrokPid": 10112
 }
