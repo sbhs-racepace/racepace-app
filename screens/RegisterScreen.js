@@ -1,6 +1,6 @@
 import React from 'react';
 import { Component } from 'react';
-import { View, Text, StyleSheet, Image, Alert, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Image, Alert, Dimensions, ActivityIndicator } from 'react-native';
 import TextInputCustom from '../components/TextInput';
 import Button from '../components/Button';
 import BackButtonHeader from '../components/BackButtonHeader'
@@ -50,6 +50,7 @@ export default class RegisterScreen extends React.Component {
       pword: '',
       dob: '',
       username: '',
+      loading: false,
     };
   }
 
@@ -125,8 +126,17 @@ export default class RegisterScreen extends React.Component {
             style={STYLES.button}
             text_style={STYLES.button_text}
             text="Register"
-            onPress={register.bind(this)}
-          />
+            onPress={()=> this.setState({loading:true}, register.bind(this))}
+            // ^ Loading is reset to false inside func
+          >
+            {this.state.loading && (
+              <ActivityIndicator
+                animating={true}
+                color="white"
+                size="large"
+              />
+            )}
+          </Button>
         </View>
       </View>
     );

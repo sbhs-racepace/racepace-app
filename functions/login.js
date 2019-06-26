@@ -51,13 +51,22 @@ export async function execute_login(email,password) {
       Alert.alert('Invalid Username or Password');
     }
   }
+  else {
+    this.setState({loading:false});
+  }
 }
 
 export async function login(email,password) {
   //Sends login request to server
   let data = {
-    email: email, password: password
+    email, password
   };
+  for (item of Object.entries(data)) {
+    if (!item[1]) {
+      Alert.alert("Blank fields", `All fields must be filled. ${item[0]} is blank.`)
+      return false;
+    }
+  }
   let login_response = false;
   let url = global.serverURL + '/api/login';
   try {
@@ -92,6 +101,13 @@ export function register() {
     dob: this.state.dob,
     username: this.state.username,
   };
+  for (item of Object.entries(data)) {
+    if (!item[1]) {
+      Alert.alert("Blank fields", `All fields must be filled. ${item[0]} is blank.`)
+      this.setState({loading:false})
+      return 0; //Exit function
+    }
+  }
   const url = global.serverURL + '/api/register';
   try {
     fetch(url, {
@@ -107,16 +123,19 @@ export function register() {
           let login_response = check_login(res);
           if (login_response) {
             storeUserInfo(login_response);
+            this.setState({loading:false})
             this.props.navigation.navigate('FeedFollowing');
           }
         },
         reason => {
+          this.setState({loading:false})
           Alert.alert('Error connecting to server', reason);
         }
       );
   } catch (err) {
     //Catch any other errors
     Alert.alert('Error', err);
+    this.setState({loading:false})
   }
 }
 
