@@ -14,8 +14,6 @@ const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
 const STYLES = StyleSheet.create({
   container: {
-    borderWidth:1,
-    padding:"3%",
     justifyContent:"space-evenly", 
     flexDirection:"column",
     alignItems:'center'
@@ -23,6 +21,7 @@ const STYLES = StyleSheet.create({
   text_style: {
     color: Color.textColor,
     fontSize:15,
+    margin:3,
   },
   title_style: {
     fontSize:30,
@@ -126,79 +125,69 @@ export default class RunSetupScreen extends React.Component {
   
   render() {
     return(
-      <KeyboardAvoidingView keyboardVerticalOffset={100} behavior="position" style={{backgroundColor: Color.lightBackground}}>
-        <ScrollView contentContainerStyle={{backgroundColor: Color.lightBackground}}>
-          <View style={[STYLES.container, {height:windowHeight * 0.8}]}>
-            <Text style={STYLES.title_style}>Plan your route</Text>
+      <View style={{flex:1, backgroundColor:Color.lightBackground}}>
+        <View style={[STYLES.container, {height:windowHeight * 0.2}]}>
+          <Text style={STYLES.title_style}>Plan your route</Text>
+          <View style={{flexDirection:'row'}}>
+            <Button style={{flex:1}} text="Load Route"/>
+            <Button style={{flex:1}} text="Create Route"/>
+            <Button style={{flex:1}} text="Just Run"/>
+          </View>
+        </View>
+        <View style={[STYLES.container, {height:windowHeight * 0.5}]}>
+          <TextInputCustom 
+            placeholder="Start"
+            defaultValue={this.state.start}
+            onChangeText={start => {
+              this.setState({ start: start });
+            }}
+          />
+          <TextInputCustom 
+            placeholder="End"
+            defaultValue={this.props.navigation.state.params==undefined ? this.state.end : this.props.navigation.state.params.name}
+            onChangeText={end => {
+              this.setState({ end: end });
+            }}
+          />
+          <View style={{flexDirection:'row'}}>
             <TextInputCustom 
-              placeholder="Start"
-              defaultValue={this.state.start}
-              onChangeText={start => {
-                this.setState({ start: start });
+              style={{width:"40%"}}
+              placeholder="minutes"
+              onChangeText={minutes => {
+                this.setState({ goal_pace: {minutes: minutes} });
               }}
+              defaultValue={this.state.goal_pace.minutes}
+              keyboardType="number-pad"
+              returnKeyType="go"
             />
             <TextInputCustom 
-              placeholder="End"
-              defaultValue={this.props.navigation.state.params==undefined ? this.state.end : this.props.navigation.state.params.name}
-              onChangeText={end => {
-                this.setState({ end: end });
+              style={{width:"40%"}}
+              placeholder="seconds"
+              onChangeText={seconds => {
+                this.setState({ goal_pace: {seconds: seconds} });
               }}
-            />
-            <View style={{flexDirection:'row'}}>
-              <TextInputCustom 
-                style={{width:"40%"}}
-                placeholder="minutes"
-                onChangeText={minutes => {
-                  this.setState({ goal_pace: {minutes: minutes} });
-                }}
-                defaultValue={this.state.goal_pace.minutes}
-                keyboardType="number-pad"
-                returnKeyType="go"
-              />
-              <TextInputCustom 
-                style={{width:"40%"}}
-                placeholder="seconds"
-                onChangeText={seconds => {
-                  this.setState({ goal_pace: {seconds: seconds} });
-                }}
-                defaultValue={this.state.goal_pace.seconds}
-                returnKeyType="go" 
-                keyboardType="number-pad"
-              />
-            </View>
-            <CheckBox
-              containerStyle={{backgroundColor:Color.lightBackground, borderColor:Color.darkBackground, width:'80%'}}
-              textStyle={{color:Color.textColor}}
-              title='Real Time Tracking'
-              checked={this.state.real_time_tracking}
-              onPress={() => {this.setState({real_time_tracking:!this.state.real_time_tracking})}}
-            />
-            <Button 
-              style={{borderRadius:10}} 
-              text="Generate Route Info"
-              onPress={() => {this.setupRoute(this.state.start,this.state.end)}}
+              defaultValue={this.state.goal_pace.seconds}
+              returnKeyType="go" 
+              keyboardType="number-pad"
             />
           </View>
-          <View style={[STYLES.container, {height:windowHeight * 0.5, alignItems:'flex-start'}]}>
-            <Text style={STYLES.title_style}>Route Information</Text>
-            <Text style={STYLES.text_style}>Time: {this.state.time.minutes} minutes {this.state.time.seconds} seconds</Text>
-            <Text style={STYLES.text_style}>Total Distance: {this.state.distance}km</Text>
-            <Text style={STYLES.text_style}>Calories Burnt/Kilojoules Burnt: {this.state.calories} Cal/ {Math.floor(this.state.calories *4.184)} Kj</Text>
-            <Text style={STYLES.text_style}>Points: {this.state.points}</Text>
-          </View>
-          <Button 
-            text="Start Run"
-            style={{borderRadius:10, alignSelf:'center'}} 
-            onPress={() => this.props.navigation.navigate("RunManager")} // ,{route: this.state.route, start:this.state.start, end: this.state.end}
-            disabled={!this.state.route}
+          <CheckBox
+            containerStyle={{backgroundColor:Color.lightBackground, borderColor:Color.darkBackground, width:'80%'}}
+            textStyle={{color:Color.textColor}}
+            title='Real Time Tracking'
+            checked={this.state.real_time_tracking}
+            onPress={() => {this.setState({real_time_tracking:!this.state.real_time_tracking})}}
           />
           <Button 
-            text="Temp Start Run"
-            style={{borderRadius:10, alignSelf:'center'}} 
-            onPress={() => this.props.navigation.navigate("RunManager")} // ,{route: this.state.route, start:this.state.start, end: this.state.end}
+            style={{borderRadius:10}} 
+            text="Generate Route Info"
+            onPress={() => {
+              // this.setupRoute(this.state.start,this.state.end)
+              this.props.navigation.navigate("Information") // Go To Run Information Screen
+            }}
           />
-        </ScrollView>
-      </KeyboardAvoidingView>
+        </View>
+      </View>
     );
   }
 }

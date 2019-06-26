@@ -23,6 +23,7 @@ import RouteListScreen from './screens/RouteListScreen';
 import FollowerRequestScreen from './screens/FollowerRequestScreen';
 import RunSetupScreen from './screens/RunSetupScreen';
 import RunOtherStatsScreen from './screens/RunOtherStatsScreen';
+import RunInformationScreen from './screens/RunInformationScreen';
 import RunPausedScreen from './screens/RunPausedScreen';
 import GroupScreen from './screens/GroupScreen';
 import TrackingScreen from './screens/TrackingScreen';
@@ -78,6 +79,10 @@ const LoginNavigator = createStackNavigator({
   },
   RunManager: {
     screen: RunScreen,
+    navigationOptions: { header: null },
+  },
+  Information: {
+    screen: RunInformationScreen,
     navigationOptions: { header: null },
   },
   OtherStats: {
