@@ -34,9 +34,6 @@ const STYLES = StyleSheet.create({
     textAlign:"center",
     color: Color.textColor
   },
-  loading: {
-    color:"white"
-  },
 });
 
 export default class RunSetupScreen extends React.Component {
@@ -108,8 +105,8 @@ export default class RunSetupScreen extends React.Component {
       .then(res => res.json())
       .then(
         res => {
-          console.log('Got response from server:');
-          console.log(res);
+          //console.log('Got response from server:');
+          //console.log(res);
           if (!res.success) {
             Alert.alert('Error', res.error);
           } else {
@@ -127,18 +124,18 @@ export default class RunSetupScreen extends React.Component {
     );
     let time = this.calculateTime(this.state.distance, this.state.goal_pace);
     let calories = this.calculateCaloriesBurnt(this.state.distance);
-    this.setState({ points: points, time: time, calories: calories });
+    this.setState({ points: points, time: time, calories: calories, loading: false });
   }
 
   setupRoute(start, end) {
     this.setState({ loading: true }, () => {
+      console.log("Loading: ", this.state.loading)
       let coordPattern = /\-?[0-9]+,\-?[0-9]+/; // Checking for coords
       if (coordPattern.test(start) && coordPattern.test(end)) {
         this.getRouteFromCoords(start, end);
       } else {
         this.getRouteFromAddress(start, end);
       }
-      this.setState({ loading: false });
     });
   }
 
@@ -199,9 +196,9 @@ export default class RunSetupScreen extends React.Component {
             }}>
             {this.state.loading && (
               <ActivityIndicator
-                style={STYLES.loading}
                 animating={true}
-                size="small"
+                color={Color.primaryColor}
+                size="large"
               />
             )}
           </Button>
@@ -215,7 +212,7 @@ export default class RunSetupScreen extends React.Component {
         </View>
         <View style={[STYLES.container, { alignItems: 'center' }]}>
           <Button
-            style={{ borderRadius: 10, padding: '2%', alignSelf: 'center' }}
+            style={{ borderRadius: 10, alignSelf: 'center' }}
             text="Show on map"
             onPress={() =>
               this.props.navigation.navigate('Map', {

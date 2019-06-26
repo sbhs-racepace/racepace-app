@@ -40,13 +40,15 @@ async function storeUserInfo(res) {
 }
 
 export async function execute_login(email,password) {
-  let login_response = await login(email,password)
+  let login_response = await login(email,password);
   if (login_response != false) {
     if (check_login(login_response)) {
       storeUserInfo(login_response);
+      this.setState({loading:false});
       this.props.navigation.navigate('FeedFollowing');
     } else {
-      Alert.alert('Invalid Username or Password')
+      this.setState({loading:false});
+      Alert.alert('Invalid Username or Password');
     }
   }
 }
