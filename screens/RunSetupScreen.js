@@ -197,7 +197,7 @@ export default class RunSetupScreen extends React.Component {
             {this.state.loading && (
               <ActivityIndicator
                 animating={true}
-                color={Color.primaryColor}
+                color="white"
                 size="large"
               />
             )}
