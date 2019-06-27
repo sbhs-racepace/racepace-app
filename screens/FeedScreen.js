@@ -17,7 +17,7 @@ export default class FeedScreen extends React.Component {
     super(state);
   }
   render() {
-    if (!global.login_status.success && !global.TEST) {
+    if (!global.login_info.token && !global.TEST) {
       return <Text>Please login to see your feed</Text>;
     }
     return (

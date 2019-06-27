@@ -18,7 +18,7 @@ const STYLES = StyleSheet.create({
 
 export default class PreviousRunsScreen extends React.Component {
   render() {
-    if (!global.login_status.success && !global.TEST) {
+    if (!global.login_info.token && !global.TEST) {
       return <Text>Please login to see your feed</Text>;
     }
 
