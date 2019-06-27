@@ -188,3 +188,4 @@ venv.bak/
 .DS_Store
 package-lock.json
 assets/.DS_Store
+.expo/packager-info.json
