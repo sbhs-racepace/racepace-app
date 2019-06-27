@@ -58,7 +58,6 @@ export default class SaveRunScreen extends React.Component {
     .then( async () => {
       console.log('Success Saving Route');
     });
-    global.current_route = null; // Resetting current_route
   }
 
   render() {

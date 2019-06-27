@@ -55,21 +55,6 @@ export default class RunScreen extends React.Component {
     return `${this.state.time.hours}: ${this.state.time.minutes}: ${this.state.time.seconds}.${this.state.time.milliseconds}`
   }
 
-  async updateRunInfo() {
-    let data = {'period': 5}
-    let pace_url = global.serverURL + '/api/get_run_info'
-    fetch(pace_url, {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: new Headers({
-        'Authorization': global.login_info.token,
-      })
-    })
-    .then(async res => await res.json()).then(data => { 
-      this.setState({pace:data.pace,distance:data.distance})
-    });
-  }
-
   startRun() {
     let current_time = new Date();
     let start_time = {
@@ -103,9 +88,9 @@ export default class RunScreen extends React.Component {
             time: (current_time.getTime() / 1000), // Conversion to seconds
           }
           global.socket.emit('location_update',data);
+          this.setState();
         }
       )
-      this.state.interval_id = setInterval(this.updateRunInfo.bind(this), 10000);
     } else {
       Alert.alert('Location Permission not allowed')
       this.props.navigation.navigate('Feed')
@@ -114,7 +99,6 @@ export default class RunScreen extends React.Component {
 
   stop_tracking() {
     global.socket.emit('end_run');
-    global.current_route = null;
     clearInterval(this.state.interval_id);
   }
   

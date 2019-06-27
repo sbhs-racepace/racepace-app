@@ -87,7 +87,11 @@ export async function register() {
 
 export async function googleLogin() {
   let api_url = global.serverURL + '/api/google_login'
-  let result = await Expo.Google.logInAsync({ androidClientId: global.googleLoginID.android });
+  let googleLoginID = {
+    android: "Insert key here", 
+    ios: "Insert key here"
+  };
+  let result = await Expo.Google.logInAsync({ androidClientId: googleLoginID.android });
   if (result.type == 'success') {
     fetch(api_url, {
       method: 'POST',
