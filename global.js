@@ -8,6 +8,7 @@ global.location_permission = null;
 global.user = {
   full_name:"guest",
   username:"guest",
+  email: "guest",
   stats: {
     num_runs: 0,
     total_distance: 0,
