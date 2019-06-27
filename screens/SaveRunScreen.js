@@ -49,7 +49,7 @@ export default class SaveRunScreen extends React.Component {
       method: 'POST',
       body: JSON.stringify(data),
       headers: new Headers({
-        Authorization: global.login_status.token,
+        Authorization: global.login_info.token,
       }),
     })
     .catch(res => {

@@ -1,26 +1,26 @@
 // Sunny Yan, Jason Yu
 
 import '../global';
-import { Alert } from 'react-native';
+import { Alert, AsyncStorage } from 'react-native';
 import Expo from 'expo';
 import io from 'socket.io-client';
 
-async function storeUserInfo(res) {
-  let data = { user_id: global.login_status.user_id };
+async function storeUserInfo() {
+  let data = { user_id: global.login_info.user_id };
   let api_url = global.serverURL + '/api/get_info';
   fetch(api_url, {
     method: 'POST',
     body: JSON.stringify(data),
     headers: new Headers({
-      Authorization: global.login_status.token,
+      Authorization: global.login_info.token,
     }),
   })
   .then(async res => {
     let res_data = await res.json()
     if (res_data.success) {
       global.user = res_data['info']
-      global.socket = io(`${global.serverURL}?token=${global.login_status.token}`, { transports: ['websocket'] });
-      global.socket.emit('authenticate', global.login_status.token);
+      global.socket = io(`${global.serverURL}?token=${global.login_info.token}`, { transports: ['websocket'] });
+      global.socket.emit('authenticate', global.login_info.token);
     } else {
       Alert.alert('Error', res_data.error)
     }
@@ -32,7 +32,7 @@ async function storeUserInfo(res) {
 export async function execute_login(email,password) {
   let login_response = await login(email,password)
   if (login_response.success) {
-    storeUserInfo(login_response);
+    storeUserInfo();
     this.props.navigation.navigate('Feed');
   }
 }
@@ -47,11 +47,14 @@ export async function login(email,password) {
   })
   .then(async res => {
     login_response = await res.json();
-    global.login_status = login_response;
+    global.login_info = { token: login_response.token, user_id: login_response.user_id };
+    await AsyncStorage.setItem('@MySuperStore:key', 'I like to save it.');
+    // await AsyncStorage.setItem('@login_info:key', global.login_info)
   })
   .catch(error => {
     Alert.alert('Error ', error);
-  })
+  });
+
   return login_response
 }
 
@@ -72,7 +75,7 @@ export async function register() {
   .then(async res => {
     let res_data = await res.json()
     if (res_data.success) {
-      storeUserInfo(login_response);
+      storeUserInfo();
       this.props.navigation.navigate('Feed');
     } else {
       Alert.alert('Error', res_data.error)
@@ -94,7 +97,7 @@ export async function googleLogin() {
     .then(async res => {
         let res_data = await res.json()
         if (res_data.success) {
-          storeUserInfo(login_response);
+          storeUserInfo();
           this.props.navigation.navigate('Feed');
         } else {
           Alert.alert('Error', res_data.error)

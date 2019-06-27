@@ -2,15 +2,8 @@
 
 import React from 'react';
 import { Component } from 'react';
-import {
-  View,
-  Image,
-  Text,
-  TextInput,
-  Dimensions,
-  StyleSheet,
-  Alert,
-} from 'react-native';
+import { View, Text, TextInput,Dimensions, StyleSheet, Alert } from 'react-native';
+import { Image } from 'react-native-elements'
 import Button from '../components/Button.js';
 import Color from '../constants/Color.js';
 import '../global.js';
@@ -38,7 +31,7 @@ export default class SaveRunScreen extends React.Component {
     fetch(api_url, {
       method: 'POST',
       headers: new Headers({
-        'Authorization': global.login_status.token,
+        'Authorization': global.login_info.token,
       })
     })
     .catch(res => {

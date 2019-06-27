@@ -2,7 +2,8 @@
 
 import React from 'react';
 import { DocumentPicker } from 'expo';
-import { View, Alert, Text, ScrollView, AppRegistry, TextInput, StyleSheet, KeyboardAvoidingView, Image, Dimensions } from 'react-native';
+import { View, Alert, Text, ScrollView, AppRegistry, TextInput, StyleSheet, KeyboardAvoidingView, Dimensions } from 'react-native';
+import { Image } from 'react-native-elements'
 import { login } from '../functions/login'
 import Button from '../components/Button';
 import BackButtonHeader from '../components/BackButtonHeader';
@@ -53,7 +54,7 @@ export default class EditScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      uri: global.serverURL + `/api/avatars/${global.login_status.user_id}.png`,
+      uri: global.serverURL + `/api/avatars/${global.login_info.user_id}.png`,
       username: null,
       password: null,
       bio: null,

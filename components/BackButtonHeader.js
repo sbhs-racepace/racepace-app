@@ -2,7 +2,8 @@
 
 import React from 'react';
 import { Component } from 'react';
-import { View, Text, StyleSheet, Image, Alert } from 'react-native';
+import { View, Text, StyleSheet, Alert } from 'react-native';
+import { Image } from 'react-native-elements'
 import BackButton from './BackButton'
 import Color from '../constants/Color'
 import Button from './Button'

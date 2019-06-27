@@ -1,7 +1,8 @@
-// Sunny Yan
+// Sunny Yan, Jason Yu
 
 import React from 'react';
-import { StyleSheet, View, Text, Alert, Dimensions, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, View, Text, Alert, Dimensions, TouchableOpacity } from 'react-native';
+import { Image } from 'react-native-elements'
 import Button from '../components/Button'
 import BackButton from '../components/BackButton'
 import Color from '../constants/Color'

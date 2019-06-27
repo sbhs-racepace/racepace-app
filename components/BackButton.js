@@ -2,7 +2,8 @@
 
 import React from 'react';
 import { Component } from 'react';
-import { View, Text, StyleSheet, Image, Alert } from 'react-native';
+import { View, Text, StyleSheet, Alert } from 'react-native';
+import { Image } from 'react-native-elements'
 import Button from './Button.js';
 
 const STYLES = StyleSheet.create({

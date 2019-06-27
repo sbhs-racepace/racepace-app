@@ -1,7 +1,8 @@
 // Sunny Yan, Jason Yu
 
 import React from 'react';
-import { Image, ScrollView, StyleSheet, Text, View, Dimensions } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, Dimensions } from 'react-native';
+import { Image } from 'react-native-elements'
 import {createMaterialTopTabNavigator,createAppContainer} from 'react-navigation'
 import Button from "../components/Button"
 import BackButtonHeader from '../components/BackButtonHeader'

@@ -2,8 +2,7 @@ import {StyleSheet} from 'react-native';
 
 global.TEST = true
 
-global.login_status = {
-  success: false, 
+global.login_info = {
   token: false, 
   user_id: false
 };
@@ -11,6 +10,7 @@ global.login_status = {
 global.current_route = null;
 
 global.socket = null;
+global.location_permission = null;
 
 global.user = {
   full_name:"guest",

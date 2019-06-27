@@ -1,7 +1,8 @@
 // Jason Yu
 
 import React from 'react';
-import { View, Text, Image, StyleSheet} from 'react-native';
+import { View, Text, StyleSheet} from 'react-native';
+import { Image } from 'react-native-elements'
 import Button from '../components/Button';
 import '../global';
 import '../assets/cat.jpeg';
@@ -33,10 +34,9 @@ const STYLES = StyleSheet.create({
 });
 
 function logout() {
-  global.login_status = {
-    success: false,
-    token: false,
-    user_id: false,
+  global.login_info = {
+    token: null,
+    user_id: null,
   };
   global.user = {
     name: 'guest',
@@ -93,7 +93,7 @@ export default class ProfileScreen extends React.Component {
                 style={STYLES.profile_image}
                 source={{
                   uri: `${global.serverURL}/api/avatars/${
-                    global.login_status.user_id
+                    global.login_info.user_id
                   }.png`,
                 }}
               />
@@ -136,10 +136,10 @@ export default class ProfileScreen extends React.Component {
                 style={{ flex: 1, width: '100%' }}
                 text="Edit Profile"
                 onPress={() => {
-                  console.log(global.login_status.success);
+                  console.log(global.login_info.token);
                   this.props.navigation.navigate('Edit');
                 }}
-                disabled={!global.login_status.success && !global.TEST}
+                disabled={!global.login_info.token && !global.TEST}
               />
             </View>
           </View>
@@ -189,12 +189,12 @@ export default class ProfileScreen extends React.Component {
           <Button
             style={{ alignSelf: 'center', marginTop: 5 }}
             text={
-              global.login_status.success
+              global.login_info.token
                 ? 'Logout'
                 : 'Login or Register as New'
             }
             onPress={() => {
-              if (global.login_status.success) {
+              if (global.login_info.token) {
                 global.socket.emit('disconnect');
                 logout();
               } else {

@@ -115,8 +115,8 @@ export default class ChatScreen extends React.Component {
         messages={this.state.messages}
         onSend={messages => this.onSend(messages)}
         user={{
-          _id: global.login_status.user_id,
-          avatar: `${global.serverURL}/api/avatars/${global.login_status.user_id}.png`,
+          _id: global.login_info.user_id,
+          avatar: `${global.serverURL}/api/avatars/${global.login_info.user_id}.png`,
           name: global.user.username
         }}
         renderMessage={this.renderMessage}

@@ -1,15 +1,8 @@
 // Jason Yu
 
 import * as React from 'react';
-import {
-  Text,
-  TextInput,
-  View,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-} from 'react-native';
+import { Text, TextInput, View, StyleSheet, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import { Image } from 'react-native-elements'
 import Button from './Button';
 import request from '../functions/request';
 import '../global';

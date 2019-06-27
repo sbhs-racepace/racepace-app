@@ -1,7 +1,8 @@
 // Sunny Yan
 
 import * as React from 'react';
-import { Image, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Image } from 'react-native-elements'
 import { withNavigation } from 'react-navigation';
 import Color from '../constants/Color'
 import '../global.js'

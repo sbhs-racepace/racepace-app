@@ -1,7 +1,8 @@
 // Sunny Yan
 
 import * as React from 'react';
-import { Text, TextInput, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { Text, TextInput, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Image } from 'react-native-elements'
 import Button from "Button"
 
 export class Prompt extends React.Component {

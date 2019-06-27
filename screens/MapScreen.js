@@ -3,7 +3,8 @@
 import React from 'react';
 import MapView from 'react-native-maps';
 import { Marker, Polyline } from 'react-native-maps';
-import { Alert, View, Text, TextInput, StyleSheet, Dimensions, Platform, TouchableOpacity, Image} from "react-native";
+import { Alert, View, Text, TextInput, StyleSheet, Dimensions, Platform, TouchableOpacity} from "react-native";
+import { Image } from 'react-native-elements'
 import { Constants } from 'expo';
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'

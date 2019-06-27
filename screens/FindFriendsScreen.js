@@ -1,15 +1,7 @@
 import React from 'react';
 import { Component } from 'react';
-import {
-  Alert,
-  View,
-  Image,
-  ScrollView,
-  Text,
-  TextInput,
-  Dimensions,
-  StyleSheet,
-} from 'react-native';
+import { Alert, View, ScrollView, Text,TextInput, Dimensions, StyleSheet } from 'react-native';
+import { Image } from 'react-native-elements'
 import Button from '../components/Button.js';
 import BackButtonHeader from '../components/BackButtonHeader'
 import '../global'

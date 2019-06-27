@@ -62,7 +62,7 @@ export default class RunScreen extends React.Component {
       method: 'POST',
       body: JSON.stringify(data),
       headers: new Headers({
-        'Authorization': global.login_status.token,
+        'Authorization': global.login_info.token,
       })
     })
     .then(async res => await res.json()).then(data => { 
@@ -88,33 +88,28 @@ export default class RunScreen extends React.Component {
   }
 
   async componentDidMount() {
-    // Temporarily commented out
-    // if (Platform.OS === 'android' && !Constants.isDevice) {
-    //   Alert.alert('Device is not of valid type to record location.')
-    // } else {
-    //   // Getting start time and intializing the real time route
-    //   this.startRun()
-    //   // Asking location permission and creating location loop
-    //   let { status } = await Permissions.askAsync(Permissions.LOCATION);
-    //   if (status) { //Check whether permission granted
-    //     Location.watchPositionAsync(
-    //       {
-    //         accuracy: 4, //Accurate to 10m
-    //         timeInterval: 10000,
-    //         distanceInterval:10,
-    //       },
-    //       (location) => {
-    //         let current_time = new Date();
-    //         let data = {
-    //           location: location.coords,
-    //           time: (current_time.getTime() / 1000), // Conversion to seconds
-    //         }
-    //         global.socket.emit('location_update',data);
-    //       }
-    //     )
-    //     this.state.interval_id = setInterval(this.updateRunInfo.bind(this), 10000);
-    //   }
-    // }
+    if (global.location_permission) {
+      this.startRun()
+      Location.watchPositionAsync(
+        {
+          accuracy: 4, //Accurate to 10m
+          timeInterval: 10000,
+          distanceInterval:10,
+        },
+        (location) => {
+          let current_time = new Date();
+          let data = {
+            location: location.coords,
+            time: (current_time.getTime() / 1000), // Conversion to seconds
+          }
+          global.socket.emit('location_update',data);
+        }
+      )
+      this.state.interval_id = setInterval(this.updateRunInfo.bind(this), 10000);
+    } else {
+      Alert.alert('Location Permission not allowed')
+      this.props.navigation.navigate('Feed')
+    }
   }
 
   stop_tracking() {

@@ -1,7 +1,8 @@
 // Jason Yu
 
 import React from 'react';
-import { ScrollView, View, Text, Alert, StyleSheet,Image, Dimensions } from 'react-native';
+import { ScrollView, View, Text, Alert, StyleSheet, Dimensions } from 'react-native';
+import { Image } from 'react-native-elements'
 import Button from "../components/Button"
 import BackButtonHeader from '../components/BackButtonHeader'
 import "../global.js"
@@ -39,7 +40,7 @@ class FollowRequest extends React.Component {
       <View style={{width:'100%',alignItems:'center',flex:1, flexDirection:'row', justifyContent:'space-between', height:windowHeight*0.2}}>
         <Image
           style={STYLES.profile_image}
-          source={{uri: `${global.serverURL}/api/avatars/${global.login_status.user_id}.png`}}
+          source={{uri: `${global.serverURL}/api/avatars/${global.login_info.user_id}.png`}}
         />
         <Text style={{width:"30%",fontSize:20, color:Color.textColor}}>{this.props.name} wants to follow you!</Text>
         <Button 
