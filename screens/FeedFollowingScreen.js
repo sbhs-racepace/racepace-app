@@ -11,8 +11,8 @@ import {
 import Button from '../components/Button';
 import { FeedItem } from '../components/FeedItem';
 import '../global.js';
-import request from "../functions/request"
-import Color from '../constants/Color'
+import request from '../functions/request';
+import Color from '../constants/Color';
 
 export default class FeedFollowingScreen extends React.Component {
   constructor(state) {
@@ -20,8 +20,9 @@ export default class FeedFollowingScreen extends React.Component {
   }
 
   componentDidMount() {
-    if (!global.login_status.success) {
-      this.feed = request(global.serverURL+"/get_feed", "POST", {}, true)
+    if (global.login_status.success) {
+      this.feed = request(global.serverURL + '/get_feed', 'POST', {}, true);
+      this.feed = this.feed.feed_items;
     }
   }
 
@@ -30,37 +31,59 @@ export default class FeedFollowingScreen extends React.Component {
       return <Text>Please login to see your feed</Text>;
     }
     return (
-      <KeyboardAvoidingView keyboardVerticalOffset={100} behavior="position" style={{backgroundColor: Color.lightBackground}}>
+      <KeyboardAvoidingView
+        keyboardVerticalOffset={100}
+        behavior="position"
+        style={{ backgroundColor: Color.lightBackground }}>
         <ScrollView
           contentContainerStyle={{
             backgroundColor: Color.lightBackground,
           }}>
-          <FeedItem
-            username="Test User"
-            posttime="3 hours ago"
-            routename="Test Route"
-            description="This is a great route"
-            length="2.2"
-            time="30"
-          />
-          <FeedItem
-            username="Test User"
-            posttime="3 hours ago"
-            routename="Test Route"
-            description="This is a great route"
-            length="2.2"
-            time="30"
-          />
-          <FeedItem
-            username="Test User"
-            posttime="3 hours ago"
-            routename="Test Route"
-            description="This is a great route"
-            length="2.2"
-            time="30"
-          />
+          {global.TEST && (
+            <View>
+              <FeedItem
+                username="Test User"
+                posttime="3 hours ago"
+                routename="Test Route"
+                description="This is a great route"
+                length="2.2"
+                time="30"
+              />
+              <FeedItem
+                username="Test User"
+                posttime="3 hours ago"
+                routename="Test Route"
+                description="This is a great route"
+                length="2.2"
+                time="30"
+              />
+              <FeedItem
+                username="Test User"
+                posttime="3 hours ago"
+                routename="Test Route"
+                description="This is a great route"
+                length="2.2"
+                time="30"
+              />
+            </View>
+          )}
+          {this.feed && this.feed.map(item => (
+            <FeedItem
+              username={item.username}
+              posttime={item.route.real_time_route.start_time}
+              routename={item.route.real_time_route.name}
+              description={item.route.real_time_route.description}
+              length={item.route.real_time_route.route.distance}
+              likes={item.route.likes.length}
+              comments={item.route.comments}
+              routePic={item.route_image}
+            />
+          ))}
           <Button
-            style={{...global.component_styles.roundedButton, alignSelf:'center'}}
+            style={{
+              ...global.component_styles.roundedButton,
+              alignSelf: 'center',
+            }}
             text_style={{
               padding: '1%',
               fontSize: 16,

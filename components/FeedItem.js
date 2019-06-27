@@ -54,13 +54,28 @@ const STYLES = StyleSheet.create({
   },
 });
 
+class Comment extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <View style={{flexDirection:"row"}}>
+        <Text style={{fontWeight:"bold"}}>{this.props.name} :</Text>
+        <Text> {this.props.comment}</Text>
+      </View>
+    )
+  }
+}
+
 export class FeedItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      likes: 0,
+      likes: this.props.likes || [],
       liked: false,
-      comments: [{ name: 'Test User', mess: 'Test Message' }],
+      comments: this.props.comments || [],
       showComments: false,
     };
   }
@@ -69,6 +84,7 @@ export class FeedItem extends React.Component {
     this.setState(prevState => {
       return {
         liked: !prevState.liked,
+        likes: this.props.likes + !prevState.liked,
       };
     });
     request('api/likeRoute', 'POST', { id: this.props.id }, true);
@@ -82,15 +98,16 @@ export class FeedItem extends React.Component {
 
   sendComment() {
     this.setState(prevState => {
-      prevState.comments.push({
-        name: global.user.full_name,
-        mess: this.state.mess,
-      });
+      prevState.comments.push([
+        global.user.full_name,
+        this.state.mess,
+      ]);
       return {
         comments: prevState.comments,
       };
     });
   }
+
   render() {
     return (
       <View style={STYLES.feed_item}>
@@ -113,15 +130,22 @@ export class FeedItem extends React.Component {
           <Text style={STYLES.text}>{this.props.routename}</Text>
           <Text style={STYLES.text}>Description: {this.props.description}</Text>
           <Text style={STYLES.text}>
-            Stats: {this.props.length}km {this.props.time}m
+            Length: {this.props.length}km
           </Text>
         </View>
 
-        <Image source={require('../assets/cat.jpeg')} style={STYLES.routePic} />
+        <Image source={{uri: this.props.routePic}} style={STYLES.routePic} />
         <View style={[global.view_styles.rowView, { margin: 10 }]}>
-          <Text style={STYLES.text}>0 Likes</Text>
-          <Text style={STYLES.text}>0 Comments</Text>
+          <Text style={STYLES.text}>{this.state.likes.length} Likes</Text>
+          <Text style={STYLES.text}>{this.state.comments.length} Comments</Text>
         </View>
+        {this.state.showComments &&
+          <View>
+            {this.props.comments.map(comment=>
+              <Comment name={comment[0]} comment={comment[1]} />
+            )}
+          </View>
+        }
         <View style={STYLES.likeCommentCombo}>
           <Button
             text="Like"

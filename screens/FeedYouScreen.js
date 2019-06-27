@@ -20,10 +20,11 @@ export default class FeedYouScreen extends React.Component {
       return <Text>Please login to see your feed</Text>;
     }
 
-    if (!global.TEST) {
-      let resp = JSON.parse(
-        request('/api/get_recent_routes', 'POST', {}, true)._bodyText
-      );
+    if (global.login_status.success) {
+      let resp = request('/api/get_recent_routes', 'POST', {}, true);
+      if (resp.error) {
+        return <Text>An error occurred. {resp.description}</Text>
+      }
       resp = resp.recent_routes;
     }
 
@@ -60,7 +61,7 @@ export default class FeedYouScreen extends React.Component {
             onPress={() => this.props.navigation.navigate('Follow')}
           />
         </View>
-          {test_data}
+          {global.TEST && test_data}
       </View>
     );
   }
