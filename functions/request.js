@@ -18,7 +18,7 @@ export default async function request(
       method,
       body: JSON.stringify(data),
       headers: {
-        Authorization: token===true ? global.login_status.token : token,
+        Authorization: token===true ? global.login_info.token : token,
       },
     };
   }

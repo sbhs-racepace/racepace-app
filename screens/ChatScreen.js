@@ -28,7 +28,7 @@ export default class ChatScreen extends React.Component {
     fetch(messagesURL, {
       method: 'GET',
       headers: new Headers({
-        'Authorization': global.login_status.token,
+        'Authorization': global.login_info.token,
       })
     })
     .then(async res => await res.json())
