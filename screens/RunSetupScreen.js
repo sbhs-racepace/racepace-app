@@ -9,6 +9,9 @@ import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
 import TextInputCustom from '../components/TextInput';
 import Color from '../constants/Color'
+import { createRun, createRunRoute } from '../functions/action'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
@@ -29,9 +32,12 @@ const STYLES = StyleSheet.create({
     textAlign:"center",
     color: Color.textColor
   },
+  input: {
+    width:"40%"
+  }
 })
 
-export default class RunSetupScreen extends React.Component {
+class RunSetupScreen extends React.Component {
   constructor(state) {
     super(state);
     this.state = {
@@ -63,17 +69,14 @@ export default class RunSetupScreen extends React.Component {
   }
 
   async getRouteFromAddress(start,end) {
-    console.log("Geolocation with "+start+","+end);
     let {latitude:s_lat, longitude:s_lon} = (await Location.geocodeAsync(start+","+global.region.name))[0];
     let startCoord = `${s_lat},${s_lon}`;
     let {latitude:e_lat, longitude:e_lon} = (await Location.geocodeAsync(end+","+global.region.name))[0];
     let endCoord = `${e_lat},${e_lon}`;
-    console.log(start+"&"+end);
 
     if (start == end) {
       Alert.alert("Error","From location can't be same as to location");
-    }
-    else if (startCoord == endCoord) {
+    } else if (startCoord == endCoord) {
       //^This condition is met as both start and end have the city appended
       //The geocoding will ignore the part it can't understand and just read the city
       Alert.alert("Error","Start or end position couldn't be understood");
@@ -85,34 +88,35 @@ export default class RunSetupScreen extends React.Component {
 
   async getRouteFromCoords(start, end) {
     let api_url = `${global.serverURL}/api/route?start=${start}&end=${end}`;
-    await fetch(api_url,{
+    fetch(api_url,{
       method: "GET"
     })
     .catch(error => Alert.alert("Error connecting to server",error))
-    .then(async res => await res.json())
-    .then(res => {
-        console.log("Got response from server:");
-        console.log(res);
-        if (!res.success) {
-          Alert.alert("Error",res.error);
-        }
-        else {
-          this.setState({
-            route: res.route,
-            distance: (res.dist/1000).toFixed(3),
-          });
-        }
+    .then(async res => {
+      let res_data = await res.json()
+      if (!res_data.success) {
+        Alert.alert("Error",res_data.error);
+      } else {
+        let route = res_data.route
+        let distance = (res_data.dist/1000).toFixed(3)
+        let points = this.calculatePoints(distance, this.state.goal_pace);
+        let time = this.calculateTime(distance, this.state.goal_pace);
+        let calories = this.calculateCaloriesBurnt(distance);
+        this.setState({
+          route: route,
+          distance: distance,
+          points:points, 
+          time: time, 
+          calories: calories
+        });
       }
-    );
-    let points = this.calculatePoints(this.state.distance, this.state.goal_pace);
-    let time = this.calculateTime(this.state.distance, this.state.goal_pace);
-    let calories = this.calculateCaloriesBurnt(this.state.distance);
-    this.setState({points:points, time: time, calories: calories});
+    });
   }
 
   setupRoute(start, end) {
     let coordPattern = /\-?[0-9]+,\-?[0-9]+/ // Checking for coords
-    if (coordPattern.test(start) && coordPattern.test(end)) {
+    let coordinate_form = coordPattern.test(start) && coordPattern.test(end)
+    if (coordinate_form) {
       this.getRouteFromCoords(start,end)
     } else {
       this.getRouteFromAddress(start,end)
@@ -131,10 +135,10 @@ export default class RunSetupScreen extends React.Component {
           <View style={{flexDirection:'row'}}>
             <Button style={{flex:1}} text="Load Route"/>
             <Button style={{flex:1}} text="Create Route"/>
-            <Button style={{flex:1}} text="Just Run"/>
+            <Button style={{flex:1}} text="Join Run"/>
           </View>
         </View>
-        <View style={[STYLES.container, {height:windowHeight * 0.5}]}>
+        <View style={[STYLES.container, {flex:1}]}>
           <TextInputCustom 
             placeholder="Start"
             defaultValue={this.state.start}
@@ -151,7 +155,7 @@ export default class RunSetupScreen extends React.Component {
           />
           <View style={{flexDirection:'row'}}>
             <TextInputCustom 
-              style={{width:"40%"}}
+              style={STYLES.input}
               placeholder="minutes"
               onChangeText={minutes => {
                 this.setState({ goal_pace: {minutes: minutes} });
@@ -161,7 +165,7 @@ export default class RunSetupScreen extends React.Component {
               returnKeyType="go"
             />
             <TextInputCustom 
-              style={{width:"40%"}}
+              style={STYLES.input}
               placeholder="seconds"
               onChangeText={seconds => {
                 this.setState({ goal_pace: {seconds: seconds} });
@@ -182,8 +186,9 @@ export default class RunSetupScreen extends React.Component {
             style={{borderRadius:10}} 
             text="Generate Route Info"
             onPress={() => {
-              // this.setupRoute(this.state.start,this.state.end)
-              this.props.navigation.navigate("Information") // Go To Run Information Screen
+              this.setupRoute(this.state.start,this.state.end);
+              this.props.createRunRoute(this.state.route, this.real_time_tracking);
+              this.props.navigation.navigate("Information"); // Go To Run Information Screen
             }}
           />
         </View>
@@ -191,3 +196,13 @@ export default class RunSetupScreen extends React.Component {
     );
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ createRunRoute, createRun }, dispatch)
+}
+
+function mapStateToProps(state) {
+  return state;
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RunSetupScreen);

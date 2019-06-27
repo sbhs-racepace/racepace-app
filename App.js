@@ -2,7 +2,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux'
-import runReducer from './functions/runReducer';
+import { runReducer } from './functions/reducer';
 
 import {
   createStackNavigator,
@@ -150,11 +150,17 @@ const AppContainer = createAppContainer(LoginNavigator);
 const store = createStore(runReducer);
 
 export default class App extends React.Component {
+  constructor(props) {
+    super(props)
+  }
+
   render() {
     return (
       <Provider store={store}>
           <View style={{height:20, backgroundColor: Color.lightBackground}}/>
-          <AppContainer style={{backgroundColor: Color.darkBackground}}/>
+          <AppContainer 
+            style={{backgroundColor: Color.darkBackground}}
+          />
       </Provider>
     );
   }

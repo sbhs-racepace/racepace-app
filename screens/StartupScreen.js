@@ -15,7 +15,8 @@ export default class StartupScreen extends React.Component {
   }
 
   async componentDidMount() {
-    global.location_permission = await Permissions.askAsync(Permissions.LOCATION);
+    global.location_permission = Boolean((await Permissions.askAsync(Permissions.LOCATION)).status);
+    console.log(global.location_permission)
     await Font.loadAsync({
       'RobotoCondensed-BoldItalic' : require('../assets/fonts/RobotoCondensed-BoldItalic.ttf'),
       'Roboto-Thin' : require('../assets/fonts/Roboto-Thin.ttf'),

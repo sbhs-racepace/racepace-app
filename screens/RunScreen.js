@@ -8,6 +8,9 @@ import * as Permissions from 'expo-permissions'
 import Button from "../components/Button"
 import Color from '../constants/Color.js'
 import "../global.js"
+import { startRun, addLocationPacket } from '../functions/action'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
@@ -39,15 +42,13 @@ const STYLES = StyleSheet.create({
   }
 })
 
-export default class RunScreen extends React.Component {
+class RunScreen extends React.Component {
   constructor(state) {
     super(state);
     this.state = {
       pace: {minutes:'--', seconds:'--'},
       distance: 0,
       time: {hours:'00',minutes:'00',seconds:'00',milliseconds:'00'},
-      paused: false,
-      interval_id: null,
     }
   }
 
@@ -55,51 +56,33 @@ export default class RunScreen extends React.Component {
     return `${this.state.time.hours}: ${this.state.time.minutes}: ${this.state.time.seconds}.${this.state.time.milliseconds}`
   }
 
-  startRun() {
-    let current_time = new Date();
-    let start_time = {
-      year:current_time.getFullYear(),
-      month:current_time.getMonth(),
-      day:current_time.getDate(),
-      hours:current_time.getHours(),
-      minutes:current_time.getMinutes(),
-      seconds:current_time.getSeconds(),
-    }
-    let data = {
-      start_time: start_time,
-      route: global.current_route,
-    }
-    global.socket.emit('start_run', start_time);
-  }
-
   async componentDidMount() {
+    let real_time_tracking = this.props.run_info.real_time_tracking
     if (global.location_permission) {
-      this.startRun()
+      this.props.startRun(new Date())
+      if (real_time_tracking) global.socket.emit('start_run', start_time);
       Location.watchPositionAsync(
         {
           accuracy: 4, //Accurate to 10m
-          timeInterval: 10000,
+          timeInterval: 5000,
           distanceInterval:10,
         },
-        (location) => {
+        async location => {
+          location = await location;
+          console.log(location)
           let current_time = new Date();
-          let data = {
+          let location_packet = {
             location: location.coords,
             time: (current_time.getTime() / 1000), // Conversion to seconds
           }
-          global.socket.emit('location_update',data);
-          this.setState();
+          if (real_time_tracking) global.socket.emit('location_update',location_packet);
+          this.props.addLocationPacket(location_packet)
         }
       )
     } else {
       Alert.alert('Location Permission not allowed')
       this.props.navigation.navigate('Feed')
     }
-  }
-
-  stop_tracking() {
-    global.socket.emit('end_run');
-    clearInterval(this.state.interval_id);
   }
   
   render() {
@@ -142,3 +125,13 @@ export default class RunScreen extends React.Component {
     )
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ addLocationPacket, startRun }, dispatch)
+}
+
+function mapStateToProps(state) {
+  return state;
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RunScreen);
