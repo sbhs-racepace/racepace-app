@@ -5,7 +5,7 @@ import { Alert, AsyncStorage } from 'react-native';
 import Expo from 'expo';
 import io from 'socket.io-client';
 
-async function storeUserInfo() {
+export async function storeUserInfo() {
   let data = { user_id: global.login_info.user_id };
   let api_url = global.serverURL + '/api/get_info';
   fetch(api_url, {
@@ -48,8 +48,7 @@ export async function login(email,password) {
   .then(async res => {
     login_response = await res.json();
     global.login_info = { token: login_response.token, user_id: login_response.user_id };
-    await AsyncStorage.setItem('@MySuperStore:key', 'I like to save it.');
-    // await AsyncStorage.setItem('@login_info:key', global.login_info)
+    await AsyncStorage.setItem('login_info', JSON.stringify(global.login_info));
   })
   .catch(error => {
     Alert.alert('Error ', error);
