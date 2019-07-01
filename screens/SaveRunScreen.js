@@ -5,6 +5,9 @@ import { View, Text, TextInput, StyleSheet, Alert} from 'react-native';
 import Button from '../components/Button.js';
 import Color from '../constants/Color.js'
 import '../global.js';
+import { startRun, addLocationPacket } from '../functions/action'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 const STYLES = StyleSheet.create({
   text_style: {
@@ -29,7 +32,7 @@ const STYLES = StyleSheet.create({
   },
 })
 
-export default class SaveRunScreen extends React.Component {
+class SaveRunScreen extends React.Component {
   constructor(state) {
     super(state);
     this.state = {
@@ -71,7 +74,7 @@ export default class SaveRunScreen extends React.Component {
         <View style={{flex:1, justifyContent:'space-evenly'}}>
           <Text style={STYLES.title_style}>Saved Run Description</Text>
           <TextInput
-            wwwstyle={STYLES.input}
+            style={STYLES.input}
             onChangeText={name => {
               this.setState({ name: name });
             }}
@@ -96,3 +99,13 @@ export default class SaveRunScreen extends React.Component {
     );
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ addLocationPacket, startRun }, dispatch)
+}
+
+function mapStateToProps(state) {
+  return state;
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SaveRunScreen);
