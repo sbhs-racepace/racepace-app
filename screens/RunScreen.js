@@ -56,29 +56,20 @@ class RunScreen extends React.Component {
     return `${this.state.time.hours}: ${this.state.time.minutes}: ${this.state.time.seconds}.${this.state.time.milliseconds}`
   }
 
+  async locationUpdateLoop(real_time_tracking) {
+    let location_packet = await Location.getCurrentPositionAsync({
+      accuracy: 4,
+    })
+    if (real_time_tracking) global.socket.emit('location_update',location_packet);
+    this.props.addLocationPacket(location_packet)
+  }
+
   async componentDidMount() {
-    let real_time_tracking = this.props.run_info.real_time_tracking
     if (global.location_permission) {
       this.props.startRun(new Date())
+      let real_time_tracking = this.props.run_info.real_time_tracking
       if (real_time_tracking) global.socket.emit('start_run', start_time);
-      Location.watchPositionAsync(
-        {
-          accuracy: 4, //Accurate to 10m
-          timeInterval: 5000,
-          distanceInterval:10,
-        },
-        async location => {
-          location = await location;
-          console.log(location)
-          let current_time = new Date();
-          let location_packet = {
-            location: location.coords,
-            time: (current_time.getTime() / 1000), // Conversion to seconds
-          }
-          if (real_time_tracking) global.socket.emit('location_update',location_packet);
-          this.props.addLocationPacket(location_packet)
-        }
-      )
+      let timerId = setInterval((real_time_tracking) => {this.locationUpdateLoop(real_time_tracking)}, 5000);
     } else {
       Alert.alert('Location Permission not allowed')
       this.props.navigation.navigate('Feed')
@@ -93,7 +84,7 @@ class RunScreen extends React.Component {
           <Text style={STYLES.text}>Distance: {this.state.distance}</Text>
           <Text style={STYLES.text}>Timer: {this.timeString()}</Text>
           <Text style={STYLES.text}>Pace: {this.state.pace.minutes} :{this.state.pace.seconds}</Text>
-          <Text style={STYLES.text}>Average Pace: {this.state.pace.minutes} :{this.state.pace.seconds}</Text>
+          <Text style={STYLES.text}>Average Pace: {this.props.real_time_info.average_pace.minutes} :{this.props.real_time_info.average_pace.seconds}</Text>
         </View>
 
         <View style={{backgroundColor:Color.darkBackground, height: windowHeight * 0.20}}>
