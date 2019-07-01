@@ -1,7 +1,7 @@
 // Jason Yu
 
 import React from 'react';
-import { View, Text, StyleSheet} from 'react-native';
+import { View, Text, StyleSheet, AsyncStorage } from 'react-native';
 import { Image } from 'react-native-elements'
 import Button from '../components/Button';
 import '../global';
@@ -33,7 +33,7 @@ const STYLES = StyleSheet.create({
   },
 });
 
-function logout() {
+async function logout() {
   global.login_info = {
     token: null,
     user_id: null,
@@ -44,6 +44,8 @@ function logout() {
     dob: 'None',
     routes: [],
   };
+  global.socket.emit('disconnect'); // Disconnects io connection
+  await AsyncStorage.removeItem('login_info') // Deletes async storage for login
 }
 
 export default class ProfileScreen extends React.Component {
@@ -193,13 +195,11 @@ export default class ProfileScreen extends React.Component {
                 ? 'Logout'
                 : 'Login or Register as New'
             }
-            onPress={() => {
+            onPress={async () => {
               if (global.login_info.token) {
-                global.socket.emit('disconnect');
                 logout();
-              } else {
-                this.props.navigation.navigate('Splash');
               }
+              this.props.navigation.navigate('Splash');
             }}
           />
         </View>
