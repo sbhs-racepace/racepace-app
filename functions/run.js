@@ -48,3 +48,25 @@ export function returnIfRunning(pace) {
     return pace
   }
 }
+
+export function calculateTimeFromPace(distance, pace) {
+  let time = distance * pace.minutes * 60 + distance * pace.seconds // Time is in seconds
+  let minutes = Math.floor(time / 60)
+  let seconds = Math.floor(time - (minutes * 60))
+  return {minutes:minutes, seconds:seconds}
+}
+
+export function calculateCaloriesBurnt(distance) {
+  let weight = 60
+  let calories = distance * weight * 1.036
+  return Math.floor(calories)
+}
+
+export function calculateKilojoulesBurnt(distance) {
+  let calories = calculateCaloriesBurnt(distance)
+  return Math.floor(calories *4.184)
+}
+
+export function calculatePoints(distance, pace) {
+  return Math.floor(distance * 100 * Math.pow((1/pace.minutes),2))
+}
