@@ -111,6 +111,7 @@ export default class FindFriendsScreen extends React.Component {
               style={STYLES.search_box}
               onChangeText={text => {
                 this.searchString = text;
+                this.sendRequest.bind(this)()
               }}
             />
             <Button
