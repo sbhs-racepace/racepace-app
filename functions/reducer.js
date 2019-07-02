@@ -5,15 +5,18 @@ import { calculateAveragePace, speedToPace, coordDistance, returnIfRunning } fro
 const INITIAL_STATE = {
   real_time_info: {
     distance: 0,
-    current_pace: {minutes:0, seconds:0},
-    average_pace: {minutes:0, seconds:0},
-    lap_pace: {minutes:0, seconds:0},
+    current_pace: null,
+    average_pace: null,
+    lap_pace: null,
     lap_distance: 0,
   },
   run_info: {
     route: null,
     real_time_tracking: false,
     start_time: null,
+    goal_pace: {minutes:0, seconds:0},
+    start: null,
+    end: null,
   },
   location_packets: [],
 };
