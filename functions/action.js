@@ -5,11 +5,11 @@ export const ADD_LOCATION_PACKET = 'ADD_LOCATION_PACKET'
 export const END_ROUTE = 'END_ROUTE'
 
 
-export function createRun(real_time_tracking) {
-  return { type: CREATE_RUN, real_time_tracking }
+export function createRun(real_time_tracking, distance) {
+  return { type: CREATE_RUN, real_time_tracking, distance }
 }
-export function createRunRoute(route, real_time_tracking) {
-  return { type: CREATE_RUN_ROUTE, route, real_time_tracking}
+export function createRunRoute(route, real_time_tracking, distance, goal_pace) {
+  return { type: CREATE_RUN_ROUTE, route, real_time_tracking, distance, goal_pace}
 }
 export function startRun(start_time) {
   return { type: START_RUN, start_time}

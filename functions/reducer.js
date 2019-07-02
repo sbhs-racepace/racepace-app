@@ -17,6 +17,9 @@ const INITIAL_STATE = {
     goal_pace: {minutes:0, seconds:0},
     start: null,
     end: null,
+    distance: null,
+    estimated_time: null,
+    estimated_distance: null
   },
   location_packets: [],
 };
@@ -28,6 +31,7 @@ export function runReducer(state = INITIAL_STATE, action) {
         run_info: {
           ...state.run_info, 
           real_time_tracking : action.real_time_tracking,
+          estimated_distance: action.distance,
         }
       })
     case CREATE_RUN_ROUTE:
@@ -36,6 +40,8 @@ export function runReducer(state = INITIAL_STATE, action) {
           ...state.run_info, 
           route:action.route,
           real_time_tracking:action.real_time_tracking,
+          estimated_distance: action.distance,
+          goal_pace: action.goal_pace
         }
       })
     case START_RUN:
@@ -58,9 +64,6 @@ export function runReducer(state = INITIAL_STATE, action) {
       }
       let average_pace = returnIfRunning(calculateAveragePace(new_distance, start_time, end_time))
       let current_pace = returnIfRunning(speedToPace(location_packet.coords.speed))
-      console.log(location_packet)
-      console.log('average',average_pace)
-      console.log('current',current_pace)
       return Object.assign({}, state, {
         location_packets: [
           ...state.location_packets, 
