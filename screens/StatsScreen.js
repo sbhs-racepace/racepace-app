@@ -22,7 +22,7 @@ export default class StatsScreen extends React.Component {
   render() {
     let stats = global.user.stats
     return (
-      <ScrollView>
+    <View>
         <Text style={STYLES.text}>Runs made: {stats.num_runs}</Text>
         <Text style={STYLES.text}>Distance Ran Altogether: {stats.total_distance}</Text>
         <Text style={STYLES.text}>Longest Distance Ran: {stats.longest_distance_ran ? stats.longest_distance_ran : 'None'}</Text>
@@ -33,7 +33,7 @@ export default class StatsScreen extends React.Component {
         <Text style={STYLES.text}>Estimated V02 Max: {stats.estimated_v02_max ? stats.estimated_v02_max : 'None'}</Text>
         <Text style={STYLES.text}>Average Heart Rate: {stats.average_heart_rate ? stats.average_heart_rate : 'None'}</Text>
         <Text style={STYLES.text}>Cadence: {stats.cadence ? stats.cadence : 'None'}</Text>
-      </ScrollView>
+    </View>
     );
   }
 }
