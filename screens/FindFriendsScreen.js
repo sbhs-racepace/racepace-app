@@ -1,7 +1,7 @@
 import React from 'react';
 import { Component } from 'react';
 import { Alert, View, ScrollView, Text,TextInput, Dimensions, StyleSheet } from 'react-native';
-import { Image } from 'react-native-elements'
+import { Image, ListItem, SearchBar } from 'react-native-elements'
 import Button from '../components/Button.js';
 import BackButtonHeader from '../components/BackButtonHeader'
 import '../global'
@@ -69,17 +69,18 @@ export default class FindFriendsScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      searchString: "",
       searchResults: [
       ],
       recommended: true,
     };
-    this.searchString = '';
   }
 
-  async sendRequest() {
+  async sendRequest(text) {
+    console.log('sending req')
     fetch(global.serverURL+"/api/find_friends", {
       method: 'POST',
-      body: JSON.stringify({name: this.searchString}),
+      body: JSON.stringify({name: text}),
       headers: {
           authorization: global.login_info.token
       }
@@ -104,37 +105,21 @@ export default class FindFriendsScreen extends React.Component {
           onPress={this.props.navigation.goBack}
           title='Find Friends'
         />
-        <View style={{ flex:1, width: '100%', alignItems:'center', justifyContent:'space-evenly'}}>
-          <Text style={STYLES.title}>Find Friends</Text>
-          <View style={{flexDirection: 'row',justifyContent:'space-evenly'}}>
-            <TextInput
-              style={STYLES.search_box}
-              onChangeText={text => {
-                this.searchString = text;
-                this.sendRequest.bind(this)()
-              }}
-            />
-            <Button
-              img={require('../assets/icons/search.png')}
-              img_style={STYLES.img_style}
-              style={STYLES.search_btn}
-              onPress={this.sendRequest.bind(this)}
-            />
-          </View>
-          <Button
-            style={STYLES.roundedButton}
-            text="Refresh"
-            onPress={() => (Alert.alert('Not Implemented'))}
-          />
-        </View>
+        <SearchBar
+            placeholder="Type Here..."
+            onChangeText={text => {
+                this.setState({searchString: text})
+                this.sendRequest.bind(this)(text)
+                }}
+            value={this.state.searchString}
+        />
         <ScrollView style={{ width: '100%' }}>
           {this.state.searchResults.map(user => (
-            <FriendBox
-              name={user.name}
-              bio={user.bio}
-              imageURL={
-                global.serverURL + `/api/avatars/${user.user_id}.png`
-              }
+            <ListItem
+              title={user.name}
+              subtitle={user.bio}
+              leftAvatar={{ source: { uri: global.serverURL + `/api/avatars/${user.user_id}.png` } }}
+              containerStyle={{backgroundColor: Color.darkBackground}}
             />
           ))}
         </ScrollView>
