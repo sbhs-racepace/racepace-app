@@ -128,7 +128,7 @@ export default class FindFriendsScreen extends React.Component {
               name={user.name}
               bio={user.bio}
               imageURL={
-                global.serverURL + '/api/images/get_user_image/' + user.id
+                global.serverURL + `/api/avatars/${user.id}.png`
               }
             />
           ))}
