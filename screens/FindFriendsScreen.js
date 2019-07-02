@@ -6,6 +6,7 @@ import Button from '../components/Button.js';
 import BackButtonHeader from '../components/BackButtonHeader'
 import '../global'
 import Color from '../constants/Color'
+import request from '../functions/request'
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
@@ -69,8 +70,6 @@ export default class FindFriendsScreen extends React.Component {
     super(props);
     this.state = {
       searchResults: [
-        { id: 1, name: 'Test', bio: 'This is a bio' },
-        { id: 2, name: 'TestUser2', bio: 'Another bio' },
       ],
       recommended: true,
     };
@@ -80,14 +79,19 @@ export default class FindFriendsScreen extends React.Component {
   async sendRequest() {
     fetch(global.serverURL+"/api/find_friends", {
       method: 'POST',
-      body: "name="+this.searchString,
+      body: JSON.stringify({name: this.searchString}),
+      headers: {
+          authorization: global.login_info.token
+      }
     })
     .catch(res => {
       Alert.alert('Error connecting to server', res);
     })
     .then(
       async res => {
+        console.log(res)
         res = await res.json(); //Parse response as JSON
+        console.log(res)
         this.setState({searchResults: res});
       }
     );
@@ -128,7 +132,7 @@ export default class FindFriendsScreen extends React.Component {
               name={user.name}
               bio={user.bio}
               imageURL={
-                global.serverURL + `/api/avatars/${user.id}.png`
+                global.serverURL + `/api/avatars/${user.user_id}.png`
               }
             />
           ))}

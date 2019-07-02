@@ -10,7 +10,6 @@ import Color from '../constants/Color'
 const STYLES = StyleSheet.create({
   button: {
     width:"80%",
-    borderRadius:10,
   },
   button_text: {
     padding:"2%",

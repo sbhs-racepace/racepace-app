@@ -29,7 +29,6 @@ const STYLES = StyleSheet.create({
   },  
   roundedButton: {
     width: '80%',
-    borderRadius: 10,
   }
 });
 

@@ -65,7 +65,13 @@ export default class GroupScreen extends React.Component {
           <ScrollView>
             {this.state.groups.map(group => <Group onPress={() => {this.props.navigation.navigate('Chat')}} group={group}></Group>)}
           </ScrollView>
+          <Button
+            style={{ alignSelf: 'center' }}
+            text="Find Friends"
+            onPress={() => this.props.navigation.navigate('FindFriends')}
+          />
         </KeyboardAvoidingView>
+
       </View>
     );
   }
