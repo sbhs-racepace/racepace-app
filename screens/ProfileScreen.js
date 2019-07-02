@@ -1,7 +1,7 @@
 // Jason Yu
 
 import React from 'react'
-import { View, Text, StyleSheet, AsyncStorage } from 'react-native'
+import { View, Text, StyleSheet, AsyncStorage, ScrollView, KeyboardAvoidingView } from 'react-native'
 import { Image, Icon } from 'react-native-elements'
 import Button from '../components/Button'
 import '../global'
@@ -21,11 +21,12 @@ const STYLES = StyleSheet.create({
   profile_image: {
     height: 100,
     width: 100,
-    borderRadius: 50
+    borderRadius: 50,
+    paddingRight: '1%'
   },
   text: {
     fontSize: 15,
-    color: Color.textColor
+    color: Color.textColor,
   },
   stat_btn: {
     flex: 1,
@@ -81,14 +82,14 @@ export default class ProfileScreen extends React.Component {
       initialRouteName: this.props.navigation.state.params == undefined ? 'Stats' : this.props.navigation.state.params.screen,
       tabBarOptions: {
         activeTintColor: Color.textColor,
-        tabStyle: {
-            backgroundColor: Color.lightBackground
-        },
+        // tabStyle: {
+        //     backgroundColor: Color.lightBackground
+        // },
         indicatorStyle: {
             backgroundColor: Color.primaryColor
         },
         inactiveTintColor: Color.offColor,
-        style: { backgroundColor: Color.darkBackground }
+        style: { backgroundColor: Color.buttonColor }
       }
     }
     )
@@ -96,10 +97,11 @@ export default class ProfileScreen extends React.Component {
     const AppContainer = createAppContainer(Nav)
 
     return (
+    <KeyboardAvoidingView keyboardVerticalOffset={100} behavior="position" style={{backgroundColor: Color.darkBackground}}>
+    <ScrollView>
       <View style={STYLES.container}>
-        
         <View>
-            <Text style={[STYLES.text, { fontSize: 30, textAlign: 'center', marginTop: 3}]}>
+            <Text style={[STYLES.text, { fontSize: 30, textAlign: 'center', padding: '5%'}]}>
             {this.state.name}
             </Text>
             <View style={{ height: 150, padding: '3%' }}>
@@ -110,7 +112,7 @@ export default class ProfileScreen extends React.Component {
                 }}>
                 <View
                 style={{
-                    flexDirection: 'column',
+                    flexDirection: 'row',
                     flex: 1,
                     alignItems: 'center'
                 }}>
@@ -129,10 +131,10 @@ export default class ProfileScreen extends React.Component {
                     flex: 2,
                     justifyContent: 'space-evenly'
                 }}>
-                <View style={{ flexDirection: 'row', flex: 2 }}>
+                <View style={{ flexDirection: 'row'}}>
                     <Button
                     style={STYLES.stat_btn}
-                    text={`${global.user.stats.points} Pace Points`}
+                    text={`${global.user.stats.points} Points`}
                     onPress={() => this.props.navigation.navigate('Level')}
                     />
                     <Button
@@ -165,7 +167,8 @@ export default class ProfileScreen extends React.Component {
                         disabled={!global.login_info.token && !global.TEST}
                     />
                     <Button
-                        style={{width: '30%'}}
+                        style={{width: '30%', borderLeftWidth: 2, borderLeftColor: Color.lightBackground}}
+                        text_style={{color: "#e74c3c"}}
                         text={
                         global.login_info.token
                             ? 'Logout'
@@ -182,8 +185,8 @@ export default class ProfileScreen extends React.Component {
                 </View>
             </View>
             </View>
-            <Text multiline={true} style={[STYLES.text, { padding: '2%' }]}>
-            Bio: {this.state.bio}
+            <Text multiline={true} style={[STYLES.text, { padding: '8%', paddingLeft: '5%'}]}>
+            {this.state.bio}
             </Text>
         </View>
 
@@ -198,6 +201,8 @@ export default class ProfileScreen extends React.Component {
           /> */}
 
       </View>
+      </ScrollView>
+      </KeyboardAvoidingView>
     )
   }
 }
