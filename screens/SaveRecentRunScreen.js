@@ -7,7 +7,7 @@ import { Image } from 'react-native-elements'
 import Button from '../components/Button.js';
 import Color from '../constants/Color.js';
 import '../global.js';
-import { startRun, addLocationPacket } from '../functions/action'
+import { startRun, addLocationPacket, endRun } from '../functions/action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -21,6 +21,12 @@ const STYLES = StyleSheet.create({
     fontFamily: 'Roboto',
     textAlign:"center",
     color: Color.textColor
+  },
+  routePic: {
+    aspectRatio: 1.7, 
+    width: '80%', 
+    height: undefined,
+    borderRadius: 5
   },
 })
 
@@ -46,22 +52,27 @@ class SaveRecentRunScreen extends React.Component {
         console.log('Success Saving Recent Route');
       }
     );
+    this.props.endRun()
+    this.props.navigation.navigate('Feed');
   }
 
   render() {
     return (
       <View style={{flex:1,backgroundColor:Color.lightBackground}}>
-          <View style={{flex:1, justifyContent:'space-evenly'}}>
+          <View style={{flex:1, justifyContent:'space-evenly', alignItems:'center'}}>
             <Text style={STYLES.title_style}>Save Run Screen</Text>
-            <Text style={STYLES.text_style}>Good job on your run!</Text>
-            <Text style={STYLES.text_style}>Here are some stats.</Text>
+            <Image source={require('../assets/map.png')} style={STYLES.routePic} />
+            <Text style={STYLES.title_style}>Run Stats</Text>
+            <Text style={STYLES.text_style}>Average Pace: {this.props.real_time_info.average_pace.minutes} minutes {this.props.real_time_info.average_pace.seconds} seconds</Text>
+            <Text style={STYLES.text_style}>Distance Ran: {this.props.real_time_info.distance}</Text>
+            <Text style={STYLES.text_style}>Duration: {this.props.run_info.duration}</Text>
+            <Text style={STYLES.text_style}>Points: {this.props.run_info.points}</Text>
           </View>
           <Button 
             style={{width:'100%'}}
             text="Save Run"
             onPress={()=> {
               this.saveRecentRun()
-              this.props.navigation.navigate('Feed');
             }}
           />
       </View>
@@ -70,7 +81,7 @@ class SaveRecentRunScreen extends React.Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ addLocationPacket, startRun }, dispatch)
+  return bindActionCreators({ addLocationPacket, startRun, endRun }, dispatch)
 }
 
 function mapStateToProps(state) {

@@ -53,21 +53,6 @@ class RunSetupScreen extends React.Component {
     }
   }
 
-  calculateTime(distance, pace) {
-    let pace_minutes = pace.minutes
-    let pace_seconds = pace.seconds
-    let time = distance * pace_minutes * 60 + distance * pace_seconds // Time is in seconds
-    let minutes = Math.floor(time / 60)
-    let seconds = Math.floor(time - (minutes * 60))
-    return {minutes:minutes, seconds:seconds}
-  }
-
-  calculateCaloriesBurnt(distance) {
-    let weight = 60
-    let calories = distance * weight * 1.036
-    return Math.floor(calories)
-  }
-
   async getRouteFromAddress(start,end) {
     let {latitude:s_lat, longitude:s_lon} = (await Location.geocodeAsync(start+","+global.region.name))[0];
     let startCoord = `${s_lat},${s_lon}`;
@@ -77,18 +62,16 @@ class RunSetupScreen extends React.Component {
     if (start == end) {
       Alert.alert("Error","From location can't be same as to location");
     } else if (startCoord == endCoord) {
-      //^This condition is met as both start and end have the city appended
-      //The geocoding will ignore the part it can't understand and just read the city
       Alert.alert("Error","Start or end position couldn't be understood");
-    }
-    else {
+    } else {
       this.getRouteFromCoords(startCoord,endCoord);
     }
   }
 
   async getRouteFromCoords(start, end) {
     let api_url = `${global.serverURL}/api/route?start=${start}&end=${end}`;
-    fetch(api_url,{
+    let route_data = false
+    await fetch(api_url,{
       method: "GET"
     })
     .catch(error => Alert.alert("Error connecting to server",error))
@@ -97,34 +80,33 @@ class RunSetupScreen extends React.Component {
       if (!res_data.success) {
         Alert.alert("Error",res_data.error);
       } else {
-        let route = res_data.route
-        let distance = (res_data.dist/1000).toFixed(3)
-        let points = this.calculatePoints(distance, this.state.goal_pace);
-        let time = this.calculateTime(distance, this.state.goal_pace);
-        let calories = this.calculateCaloriesBurnt(distance);
-        this.setState({
-          route: route,
-          distance: distance,
-          points:points, 
-          time: time, 
-          calories: calories
-        });
+        route_data = res_data;
       }
     });
+    return route_data;
   }
 
-  setupRoute(start, end) {
+  generateRoute(start, end) {
     let coordPattern = /\-?[0-9]+,\-?[0-9]+/ // Checking for coords
     let coordinate_form = coordPattern.test(start) && coordPattern.test(end)
     if (coordinate_form) {
-      this.getRouteFromCoords(start,end)
+      return this.getRouteFromCoords(start,end)
     } else {
-      this.getRouteFromAddress(start,end)
+      return this.getRouteFromAddress(start,end)
     }
   }
 
-  calculatePoints(distance, pace) {
-    return Math.floor(distance * 100 * Math.pow((1/pace.minutes),2))
+  async generateRouteInfo() {
+    let route_data = await this.generateRoute(this.state.start,this.state.end);
+    if (route_data != false) {
+
+      let route = route_data.route
+      let distance = route_data.dist
+      this.props.createRunRoute(route, this.state.real_time_tracking, distance, this.state.goal_pace);
+      this.props.navigation.navigate("Information"); // Go To Run Information Screen
+    } else {
+      Alert.alert('Failure Generating Route')
+    }
   }
   
   render() {
@@ -186,9 +168,7 @@ class RunSetupScreen extends React.Component {
             style={{borderRadius:10}} 
             text="Generate Route Info"
             onPress={() => {
-              this.setupRoute(this.state.start,this.state.end);
-              this.props.createRunRoute(this.state.route, this.real_time_tracking);
-              this.props.navigation.navigate("Information"); // Go To Run Information Screen
+              this.generateRouteInfo()
             }}
           />
         </View>
