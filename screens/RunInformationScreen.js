@@ -1,7 +1,7 @@
 // Jason Yu, Sunny Yan
 
 import React from 'react';
-import { StyleSheet, View, Text, Alert, ScrollView, TextInput, Dimensions, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, View, Text, Alert, ScrollView, TextInput, Dimensions, KeyboardAvoidingView, Image } from 'react-native';
 import { CheckBox } from 'react-native-elements'
 import Button from "../components/Button"
 import BackButtonHeader from '../components/BackButtonHeader'
@@ -10,6 +10,10 @@ import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
 import TextInputCustom from '../components/TextInput';
 import Color from '../constants/Color'
+import { startRun, addLocationPacket } from '../functions/action'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
@@ -22,17 +26,22 @@ const STYLES = StyleSheet.create({
   text_style: {
     color: Color.textColor,
     fontSize:15,
-    margin:3,
   },
   title_style: {
-    fontSize:30,
+    fontSize:20,
     fontFamily: 'Roboto',
     textAlign:"center",
     color: Color.textColor
   },
+  routePic: {
+    aspectRatio: 1.7, 
+    width: '80%', 
+    height: undefined,
+    borderRadius: 5
+  },
 })
 
-export default class RunInformationScreen extends React.Component {
+class RunInformationScreen extends React.Component {
   constructor(state) {
     super(state);
     this.state = {
@@ -74,11 +83,16 @@ export default class RunInformationScreen extends React.Component {
           title="Route Information"
           onPress={this.props.navigation.goBack}
         />
-        <View style={[STYLES.container, {alignItems:'flex-start', justifyContent:'flex-start', flex:1}]}>
+        <View style={[STYLES.container, {alignItems:'center', justifyContent:'space-around', flex:1,}]}>
+          <Text style={STYLES.title_style}>Route Overview</Text>
+          <Image source={require('../assets/map.png')} style={STYLES.routePic} />
+          <Text style={STYLES.title_style}>Route Stats</Text>
+          <Text style={STYLES.text_style}>Goal Pace: {this.state.time.minutes} minutes {this.state.time.seconds} seconds</Text>
           <Text style={STYLES.text_style}>Time: {this.state.time.minutes} minutes {this.state.time.seconds} seconds</Text>
           <Text style={STYLES.text_style}>Total Distance: {this.state.distance}km</Text>
-          <Text style={STYLES.text_style}>Calories Burnt/Kilojoules Burnt: {this.state.calories} Cal/ {Math.floor(this.state.calories *4.184)} Kj</Text>
+          <Text style={STYLES.text_style}>Kilojoules Burnt:{Math.floor(this.state.calories *4.184)} Kj</Text>
           <Text style={STYLES.text_style}>Points: {this.state.points}</Text>
+          <Text style={STYLES.text_style}>Incline Gain: 0</Text>
         </View>
         <Button 
           text="Start Run"
@@ -89,3 +103,13 @@ export default class RunInformationScreen extends React.Component {
     );
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ addLocationPacket, startRun }, dispatch)
+}
+
+function mapStateToProps(state) {
+  return state;
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RunInformationScreen);
