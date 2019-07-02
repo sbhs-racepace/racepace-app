@@ -1,5 +1,8 @@
 // Sunny Yan, Jason Yu
 import React from 'react';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux'
+import { runReducer } from './functions/reducer';
 
 import {
   createStackNavigator,
@@ -144,13 +147,21 @@ const LoginNavigator = createStackNavigator({
 });
 
 const AppContainer = createAppContainer(LoginNavigator);
+const store = createStore(runReducer);
 
 export default class App extends React.Component {
+  constructor(props) {
+    super(props)
+  }
+
   render() {
     return (
-      <View style={{ flex: 1, marginTop: 20, backgroundColor: Color.darkBackground}}>
-        <AppContainer style={{backgroundColor: Color.darkBackground}}/>
-      </View>
+      <Provider store={store}>
+          <View style={{height:20, backgroundColor: Color.lightBackground}}/>
+          <AppContainer 
+            style={{backgroundColor: Color.darkBackground}}
+          />
+      </Provider>
     );
   }
 }

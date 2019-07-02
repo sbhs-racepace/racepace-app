@@ -1,20 +1,14 @@
-import {StyleSheet} from 'react-native';
-
+global.serverURL = "https://racepace-sbhs.herokuapp.com"
 global.TEST = true
-
-global.login_info = {
-  token: false, 
-  user_id: false
-};
-
-global.current_route = null;
-
+global.region = { name:"NSW Australia", coords:"-32.3010715,146.746138" }
+global.login_info = { token: false,  user_id: false };
 global.socket = null;
 global.location_permission = null;
 
 global.user = {
   full_name:"guest",
   username:"guest",
+  email: "guest",
   stats: {
     num_runs: 0,
     total_distance: 0,
@@ -32,16 +26,6 @@ global.user = {
   followers: [],
   bio: "No Bio",
 }
-
-global.region = { name:"NSW Australia", coords:"-32.3010715,146.746138" }
-
-global.serverURL = "https://racepace-sbhs.herokuapp.com"
-
-global.googleLoginID = {
-  android: "Insert key here", 
-  ios: "Insert key here"
-};
-
 
 global.user_routes = [
   {
@@ -63,8 +47,3 @@ global.user_routes = [
     nodes: [(34,121),(34,122)]
   }
 ]
-
-global.view_styles = StyleSheet.create({
-  columnCenterView:{ alignItems:"center", flexDirection:"column",flex:1},
-  rowView: {flexDirection: "row", justifyContent: 'space-between', width:"100%"},
-})

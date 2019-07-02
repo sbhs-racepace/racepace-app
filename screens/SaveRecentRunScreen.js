@@ -7,6 +7,9 @@ import { Image } from 'react-native-elements'
 import Button from '../components/Button.js';
 import Color from '../constants/Color.js';
 import '../global.js';
+import { startRun, addLocationPacket } from '../functions/action'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 const STYLES = StyleSheet.create({
   text_style: {
@@ -21,15 +24,17 @@ const STYLES = StyleSheet.create({
   },
 })
 
-export default class SaveRunScreen extends React.Component {
+class SaveRecentRunScreen extends React.Component {
   constructor(state) {
     super(state);
   }
 
   async saveRecentRun() {
+    // let data = {}
     let api_url = `${global.serverURL}/api/save_recent_route`
     fetch(api_url, {
       method: 'POST',
+      // body: JSON.stringify(data),
       headers: new Headers({
         'Authorization': global.login_info.token,
       })
@@ -63,3 +68,13 @@ export default class SaveRunScreen extends React.Component {
     );
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ addLocationPacket, startRun }, dispatch)
+}
+
+function mapStateToProps(state) {
+  return state;
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SaveRecentRunScreen);

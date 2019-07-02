@@ -111,7 +111,7 @@ export class FeedItem extends React.Component {
         </View>
 
         <Image source={require('../assets/cat.jpeg')} style={STYLES.routePic} />
-        <View style={[global.view_styles.rowView, { margin: 10 }]}>
+        <View style={{ flexDirection: "row", justifyContent: 'space-between', width:"100%", margin: 10 }}>
           <Text style={STYLES.text}>0 Likes</Text>
           <Text style={STYLES.text}>0 Comments</Text>
         </View>

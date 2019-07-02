@@ -8,6 +8,9 @@ import * as Permissions from 'expo-permissions'
 import Button from "../components/Button"
 import Color from '../constants/Color.js'
 import "../global.js"
+import { startRun, addLocationPacket } from '../functions/action'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
@@ -39,15 +42,13 @@ const STYLES = StyleSheet.create({
   }
 })
 
-export default class RunScreen extends React.Component {
+class RunScreen extends React.Component {
   constructor(state) {
     super(state);
     this.state = {
       pace: {minutes:'--', seconds:'--'},
       distance: 0,
       time: {hours:'00',minutes:'00',seconds:'00',milliseconds:'00'},
-      paused: false,
-      interval_id: null,
     }
   }
 
@@ -55,67 +56,24 @@ export default class RunScreen extends React.Component {
     return `${this.state.time.hours}: ${this.state.time.minutes}: ${this.state.time.seconds}.${this.state.time.milliseconds}`
   }
 
-  async updateRunInfo() {
-    let data = {'period': 5}
-    let pace_url = global.serverURL + '/api/get_run_info'
-    fetch(pace_url, {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: new Headers({
-        'Authorization': global.login_info.token,
-      })
+  async locationUpdateLoop(real_time_tracking) {
+    let location_packet = await Location.getCurrentPositionAsync({
+      accuracy: 4,
     })
-    .then(async res => await res.json()).then(data => { 
-      this.setState({pace:data.pace,distance:data.distance})
-    });
-  }
-
-  startRun() {
-    let current_time = new Date();
-    let start_time = {
-      year:current_time.getFullYear(),
-      month:current_time.getMonth(),
-      day:current_time.getDate(),
-      hours:current_time.getHours(),
-      minutes:current_time.getMinutes(),
-      seconds:current_time.getSeconds(),
-    }
-    let data = {
-      start_time: start_time,
-      route: global.current_route,
-    }
-    global.socket.emit('start_run', start_time);
+    if (real_time_tracking) global.socket.emit('location_update',location_packet);
+    this.props.addLocationPacket(location_packet)
   }
 
   async componentDidMount() {
     if (global.location_permission) {
-      this.startRun()
-      Location.watchPositionAsync(
-        {
-          accuracy: 4, //Accurate to 10m
-          timeInterval: 10000,
-          distanceInterval:10,
-        },
-        (location) => {
-          let current_time = new Date();
-          let data = {
-            location: location.coords,
-            time: (current_time.getTime() / 1000), // Conversion to seconds
-          }
-          global.socket.emit('location_update',data);
-        }
-      )
-      this.state.interval_id = setInterval(this.updateRunInfo.bind(this), 10000);
+      this.props.startRun(new Date())
+      let real_time_tracking = this.props.run_info.real_time_tracking
+      if (real_time_tracking) global.socket.emit('start_run', start_time);
+      let timerId = setInterval((real_time_tracking) => {this.locationUpdateLoop(real_time_tracking)}, 5000);
     } else {
       Alert.alert('Location Permission not allowed')
       this.props.navigation.navigate('Feed')
     }
-  }
-
-  stop_tracking() {
-    global.socket.emit('end_run');
-    global.current_route = null;
-    clearInterval(this.state.interval_id);
   }
   
   render() {
@@ -126,7 +84,7 @@ export default class RunScreen extends React.Component {
           <Text style={STYLES.text}>Distance: {this.state.distance}</Text>
           <Text style={STYLES.text}>Timer: {this.timeString()}</Text>
           <Text style={STYLES.text}>Pace: {this.state.pace.minutes} :{this.state.pace.seconds}</Text>
-          <Text style={STYLES.text}>Average Pace: {this.state.pace.minutes} :{this.state.pace.seconds}</Text>
+          <Text style={STYLES.text}>Average Pace: {this.props.real_time_info.average_pace.minutes} :{this.props.real_time_info.average_pace.seconds}</Text>
         </View>
 
         <View style={{backgroundColor:Color.darkBackground, height: windowHeight * 0.20}}>
@@ -158,3 +116,13 @@ export default class RunScreen extends React.Component {
     )
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ addLocationPacket, startRun }, dispatch)
+}
+
+function mapStateToProps(state) {
+  return state;
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RunScreen);

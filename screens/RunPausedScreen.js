@@ -8,6 +8,9 @@ import * as Permissions from 'expo-permissions'
 import Button from "../components/Button"
 import Color from '../constants/Color.js'
 import "../global.js"
+import { startRun, addLocationPacket } from '../functions/action'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
@@ -39,7 +42,7 @@ const STYLES = StyleSheet.create({
   }
 })
 
-export default class RunScreen extends React.Component {
+class RunPausedScreen extends React.Component {
   constructor(state) {
     super(state);
     this.state = {
@@ -62,7 +65,6 @@ export default class RunScreen extends React.Component {
         <View style={{flex:1,alignItems:'center'}}>
           <Text style={STYLES.title}>Run Stats</Text>      
           <Text style={STYLES.text}>Distance: {this.state.distance}</Text>
-          <Text style={STYLES.text}>Time: {this.timeString()}</Text>
           <Text style={STYLES.text}>Average Pace: {this.state.pace.minutes} :{this.state.pace.seconds}</Text>
           <Text style={STYLES.text}>Calories/Kilojoules: Not implemented</Text>
           <Text style={STYLES.text}>Elevation: Not implemented</Text>
@@ -74,7 +76,6 @@ export default class RunScreen extends React.Component {
             style={STYLES.circularButton}
             onPress={()=>{
               Alert.alert('Stop Route')
-              this.stop_tracking()
               this.props.navigation.navigate('Feed');
             }}
           >
@@ -83,7 +84,9 @@ export default class RunScreen extends React.Component {
 
           <TouchableOpacity
             style={STYLES.circularButton}
-            onPress={()=>{this.props.navigation.navigate('RunManager');}}
+            onPress={()=>{
+              this.props.navigation.navigate('RunManager');
+            }}
           >
             <Text style={{fontSize:20, color:Color.textColor}}>Resume (ICON)</Text>
           </TouchableOpacity>
@@ -92,7 +95,6 @@ export default class RunScreen extends React.Component {
             style={STYLES.circularButton}
             onPress={() => {
               Alert.alert('End Route')
-              this.stop_tracking()
               if (global.route == null) {
                 this.props.navigation.navigate('SaveRecentRun');
               } else {
@@ -107,3 +109,13 @@ export default class RunScreen extends React.Component {
     )
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ addLocationPacket, startRun }, dispatch)
+}
+
+function mapStateToProps(state) {
+  return state;
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RunPausedScreen);
