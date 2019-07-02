@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { View, Text, StyleSheet, AsyncStorage } from 'react-native'
-import { Image } from 'react-native-elements'
+import { Image, Icon } from 'react-native-elements'
 import Button from '../components/Button'
 import '../global'
 import '../assets/cat.jpeg'
@@ -147,29 +147,31 @@ export default class ProfileScreen extends React.Component {
                   }
                 />
               </View>
-              <Button
-                style={{ width: '100%' }}
-                text="Edit Profile"
-                onPress={() => {
-                  console.log(global.login_info.token)
-                  this.props.navigation.navigate('Edit')
-                }}
-                disabled={!global.login_info.token && !global.TEST}
-              />
-              <Button
-                style={{ alignSelf: 'center'}}
-                text={
-                global.login_info.token
-                    ? 'Logout'
-                    : 'Login or Register as New'
-                }
-                onPress={async () => {
-                if (global.login_info.token) {
-                    logout();
-                }
-                this.props.navigation.navigate('Splash');
-                }}
+              <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                <Button
+                    style={{width: '79%'}}
+                    text="Edit Profile"
+                    onPress={() => {
+                    console.log(global.login_info.token)
+                    this.props.navigation.navigate('Edit')
+                    }}
+                    disabled={!global.login_info.token && !global.TEST}
                 />
+                <Button
+                    style={{width: '20%'}}
+                    text={
+                    global.login_info.token
+                        ? 'Logout'
+                        : 'Login or Register as New'
+                    }
+                    onPress={async () => {
+                    if (global.login_info.token) {
+                        logout();
+                    }
+                    this.props.navigation.navigate('Splash');
+                    }}
+                    />
+              </View>
             </View>
           </View>
         </View>
