@@ -156,7 +156,7 @@ export default class ProfileScreen extends React.Component {
                 </View>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                     <Button
-                        style={{width: '70%'}}
+                        style={{width: '70%', backgroundColor: Color.buttonColor}}
                         text="Edit Profile"
                         onPress={() => {
                         console.log(global.login_info.token)

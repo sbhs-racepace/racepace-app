@@ -10,7 +10,8 @@ import Color from '../constants/Color'
 
 const STYLES = StyleSheet.create({
   feed_item: {
-    borderWidth: 1,
+    borderWidth: 5,
+    borderColor: Color.buttonColor,
     padding: '5%',
     width: '100%',
     backgroundColor: Color.lightBackground,
@@ -23,17 +24,20 @@ const STYLES = StyleSheet.create({
   },
   user_info: {
     flexDirection: 'column',
-    margin: '3%',
   },
   user_profile: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   routePic: {
-    width: '100%',
+      aspectRatio: 1.7, 
+      width: '100%', 
+      height: undefined,
+      borderRadius: 5
+
   },
   likeCommentButton: {
-    width: '40%',
+    width: '50%',
     borderWidth: 0,
   },
   text: {
@@ -41,11 +45,10 @@ const STYLES = StyleSheet.create({
   },
   likeCommentCombo: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     width: '100%',
-    backgroundColor: Color.primaryColor,
     borderRadius: 10,
-    padding: '1%',
+    padding: '0%'
   },
 });
 
@@ -102,16 +105,16 @@ export class FeedItem extends React.Component {
           </View>
         </View>
 
-        <View style={{ margin: '3%' }}>
+        <View style={{ padding: '5%' , paddingLeft: '0%'}}>
           <Text style={STYLES.text}>{this.props.routename}</Text>
           <Text style={STYLES.text}>Description: {this.props.description}</Text>
           <Text style={STYLES.text}>
             Stats: {this.props.length}km {this.props.time}m
           </Text>
         </View>
-
-        <Image source={require('../assets/cat.jpeg')} style={STYLES.routePic} />
-        <View style={{ flexDirection: "row", justifyContent: 'space-between', width:"100%", margin: 10 }}>
+        
+        <Image source={require('../assets/map.png')} style={STYLES.routePic} />
+        <View style={{ flexDirection: "row", justifyContent: 'space-between', width:"100%", padding: '5%' }}>
           <Text style={STYLES.text}>0 Likes</Text>
           <Text style={STYLES.text}>0 Comments</Text>
         </View>

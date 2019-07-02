@@ -24,7 +24,7 @@ export default class FeedScreen extends React.Component {
       <KeyboardAvoidingView keyboardVerticalOffset={100} behavior="position" style={{backgroundColor: Color.lightBackground}}>
         <ScrollView
           contentContainerStyle={{
-            backgroundColor: Color.lightBackground,
+            backgroundColor: Color.darkBackground,
           }}>
           <FeedItem
             username="Test User"
