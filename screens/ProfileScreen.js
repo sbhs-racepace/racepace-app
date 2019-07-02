@@ -81,7 +81,12 @@ export default class ProfileScreen extends React.Component {
       initialRouteName: this.props.navigation.state.params == undefined ? 'Stats' : this.props.navigation.state.params.screen,
       tabBarOptions: {
         activeTintColor: Color.textColor,
-        activeBackgroundColor: Color.lightBackground,
+        tabStyle: {
+            backgroundColor: Color.lightBackground
+        },
+        indicatorStyle: {
+            display: 'none'
+        },
         inactiveTintColor: Color.offColor,
         style: { backgroundColor: Color.darkBackground }
       }
@@ -149,7 +154,7 @@ export default class ProfileScreen extends React.Component {
               </View>
               <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                 <Button
-                    style={{width: '79%'}}
+                    style={{width: '70%'}}
                     text="Edit Profile"
                     onPress={() => {
                     console.log(global.login_info.token)
@@ -158,7 +163,7 @@ export default class ProfileScreen extends React.Component {
                     disabled={!global.login_info.token && !global.TEST}
                 />
                 <Button
-                    style={{width: '20%'}}
+                    style={{width: '30%'}}
                     text={
                     global.login_info.token
                         ? 'Logout'
