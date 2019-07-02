@@ -14,7 +14,7 @@ let STYLES = StyleSheet.create({
     alignSelf:'center'
   },
   view: {
-    width:"100%", height:50, padding:3, borderBottomColor:'yellow', borderBottomWidth:1
+    width:"100%", height:50, padding:3, borderBottomColor:Color.primaryColor, borderBottomWidth:1
   }
 });
 
