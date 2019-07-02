@@ -1,51 +1,51 @@
 // Jason Yu, Sunny Yan
 
-import React from 'react';
-import { Component } from 'react';
+import { Component } from React from 'react';
+
 import Color from '../constants/Color'
-import { View, Text, StyleSheet, Alert, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Alert, Dimensions } from 'react-native'
 import { Image } from 'react-native-elements'
-import { login, execute_login, googleLogin } from '../functions/login';
-import Button from '../components/Button.js';
-import TextInputCustom from '../components/TextInput';
-import '../global';
+import { login, execute_login, googleLogin } from '../functions/login'
+import Button from '../components/Button.js'
+import TextInputCustom from '../components/TextInput'
+import '../global'
 import BackButtonHeader from '../components/BackButtonHeader'
 
-const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
+const { width: windowWidth, height: windowHeight } = Dimensions.get('window')
 
 const STYLES = StyleSheet.create({
   button_text: {
     padding: '1%',
-    fontSize: 16,
+    fontSize: 16
   },
   logo: {
     margin: '5%',
     width: windowWidth * 0.7,
     height: windowWidth * 0.7,
-    borderRadius: windowWidth * 0.7 / 2,
+    borderRadius: windowWidth * 0.7 / 2
   },
   title: {
-    fontFamily:'Roboto-Bold',fontSize:70,color: Color.primaryColor,
-  },  
+    fontFamily: 'Roboto-Bold', fontSize: 70, color: Color.primaryColor
+  },
   roundedButton: {
     width: '80%',
-    borderRadius: 10,
+    borderRadius: 10
   }
-});
+})
 
 export default class LoginScreen extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       email: 'email',
       pword: 'password',
-      isSigninInProgress: false,
-    };
+      isSigninInProgress: false
+    }
   }
 
-  render() {
+  render () {
     return (
-      <View style={{backgroundColor: Color.darkBackground, flex:1}}>
+      <View style={{ backgroundColor: Color.darkBackground, flex: 1 }}>
         <BackButtonHeader
           title="Login Screen"
           onPress={this.props.navigation.goBack}
@@ -54,8 +54,8 @@ export default class LoginScreen extends React.Component {
           style={{
             alignItems: 'center',
             flexDirection: 'column',
-            flex:1,
-            justifyContent: 'space-evenly',
+            flex: 1,
+            justifyContent: 'space-evenly'
           }}
         >
           <Text style={[STYLES.title]}>Racepace</Text>
@@ -93,6 +93,6 @@ export default class LoginScreen extends React.Component {
           />
         </View>
       </View>
-    );
+    )
   }
 }

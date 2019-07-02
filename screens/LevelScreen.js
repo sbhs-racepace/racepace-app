@@ -1,52 +1,52 @@
 // Roy Wu
 
-import React from 'react';
+import React from 'react'
 import {
   View,
   Text,
-  StyleSheet,
-} from 'react-native';
-import '../global';
+  StyleSheet
+} from 'react-native'
+import '../global'
 import Color from '../constants/Color'
-import BackButtonHeader from '../components/BackButtonHeader';
+import BackButtonHeader from '../components/BackButtonHeader'
 
 export default class LevelScreen extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       level: 1,
       points: 24759,
-      remainder: 5241,
-    };
+      remainder: 5241
+    }
   }
 
-  render() {
+  render () {
     const STYLES = StyleSheet.create({
       progressBar: {
         backgroundColor: 'gray',
         width: '80%',
         height: '15%',
-        borderRadius: 20,
+        borderRadius: 20
       },
       progressBarFill: {
         backgroundColor: 'blue',
         width: (this.state.points / 30000) * 100 + '%',
         height: '100%',
-        borderRadius: 20,
+        borderRadius: 20
       },
       remainderText: {
-          fontSize: 25, 
-          textAlign: 'center', 
-          width: '80%',
+        fontSize: 25,
+        textAlign: 'center',
+        width: '80%'
       },
       header: {
-      top: '0%',
-      borderWidth: 1,
-      },
-    });
+        top: '0%',
+        borderWidth: 1
+      }
+    })
 
     return (
-      <View style={{flex:1, backgroundColor:Color.lightBackground}}>
+      <View style={{ flex: 1, backgroundColor: Color.lightBackground }}>
         <BackButtonHeader
           title='Level'
           onPress={this.props.navigation.goBack}
@@ -61,6 +61,6 @@ export default class LevelScreen extends React.Component {
           </Text>
         </View>
       </View>
-    );
+    )
   }
 }

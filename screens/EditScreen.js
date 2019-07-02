@@ -1,16 +1,16 @@
 // Calvin Chang
 
-import React from 'react';
-import { DocumentPicker } from 'expo';
-import { View, Alert, Text, ScrollView, AppRegistry, TextInput, StyleSheet, KeyboardAvoidingView, Dimensions } from 'react-native';
+import React from 'react'
+import { DocumentPicker } from 'expo'
+import { View, Alert, Text, ScrollView, AppRegistry, TextInput, StyleSheet, KeyboardAvoidingView, Dimensions } from 'react-native'
 import { Image } from 'react-native-elements'
 import { login } from '../functions/login'
-import Button from '../components/Button';
-import BackButtonHeader from '../components/BackButtonHeader';
-import Color from '../constants/Color';
-import '../global.js';
+import Button from '../components/Button'
+import BackButtonHeader from '../components/BackButtonHeader'
+import Color from '../constants/Color'
+import '../global.js'
 
-const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
+const { width: windowWidth, height: windowHeight } = Dimensions.get('window')
 
 const STYLES = StyleSheet.create({
   chsfile: {
@@ -27,7 +27,7 @@ const STYLES = StyleSheet.create({
     padding: '1%',
     marginTop: 5,
     color: Color.textColor,
-    backgroundColor: Color.lightBackground2,
+    backgroundColor: Color.lightBackground2
   },
   profile_image: {
     height: windowWidth * 0.35,
@@ -35,24 +35,24 @@ const STYLES = StyleSheet.create({
     borderRadius: windowWidth * 0.35 / 2,
     alignSelf: 'center'
   },
-  container : {
+  container: {
     flex: 1,
     backgroundColor: Color.lightBackground,
     justifyContent: 'space-between',
     flexDirection: 'column',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   saveButton: {
     width: '80%',
     height: 30,
     bottom: 50,
     borderRadius: 10,
-    fontSize: 14,
+    fontSize: 14
   }
-});
+})
 export default class EditScreen extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       uri: global.serverURL + `/api/avatars/${global.login_info.user_id}.png`,
       username: null,
@@ -61,11 +61,11 @@ export default class EditScreen extends React.Component {
       full_name: null,
       image: null,
       current_password: null,
-      confirmation_password: null,
-    };
+      confirmation_password: null
+    }
   }
 
-  async saveChanges() {
+  async saveChanges () {
     let login_data = login.login(global.email, this.state.current_password)
     let equivalent_new = this.state.passowrd == this.state.confirmation_password
     let data = {
@@ -73,27 +73,27 @@ export default class EditScreen extends React.Component {
       password: this.state.password,
       bio: this.state.bio,
       full_name: this.state.full_name,
-      image: this.state.image,
-    };
+      image: this.state.image
+    }
 
     if (login_data.success) {
       if (equivalent_new) {
-        let api_url = global.serverURL + '/api/update_profile';
+        let api_url = global.serverURL + '/api/update_profile'
         fetch(api_url, {
           method: 'POST',
-          body: JSON.stringify(data),
+          body: JSON.stringify(data)
         })
-        .catch(res => {
-          Alert.alert('Error connecting to server', res);
-        })
-        .then(async res => {
-          res = await res.json()
-          if (res.success == true) {
-            Alert.alert('Changed details')
-          } else {
-            Alert.alert('Could not change details')
-          }
-        });
+          .catch(res => {
+            Alert.alert('Error connecting to server', res)
+          })
+          .then(async res => {
+            res = await res.json()
+            if (res.success == true) {
+              Alert.alert('Changed details')
+            } else {
+              Alert.alert('Could not change details')
+            }
+          })
       } else {
         Alert.alert("New Passwords don't match")
       }
@@ -102,16 +102,16 @@ export default class EditScreen extends React.Component {
     }
   }
 
-  render() {
+  render () {
     return (
       <KeyboardAvoidingView style={STYLES.container}>
         <BackButtonHeader title='Edit Screen' onPress={this.props.navigation.goBack} />
-        <View style={{flexDirection: 'row', justifyContent:'space-around' }}>
-          <View style={{width: windowWidth * 0.4}}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+          <View style={{ width: windowWidth * 0.4 }}>
             <Image
               style={STYLES.profile_image}
               source={{
-                uri: this.state.uri,
+                uri: this.state.uri
               }}
             />
             <Button
@@ -119,17 +119,17 @@ export default class EditScreen extends React.Component {
               style={STYLES.chsfile}
               onPress={async () => {
                 let { uri, type } = await DocumentPicker.getDocumentAsync({
-                  type: 'image/*',
-                });
+                  type: 'image/*'
+                })
                 if (type == 'success') {
-                  this.setState({ uri });
+                  this.setState({ uri })
                 }
               }}
             />
           </View>
           <View style={{ width: windowWidth * 0.5 }}>
-            <TextInput 
-              placeholder="Name" 
+            <TextInput
+              placeholder="Name"
               style={{ ...STYLES.input, width: windowWidth * 0.5 }}
               onChangeText={full_name => this.setState({ full_name })}
             />
@@ -142,30 +142,30 @@ export default class EditScreen extends React.Component {
           </View>
         </View>
 
-        <View style={{alignItems:'center'}}>
+        <View style={{ alignItems: 'center' }}>
           <Text style={{ fontSize: 30, color: 'white' }}> Change Password</Text>
-          <TextInput 
-            placeholder="Current Password" 
-            style={STYLES.input} 
+          <TextInput
+            placeholder="Current Password"
+            style={STYLES.input}
             onChangeText={current_password => this.setState({ current_password })}
           />
-          <TextInput 
-            placeholder="New Password" 
-            style={STYLES.input} 
+          <TextInput
+            placeholder="New Password"
+            style={STYLES.input}
             onChangeText={password => this.setState({ password })}
           />
-          <TextInput 
-            placeholder="Confirm New Password" 
-            style={STYLES.input} 
+          <TextInput
+            placeholder="Confirm New Password"
+            style={STYLES.input}
             onChangeText={confirmation_pword => this.setState({ confirmation_pword })}
           />
-          
+
           <Text style={{ fontSize: 30, color: 'white' }}>Change Username</Text>
           <Text style={{ fontSize: 15, color: 'white' }}>Current Username: {global.user.username}</Text>
-          <TextInput 
-            style={STYLES.input} 
+          <TextInput
+            style={STYLES.input}
             placeholder="New Username"
-            onChangeText={username => this.setState({ username })} 
+            onChangeText={username => this.setState({ username })}
           />
         </View>
 
@@ -175,6 +175,6 @@ export default class EditScreen extends React.Component {
           onPress={this.saveChanges}
         />
       </KeyboardAvoidingView>
-    );
+    )
   }
 }
