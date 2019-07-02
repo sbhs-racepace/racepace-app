@@ -8,7 +8,7 @@ import * as Permissions from 'expo-permissions'
 import Button from "../components/Button"
 import Color from '../constants/Color.js'
 import "../global.js"
-import { startRun, addLocationPacket, saveRun } from '../functions/action'
+import { startRun, addLocationPacket, saveRun,resumeRun } from '../functions/action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -75,7 +75,6 @@ class RunPausedScreen extends React.Component {
           <TouchableOpacity
             style={STYLES.circularButton}
             onPress={()=>{
-              Alert.alert('Stop Route')
               this.props.navigation.navigate('Feed');
             }}
           >
@@ -85,6 +84,7 @@ class RunPausedScreen extends React.Component {
           <TouchableOpacity
             style={STYLES.circularButton}
             onPress={()=>{
+              this.props.resumeRun();
               this.props.navigation.navigate('RunManager');
             }}
           >
@@ -111,7 +111,7 @@ class RunPausedScreen extends React.Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ addLocationPacket, startRun, saveRun }, dispatch)
+  return bindActionCreators({ addLocationPacket, startRun, saveRun, resumeRun }, dispatch)
 }
 
 function mapStateToProps(state) {

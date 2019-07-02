@@ -10,6 +10,9 @@ import MapView from 'react-native-maps';
 import { Marker, Polyline } from 'react-native-maps';
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
+import { startRun, addLocationPacket, pauseRun } from '../functions/action'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 const LATITUDE_DELTA = 0.0922*1.5
 const LONGITUDE_DELTA = 0.0421*1.5
@@ -59,7 +62,7 @@ const STYLES = StyleSheet.create({
   },
 });
 
-export default class TrackingScreen extends React.Component {
+class TrackingScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -138,7 +141,10 @@ export default class TrackingScreen extends React.Component {
           <View style={{flex:1, alignItems:'center'}}>
             <TouchableOpacity
               style={[STYLES.circularButton,STYLES.largeButton]}
-              onPress={()=>{this.props.navigation.navigate('Paused')}}
+              onPress={()=>{
+                this.props.pauseRun()
+                this.props.navigation.navigate('Paused')
+              }}
             >
               <Text style={{fontSize:20, color:Color.textColor}}>Pause (ICON)</Text>
             </TouchableOpacity>
@@ -162,3 +168,13 @@ export default class TrackingScreen extends React.Component {
     );
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ addLocationPacket, startRun, pauseRun }, dispatch)
+}
+
+function mapStateToProps(state) {
+  return state;
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TrackingScreen);

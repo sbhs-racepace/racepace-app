@@ -1,6 +1,9 @@
 import { combineReducers } from 'redux';
-import { CREATE_RUN_ROUTE, CREATE_RUN, START_RUN, ADD_LOCATION_PACKET, END_RUN, SAVE_RUN } from './action'
+import { CREATE_RUN_ROUTE, CREATE_RUN, START_RUN, ADD_LOCATION_PACKET, END_RUN, SAVE_RUN, PAUSE_RUN, RESUME_RUN } from './action'
 import { calculateAveragePace, speedToPace, coordDistance, calculateTimeFromPace, calculateKilojoulesBurnt, calculatePoints  } from './run.js'
+import * as Location from 'expo-location'
+import * as Permissions from 'expo-permissions'
+import '../global';
 
 const INITIAL_STATE = {
   real_time_info: {
@@ -21,24 +24,17 @@ const INITIAL_STATE = {
     estimated_distance: null,
     estimated_energy: null,
     duration: null,
+    active: false,
   },
   location_packets: [],
 };
 
-function calculateRealTimeInfo(state, action) {
-  let location_packet = action.location_packet
-  let end_time = location_packet.timestamp
-  let start_time = state.run_info.start_time.getTime()
-  let new_distance = state.real_time_info.distance
-  if (state.location_packets.length > 0) {
-    let last_index = state.location_packets.length-1
-    let last_pos = state.location_packets[last_index]
-    let change_in_distance = coordDistance(last_pos.coords, location_packet.coords)
-    new_distance = state.real_time_info.distance + change_in_distance
-  }
-  let average_pace = calculateAveragePace(new_distance, start_time, end_time)
-  let current_pace = speedToPace(location_packet.coords.speed)
-  return { average_pace, current_pace, distance, location_packet }
+async function locationUpdate() {
+  let location_packet = await Location.getCurrentPositionAsync({
+    accuracy: 4,
+  })
+  if (state.run_info.real_time_tracking) global.socket.emit('location_update',location_packet);
+  state.addLocationPacket(location_packet)
 }
 
 export function runReducer(state = INITIAL_STATE, action) {
@@ -73,7 +69,8 @@ export function runReducer(state = INITIAL_STATE, action) {
       return Object.assign({}, state, {
         run_info: {
           ...state.run_info,
-          start_time: action.start_time
+          start_time: action.start_time,
+          active: true
         }
       }) 
     case ADD_LOCATION_PACKET:
@@ -106,6 +103,20 @@ export function runReducer(state = INITIAL_STATE, action) {
       }) 
     case END_RUN:
       return INITIAL_STATE; // Resets state
+    case PAUSE_RUN:
+      return Object.assign({}, state, {
+        run_info: {
+          ...state.run_info,
+          active: false,
+        }
+      }) 
+    case RESUME_RUN:
+      return Object.assign({}, state, {
+        run_info: {
+          ...state.run_info,
+          active: true,
+        }
+      }) 
     default:
       return state
   }

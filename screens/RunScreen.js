@@ -8,7 +8,7 @@ import * as Permissions from 'expo-permissions'
 import Button from "../components/Button"
 import Color from '../constants/Color.js'
 import "../global.js"
-import { startRun, addLocationPacket } from '../functions/action'
+import { startRun, addLocationPacket, pauseRun } from '../functions/action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -56,24 +56,36 @@ class RunScreen extends React.Component {
     return `${this.state.time.hours}: ${this.state.time.minutes}: ${this.state.time.seconds}.${this.state.time.milliseconds}`
   }
 
-  async locationUpdateLoop(real_time_tracking) {
+  async locationUpdate() {
     let location_packet = await Location.getCurrentPositionAsync({
       accuracy: 4,
     })
-    if (real_time_tracking) global.socket.emit('location_update',location_packet);
+    if (this.props.run_info.real_time_tracking) global.socket.emit('location_update',location_packet);
     this.props.addLocationPacket(location_packet)
   }
 
+  async locationUpdateLoop() {
+    if (this.props.run_info.active == true) {
+      if (this.props.run_info.real_time_tracking) global.socket.emit('start_run', start_time);
+      this.locationUpdate()
+      let timerId = setTimeout(this.locationUpdateLoop.bind(this), 3000);
+    } 
+  }
+
+  
+
   async componentDidMount() {
     if (global.location_permission) {
-      this.props.startRun(new Date())
-      let real_time_tracking = this.props.run_info.real_time_tracking
-      if (real_time_tracking) global.socket.emit('start_run', start_time);
-      let timerId = setInterval((real_time_tracking) => {this.locationUpdateLoop(real_time_tracking)}, 5000);
+      await this.props.startRun(new Date())
+      this.focusListener = this.props.navigation.addListener("didFocus", this.locationUpdateLoop.bind(this));
     } else {
       Alert.alert('Location Permission not allowed')
       this.props.navigation.navigate('Feed')
     }
+  }
+
+  componentWillUnmount() {
+    this.focusListener.remove();
   }
   
   render() {
@@ -91,14 +103,17 @@ class RunScreen extends React.Component {
           <View style={{flex:1,flexDirection:'row', width:'100%', justifyContent:'space-evenly'}}>
             <TouchableOpacity
               style={STYLES.circularButton}
-              onPress={()=>{this.props.navigation.navigate('OtherStats')}}
+              onPress={()=>{
+                this.props.navigation.navigate('OtherStats')
+                this.props.pauseRun();
+              }}
             >
               <Text style={{fontSize:20, color:Color.textColor}}>Stats (ICON)</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={STYLES.circularButton}
               onPress={()=>{
-                this.setState({paused: !this.state.paused})
+                this.props.pauseRun();
                 this.props.navigation.navigate('Paused');
               }}
             >
@@ -106,7 +121,10 @@ class RunScreen extends React.Component {
             </TouchableOpacity>
             <TouchableOpacity
               style={STYLES.circularButton}
-              onPress={()=>{this.props.navigation.navigate('Tracking')}}
+              onPress={()=>{
+                this.props.pauseRun();
+                this.props.navigation.navigate('Tracking');
+              }}
             >
               <Text style={{fontSize:20, color:Color.textColor}}>Map (ICON)</Text>
             </TouchableOpacity>
@@ -118,7 +136,7 @@ class RunScreen extends React.Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ addLocationPacket, startRun }, dispatch)
+  return bindActionCreators({ addLocationPacket, startRun, pauseRun }, dispatch)
 }
 
 function mapStateToProps(state) {

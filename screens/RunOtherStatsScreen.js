@@ -8,6 +8,9 @@ import * as Permissions from 'expo-permissions'
 import Button from "../components/Button"
 import Color from '../constants/Color.js'
 import "../global.js"
+import { startRun, addLocationPacket, pauseRun } from '../functions/action'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
@@ -39,15 +42,13 @@ const STYLES = StyleSheet.create({
   }
 })
 
-export default class RunOtherStasScreen extends React.Component {
+class RunOtherStatsScreen extends React.Component {
   constructor(state) {
     super(state);
     this.state = {
       pace: {minutes:'--', seconds:'--'},
       distance: 0,
       time: {hours:'00',minutes:'00',seconds:'00',milliseconds:'00'},
-      paused: false,
-      interval_id: null,
     }
   }
 
@@ -77,7 +78,7 @@ export default class RunOtherStasScreen extends React.Component {
             <TouchableOpacity
               style={STYLES.circularButton}
               onPress={()=>{
-                this.setState({paused: !this.state.paused})
+                this.props.pauseRun()
                 this.props.navigation.navigate('Paused');
               }}
             >
@@ -89,3 +90,13 @@ export default class RunOtherStasScreen extends React.Component {
     )
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ addLocationPacket, startRun, pauseRun }, dispatch)
+}
+
+function mapStateToProps(state) {
+  return state;
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RunOtherStatsScreen);
