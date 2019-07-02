@@ -1,40 +1,40 @@
 // Sunny Yan
 
-import * as React from 'react'
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
+import * as React from 'react';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Image } from 'react-native-elements'
-import { withNavigation } from 'react-navigation'
+import { withNavigation } from 'react-navigation';
 import Color from '../constants/Color'
 import '../global.js'
 
 class Button extends React.Component {
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
   }
 
-  render () {
+  render() {
     const styles = StyleSheet.create({
       button: {
         backgroundColor: this.props.disabled
           ? Color.offColor
-          : Color.primaryColor,
-        width: this.props.back_btn ? 40 : '80%',
+          : Color.primaryColor
+        ,
+        width: this.props.back_btn ? 40 : "80%",
         height: 40,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 10,
-        ...this.props.style
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        ...this.props.style,
       },
       text: {
         textAlign: 'center',
         color: Color.textColor,
-        ...this.props.text_style
+        ...this.props.text_style,
       },
       img: {
-        ...this.props.img_style
-      }
-    })
+        ...this.props.img_style,
+      },
+    });
 
     return (
       <TouchableOpacity
@@ -45,8 +45,8 @@ class Button extends React.Component {
             ? () => this.props.navigation.goBack()
             : this.props.onPress
         }
-      >
-        {this.props.img &&
+        >
+        {this.props.img && 
           <Image
             source={this.props.img}
             style={styles.img}
@@ -63,8 +63,8 @@ class Button extends React.Component {
         }
         {this.props.children}
       </TouchableOpacity>
-    )
+    );
   }
 }
 
-export default withNavigation(Button)
+export default withNavigation(Button);

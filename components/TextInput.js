@@ -1,29 +1,29 @@
 // Sunny Yan
 
-import * as React from 'react'
+import * as React from 'react';
 import {
   TextInput,
   Text,
   View,
   StyleSheet,
-  TouchableOpacity
-} from 'react-native'
+  TouchableOpacity,
+} from 'react-native';
 import '../global'
 
 import Color from '../constants/Color'
 
 export default class TextInputCustom extends React.Component {
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = {
       placeholderAbove: Boolean(this.props.placeholder)
     }
   }
 
-  render () {
+  render() {
     const STYLES = StyleSheet.create({
       view: {
-        width: '80%',
+        width: "80%",
         borderRadius: 10,
         backgroundColor: Color.lightBackground,
         ...this.props.style
@@ -37,11 +37,11 @@ export default class TextInputCustom extends React.Component {
         borderRadius: 10,
         borderWidth: 1,
         padding: 1,
-        fontSize: 20,
+        fontSize:20,
         color: Color.textColor,
-        ...this.props.input_style
+        ...this.props.input_style,
       }
-    })
+    });
     return (
       <View style={STYLES.view}>
         {this.state.placeholderAbove &&
@@ -51,11 +51,11 @@ export default class TextInputCustom extends React.Component {
           {...this.props}
           style={STYLES.input}
           onChangeText={text => {
-            this.props.onChangeText(text)
-            this.setState({ placeholderAbove: text != '' })
+            this.props.onChangeText(text);
+            this.setState({ placeholderAbove: text != '' });
           }}
         />
       </View>
-    )
+    );
   }
 }

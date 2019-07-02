@@ -1,10 +1,10 @@
 // Jason Yu
 
-import React from 'react'
-import { ScrollView, Text, View, StyleSheet } from 'react-native'
-import FeedRoute from '../components/FeedRoute'
-import Button from '../components/Button'
-import request from '../functions/request'
+import React from 'react';
+import { ScrollView, Text, View, StyleSheet } from 'react-native';
+import FeedRoute from '../components/FeedRoute';
+import Button from '../components/Button';
+import request from '../functions/request';
 import '../global'
 import Color from '../constants/Color'
 
@@ -12,21 +12,21 @@ const STYLES = StyleSheet.create({
   scrollView: {
     width: '100%',
     alignItems: 'center',
-    backgroundColor: Color.lightBackground
-  }
-})
+    backgroundColor:Color.lightBackground,
+  },
+});
 
 export default class PreviousRunsScreen extends React.Component {
-  render () {
+  render() {
     if (!global.login_info.token && !global.TEST) {
-      return <Text>Please login to see your feed</Text>
+      return <Text>Please login to see your feed</Text>;
     }
 
     if (!global.TEST) {
       let resp = JSON.parse(
         request('/api/get_recent_routes', 'POST', {}, true)._bodyText
-      )
-      resp = resp.recent_routes
+      );
+      resp = resp.recent_routes;
     }
 
     const test_data = (
@@ -50,25 +50,26 @@ export default class PreviousRunsScreen extends React.Component {
           time="7"
         />
       </ScrollView>
-    )
+    );
 
     return (
-      <View style={{ flex: 1, backgroundColor: Color.lightBackground }}>
-        <View style={{ height: 40 }}>
+      <View style={{flex:1,backgroundColor:Color.lightBackground}}>
+        <View style={{height:40}}>
           <Button
             text="Follow Requests"
-            style={{ height: '100%', width: '100%', backgroundColor: Color.darkBackground }}
-            text_style={{ color: Color.offColor, padding: '3%' }}
+            style={{height:"100%",width:"100%", backgroundColor:Color.darkBackground}}
+            text_style={{color: Color.offColor, padding:"3%"}}
             onPress={() => this.props.navigation.navigate('FollowRequests')}
           />
         </View>
-        {test_data}
+          {test_data}
       </View>
-    )
+    );
   }
 }
 
-{ /* {global.TEST && (
+
+{/* {global.TEST && (
   <ScrollView contentContainerStyle={STYLES.scrollView}>
     {resp.map(route => {
       {
@@ -83,4 +84,4 @@ export default class PreviousRunsScreen extends React.Component {
       }
     })}
   </ScrollView>
-)} */ }
+)} */}

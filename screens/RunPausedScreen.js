@@ -1,70 +1,69 @@
 // Jason Yu
 
-import React from 'react'
-import { Platform, StyleSheet, View, Text, Alert, ScrollView, TouchableOpacity, Dimensions } from 'react-native'
-import { Constants } from 'expo'
+import React from 'react';
+import { Platform, StyleSheet, View, Text, Alert, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
+import { Constants } from 'expo';
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
-import Button from '../components/Button'
+import Button from "../components/Button"
 import Color from '../constants/Color.js'
-import '../global.js'
+import "../global.js"
 import { startRun, addLocationPacket } from '../functions/action'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-const { width: windowWidth, height: windowHeight } = Dimensions.get('window')
+const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
 const STYLES = StyleSheet.create({
   text: {
-    fontSize: 30,
-    color: Color.textColor,
-    width: '100%',
-    flex: 2,
-    fontFamily: 'Roboto-Thin',
-    textAlign: 'center'
+    fontSize:30,
+    color:Color.textColor,
+    width:"100%",
+    flex:2,
+    fontFamily:'Roboto-Thin',
+    textAlign:'center',
   },
   title: {
-    fontFamily: 'RobotoCondensed-BoldItalic',
-    fontSize: 50,
-    color: Color.primaryColor,
-    borderColor: 'white',
-    flex: 3,
-    justifyContent: 'center'
+    fontFamily:'RobotoCondensed-BoldItalic',fontSize:50,color:Color.primaryColor,
+    borderColor:'white',
+    flex:3,
+    justifyContent:'center'
   },
-  circularButton: {
-    margin: 5,
-    borderWidth: 1,
-    backgroundColor: 'blue',
-    alignItems: 'center',
-    alignSelf: 'center',
-    justifyContent: 'center',
+  circularButton:{
+    margin:5,
+    borderWidth:1,
+    backgroundColor:'blue',
+    alignItems:'center',
+    alignSelf:'center',
+    justifyContent:'center',
     width: windowWidth * 0.20,
     height: windowWidth * 0.20,
-    borderRadius: windowWidth * 0.20 / 2
+    borderRadius: windowWidth * 0.20 / 2,
   }
 })
 
 class RunPausedScreen extends React.Component {
-  constructor (state) {
-    super(state)
+  constructor(state) {
+    super(state);
     this.state = {
-      pace: { minutes: '--', seconds: '--' },
+      pace: {minutes:'--', seconds:'--'},
       distance: 0,
-      time: { hours: '00', minutes: '00', seconds: '00', milliseconds: '00' },
+      time: {hours:'00',minutes:'00',seconds:'00',milliseconds:'00'},
       paused: false,
-      interval_id: null
+      interval_id: null,
     }
   }
 
-  timeString () {
+
+  timeString() {
     return `${this.state.time.hours}: ${this.state.time.minutes}: ${this.state.time.seconds}.${this.state.time.milliseconds}`
   }
-
-  render () {
+  
+  render() {
     return (
-      <View style={{ backgroundColor: Color.lightBackground, flex: 1 }}>
-        <View style={{ flex: 1, alignItems: 'center' }}>
-          <Text style={STYLES.title}>Run Stats</Text>
+      <View style={{backgroundColor:Color.lightBackground, flex:1}}>
+        <View style={{flex:1,alignItems:'center'}}>
+          <Text style={STYLES.title}>Run Stats</Text>      
           <Text style={STYLES.text}>Distance: {this.state.distance}</Text>
           <Text style={STYLES.text}>Average Pace: {this.state.pace.minutes} :{this.state.pace.seconds}</Text>
           <Text style={STYLES.text}>Calories/Kilojoules: Not implemented</Text>
@@ -72,24 +71,24 @@ class RunPausedScreen extends React.Component {
           <Text style={STYLES.text}>Graphs: Not implemented</Text>
         </View>
 
-        <View style={{ backgroundColor: Color.darkBackground, height: windowHeight * 0.20, flexDirection: 'row', width: '100%', justifyContent: 'space-evenly' }}>
+        <View style={{backgroundColor:Color.darkBackground, height: windowHeight * 0.20,flexDirection:'row', width:'100%', justifyContent:'space-evenly'}}>
           <TouchableOpacity
             style={STYLES.circularButton}
-            onPress={() => {
+            onPress={()=>{
               Alert.alert('Stop Route')
-              this.props.navigation.navigate('Feed')
+              this.props.navigation.navigate('Feed');
             }}
           >
-            <Text style={{ fontSize: 20, color: Color.textColor }}>Discard Run (ICON)</Text>
+            <Text style={{fontSize:20, color:Color.textColor}}>Discard Run (ICON)</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={STYLES.circularButton}
-            onPress={() => {
-              this.props.navigation.navigate('RunManager')
+            onPress={()=>{
+              this.props.navigation.navigate('RunManager');
             }}
           >
-            <Text style={{ fontSize: 20, color: Color.textColor }}>Resume (ICON)</Text>
+            <Text style={{fontSize:20, color:Color.textColor}}>Resume (ICON)</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -97,13 +96,13 @@ class RunPausedScreen extends React.Component {
             onPress={() => {
               Alert.alert('End Route')
               if (global.route == null) {
-                this.props.navigation.navigate('SaveRecentRun')
+                this.props.navigation.navigate('SaveRecentRun');
               } else {
-                this.props.navigation.navigate('SaveRun')
+                this.props.navigation.navigate('SaveRun');
               }
             }}
           >
-            <Text style={{ fontSize: 20, color: Color.textColor }}>Finish (ICON)</Text>
+            <Text style={{fontSize:20, color:Color.textColor}}>Finish (ICON)</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -111,12 +110,12 @@ class RunPausedScreen extends React.Component {
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return bindActionCreators({ addLocationPacket, startRun }, dispatch)
 }
 
-function mapStateToProps (state) {
-  return state
+function mapStateToProps(state) {
+  return state;
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(RunPausedScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(RunPausedScreen);

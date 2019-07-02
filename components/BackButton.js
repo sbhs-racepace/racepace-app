@@ -1,26 +1,26 @@
 // Jason Yu
 
-import { Component } from React from 'react';
-
-import { View, Text, StyleSheet, Alert } from 'react-native'
+import React from 'react';
+import { Component } from 'react';
+import { View, Text, StyleSheet, Alert } from 'react-native';
 import { Image } from 'react-native-elements'
-import Button from './Button.js'
+import Button from './Button.js';
 
 const STYLES = StyleSheet.create({
   button_text: {
-    fontSize: 16
+    fontSize: 16,
   },
   back_btn: {
     width: 40,
     height: 40,
     borderRadius: 10,
     alignItems: 'center',
-    justifyContent: 'center'
-  }
-})
+    justifyContent: 'center',
+  },
+});
 
 export default class BackButton extends React.Component {
-  render () {
+  render() {
     return (
       <Button
         style={STYLES.back_btn}

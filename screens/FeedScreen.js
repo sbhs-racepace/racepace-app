@@ -1,30 +1,30 @@
 // Jason Yu
 
-import React from 'react'
-import { ScrollView, Text, Alert, KeyboardAvoidingView } from 'react-native'
-import Button from '../components/Button'
-import { FeedItem } from '../components/FeedItem'
-import '../global.js'
+import React from 'react';
+import { ScrollView, Text, Alert, KeyboardAvoidingView } from 'react-native';
+import Button from '../components/Button';
+import { FeedItem } from '../components/FeedItem';
+import '../global.js';
 import Color from '../constants/Color'
 
 let roundedButton = {
   width: '80%',
-  borderRadius: 10
+  borderRadius: 10,
 }
 
 export default class FeedScreen extends React.Component {
-  constructor (state) {
-    super(state)
+  constructor(state) {
+    super(state);
   }
-  render () {
+  render() {
     if (!global.login_info.token && !global.TEST) {
-      return <Text>Please login to see your feed</Text>
+      return <Text>Please login to see your feed</Text>;
     }
     return (
-      <KeyboardAvoidingView keyboardVerticalOffset={100} behavior="position" style={{ backgroundColor: Color.lightBackground }}>
+      <KeyboardAvoidingView keyboardVerticalOffset={100} behavior="position" style={{backgroundColor: Color.lightBackground}}>
         <ScrollView
           contentContainerStyle={{
-            backgroundColor: Color.lightBackground
+            backgroundColor: Color.lightBackground,
           }}>
           <FeedItem
             username="Test User"
@@ -51,16 +51,16 @@ export default class FeedScreen extends React.Component {
             time="30"
           />
           <Button
-            style={{ ...roundedButton, alignSelf: 'center' }}
+            style={{...roundedButton, alignSelf:'center'}}
             text_style={{
               padding: '1%',
-              fontSize: 16
+              fontSize: 16,
             }}
             onPress={() => Alert.alert('Not Implemented')}
             text="Refresh"
           />
         </ScrollView>
       </KeyboardAvoidingView>
-    )
+    );
   }
 }

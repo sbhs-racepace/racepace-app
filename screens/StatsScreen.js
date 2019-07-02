@@ -1,25 +1,25 @@
 // Jason Yu
 
-import React from 'react'
-import { StyleSheet, View, Text, Alert, ScrollView } from 'react-native'
-import Button from '../components/Button'
-import '../global.js'
+import React from 'react';
+import { StyleSheet, View, Text, Alert, ScrollView } from 'react-native';
+import Button from "../components/Button"
+import "../global.js"
 
 import Color from '../constants/Color'
 const STYLES = StyleSheet.create({
   text: {
-    fontSize: 15,
-    padding: '3%',
-    color: Color.textColor
+    fontSize:15,
+    padding:"3%",
+    color:Color.textColor
   }
 })
 
 export default class StatsScreen extends React.Component {
-  constructor (state) {
-    super(state)
+  constructor(state) {
+    super(state);
   }
-
-  render () {
+  
+  render() {
     let stats = global.user.stats
     return (
       <ScrollView>
@@ -34,6 +34,6 @@ export default class StatsScreen extends React.Component {
         <Text style={STYLES.text}>Average Heart Rate: {stats.average_heart_rate ? stats.average_heart_rate : 'None'}</Text>
         <Text style={STYLES.text}>Cadence: {stats.cadence ? stats.cadence : 'None'}</Text>
       </ScrollView>
-    )
+    );
   }
 }
