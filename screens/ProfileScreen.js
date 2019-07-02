@@ -85,7 +85,7 @@ export default class ProfileScreen extends React.Component {
             backgroundColor: Color.lightBackground
         },
         indicatorStyle: {
-            display: 'none'
+            backgroundColor: Color.primaryColor
         },
         inactiveTintColor: Color.offColor,
         style: { backgroundColor: Color.darkBackground }
@@ -97,92 +97,96 @@ export default class ProfileScreen extends React.Component {
 
     return (
       <View style={STYLES.container}>
-        <Text style={[STYLES.text, { fontSize: 20, textAlign: 'center' }]}>
-          {this.state.name}
-        </Text>
-        <View style={{ height: 150, padding: '3%' }}>
-          <View
-            style={{
-              flexDirection: 'row',
-              flex: 1
-            }}>
+        
+        <View>
+            <Text style={[STYLES.text, { fontSize: 30, textAlign: 'center', marginTop: 3}]}>
+            {this.state.name}
+            </Text>
+            <View style={{ height: 150, padding: '3%' }}>
             <View
-              style={{
-                flexDirection: 'column',
-                flex: 1,
-                alignItems: 'center'
-              }}>
-              <Image
-                style={STYLES.profile_image}
-                source={{
-                  uri: `${global.serverURL}/api/avatars/${
-                    global.login_info.user_id
-                  }.png`
-                }}
-              />
-            </View>
-            <View
-              style={{
-                flexDirection: 'column',
-                flex: 2,
-                justifyContent: 'space-evenly'
-              }}>
-              <View style={{ flexDirection: 'row', flex: 2 }}>
-                <Button
-                  style={STYLES.stat_btn}
-                  text={`${global.user.stats.points} Pace Points`}
-                  onPress={() => this.props.navigation.navigate('Level')}
-                />
-                <Button
-                  style={STYLES.stat_btn}
-                  text={`${global.user.following.length} Following`}
-                  onPress={() =>
-                    this.props.navigation.navigate('Follow', {
-                      screen: 'Following'
-                    })
-                  }
-                />
-                <Button
-                  style={STYLES.stat_btn}
-                  text={`${global.user.followers.length} Followers`}
-                  onPress={() =>
-                    this.props.navigation.navigate('Follow', {
-                      screen: 'Followers'
-                    })
-                  }
-                />
-              </View>
-              <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <Button
-                    style={{width: '70%'}}
-                    text="Edit Profile"
-                    onPress={() => {
-                    console.log(global.login_info.token)
-                    this.props.navigation.navigate('Edit')
+                style={{
+                flexDirection: 'row',
+                flex: 1
+                }}>
+                <View
+                style={{
+                    flexDirection: 'column',
+                    flex: 1,
+                    alignItems: 'center'
+                }}>
+                <Image
+                    style={STYLES.profile_image}
+                    source={{
+                    uri: `${global.serverURL}/api/avatars/${
+                        global.login_info.user_id
+                    }.png`
                     }}
-                    disabled={!global.login_info.token && !global.TEST}
                 />
-                <Button
-                    style={{width: '30%'}}
-                    text={
-                    global.login_info.token
-                        ? 'Logout'
-                        : 'Login or Register as New'
-                    }
-                    onPress={async () => {
-                    if (global.login_info.token) {
-                        logout();
-                    }
-                    this.props.navigation.navigate('Splash');
-                    }}
+                </View>
+                <View
+                style={{
+                    flexDirection: 'column',
+                    flex: 2,
+                    justifyContent: 'space-evenly'
+                }}>
+                <View style={{ flexDirection: 'row', flex: 2 }}>
+                    <Button
+                    style={STYLES.stat_btn}
+                    text={`${global.user.stats.points} Pace Points`}
+                    onPress={() => this.props.navigation.navigate('Level')}
                     />
-              </View>
+                    <Button
+                    style={STYLES.stat_btn}
+                    text={`${global.user.following.length} Following`}
+                    onPress={() =>
+                        this.props.navigation.navigate('Follow', {
+                        screen: 'Following'
+                        })
+                    }
+                    />
+                    <Button
+                    style={STYLES.stat_btn}
+                    text={`${global.user.followers.length} Followers`}
+                    onPress={() =>
+                        this.props.navigation.navigate('Follow', {
+                        screen: 'Followers'
+                        })
+                    }
+                    />
+                </View>
+                <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                    <Button
+                        style={{width: '70%'}}
+                        text="Edit Profile"
+                        onPress={() => {
+                        console.log(global.login_info.token)
+                        this.props.navigation.navigate('Edit')
+                        }}
+                        disabled={!global.login_info.token && !global.TEST}
+                    />
+                    <Button
+                        style={{width: '30%'}}
+                        text={
+                        global.login_info.token
+                            ? 'Logout'
+                            : 'Login or Register as New'
+                        }
+                        onPress={async () => {
+                        if (global.login_info.token) {
+                            logout();
+                        }
+                        this.props.navigation.navigate('Splash');
+                        }}
+                        />
+                </View>
+                </View>
             </View>
-          </View>
+            </View>
+            <Text multiline={true} style={[STYLES.text, { padding: '2%' }]}>
+            Bio: {this.state.bio}
+            </Text>
         </View>
-        <Text multiline={true} style={[STYLES.text, { padding: '2%' }]}>
-          Bio: {this.state.bio}
-        </Text>
+
         <View style={{ flex: 1, backgroundColor: Color.lightBackground }}>
           <AppContainer style={{ flex: 1 }}/>
         </View>
