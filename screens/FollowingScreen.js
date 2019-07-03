@@ -83,7 +83,17 @@ export default class FollowListScreen extends React.Component {
     const Nav = createMaterialTopTabNavigator({
       Following: {screen: FollowingScreen},
       Followers: {screen: FollowerScreen},
-    }, {initialRouteName: this.props.navigation.state.params==undefined ? "Following" : this.props.navigation.state.params.screen})
+    }, {
+      initialRouteName: this.props.navigation.state.params==undefined ? "Following" : this.props.navigation.state.params.screen,
+      tabBarOptions: {
+        activeTintColor: Color.textColor,
+        indicatorStyle: {
+            backgroundColor: Color.primaryColor
+        },
+        inactiveTintColor: Color.offColor,
+        style: { backgroundColor: Color.buttonColor }
+      }
+    })
     const AppContainer = createAppContainer(Nav);
     return (
       <View style={{flex: 1, backgroundColor:Color.lightBackground}}>

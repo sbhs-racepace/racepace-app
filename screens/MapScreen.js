@@ -12,6 +12,8 @@ import "../global";
 import Button from '../components/Button';
 import Timer from '../components/Timer';
 import Color from '../constants/Color'
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
 
 const LATITUDE_DELTA = 0.0922 * 1.5;
 const LONGITUDE_DELTA = 0.0421 * 1.5;
@@ -34,7 +36,7 @@ const STYLES = StyleSheet.create({
   circularButton:{
     margin:5,
     borderWidth:1,
-    backgroundColor:'blue',
+    backgroundColor:'white',
     alignItems:'center',
     alignSelf:'center',
     justifyContent:'center',
@@ -49,6 +51,8 @@ const STYLES = StyleSheet.create({
     height: windowWidth * 0.10,
     borderRadius: windowWidth * 0.10 / 2,
   },
+  largeIcon: windowWidth * 0.2 / 2,
+  smallIcon: windowWidth * 0.12 / 2,
 });
 
 export default class MapScreen extends React.Component {
@@ -237,20 +241,14 @@ export default class MapScreen extends React.Component {
             style={[STYLES.circularButton, STYLES.smallButton]}
             onPress={() => this.goToLocation(this.state.searchStr)}
           >
-            <Image
-            style={STYLES.smallButton}
-            source = {require('../assets/icons/search.png')}
-            />
+            <FontAwesomeIcon name="search" size={STYLES.smallIcon}/>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={[STYLES.circularButton, STYLES.smallButton]}
             onPress={() => this.runHere(this.state.searchStr, this.state.searchLoc)}
           >
-            <Image
-            style={STYLES.smallButton}
-            source = {require('../assets/icons/run.png')}
-            />
+            <FontAwesome5Icon name="running" size={STYLES.smallIcon}/>
           </TouchableOpacity>
         </View>
 
@@ -263,7 +261,7 @@ export default class MapScreen extends React.Component {
               style={[STYLES.circularButton,STYLES.largeButton]}
               onPress={()=>{this.props.navigation.navigate('RunManager')}}
             >
-              <Text style={{fontSize:20, color:Color.textColor}}>Run (ICON)</Text>
+              <FontAwesomeIcon name="play" size={STYLES.largeIcon}/>
             </TouchableOpacity>
           </View>
           <View style={{flex:1, alignItems:'center'}}>
@@ -274,10 +272,7 @@ export default class MapScreen extends React.Component {
                 this.goToCurrent();
               }}
             >
-              <Image
-                style={STYLES.smallButton}
-                source = {require('../assets/icons/compass.jpg')}
-              />
+              <FontAwesomeIcon name="location-arrow" size={STYLES.smallIcon}/>
             </TouchableOpacity>
           </View>
         </View>
