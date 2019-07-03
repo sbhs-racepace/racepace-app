@@ -24,7 +24,6 @@ import RegisterScreen from './screens/RegisterScreen';
 import ChatScreen from './screens/ChatScreen';
 import RouteListScreen from './screens/RouteListScreen';
 import FollowerRequestScreen from './screens/FollowerRequestScreen';
-import RunSetupScreen from './screens/RunSetupScreen';
 import RunOtherStatsScreen from './screens/RunOtherStatsScreen';
 import RunInformationScreen from './screens/RunInformationScreen';
 import RunPausedScreen from './screens/RunPausedScreen';
@@ -36,6 +35,7 @@ import SaveRunScreen from './screens/SaveRunScreen';
 import SaveRecentRunScreen from './screens/SaveRecentRunScreen';
 import LevelScreen from './screens/LevelScreen';
 import StartupScreen from './screens/StartupScreen';
+import CreateRouteScreen from './screens/CreateRouteScreen'
 
 import Color from './constants/Color'
 
@@ -130,7 +130,24 @@ const LoginNavigator = createStackNavigator({
           },
         }
       ),
-      Setup: { screen: RunSetupScreen },
+      Setup: createMaterialTopTabNavigator(
+        {
+          Run: { screen: LevelScreen, navigationOptions: { title: 'Plan Run' }},
+          Route: { screen: CreateRouteScreen, navigationOptions: { title: 'Create Route' }},
+          Load: { screen: LevelScreen, navigationOptions: { title: 'Load Route' }},
+        },
+        {
+          initialRouteName: 'Route',
+          tabBarOptions: {
+            activeTintColor: Color.textColor,
+            inactiveTintColor: Color.offColor,
+            indicatorStyle: {
+                backgroundColor: Color.primaryColor
+            },
+            style: {backgroundColor: Color.darkBackground},
+          },
+        }
+      ),
       Map: { screen: MapScreen },
       Groups: { screen: GroupScreen },
       Profile: { screen: ProfileScreen },

@@ -82,9 +82,6 @@ export default class ProfileScreen extends React.Component {
       initialRouteName: this.props.navigation.state.params == undefined ? 'Stats' : this.props.navigation.state.params.screen,
       tabBarOptions: {
         activeTintColor: Color.textColor,
-        // tabStyle: {
-        //     backgroundColor: Color.lightBackground
-        // },
         indicatorStyle: {
             backgroundColor: Color.primaryColor
         },

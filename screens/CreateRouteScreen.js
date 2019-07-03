@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { StyleSheet, View, Text, Alert, ScrollView, TextInput, Dimensions, KeyboardAvoidingView } from 'react-native';
+import {createAppContainer,createMaterialTopTabNavigator} from 'react-navigation';
 import { CheckBox } from 'react-native-elements'
 import Button from "../components/Button"
 import "../global.js"
@@ -32,14 +33,11 @@ const STYLES = StyleSheet.create({
     textAlign:"center",
     color: Color.textColor
   },
-  input: {
-    width:"40%"
-  }
 })
 
 class RunSetupScreen extends React.Component {
-  constructor(state) {
-    super(state);
+  constructor(props) {
+    super(props);
     this.state = {
       start: "-33.878363,151.104490", //Burwood
       end: "-33.912466,151.103120", //Campsie
@@ -99,7 +97,6 @@ class RunSetupScreen extends React.Component {
   async generateRouteInfo() {
     let route_data = await this.generateRoute(this.state.start,this.state.end);
     if (route_data != false) {
-
       let route = route_data.route
       let distance = route_data.dist
       this.props.createRunRoute(route, this.state.real_time_tracking, distance, this.state.goal_pace);
@@ -111,67 +108,57 @@ class RunSetupScreen extends React.Component {
   
   render() {
     return(
-      <View style={{flex:1, backgroundColor:Color.lightBackground}}>
-        <View style={[STYLES.container, {height:windowHeight * 0.2}]}>
-          <Text style={STYLES.title_style}>Plan your route</Text>
-          <View style={{flexDirection:'row'}}>
-            <Button style={{flex:1}} text="Load Route"/>
-            <Button style={{flex:1}} text="Create Route"/>
-            <Button style={{flex:1}} text="Join Run"/>
-          </View>
-        </View>
-        <View style={[STYLES.container, {flex:1}]}>
+      <View style={[STYLES.container, {flex:1, backgroundColor:Color.lightBackground}]}>
+        <TextInputCustom 
+          placeholder="Start"
+          defaultValue={this.state.start}
+          onChangeText={start => {
+            this.setState({ start: start });
+          }}
+        />
+        <TextInputCustom 
+          placeholder="End"
+          defaultValue={this.props.navigation.state.params==undefined ? this.state.end : this.props.navigation.state.params.name}
+          onChangeText={end => {
+            this.setState({ end: end });
+          }}
+        />
+        <View style={{flexDirection:'row', justifyContent:'space-between', width:'80%'}}>
           <TextInputCustom 
-            placeholder="Start"
-            defaultValue={this.state.start}
-            onChangeText={start => {
-              this.setState({ start: start });
+            style={{width:'40%'}}
+            placeholder="minutes"
+            onChangeText={minutes => {
+              this.setState({ goal_pace: {minutes: minutes} });
             }}
+            defaultValue={this.state.goal_pace.minutes}
+            keyboardType="number-pad"
+            returnKeyType="go"
           />
           <TextInputCustom 
-            placeholder="End"
-            defaultValue={this.props.navigation.state.params==undefined ? this.state.end : this.props.navigation.state.params.name}
-            onChangeText={end => {
-              this.setState({ end: end });
+            style={{width:'40%'}}
+            placeholder="seconds"
+            onChangeText={seconds => {
+              this.setState({ goal_pace: {seconds: seconds} });
             }}
-          />
-          <View style={{flexDirection:'row'}}>
-            <TextInputCustom 
-              style={STYLES.input}
-              placeholder="minutes"
-              onChangeText={minutes => {
-                this.setState({ goal_pace: {minutes: minutes} });
-              }}
-              defaultValue={this.state.goal_pace.minutes}
-              keyboardType="number-pad"
-              returnKeyType="go"
-            />
-            <TextInputCustom 
-              style={STYLES.input}
-              placeholder="seconds"
-              onChangeText={seconds => {
-                this.setState({ goal_pace: {seconds: seconds} });
-              }}
-              defaultValue={this.state.goal_pace.seconds}
-              returnKeyType="go" 
-              keyboardType="number-pad"
-            />
-          </View>
-          <CheckBox
-            containerStyle={{backgroundColor:Color.lightBackground, borderColor:Color.darkBackground, width:'80%'}}
-            textStyle={{color:Color.textColor}}
-            title='Real Time Tracking'
-            checked={this.state.real_time_tracking}
-            onPress={() => {this.setState({real_time_tracking:!this.state.real_time_tracking})}}
-          />
-          <Button 
-            style={{borderRadius:10}} 
-            text="Generate Route Info"
-            onPress={() => {
-              this.generateRouteInfo()
-            }}
+            defaultValue={this.state.goal_pace.seconds}
+            returnKeyType="go" 
+            keyboardType="number-pad"
           />
         </View>
+        <CheckBox
+          containerStyle={{backgroundColor:Color.lightBackground, borderColor:Color.darkBackground, width:'80%'}}
+          textStyle={{color:Color.textColor}}
+          title='Real Time Tracking'
+          checked={this.state.real_time_tracking}
+          onPress={() => {this.setState({real_time_tracking:!this.state.real_time_tracking})}}
+        />
+        <Button 
+          style={{borderRadius:10}} 
+          text="Generate Route Info"
+          onPress={() => {
+            this.generateRouteInfo()
+          }}
+        />
       </View>
     );
   }
