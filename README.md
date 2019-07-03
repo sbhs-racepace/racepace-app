@@ -14,25 +14,25 @@ RacePace is an application that generates the best running/cycling route for the
 
 #### Backend:
 * Our internal API written in python uses `Sanic` as an asynchronous web server.
-* Clients will make requests to our API which generates a route based on given parameters using data from the Overpass API.
-* Realtime tracking in the future can be made possible through the use of websockets.
 
 #### Client:
-* An android application using the Ionic framework
-* Uses web technologies
+* A cross platform mobile application
+* Uses react native
 
 ## Installing the server
 
 You must have `python 3.7+` and `pipenv`. Clone the repository and run the following command.
 
-```
+```console
 pipenv install --dev
 ```
 
-To run the server navigate into the `server` folder and run `app.py`.
+To run the server
 
-```
-python3 app.py
+```console
+pipenv run python3 server/app.py
 ```
 
 Make sure to copy the `.env.example` file and remove the `.example` suffix so you are left with `.env`, update the key value pairs accordingly. 
+
+
