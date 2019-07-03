@@ -10,6 +10,8 @@ import {
   createBottomTabNavigator,
   createMaterialTopTabNavigator,
 } from 'react-navigation';
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
 
 import { View } from 'react-native';
 import EditScreen from './screens/EditScreen';
@@ -120,6 +122,11 @@ const LoginNavigator = createStackNavigator({
           },
         },
         {
+          navigationOptions: {
+            tabBarIcon: ({ tintColor }) => (
+              <FontAwesomeIcon name="feed" size={25} color={Color.primaryColor}/>
+            )
+          },
           tabBarOptions: {
             activeTintColor: Color.textColor,
             inactiveTintColor: Color.offColor,
@@ -138,6 +145,11 @@ const LoginNavigator = createStackNavigator({
         },
         {
           initialRouteName: 'Route',
+          navigationOptions: {
+            tabBarIcon: ({ tintColor }) => (
+              <FontAwesomeIcon name="gear" size={25} color={Color.primaryColor}/>
+            )
+          },
           tabBarOptions: {
             activeTintColor: Color.textColor,
             inactiveTintColor: Color.offColor,
@@ -148,9 +160,30 @@ const LoginNavigator = createStackNavigator({
           },
         }
       ),
-      Map: { screen: MapScreen },
-      Groups: { screen: GroupScreen },
-      Profile: { screen: ProfileScreen },
+      Map: { 
+        screen: MapScreen, 
+        navigationOptions: {
+          tabBarIcon: ({ tintColor }) => (
+            <MaterialCommunityIcon name="map-marker" size={25} color={Color.primaryColor}/>
+          )
+        } 
+      },
+      Groups: { 
+        screen: GroupScreen,
+        navigationOptions: {
+          tabBarIcon: ({ tintColor }) => (
+            <FontAwesomeIcon name="group" size={25} color={Color.primaryColor}/>
+          )
+        },
+      },
+      Profile: { 
+        screen: ProfileScreen,
+        navigationOptions: {
+          tabBarIcon: ({ tintColor }) => (
+            <FontAwesomeIcon name="user" size={25} color={Color.primaryColor}/>
+          )
+        },
+       },
     },
     {
       navigationOptions: { 
@@ -161,6 +194,9 @@ const LoginNavigator = createStackNavigator({
         activeTintColor: Color.textColor,
         inactiveTintColor: Color.offColor,
         style: { backgroundColor: Color.darkBackground },
+        labelStyle: {fontSize: 12},
+        tabStyle: {height:50},
+        showIcon: true,
       }
     })
   },
