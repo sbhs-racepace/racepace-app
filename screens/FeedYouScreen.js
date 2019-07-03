@@ -31,22 +31,22 @@ export default class FeedYouScreen extends React.Component {
     const test_data = (
       <ScrollView contentContainerStyle={STYLES.scrollView}>
         <FeedRoute
-          routeName="Run number 1"
+          from="Hyde Park"
+          to="Circular Quay"
           postTime="10am"
           length="1"
-          time="7"
         />
         <FeedRoute
-          routeName="Run number 1"
+          from="Hyde Park"
+          to="Circular Quay"
           postTime="10am"
           length="1"
-          time="7"
         />
         <FeedRoute
-          routeName="Run number 1"
+          from="Hyde Park"
+          to="Circular Quay"
           postTime="10am"
           length="1"
-          time="7"
         />
       </ScrollView>
     );
@@ -61,7 +61,16 @@ export default class FeedYouScreen extends React.Component {
             onPress={() => this.props.navigation.navigate('Follow')}
           />
         </View>
-          {global.TEST && test_data}
+        {global.TEST && test_data}
+        {!global.TEST &&
+          resp.map(route=>
+          <FeedRoute
+            from={route.real_time_route.route.from}
+            to={route.real_time_route.route.to}
+            postTime={route.real_time_route.start_time}
+            length={route.real_time_route.route.distance}
+          />)
+        }
       </View>
     );
   }

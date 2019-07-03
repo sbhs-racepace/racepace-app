@@ -141,7 +141,7 @@ export class FeedItem extends React.Component {
         </View>
         {this.state.showComments &&
           <View>
-            {this.props.comments.map(comment=>
+            {this.state.comments.map(comment=>
               <Comment name={comment[0]} comment={comment[1]} />
             )}
           </View>

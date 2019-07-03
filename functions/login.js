@@ -2,6 +2,7 @@
 import '../global';
 import { Alert } from 'react-native';
 import Expo from 'expo';
+import { Google } from 'expo';
 import io from 'socket.io-client';
 
 function check_login(return_val) {
@@ -142,15 +143,17 @@ export function register() {
 export async function googleLogin() {
   try {
     const url = global.serverURL + '/api/google_login'
-    const result = await Expo.Google.logInAsync({
+    const config = {
       androidClientId: global.googleLoginID.android,
-    });
+    }
+    const result = await Google.logInAsync(config);
     if (result.type == 'success') {
       fetch(url, {
         method: 'POST',
-        body: "idToken="+result.idToken,
+        body: JSON.stringify({idToken:result.idToken}),
       })
         .catch(res => {
+          console.log(res)
           Alert.alert('Error connecting to server', res);
         })
         .then(
@@ -169,6 +172,7 @@ export async function googleLogin() {
         );
     }
   } catch (err) {
+    console.log(err);
     Alert.alert('Google Login Error', err);
   }
 }

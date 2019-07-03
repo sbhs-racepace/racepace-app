@@ -26,9 +26,9 @@ export default class FeedRoute extends React.Component {
 	render() {
 		return (
 			<View style={STYLES.feed_item}>
-      	<Text style={[STYLES.routeName,STYLES.text]}>{this.props.routeName}</Text>
+      	<Text style={[STYLES.routeName,STYLES.text]}>{this.props.from} to {this.props.to}</Text>
         <Text style={STYLES.text}>{this.props.postTime}</Text>
-      	<Text style={STYLES.text}>Stats: {this.props.length}km {this.props.time}m</Text>
+      	<Text style={STYLES.text}>Stats: {this.props.length}km</Text>
 			</View>
 		)
 	}
