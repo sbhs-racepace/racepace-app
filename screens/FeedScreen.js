@@ -13,8 +13,8 @@ let roundedButton = {
 }
 
 export default class FeedScreen extends React.Component {
-  constructor(state) {
-    super(state);
+  constructor(props) {
+    super(props);
   }
   render() {
     if (!global.login_info.token && !global.TEST) {

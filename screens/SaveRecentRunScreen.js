@@ -31,16 +31,14 @@ const STYLES = StyleSheet.create({
 })
 
 class SaveRecentRunScreen extends React.Component {
-  constructor(state) {
-    super(state);
+  constructor(props) {
+    super(props);
   }
 
   async saveRecentRun() {
-    // let data = {}
     let api_url = `${global.serverURL}/api/save_recent_route`
     fetch(api_url, {
       method: 'POST',
-      // body: JSON.stringify(data),
       headers: new Headers({
         'Authorization': global.login_info.token,
       })
@@ -60,9 +58,8 @@ class SaveRecentRunScreen extends React.Component {
     return (
       <View style={{flex:1,backgroundColor:Color.lightBackground}}>
           <View style={{flex:1, justifyContent:'space-evenly', alignItems:'center'}}>
-            <Text style={STYLES.title_style}>Save Run Screen</Text>
+            <Text style={STYLES.title_style}>Run Information</Text>
             <Image source={require('../assets/map.png')} style={STYLES.routePic} />
-            <Text style={STYLES.title_style}>Run Stats</Text>
             <Text style={STYLES.text_style}>Average Pace: {this.props.real_time_info.average_pace.minutes} minutes {this.props.real_time_info.average_pace.seconds} seconds</Text>
             <Text style={STYLES.text_style}>Distance Ran: {this.props.real_time_info.distance}</Text>
             <Text style={STYLES.text_style}>Duration: {this.props.run_info.duration}</Text>

@@ -11,6 +11,10 @@ import "../global.js"
 import { startRun, addLocationPacket, pauseRun } from '../functions/action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import IonIcon from 'react-native-vector-icons/Ionicons'
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
@@ -32,19 +36,28 @@ const STYLES = StyleSheet.create({
   circularButton:{
     margin:5,
     borderWidth:1,
-    backgroundColor:'blue',
+    backgroundColor:Color.lightBackground2,
     alignItems:'center',
     alignSelf:'center',
     justifyContent:'center',
+  },  
+  largeButton: {
     width: windowWidth * 0.20,
     height: windowWidth * 0.20,
     borderRadius: windowWidth * 0.20 / 2,
-  }
+  }, 
+  smallButton: {
+    width: windowWidth * 0.12,
+    height: windowWidth * 0.12,
+    borderRadius: windowWidth * 0.12 / 2,
+  },
+  smallIcon: windowWidth * 0.12 / 2,
+  largeIcon: windowWidth * 0.2 / 2,
 })
 
 class RunScreen extends React.Component {
-  constructor(state) {
-    super(state);
+  constructor(props) {
+    super(props);
     this.state = {
       pace: {minutes:'--', seconds:'--'},
       distance: 0,
@@ -102,31 +115,31 @@ class RunScreen extends React.Component {
         <View style={{backgroundColor:Color.darkBackground, height: windowHeight * 0.20}}>
           <View style={{flex:1,flexDirection:'row', width:'100%', justifyContent:'space-evenly'}}>
             <TouchableOpacity
-              style={STYLES.circularButton}
+              style={[STYLES.circularButton, STYLES.smallButton]}
               onPress={()=>{
                 this.props.navigation.navigate('OtherStats')
                 this.props.pauseRun();
               }}
             >
-              <Text style={{fontSize:20, color:Color.textColor}}>Stats (ICON)</Text>
+              <IonIcon name="ios-stats" size={STYLES.smallIcon}/>
             </TouchableOpacity>
             <TouchableOpacity
-              style={STYLES.circularButton}
+              style={[STYLES.circularButton, STYLES.largeButton]}
               onPress={()=>{
                 this.props.pauseRun();
                 this.props.navigation.navigate('Paused');
               }}
             >
-              <Text style={{fontSize:20, color:Color.textColor}}>Pause (ICON)</Text>
+              <FontAwesomeIcon name="pause" size={STYLES.largeIcon}/>
             </TouchableOpacity>
             <TouchableOpacity
-              style={STYLES.circularButton}
+              style={[STYLES.circularButton, STYLES.smallButton]}
               onPress={()=>{
                 this.props.pauseRun();
                 this.props.navigation.navigate('Tracking');
               }}
             >
-              <Text style={{fontSize:20, color:Color.textColor}}>Map (ICON)</Text>
+              <MaterialCommunityIcon name="map-marker" size={STYLES.smallIcon}/>
             </TouchableOpacity>
           </View>
         </View>

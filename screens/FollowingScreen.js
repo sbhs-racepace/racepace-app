@@ -39,8 +39,8 @@ class Follower extends React.Component {
 }
 
 class FollowingScreen extends React.Component {
-  constructor(state){
-    super(state);
+  constructor(props){
+    super(props);
     this.state = {
       following: [
         {img: require('../assets/cat.jpeg'), name: "John F"},
@@ -59,8 +59,8 @@ class FollowingScreen extends React.Component {
 }
 
 class FollowerScreen extends React.Component {
-  constructor(state){
-    super(state);
+  constructor(props){
+    super(props);
     this.state = {
       following: [
         {img: require('../assets/cat.jpeg'), name: "John F"},

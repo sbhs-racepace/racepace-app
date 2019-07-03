@@ -42,8 +42,8 @@ const STYLES = StyleSheet.create({
 })
 
 class RunInformationScreen extends React.Component {
-  constructor(state) {
-    super(state);
+  constructor(props) {
+    super(props);
   }
   
   render() {

@@ -160,11 +160,10 @@ export default class App extends React.Component {
   render() {
     return (
       <Provider store={store}>
-          <View style={{height:20, backgroundColor: Color.darkBackground}}/>
+          <View style={{height:20, backgroundColor: Color.lightBackground}}/>
           <AppContainer 
             style={{backgroundColor: Color.darkBackground}}
           />
-          
       </Provider>
     );
   }

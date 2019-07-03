@@ -40,8 +40,8 @@ class RouteItem extends React.Component {
 }
 
 export default class RouteListScreen extends React.Component {
-  constructor(state) {
-    super(state);
+  constructor(props) {
+    super(props);
   }
   
   render() {

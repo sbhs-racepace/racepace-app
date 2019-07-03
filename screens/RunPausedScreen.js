@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Platform, StyleSheet, View, Text, Alert, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
+import { Image } from 'react-native-elements'
 import { Constants } from 'expo';
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
@@ -11,6 +12,9 @@ import "../global.js"
 import { startRun, addLocationPacket, saveRun,resumeRun } from '../functions/action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
@@ -32,19 +36,28 @@ const STYLES = StyleSheet.create({
   circularButton:{
     margin:5,
     borderWidth:1,
-    backgroundColor:'blue',
+    backgroundColor:Color.lightBackground2,
     alignItems:'center',
     alignSelf:'center',
     justifyContent:'center',
+  },
+  largeButton: {
     width: windowWidth * 0.20,
     height: windowWidth * 0.20,
     borderRadius: windowWidth * 0.20 / 2,
-  }
+  }, 
+  smallButton: {
+    width: windowWidth * 0.12,
+    height: windowWidth * 0.12,
+    borderRadius: windowWidth * 0.12 / 2,
+  },
+  smallIcon: windowWidth * 0.12 / 2,
+  largeIcon: windowWidth * 0.2 / 2,
 })
 
 class RunPausedScreen extends React.Component {
-  constructor(state) {
-    super(state);
+  constructor(props) {
+    super(props);
     this.state = {
       pace: {minutes:'--', seconds:'--'},
       distance: 0,
@@ -73,36 +86,36 @@ class RunPausedScreen extends React.Component {
 
         <View style={{backgroundColor:Color.darkBackground, height: windowHeight * 0.20,flexDirection:'row', width:'100%', justifyContent:'space-evenly'}}>
           <TouchableOpacity
-            style={STYLES.circularButton}
+            style={[STYLES.circularButton, STYLES.smallButton]}
             onPress={()=>{
               this.props.navigation.navigate('Feed');
             }}
           >
-            <Text style={{fontSize:20, color:Color.textColor}}>Discard Run (ICON)</Text>
+            <MaterialIcon name="delete" size={STYLES.smallIcon}/>
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={STYLES.circularButton}
+            style={[STYLES.circularButton, STYLES.largeButton]}
             onPress={()=>{
               this.props.resumeRun();
-              this.props.navigation.navigate('RunManager');
+              this.props.navigation.goBack();
             }}
           >
-            <Text style={{fontSize:20, color:Color.textColor}}>Resume (ICON)</Text>
+            <FontAwesomeIcon name="play" size={STYLES.largeIcon}/>
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={STYLES.circularButton}
+            style={[STYLES.circularButton, STYLES.smallButton]}
             onPress={() => {
               this.props.saveRun();
-              if (this.props.route_info.route == null) {
+              if (this.props.run_info.route == null) {
                 this.props.navigation.navigate('SaveRecentRun');
               } else {
                 this.props.navigation.navigate('SaveRun');
               }
             }}
           >
-            <Text style={{fontSize:20, color:Color.textColor}}>Finish (ICON)</Text>
+            <FontAwesomeIcon name="save" size={STYLES.smallIcon}/>
           </TouchableOpacity>
         </View>
       </View>

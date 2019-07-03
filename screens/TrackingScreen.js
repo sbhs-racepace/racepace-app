@@ -13,6 +13,8 @@ import * as Permissions from 'expo-permissions'
 import { startRun, addLocationPacket, pauseRun } from '../functions/action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 
 const LATITUDE_DELTA = 0.0922*1.5
 const LONGITUDE_DELTA = 0.0421*1.5
@@ -45,7 +47,7 @@ const STYLES = StyleSheet.create({
   circularButton:{
     margin:5,
     borderWidth:1,
-    backgroundColor:'blue',
+    backgroundColor:'white',
     alignItems:'center',
     alignSelf:'center',
     justifyContent:'center',
@@ -56,10 +58,12 @@ const STYLES = StyleSheet.create({
     borderRadius: windowWidth * 0.20 / 2,
   }, 
   smallButton: {
-    width: windowWidth * 0.10,
-    height: windowWidth * 0.10,
-    borderRadius: windowWidth * 0.10 / 2,
+    width: windowWidth * 0.12,
+    height: windowWidth * 0.12,
+    borderRadius: windowWidth * 0.12 / 2,
   },
+  smallIcon: windowWidth * 0.12 / 2,
+  largeIcon: windowWidth * 0.2 / 2,
 });
 
 class TrackingScreen extends React.Component {
@@ -129,13 +133,13 @@ class TrackingScreen extends React.Component {
           )}
         </MapView>
 
-        <View style={{position:'absolute',flexDirection: 'row', top:windowHeight*0.75, width:'100%', zIndex:3, alignItems:'center'}}>
+        <View style={{position:'absolute',flexDirection: 'row', top:windowHeight*0.8, width:'100%', zIndex:3, alignItems:'center'}}>
           <View style={{flex:1, alignItems:'center'}}>
             <TouchableOpacity
               style={[STYLES.circularButton,STYLES.smallButton]}
               onPress={() => { this.props.navigation.navigate('RunManager') }}
             >
-              <Text>Main</Text>
+              <FontAwesome5Icon name="running" size={STYLES.smallIcon}/>
             </TouchableOpacity>
           </View>
           <View style={{flex:1, alignItems:'center'}}>
@@ -146,7 +150,7 @@ class TrackingScreen extends React.Component {
                 this.props.navigation.navigate('Paused')
               }}
             >
-              <Text style={{fontSize:20, color:Color.textColor}}>Pause (ICON)</Text>
+              <FontAwesomeIcon name="pause" size={STYLES.largeIcon}/>
             </TouchableOpacity>
           </View>
           <View style={{flex:1, alignItems:'center'}}>
@@ -157,10 +161,7 @@ class TrackingScreen extends React.Component {
                 this.goToCurrent();
               }}
             >
-              <Image
-                style={STYLES.smallButton}
-                source = {require('../assets/icons/compass.jpg')}
-              />
+              <FontAwesomeIcon name="location-arrow" size={STYLES.smallIcon}/>
             </TouchableOpacity>
           </View>
         </View>

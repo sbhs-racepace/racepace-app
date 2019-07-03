@@ -1,13 +1,16 @@
 // Jason Yu
 
 import React from 'react';
-import { View, Text, TextInput, StyleSheet, Alert} from 'react-native';
+import { View, Text, TextInput, StyleSheet, Alert, ScrollView, KeyboardAvoidingView, Dimensions } from 'react-native';
+import { Image } from 'react-native-elements'
 import Button from '../components/Button.js';
 import Color from '../constants/Color.js'
 import '../global.js';
 import { startRun, addLocationPacket, endRun } from '../functions/action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+
+const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
 const STYLES = StyleSheet.create({
   text_style: {
@@ -39,8 +42,8 @@ const STYLES = StyleSheet.create({
 })
 
 class SaveRunScreen extends React.Component {
-  constructor(state) {
-    super(state);
+  constructor(props) {
+    super(props);
     this.state = {
       name: 'name',
       description: 'description',
@@ -73,40 +76,45 @@ class SaveRunScreen extends React.Component {
 
   render() {
     return (
-      <View style={{flex:1, backgroundColor:Color.lightBackground}}>
-        <View style={{flex:1, justifyContent:'space-evenly', alignItems:'center'}}>
-          <Text style={STYLES.title_style}>Save Run Screen</Text>
-          <Image source={require('../assets/map.png')} style={STYLES.routePic} />
-          <Text style={STYLES.title_style}>Run Stats</Text>
-          <Text style={STYLES.text_style}>Average Pace: {this.props.real_time_info.average_pace.minutes} minutes {this.props.real_time_info.average_pace.seconds} seconds</Text>
-          <Text style={STYLES.text_style}>Distance Ran: {this.props.real_time_info.distance}</Text>
-          <Text style={STYLES.text_style}>Duration: {this.props.run_info.duration}</Text>
-          <Text style={STYLES.text_style}>Points: {this.props.run_info.points}</Text>
-        </View>
-        <View style={{flex:1, justifyContent:'space-evenly'}}>
-          <Text style={STYLES.title_style}>Saved Run Description</Text>
-          <TextInput
-            style={STYLES.input}
-            onChangeText={name => {
-              this.setState({ name: name });
+      <KeyboardAvoidingView keyboardVerticalOffset={100} behavior="position" style={{backgroundColor: Color.lightBackground}}>
+        <ScrollView
+         contentContainerStyle={{backgroundColor:Color.lightBackground}}
+        >
+          <View style={{height:windowHeight*0.3, justifyContent:'space-evenly', alignItems:'center'}}>
+            <Text style={STYLES.title_style}>Run Description</Text>
+            <TextInput
+              style={STYLES.input}
+              onChangeText={name => {
+                this.setState({ name: name });
+              }}
+              defaultValue='Name'
+            />
+            <TextInput
+              style={STYLES.input}
+              onChangeText={description => {
+                this.setState({ description: description });
+              }}
+              defaultValue='Description'
+            />
+          </View>
+          <View style={{height:windowHeight*0.8, justifyContent:'space-evenly', alignItems:'center'}}>
+            <Text style={STYLES.title_style}>Run Information</Text>
+            <Image source={require('../assets/map.png')} style={STYLES.routePic} />
+            <Text style={STYLES.text_style}>Average Pace: {this.props.real_time_info.average_pace.minutes} minutes {this.props.real_time_info.average_pace.seconds} seconds</Text>
+            <Text style={STYLES.text_style}>Distance Ran: {this.props.real_time_info.distance}</Text>
+            <Text style={STYLES.text_style}>Duration: {this.props.run_info.duration}</Text>
+            <Text style={STYLES.text_style}>Points: {this.props.run_info.points}</Text>
+          </View>
+          <Button 
+            style={{width:'100%'}}
+            text="Save Run"
+            onPress={()=> {
+              this.saveRecentRun()
             }}
-            defaultValue='Name'
           />
-          <TextInput
-            style={STYLES.input}
-            onChangeText={description => {
-              this.setState({ description: description });
-            }}
-            defaultValue='Description'
-          />
-        </View>
-        <Button 
-          text="Save Run"
-          onPress={()=> {
-            this.saveRun()
-          }}
-        />
-      </View>
+          
+        </ScrollView>
+      </KeyboardAvoidingView>
     );
   }
 }

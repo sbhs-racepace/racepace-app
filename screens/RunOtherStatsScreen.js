@@ -8,9 +8,10 @@ import * as Permissions from 'expo-permissions'
 import Button from "../components/Button"
 import Color from '../constants/Color.js'
 import "../global.js"
-import { startRun, addLocationPacket, pauseRun } from '../functions/action'
+import {  } from '../functions/action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
@@ -32,19 +33,22 @@ const STYLES = StyleSheet.create({
   circularButton:{
     margin:5,
     borderWidth:1,
-    backgroundColor:'blue',
+    backgroundColor:Color.lightBackground2,
     alignItems:'center',
     alignSelf:'center',
     justifyContent:'center',
+  },
+  largeButton: {
     width: windowWidth * 0.20,
     height: windowWidth * 0.20,
     borderRadius: windowWidth * 0.20 / 2,
-  }
+  }, 
+  largeIcon: windowWidth * 0.2 / 2,
 })
 
 class RunOtherStatsScreen extends React.Component {
-  constructor(state) {
-    super(state);
+  constructor(props) {
+    super(props);
     this.state = {
       pace: {minutes:'--', seconds:'--'},
       distance: 0,
@@ -69,20 +73,10 @@ class RunOtherStatsScreen extends React.Component {
         <View style={{backgroundColor:Color.darkBackground, height: windowHeight * 0.20}}>
           <View style={{flex:1,flexDirection:'row', width:'100%', justifyContent:'space-evenly'}}>
             <TouchableOpacity
-              style={STYLES.circularButton}
-              onPress={()=>{this.props.navigation.navigate('RunManager')}}
+              style={[STYLES.circularButton, STYLES.largeButton]}
+              onPress={()=>{this.props.navigation.goBack()}}
             >
-              <Text style={{fontSize:20, color:Color.textColor}}>Main (ICON)</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={STYLES.circularButton}
-              onPress={()=>{
-                this.props.pauseRun()
-                this.props.navigation.navigate('Paused');
-              }}
-            >
-              <Text style={{fontSize:20, color:Color.textColor}}>Pause (ICON)</Text>
+              <FontAwesome5Icon name="running" size={STYLES.largeIcon}/>
             </TouchableOpacity>
           </View>
         </View>
@@ -92,7 +86,7 @@ class RunOtherStatsScreen extends React.Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ addLocationPacket, startRun, pauseRun }, dispatch)
+  return bindActionCreators({ }, dispatch)
 }
 
 function mapStateToProps(state) {

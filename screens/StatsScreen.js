@@ -15,8 +15,8 @@ const STYLES = StyleSheet.create({
 })
 
 export default class StatsScreen extends React.Component {
-  constructor(state) {
-    super(state);
+  constructor(props) {
+    super(props);
   }
   
   render() {
