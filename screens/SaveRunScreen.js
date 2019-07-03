@@ -1,11 +1,13 @@
 // Jason Yu
 
 import React from 'react';
-import { View, Text, TextInput, StyleSheet, Alert, ScrollView, KeyboardAvoidingView, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Alert, ScrollView, KeyboardAvoidingView, Dimensions } from 'react-native';
+import TextInput from '../components/TextInput'
 import { Image } from 'react-native-elements'
 import Button from '../components/Button.js';
 import Color from '../constants/Color.js'
 import '../global.js';
+import BackButtonHeader from '../components/BackButtonHeader'; 
 import { startRun, addLocationPacket, endRun } from '../functions/action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -25,13 +27,9 @@ const STYLES = StyleSheet.create({
   },
   input: {
     fontSize: 20,
-    borderWidth: 1,
     width: '80%',
     borderRadius: 10,
-    padding: '1%',
-    marginTop: 5,
     color: Color.textColor,
-    backgroundColor: Color.lightBackground,
   },
   routePic: {
     aspectRatio: 1.7, 
@@ -76,14 +74,17 @@ class SaveRunScreen extends React.Component {
 
   render() {
     return (
-      <KeyboardAvoidingView keyboardVerticalOffset={100} behavior="position" style={{backgroundColor: Color.lightBackground}}>
-        <ScrollView
-         contentContainerStyle={{backgroundColor:Color.lightBackground}}
-        >
+      <View style={{ flex: 1, backgroundColor: Color.lightBackground}}>
+        <BackButtonHeader 
+          title="Save Screen"
+          onPress={this.props.navigation.goBack}
+        />
+        <ScrollView style={{flex: 4/5, backgroundColor: Color.lightBackground}}>
           <View style={{height:windowHeight*0.3, justifyContent:'space-evenly', alignItems:'center'}}>
             <Text style={STYLES.title_style}>Run Description</Text>
             <TextInput
               style={STYLES.input}
+              placeholder="Name"
               onChangeText={name => {
                 this.setState({ name: name });
               }}
@@ -91,6 +92,7 @@ class SaveRunScreen extends React.Component {
             />
             <TextInput
               style={STYLES.input}
+              placeholder="Description"
               onChangeText={description => {
                 this.setState({ description: description });
               }}
@@ -112,9 +114,8 @@ class SaveRunScreen extends React.Component {
               this.saveRecentRun()
             }}
           />
-          
         </ScrollView>
-      </KeyboardAvoidingView>
+      </View>
     );
   }
 }

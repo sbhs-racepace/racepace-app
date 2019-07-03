@@ -125,8 +125,8 @@ class RunSetupScreen extends React.Component {
         />
         <View style={{flexDirection:'row', justifyContent:'space-between', width:'80%'}}>
           <TextInputCustom 
-            style={{width:'40%'}}
-            placeholder="minutes"
+            style={{width:'45%'}}
+            placeholder="Minutes"
             onChangeText={minutes => {
               this.setState({ goal_pace: {minutes: minutes} });
             }}
@@ -135,8 +135,8 @@ class RunSetupScreen extends React.Component {
             returnKeyType="go"
           />
           <TextInputCustom 
-            style={{width:'40%'}}
-            placeholder="seconds"
+            style={{width:'45%'}}
+            placeholder="Seconds"
             onChangeText={seconds => {
               this.setState({ goal_pace: {seconds: seconds} });
             }}

@@ -5,6 +5,7 @@ import { Component } from 'react';
 import { View, Text, TextInput,Dimensions, StyleSheet, Alert } from 'react-native';
 import { Image } from 'react-native-elements'
 import Button from '../components/Button.js';
+import BackButtonHeader from '../components/BackButtonHeader.js';
 import Color from '../constants/Color.js';
 import '../global.js';
 import { startRun, addLocationPacket, endRun } from '../functions/action'
@@ -57,21 +58,25 @@ class SaveRecentRunScreen extends React.Component {
   render() {
     return (
       <View style={{flex:1,backgroundColor:Color.lightBackground}}>
-          <View style={{flex:1, justifyContent:'space-evenly', alignItems:'center'}}>
-            <Text style={STYLES.title_style}>Run Information</Text>
-            <Image source={require('../assets/map.png')} style={STYLES.routePic} />
-            <Text style={STYLES.text_style}>Average Pace: {this.props.real_time_info.average_pace.minutes} minutes {this.props.real_time_info.average_pace.seconds} seconds</Text>
-            <Text style={STYLES.text_style}>Distance Ran: {this.props.real_time_info.distance}</Text>
-            <Text style={STYLES.text_style}>Duration: {this.props.run_info.duration}</Text>
-            <Text style={STYLES.text_style}>Points: {this.props.run_info.points}</Text>
-          </View>
-          <Button 
-            style={{width:'100%'}}
-            text="Save Run"
-            onPress={()=> {
-              this.saveRecentRun()
-            }}
-          />
+        <BackButtonHeader 
+          title="Save Screen"
+          onPress={this.props.navigation.goBack}
+        />
+        <View style={{flex:1, justifyContent:'space-evenly', alignItems:'center'}}>
+          <Text style={STYLES.title_style}>Run Information</Text>
+          <Image source={require('../assets/map.png')} style={STYLES.routePic} />
+          <Text style={STYLES.text_style}>Average Pace: {this.props.real_time_info.average_pace.minutes} minutes {this.props.real_time_info.average_pace.seconds} seconds</Text>
+          <Text style={STYLES.text_style}>Distance Ran: {this.props.real_time_info.distance}</Text>
+          <Text style={STYLES.text_style}>Duration: {this.props.run_info.duration}</Text>
+          <Text style={STYLES.text_style}>Points: {this.props.run_info.points}</Text>
+        </View>
+        <Button 
+          style={{width:'100%'}}
+          text="Save Run"
+          onPress={()=> {
+            this.saveRecentRun()
+          }}
+        />
       </View>
     );
   }
