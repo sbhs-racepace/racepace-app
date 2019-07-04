@@ -23,9 +23,10 @@ const STYLES = StyleSheet.create({
   search: {
     borderRadius: 5,
     borderWidth: 1,
-    backgroundColor: 'white',
+    backgroundColor: Color.darkBackground,
+    color:Color.textColor,
     width: windowWidth*0.6,
-    height: 30,
+    height: 40,
   },
   map: {
     ...StyleSheet.absoluteFillObject,
@@ -36,7 +37,7 @@ const STYLES = StyleSheet.create({
   circularButton:{
     margin:5,
     borderWidth:1,
-    backgroundColor:'white',
+    backgroundColor:Color.darkBackground,
     alignItems:'center',
     alignSelf:'center',
     justifyContent:'center',
@@ -234,6 +235,7 @@ export default class MapScreen extends React.Component {
           <TextInput
             placeholder="Search"
             style={STYLES.search}
+            placeholderTextColor={Color.textColor}
             onChangeText={text => this.setState({ searchStr: text })}
           />
 
@@ -241,14 +243,14 @@ export default class MapScreen extends React.Component {
             style={[STYLES.circularButton, STYLES.smallButton]}
             onPress={() => this.goToLocation(this.state.searchStr)}
           >
-            <FontAwesomeIcon name="search" size={STYLES.smallIcon}/>
+            <FontAwesomeIcon name="search" size={STYLES.smallIcon} color={Color.primaryColor}/>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={[STYLES.circularButton, STYLES.smallButton]}
             onPress={() => this.runHere(this.state.searchStr, this.state.searchLoc)}
           >
-            <FontAwesome5Icon name="running" size={STYLES.smallIcon}/>
+            <FontAwesome5Icon name="running" size={STYLES.smallIcon} color={Color.primaryColor}/>
           </TouchableOpacity>
         </View>
 
@@ -261,7 +263,7 @@ export default class MapScreen extends React.Component {
               style={[STYLES.circularButton,STYLES.largeButton]}
               onPress={()=>{this.props.navigation.navigate('RunManager')}}
             >
-              <FontAwesomeIcon name="play" size={STYLES.largeIcon}/>
+              <FontAwesomeIcon name="play" size={STYLES.largeIcon} color={Color.primaryColor}/>
             </TouchableOpacity>
           </View>
           <View style={{flex:1, alignItems:'center'}}>
@@ -272,7 +274,7 @@ export default class MapScreen extends React.Component {
                 this.goToCurrent();
               }}
             >
-              <FontAwesomeIcon name="location-arrow" size={STYLES.smallIcon}/>
+              <FontAwesomeIcon name="location-arrow" size={STYLES.smallIcon} color={Color.primaryColor}/>
             </TouchableOpacity>
           </View>
         </View>

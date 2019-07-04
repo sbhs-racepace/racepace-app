@@ -32,8 +32,7 @@ const STYLES = StyleSheet.create({
   },
   circularButton:{
     margin:5,
-    borderWidth:1,
-    backgroundColor:Color.lightBackground2,
+    backgroundColor:Color.lightBackground,
     alignItems:'center',
     alignSelf:'center',
     justifyContent:'center',
@@ -49,15 +48,7 @@ const STYLES = StyleSheet.create({
 class RunOtherStatsScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      pace: {minutes:'--', seconds:'--'},
-      distance: 0,
-      time: {hours:'00',minutes:'00',seconds:'00',milliseconds:'00'},
-    }
-  }
 
-  timeString() {
-    return `${this.state.time.hours}: ${this.state.time.minutes}: ${this.state.time.seconds}.${this.state.time.milliseconds}`
   }
   
   render() {
@@ -65,9 +56,9 @@ class RunOtherStatsScreen extends React.Component {
       <View style={{backgroundColor:Color.lightBackground, flex:1}}>
         <View style={{flex:1,alignItems:'center'}}>
           <Text style={STYLES.title}>Other Stats</Text>      
-          <Text style={STYLES.text}>Timer: {this.timeString()}</Text>
-          <Text style={STYLES.text}>Lap Pace: {this.state.pace.minutes} :{this.state.pace.seconds}</Text>
-          <Text style={STYLES.text}>Lap Distance: {this.state.distance}</Text>
+          <Text style={STYLES.text}>Timer: </Text>
+          <Text style={STYLES.text}>Lap Pace: {this.props.real_time_info.lap_pace.minutes} :{this.props.real_time_info.lap_pace.seconds}</Text>
+          <Text style={STYLES.text}>Lap Distance: {this.props.real_time_info.lap_distance}</Text>
         </View>
 
         <View style={{backgroundColor:Color.darkBackground, height: windowHeight * 0.20}}>
@@ -76,7 +67,7 @@ class RunOtherStatsScreen extends React.Component {
               style={[STYLES.circularButton, STYLES.largeButton]}
               onPress={()=>{this.props.navigation.goBack()}}
             >
-              <FontAwesome5Icon name="running" size={STYLES.largeIcon}/>
+              <FontAwesome5Icon name="running" size={STYLES.largeIcon} color={Color.primaryColor}/>
             </TouchableOpacity>
           </View>
         </View>

@@ -35,8 +35,7 @@ const STYLES = StyleSheet.create({
   },
   circularButton:{
     margin:5,
-    borderWidth:1,
-    backgroundColor:Color.lightBackground2,
+    backgroundColor:Color.lightBackground,
     alignItems:'center',
     alignSelf:'center',
     justifyContent:'center',
@@ -77,8 +76,8 @@ class RunPausedScreen extends React.Component {
       <View style={{backgroundColor:Color.lightBackground, flex:1}}>
         <View style={{flex:1,alignItems:'center'}}>
           <Text style={STYLES.title}>Run Stats</Text>      
-          <Text style={STYLES.text}>Distance: {this.state.distance}</Text>
-          <Text style={STYLES.text}>Average Pace: {this.state.pace.minutes} :{this.state.pace.seconds}</Text>
+          <Text style={STYLES.text}>Distance: {this.props.real_time_info.distance}</Text>
+          <Text style={STYLES.text}>Average Pace: {this.props.real_time_info.average_pace.minutes} :{this.props.real_time_info.average_pace.seconds}</Text>
           <Text style={STYLES.text}>Calories/Kilojoules: Not implemented</Text>
           <Text style={STYLES.text}>Elevation: Not implemented</Text>
           <Text style={STYLES.text}>Graphs: Not implemented</Text>
@@ -91,7 +90,7 @@ class RunPausedScreen extends React.Component {
               this.props.navigation.navigate('Feed');
             }}
           >
-            <MaterialIcon name="delete" size={STYLES.smallIcon}/>
+            <MaterialIcon name="delete" size={STYLES.smallIcon} color={Color.primaryColor}/>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -101,7 +100,7 @@ class RunPausedScreen extends React.Component {
               this.props.navigation.goBack();
             }}
           >
-            <FontAwesomeIcon name="play" size={STYLES.largeIcon}/>
+            <FontAwesomeIcon name="play" size={STYLES.largeIcon} color={Color.primaryColor}/>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -115,7 +114,7 @@ class RunPausedScreen extends React.Component {
               }
             }}
           >
-            <FontAwesomeIcon name="save" size={STYLES.smallIcon}/>
+            <FontAwesomeIcon name="save" size={STYLES.smallIcon} color={Color.primaryColor}/>
           </TouchableOpacity>
         </View>
       </View>

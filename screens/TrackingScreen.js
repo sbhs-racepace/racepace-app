@@ -27,27 +27,10 @@ const STYLES = StyleSheet.create({
     height: windowHeight,
     zIndex: 1,
   },
-  back_btn: {
-    width: 40,
-    height: "5%",
-    top: 5,
-    left: 5,
-    borderRadius: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    zIndex: 2,
-  },
-  search: {
-    borderRadius: 5,
-    borderWidth: 1,
-    backgroundColor: 'white',
-    width: windowWidth*0.6,
-    height: 30,
-  },
   circularButton:{
     margin:5,
     borderWidth:1,
-    backgroundColor:'white',
+    backgroundColor:Color.darkBackground,
     alignItems:'center',
     alignSelf:'center',
     justifyContent:'center',
@@ -139,7 +122,7 @@ class TrackingScreen extends React.Component {
               style={[STYLES.circularButton,STYLES.smallButton]}
               onPress={() => { this.props.navigation.navigate('RunManager') }}
             >
-              <FontAwesome5Icon name="running" size={STYLES.smallIcon}/>
+              <FontAwesome5Icon name="running" size={STYLES.smallIcon} color={Color.primaryColor}/>
             </TouchableOpacity>
           </View>
           <View style={{flex:1, alignItems:'center'}}>
@@ -150,7 +133,7 @@ class TrackingScreen extends React.Component {
                 this.props.navigation.navigate('Paused')
               }}
             >
-              <FontAwesomeIcon name="pause" size={STYLES.largeIcon}/>
+              <FontAwesomeIcon name="pause" size={STYLES.largeIcon} color={Color.primaryColor}/>
             </TouchableOpacity>
           </View>
           <View style={{flex:1, alignItems:'center'}}>
@@ -161,7 +144,7 @@ class TrackingScreen extends React.Component {
                 this.goToCurrent();
               }}
             >
-              <FontAwesomeIcon name="location-arrow" size={STYLES.smallIcon}/>
+              <FontAwesomeIcon name="location-arrow" size={STYLES.smallIcon} color={Color.primaryColor}/>
             </TouchableOpacity>
           </View>
         </View>

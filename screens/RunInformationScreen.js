@@ -58,7 +58,7 @@ class RunInformationScreen extends React.Component {
           <Image source={require('../assets/map.png')} style={STYLES.routePic} />
           <Text style={STYLES.title_style}>Route Stats</Text>
           <Text style={STYLES.text_style}>Goal Pace: {this.props.run_info.goal_pace.minutes} minutes {this.props.run_info.goal_pace.seconds} seconds</Text>
-          <Text style={STYLES.text_style}>Time: {this.props.run_info.estimated_time.minutes} minutes {this.props.run_info.estimated_time.seconds} seconds</Text>
+          <Text style={STYLES.text_style}>Time: {this.props.run_info.estimated_duration.minutes} minutes {this.props.run_info.estimated_duration.seconds} seconds</Text>
           <Text style={STYLES.text_style}>Total Distance: {this.props.run_info.estimated_distance}km</Text>
           <Text style={STYLES.text_style}>Kilojoules Burnt: {this.props.run_info.estimated_energy} Kj</Text>
           <Text style={STYLES.text_style}>Points: {this.props.run_info.points}</Text>
