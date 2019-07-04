@@ -38,7 +38,6 @@ import SaveRecentRunScreen from './screens/SaveRecentRunScreen';
 import LevelScreen from './screens/LevelScreen';
 import StartupScreen from './screens/StartupScreen';
 import CreateRouteScreen from './screens/CreateRouteScreen'
-import OldRunInformationScreen from './screens/OldRunInformationScreen';
 
 import Color from './constants/Color'
 
@@ -105,10 +104,6 @@ const LoginNavigator = createStackNavigator({
   },
   Level: {
     screen: LevelScreen,
-    navigationOptions: { header: null },
-  },
-  OldRunInformation: {
-    screen: OldRunInformationScreen,
     navigationOptions: { header: null },
   },
   Routes: { screen: RouteListScreen, navigationOptions: { header: null } },

@@ -5,7 +5,6 @@ import { Text, TextInput, View, StyleSheet, TouchableOpacity } from 'react-nativ
 import { Image } from 'react-native-elements'
 import Button from "./Button"
 import Color from '../constants/Color'
-import '../global'
 
 const STYLES = StyleSheet.create({
 	feed_item : {

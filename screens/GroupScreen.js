@@ -3,7 +3,6 @@
 import React from 'react';
 import { ScrollView, Text, View, StyleSheet, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import Button from "../components/Button"
-import "../global"
 import Color from '../constants/Color'
 
 const STYLES = StyleSheet.create({

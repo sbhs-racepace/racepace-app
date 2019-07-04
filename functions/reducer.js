@@ -3,7 +3,6 @@ import { CREATE_RUN_ROUTE, CREATE_RUN, START_RUN, ADD_LOCATION_PACKET, END_RUN, 
 import { calculateAveragePace, speedToPace, coordDistance, calculateTimeFromPace, calculateKilojoulesBurnt, calculatePoints  } from './run.js'
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
-import '../global';
 
 const INITIAL_STATE = {
   real_time_info: {

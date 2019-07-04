@@ -8,7 +8,6 @@ import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
 import Button from "../components/Button"
 import Color from '../constants/Color.js'
-import "../global.js"
 import { startRun, addLocationPacket, saveRun,resumeRun } from '../functions/action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';

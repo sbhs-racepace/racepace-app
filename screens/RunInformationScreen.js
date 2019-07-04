@@ -5,7 +5,6 @@ import { StyleSheet, View, Text, Alert, ScrollView, TextInput, Dimensions, Keybo
 import { CheckBox } from 'react-native-elements'
 import Button from "../components/Button"
 import BackButtonHeader from '../components/BackButtonHeader'
-import "../global.js"
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
 import TextInputCustom from '../components/TextInput';

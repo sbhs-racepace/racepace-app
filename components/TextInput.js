@@ -8,7 +8,6 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import '../global'
 
 import Color from '../constants/Color'
 

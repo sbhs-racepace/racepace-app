@@ -5,7 +5,6 @@ import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Image } from 'react-native-elements'
 import { withNavigation } from 'react-navigation';
 import Color from '../constants/Color'
-import '../global.js'
 
 class Button extends React.Component {
   constructor(props) {

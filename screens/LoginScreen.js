@@ -8,7 +8,6 @@ import { View, Text, StyleSheet, Alert, Dimensions, ActivityIndicator } from 're
 import { login, execute_login, googleLogin } from '../functions/login';
 import Button from '../components/Button.js';
 import TextInputCustom from '../components/TextInput';
-import '../global';
 import BackButtonHeader from '../components/BackButtonHeader'
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
