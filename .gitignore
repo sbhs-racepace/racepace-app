@@ -184,8 +184,10 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-.expo/packager-info.json
-.expo/settings.json
+# ADDED GIT TO IGNORE
 .DS_Store
 package-lock.json
 assets/.DS_Store
+.expo/packager-info.json
+web-build/report.html
+.expo/settings.json

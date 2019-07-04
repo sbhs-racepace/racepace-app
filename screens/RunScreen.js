@@ -8,6 +8,13 @@ import * as Permissions from 'expo-permissions'
 import Button from "../components/Button"
 import Color from '../constants/Color.js'
 import "../global.js"
+import { startRun, addLocationPacket, pauseRun } from '../functions/action'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import IonIcon from 'react-native-vector-icons/Ionicons'
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
@@ -28,26 +35,32 @@ const STYLES = StyleSheet.create({
   },
   circularButton:{
     margin:5,
-    borderWidth:1,
-    backgroundColor:'blue',
+    backgroundColor:Color.lightBackground,
     alignItems:'center',
     alignSelf:'center',
     justifyContent:'center',
+  },  
+  largeButton: {
     width: windowWidth * 0.20,
     height: windowWidth * 0.20,
     borderRadius: windowWidth * 0.20 / 2,
-  }
+  }, 
+  smallButton: {
+    width: windowWidth * 0.12,
+    height: windowWidth * 0.12,
+    borderRadius: windowWidth * 0.12 / 2,
+  },
+  smallIcon: windowWidth * 0.12 / 2,
+  largeIcon: windowWidth * 0.2 / 2,
 })
 
-export default class RunScreen extends React.Component {
-  constructor(state) {
-    super(state);
+class RunScreen extends React.Component {
+  constructor(props) {
+    super(props);
     this.state = {
       pace: {minutes:'--', seconds:'--'},
       distance: 0,
       time: {hours:'00',minutes:'00',seconds:'00',milliseconds:'00'},
-      paused: false,
-      interval_id: null,
     }
   }
 
@@ -55,67 +68,36 @@ export default class RunScreen extends React.Component {
     return `${this.state.time.hours}: ${this.state.time.minutes}: ${this.state.time.seconds}.${this.state.time.milliseconds}`
   }
 
-  async updateRunInfo() {
-    let data = {'period': 5}
-    let pace_url = global.serverURL + '/api/get_run_info'
-    fetch(pace_url, {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: new Headers({
-        'Authorization': global.login_info.token,
-      })
+  async locationUpdate() {
+    let location_packet = await Location.getCurrentPositionAsync({
+      accuracy: 4,
     })
-    .then(async res => await res.json()).then(data => { 
-      this.setState({pace:data.pace,distance:data.distance})
-    });
+    if (this.props.run_info.real_time_tracking) global.socket.emit('location_update',location_packet);
+    this.props.addLocationPacket(location_packet)
   }
 
-  startRun() {
-    let current_time = new Date();
-    let start_time = {
-      year:current_time.getFullYear(),
-      month:current_time.getMonth(),
-      day:current_time.getDate(),
-      hours:current_time.getHours(),
-      minutes:current_time.getMinutes(),
-      seconds:current_time.getSeconds(),
-    }
-    let data = {
-      start_time: start_time,
-      route: global.current_route,
-    }
-    global.socket.emit('start_run', start_time);
+  async locationUpdateLoop() {
+    if (this.props.run_info.active == true) {
+      if (this.props.run_info.real_time_tracking) global.socket.emit('start_run', start_time);
+      this.locationUpdate()
+      let timerId = setTimeout(this.locationUpdateLoop.bind(this), 3000);
+    } 
   }
+
+  
 
   async componentDidMount() {
     if (global.location_permission) {
-      this.startRun()
-      Location.watchPositionAsync(
-        {
-          accuracy: 4, //Accurate to 10m
-          timeInterval: 10000,
-          distanceInterval:10,
-        },
-        (location) => {
-          let current_time = new Date();
-          let data = {
-            location: location.coords,
-            time: (current_time.getTime() / 1000), // Conversion to seconds
-          }
-          global.socket.emit('location_update',data);
-        }
-      )
-      this.state.interval_id = setInterval(this.updateRunInfo.bind(this), 10000);
+      await this.props.startRun(new Date())
+      this.focusListener = this.props.navigation.addListener("didFocus", this.locationUpdateLoop.bind(this));
     } else {
       Alert.alert('Location Permission not allowed')
       this.props.navigation.navigate('Feed')
     }
   }
 
-  stop_tracking() {
-    global.socket.emit('end_run');
-    global.current_route = null;
-    clearInterval(this.state.interval_id);
+  componentWillUnmount() {
+    this.focusListener.remove();
   }
   
   render() {
@@ -126,31 +108,37 @@ export default class RunScreen extends React.Component {
           <Text style={STYLES.text}>Distance: {this.state.distance}</Text>
           <Text style={STYLES.text}>Timer: {this.timeString()}</Text>
           <Text style={STYLES.text}>Pace: {this.state.pace.minutes} :{this.state.pace.seconds}</Text>
-          <Text style={STYLES.text}>Average Pace: {this.state.pace.minutes} :{this.state.pace.seconds}</Text>
+          <Text style={STYLES.text}>Average Pace: {this.props.real_time_info.average_pace.minutes} :{this.props.real_time_info.average_pace.seconds}</Text>
         </View>
 
         <View style={{backgroundColor:Color.darkBackground, height: windowHeight * 0.20}}>
           <View style={{flex:1,flexDirection:'row', width:'100%', justifyContent:'space-evenly'}}>
             <TouchableOpacity
-              style={STYLES.circularButton}
-              onPress={()=>{this.props.navigation.navigate('OtherStats')}}
+              style={[STYLES.circularButton, STYLES.smallButton]}
+              onPress={()=>{
+                this.props.navigation.navigate('OtherStats')
+                this.props.pauseRun();
+              }}
             >
-              <Text style={{fontSize:20, color:Color.textColor}}>Stats (ICON)</Text>
+              <IonIcon name="ios-stats" size={STYLES.smallIcon} color={Color.primaryColor}/>
             </TouchableOpacity>
             <TouchableOpacity
-              style={STYLES.circularButton}
+              style={[STYLES.circularButton, STYLES.largeButton]}
               onPress={()=>{
-                this.setState({paused: !this.state.paused})
+                this.props.pauseRun();
                 this.props.navigation.navigate('Paused');
               }}
             >
-              <Text style={{fontSize:20, color:Color.textColor}}>Pause (ICON)</Text>
+              <FontAwesomeIcon name="pause" size={STYLES.largeIcon} color={Color.primaryColor}/>
             </TouchableOpacity>
             <TouchableOpacity
-              style={STYLES.circularButton}
-              onPress={()=>{this.props.navigation.navigate('Tracking')}}
+              style={[STYLES.circularButton, STYLES.smallButton]}
+              onPress={()=>{
+                this.props.pauseRun();
+                this.props.navigation.navigate('Tracking');
+              }}
             >
-              <Text style={{fontSize:20, color:Color.textColor}}>Map (ICON)</Text>
+              <MaterialCommunityIcon name="map-marker" size={STYLES.smallIcon} color={Color.primaryColor}/>
             </TouchableOpacity>
           </View>
         </View>
@@ -158,3 +146,13 @@ export default class RunScreen extends React.Component {
     )
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ addLocationPacket, startRun, pauseRun }, dispatch)
+}
+
+function mapStateToProps(state) {
+  return state;
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RunScreen);

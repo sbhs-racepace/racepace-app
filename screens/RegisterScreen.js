@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Component } from 'react';
-import { View, Text, StyleSheet, Alert, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Alert, Dimensions, KeyboardAvoidingView } from 'react-native';
 import { Image } from 'react-native-elements'
 import TextInputCustom from '../components/TextInput';
 import Button from '../components/Button';
@@ -58,7 +58,7 @@ export default class RegisterScreen extends React.Component {
 
   render() {
     return (
-      <View style={{backgroundColor:Color.darkBackground, flex:1}}>
+      <KeyboardAvoidingView style={{backgroundColor:Color.darkBackground, flex:1}}>
         <BackButtonHeader
           onPress={this.props.navigation.goBack}
           title='Register'
@@ -131,7 +131,7 @@ export default class RegisterScreen extends React.Component {
             onPress={register.bind(this)}
           />
         </View>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }

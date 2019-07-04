@@ -10,7 +10,6 @@ import Color from '../constants/Color'
 const STYLES = StyleSheet.create({
   button: {
     width:"80%",
-    borderRadius:10,
   },
   button_text: {
     padding:"2%",
@@ -34,7 +33,7 @@ export default class SplashScreen extends React.Component {
 
   render() {
     return (
-      <View style={[global.view_styles.columnCenterView,{backgroundColor:Color.darkBackground, justifyContent:'space-evenly'}]}>
+      <View style={{ alignItems:"center", flexDirection:"column", flex:1, backgroundColor:Color.darkBackground, justifyContent:'space-evenly'}}>
         <Text style={[STYLES.title]}>Racepace</Text>
         <Image style={STYLES.logo} source={require('../assets/running.jpg')} />
         <Button

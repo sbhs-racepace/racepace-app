@@ -10,6 +10,11 @@ import MapView from 'react-native-maps';
 import { Marker, Polyline } from 'react-native-maps';
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
+import { startRun, addLocationPacket, pauseRun } from '../functions/action'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 
 const LATITUDE_DELTA = 0.0922*1.5
 const LONGITUDE_DELTA = 0.0421*1.5
@@ -22,27 +27,10 @@ const STYLES = StyleSheet.create({
     height: windowHeight,
     zIndex: 1,
   },
-  back_btn: {
-    width: 40,
-    height: "5%",
-    top: 5,
-    left: 5,
-    borderRadius: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    zIndex: 2,
-  },
-  search: {
-    borderRadius: 5,
-    borderWidth: 1,
-    backgroundColor: 'white',
-    width: windowWidth*0.6,
-    height: 30,
-  },
   circularButton:{
     margin:5,
     borderWidth:1,
-    backgroundColor:'blue',
+    backgroundColor:Color.darkBackground,
     alignItems:'center',
     alignSelf:'center',
     justifyContent:'center',
@@ -53,13 +41,15 @@ const STYLES = StyleSheet.create({
     borderRadius: windowWidth * 0.20 / 2,
   }, 
   smallButton: {
-    width: windowWidth * 0.10,
-    height: windowWidth * 0.10,
-    borderRadius: windowWidth * 0.10 / 2,
+    width: windowWidth * 0.12,
+    height: windowWidth * 0.12,
+    borderRadius: windowWidth * 0.12 / 2,
   },
+  smallIcon: windowWidth * 0.12 / 2,
+  largeIcon: windowWidth * 0.2 / 2,
 });
 
-export default class TrackingScreen extends React.Component {
+class TrackingScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -126,21 +116,24 @@ export default class TrackingScreen extends React.Component {
           )}
         </MapView>
 
-        <View style={{position:'absolute',flexDirection: 'row', top:windowHeight*0.75, width:'100%', zIndex:3, alignItems:'center'}}>
+        <View style={{position:'absolute',flexDirection: 'row', top:windowHeight*0.8, width:'100%', zIndex:3, alignItems:'center'}}>
           <View style={{flex:1, alignItems:'center'}}>
             <TouchableOpacity
               style={[STYLES.circularButton,STYLES.smallButton]}
               onPress={() => { this.props.navigation.navigate('RunManager') }}
             >
-              <Text>Main</Text>
+              <FontAwesome5Icon name="running" size={STYLES.smallIcon} color={Color.primaryColor}/>
             </TouchableOpacity>
           </View>
           <View style={{flex:1, alignItems:'center'}}>
             <TouchableOpacity
               style={[STYLES.circularButton,STYLES.largeButton]}
-              onPress={()=>{this.props.navigation.navigate('Paused')}}
+              onPress={()=>{
+                this.props.pauseRun()
+                this.props.navigation.navigate('Paused')
+              }}
             >
-              <Text style={{fontSize:20, color:Color.textColor}}>Pause (ICON)</Text>
+              <FontAwesomeIcon name="pause" size={STYLES.largeIcon} color={Color.primaryColor}/>
             </TouchableOpacity>
           </View>
           <View style={{flex:1, alignItems:'center'}}>
@@ -151,10 +144,7 @@ export default class TrackingScreen extends React.Component {
                 this.goToCurrent();
               }}
             >
-              <Image
-                style={STYLES.smallButton}
-                source = {require('../assets/icons/compass.jpg')}
-              />
+              <FontAwesomeIcon name="location-arrow" size={STYLES.smallIcon} color={Color.primaryColor}/>
             </TouchableOpacity>
           </View>
         </View>
@@ -162,3 +152,13 @@ export default class TrackingScreen extends React.Component {
     );
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ addLocationPacket, startRun, pauseRun }, dispatch)
+}
+
+function mapStateToProps(state) {
+  return state;
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TrackingScreen);

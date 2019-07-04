@@ -13,18 +13,18 @@ let roundedButton = {
 }
 
 export default class FeedScreen extends React.Component {
-  constructor(state) {
-    super(state);
+  constructor(props) {
+    super(props);
   }
   render() {
     if (!global.login_info.token && !global.TEST) {
       return <Text>Please login to see your feed</Text>;
     }
     return (
-      <KeyboardAvoidingView keyboardVerticalOffset={100} behavior="position" style={{backgroundColor: Color.lightBackground}}>
+      <KeyboardAvoidingView keyboardVerticalOffset={100} behavior="position" style={{backgroundColor: Color.darkBackground}}>
         <ScrollView
           contentContainerStyle={{
-            backgroundColor: Color.lightBackground,
+            backgroundColor: Color.darkBackground,
           }}>
           <FeedItem
             username="Test User"
@@ -49,15 +49,6 @@ export default class FeedScreen extends React.Component {
             description="This is a great route"
             length="2.2"
             time="30"
-          />
-          <Button
-            style={{...roundedButton, alignSelf:'center'}}
-            text_style={{
-              padding: '1%',
-              fontSize: 16,
-            }}
-            onPress={() => Alert.alert('Not Implemented')}
-            text="Refresh"
           />
         </ScrollView>
       </KeyboardAvoidingView>

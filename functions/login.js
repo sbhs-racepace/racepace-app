@@ -6,11 +6,9 @@ import Expo from 'expo';
 import io from 'socket.io-client';
 
 export async function storeUserInfo() {
-  let data = { user_id: global.login_info.user_id };
   let api_url = global.serverURL + '/api/get_info';
   fetch(api_url, {
     method: 'POST',
-    body: JSON.stringify(data),
     headers: new Headers({
       Authorization: global.login_info.token,
     }),
@@ -48,7 +46,7 @@ export async function login(email,password) {
   .then(async res => {
     login_response = await res.json();
     global.login_info = { token: login_response.token, user_id: login_response.user_id };
-    await AsyncStorage.setItem('login_info', JSON.stringify(global.login_info));
+    await AsyncStorage.setItem('login_info', JSON.stringify(global.login_info)); // Storing User Login
   })
   .catch(error => {
     Alert.alert('Error ', error);
@@ -87,7 +85,11 @@ export async function register() {
 
 export async function googleLogin() {
   let api_url = global.serverURL + '/api/google_login'
-  let result = await Expo.Google.logInAsync({ androidClientId: global.googleLoginID.android });
+  let googleLoginID = {
+    android: "Insert key here", 
+    ios: "Insert key here"
+  };
+  let result = await Expo.Google.logInAsync({ androidClientId: googleLoginID.android });
   if (result.type == 'success') {
     fetch(api_url, {
       method: 'POST',

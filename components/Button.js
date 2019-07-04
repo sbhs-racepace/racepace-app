@@ -17,7 +17,7 @@ class Button extends React.Component {
       button: {
         backgroundColor: this.props.disabled
           ? Color.offColor
-          : Color.primaryColor
+          : Color.buttonColor
         ,
         width: this.props.back_btn ? 40 : "80%",
         height: 40,
