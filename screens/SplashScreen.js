@@ -13,7 +13,7 @@ const STYLES = StyleSheet.create({
   },
   button_text: {
     padding:"2%",
-    fontSize: 16
+    fontSize: 20,
   },
   title: {
     fontFamily:'Roboto-Bold',fontSize:70,color:Color.primaryColor,
