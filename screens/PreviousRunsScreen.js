@@ -22,7 +22,7 @@ export default class PreviousRunsScreen extends React.Component {
       return <Text>Please login to see your feed</Text>;
     }
 
-    if (global.login_status.success) {
+    if (global.login_info.success) {
       let resp = request('/api/get_recent_routes', 'POST', {}, true);
       if (resp.error) {
         return <Text>An error occurred. {resp.description}</Text>
