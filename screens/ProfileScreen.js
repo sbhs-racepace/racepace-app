@@ -29,10 +29,12 @@ const STYLES = StyleSheet.create({
     color: Color.textColor,
   },
   stat_btn: {
+    marginBottom: -15,
+    // flexDirection: 'row',
     flex: 1,
-    margin: 1,
-    height: '70%',
-    backgroundColor: 'transparent'
+    // backgroundColor: 'transparent',
+    borderLeftWidth: 2,
+    borderLeftColor: Color.lightBackground
   }
 })
 
@@ -66,8 +68,6 @@ export default class ProfileScreen extends React.Component {
         v02_max: 56,
         average_pace: 3.4
       },
-      imageurl: '../assets/cat.jpeg',
-      screenVariable: true,
       bio: global.user.bio
     }
   }
@@ -98,7 +98,7 @@ export default class ProfileScreen extends React.Component {
     <ScrollView>
       <View style={STYLES.container}>
         <View>
-            <Text style={[STYLES.text, { fontSize: 30, textAlign: 'center', padding: '5%'}]}>
+            <Text style={[STYLES.text, { fontSize: 30, textAlign: 'center', paddingTop: '5%'}]}>
             {this.state.name}
             </Text>
             <View style={{ height: 150, padding: '3%' }}>
@@ -121,14 +121,15 @@ export default class ProfileScreen extends React.Component {
                     }.png`
                     }}
                 />
-                </View>
-                <View
-                style={{
+            </View>
+
+                <View style={{
                     flexDirection: 'column',
                     flex: 2,
                     justifyContent: 'space-evenly'
                 }}>
-                <View style={{ flexDirection: 'row'}}>
+
+                <View style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
                     <Button
                     style={STYLES.stat_btn}
                     text={`${global.user.stats.points} Points`}
@@ -153,6 +154,7 @@ export default class ProfileScreen extends React.Component {
                     }
                     />
                 </View>
+
                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                     <Button
                         style={{width: '70%', backgroundColor: Color.buttonColor}}
@@ -182,20 +184,14 @@ export default class ProfileScreen extends React.Component {
                 </View>
             </View>
             </View>
-            <Text multiline={true} style={[STYLES.text, { padding: '8%', paddingLeft: '5%'}]}>
-            {this.state.bio}
+            <Text multiline={true} style={[STYLES.text, { paddingBottom: '8%', paddingLeft: '5%'}]}>
+            {this.state.bio} Lorem ipsum dolor u are cool blah blah blah thats interesting
             </Text>
         </View>
 
-        <View style={{ flex: 1, backgroundColor: Color.lightBackground }}>
+        <View style={{ flex: 1, backgroundColor: Color.darkBackground }}>
           <AppContainer style={{ flex: 1 }}/>
         </View>
-
-        {/* <Button
-            style={{ alignSelf: 'center' }}
-            text="Find Friends"
-            onPress={() => this.props.navigation.navigate('FindFriends')}
-          /> */}
 
       </View>
       </ScrollView>
