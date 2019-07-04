@@ -32,8 +32,7 @@ const STYLES = StyleSheet.create({
   },
   circularButton:{
     margin:5,
-    borderWidth:1,
-    backgroundColor:Color.lightBackground2,
+    backgroundColor:Color.lightBackground,
     alignItems:'center',
     alignSelf:'center',
     justifyContent:'center',
@@ -76,7 +75,7 @@ class RunOtherStatsScreen extends React.Component {
               style={[STYLES.circularButton, STYLES.largeButton]}
               onPress={()=>{this.props.navigation.goBack()}}
             >
-              <FontAwesome5Icon name="running" size={STYLES.largeIcon}/>
+              <FontAwesome5Icon name="running" size={STYLES.largeIcon} color={Color.primaryColor}/>
             </TouchableOpacity>
           </View>
         </View>

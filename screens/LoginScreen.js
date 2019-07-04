@@ -66,7 +66,7 @@ export default class LoginScreen extends React.Component {
             autoCapitalize="none"
             returnKeyType="go"
             placeholder="Email"
-            placeholderTextColor="rgba(225,225,225,0.8)"
+            placeholderTextColor={Color.textColor}
           />
           <TextInputCustom
             autoCorrect={false}
@@ -76,7 +76,7 @@ export default class LoginScreen extends React.Component {
             secureTextEntry={true}
             placeholder="Password"
             autoCapitalize="none"
-            placeholderTextColor="rgba(225,225,225,0.8)"
+            placeholderTextColor={Color.textColor}
           />
           <Button
             style={STYLES.roundedButton}

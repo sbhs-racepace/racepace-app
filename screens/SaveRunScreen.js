@@ -52,8 +52,9 @@ class SaveRunScreen extends React.Component {
     let data = {
       name: this.state.name,
       description: this.state.description,
-      route: this.props.navigation.state.params
-    };
+      run_info: this.props.run_info,
+      location_packets: this.props.location_packets,
+    }
     let api_url = `${global.serverURL}/api/save_route`;
     fetch(api_url, {
       method: 'POST',
@@ -111,7 +112,7 @@ class SaveRunScreen extends React.Component {
             style={{width:'100%'}}
             text="Save Run"
             onPress={()=> {
-              this.saveRecentRun()
+              this.saveRun()
             }}
           />
         </ScrollView>

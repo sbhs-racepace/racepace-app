@@ -35,8 +35,7 @@ const STYLES = StyleSheet.create({
   },
   circularButton:{
     margin:5,
-    borderWidth:1,
-    backgroundColor:Color.lightBackground2,
+    backgroundColor:Color.lightBackground,
     alignItems:'center',
     alignSelf:'center',
     justifyContent:'center',
@@ -121,7 +120,7 @@ class RunScreen extends React.Component {
                 this.props.pauseRun();
               }}
             >
-              <IonIcon name="ios-stats" size={STYLES.smallIcon}/>
+              <IonIcon name="ios-stats" size={STYLES.smallIcon} color={Color.primaryColor}/>
             </TouchableOpacity>
             <TouchableOpacity
               style={[STYLES.circularButton, STYLES.largeButton]}
@@ -130,7 +129,7 @@ class RunScreen extends React.Component {
                 this.props.navigation.navigate('Paused');
               }}
             >
-              <FontAwesomeIcon name="pause" size={STYLES.largeIcon}/>
+              <FontAwesomeIcon name="pause" size={STYLES.largeIcon} color={Color.primaryColor}/>
             </TouchableOpacity>
             <TouchableOpacity
               style={[STYLES.circularButton, STYLES.smallButton]}
@@ -139,7 +138,7 @@ class RunScreen extends React.Component {
                 this.props.navigation.navigate('Tracking');
               }}
             >
-              <MaterialCommunityIcon name="map-marker" size={STYLES.smallIcon}/>
+              <MaterialCommunityIcon name="map-marker" size={STYLES.smallIcon} color={Color.primaryColor}/>
             </TouchableOpacity>
           </View>
         </View>
