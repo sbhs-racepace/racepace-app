@@ -17,22 +17,47 @@ import Color from '../constants/Color';
 export default class FeedFollowingScreen extends React.Component {
   constructor(state) {
     super(state);
+    this.state = {
+      feed: [],
+    };
   }
 
   componentDidMount() {
-    if (global.login_status.success) {
-      this.feed = request(global.serverURL + '/get_feed', 'POST', {}, true);
-      this.feed = this.feed.feed_items;
-    }
+    
   }
 
   render() {
     if (!global.login_status.success && !global.TEST) {
-      return <Text>Please login to see your feed</Text>;
+      return <Text>Please login to see your feed</Text>
+    }
+    else if (!this.state.feed) {
+      let feed = request('/get_feed', 'POST', {}, true);
+      this.setState({ feed: feed.feed_items });
+    }
+    else if (!global.TEST && !this.state.feed) {
+      return (
+        <View>
+          <Text>Your feed is empty</Text>
+          <Button
+            style={{
+              ...global.component_styles.roundedButton,
+              alignSelf: 'center',
+            }}
+            text_style={{
+              padding: '1%',
+              fontSize: 16,
+            }}
+            onPress={() => {
+              let feed = request('/get_feed', 'POST', {}, true);
+              this.setState({ feed: feed.feed_items });
+            }}
+            text="Refresh"
+          />
+        </View>
+      );
     }
     return (
       <KeyboardAvoidingView
-        keyboardVerticalOffset={100}
         behavior="position"
         style={{ backgroundColor: Color.lightBackground }}>
         <ScrollView
@@ -67,18 +92,19 @@ export default class FeedFollowingScreen extends React.Component {
               />
             </View>
           )}
-          {this.feed && this.feed.map(item => (
-            <FeedItem
-              username={item.username}
-              posttime={item.route.real_time_route.start_time}
-              routename={item.route.real_time_route.name}
-              description={item.route.real_time_route.description}
-              length={item.route.real_time_route.route.distance}
-              likes={item.route.likes.length}
-              comments={item.route.comments}
-              routePic={item.route_image}
-            />
-          ))}
+          {this.feed &&
+            this.feed.map(item => (
+              <FeedItem
+                username={item.username}
+                posttime={item.route.real_time_route.start_time}
+                routename={item.route.real_time_route.name}
+                description={item.route.real_time_route.description}
+                length={item.route.real_time_route.route.distance}
+                likes={item.route.likes.length}
+                comments={item.route.comments}
+                routePic={item.route_image}
+              />
+            ))}
           <Button
             style={{
               ...global.component_styles.roundedButton,
@@ -88,7 +114,10 @@ export default class FeedFollowingScreen extends React.Component {
               padding: '1%',
               fontSize: 16,
             }}
-            onPress={() => Alert.alert('Not Implemented')}
+            onPress={() => {
+              let feed = request('/get_feed', 'POST', {}, true);
+              this.setState({ feed: feed.feed_items });
+            }}
             text="Refresh"
           />
         </ScrollView>

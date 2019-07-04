@@ -11,7 +11,7 @@ import {
 import Button from './Button';
 import request from '../functions/request';
 import '../global';
-import Color from '../constants/Color'
+import Color from '../constants/Color';
 
 const STYLES = StyleSheet.create({
   feed_item: {
@@ -61,11 +61,11 @@ class Comment extends React.Component {
 
   render() {
     return (
-      <View style={{flexDirection:"row"}}>
-        <Text style={{fontWeight:"bold"}}>{this.props.name} :</Text>
+      <View style={{ flexDirection: 'row' }}>
+        <Text style={{ fontWeight: 'bold' }}>{this.props.name}:</Text>
         <Text> {this.props.comment}</Text>
       </View>
-    )
+    );
   }
 }
 
@@ -76,6 +76,7 @@ export class FeedItem extends React.Component {
       likes: this.props.likes || [],
       liked: false,
       comments: this.props.comments || [],
+      commentInput: '',
       showComments: false,
     };
   }
@@ -98,10 +99,7 @@ export class FeedItem extends React.Component {
 
   sendComment() {
     this.setState(prevState => {
-      prevState.comments.push([
-        global.user.full_name,
-        this.state.mess,
-      ]);
+      prevState.comments.push([global.user.full_name, this.state.commentInput]);
       return {
         comments: prevState.comments,
       };
@@ -129,23 +127,39 @@ export class FeedItem extends React.Component {
         <View style={{ margin: '3%' }}>
           <Text style={STYLES.text}>{this.props.routename}</Text>
           <Text style={STYLES.text}>Description: {this.props.description}</Text>
-          <Text style={STYLES.text}>
-            Length: {this.props.length}km
-          </Text>
+          <Text style={STYLES.text}>Length: {this.props.length}km</Text>
         </View>
 
-        <Image source={{uri: this.props.routePic}} style={STYLES.routePic} />
-        <View style={[global.view_styles.rowView, { margin: 10 }]}>
+        <Image source={{ uri: this.props.routePic }} style={STYLES.routePic} />
+        <View style={[global.view_styles.rowView, { marginBottom: 5 }]}>
           <Text style={STYLES.text}>{this.state.likes.length} Likes</Text>
           <Text style={STYLES.text}>{this.state.comments.length} Comments</Text>
         </View>
-        {this.state.showComments &&
+        {this.state.showComments && (
           <View>
-            {this.state.comments.map(comment=>
+            {this.state.comments.map(comment => (
               <Comment name={comment[0]} comment={comment[1]} />
-            )}
+            ))}
+            <View style={{ flexDirection: 'row', marginBottom: 5 }}>
+              <TextInput
+                placeholder="Enter a comment here..."
+                placeholderTextColor={Color.textColor}
+                style={{
+                  width: '90%',
+                  borderRadius: 10,
+                  borderWidth: 1,
+                  padding: 1,
+                  fontSize: 20,
+                }}
+                onChangeText={text => this.setState({ commentInput: text })}
+              />
+              <Button
+                style={{ height: 30, width: 30, borderRadius: 15, marginLeft: 5 }}
+                onPress={this.sendComment.bind(this)}
+              />
+            </View>
           </View>
-        }
+        )}
         <View style={STYLES.likeCommentCombo}>
           <Button
             text="Like"
