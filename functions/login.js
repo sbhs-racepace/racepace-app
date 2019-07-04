@@ -14,45 +14,47 @@ export async function storeUserInfo() {
       Authorization: global.login_info.token,
     }),
   })
-  .then(async res => {
-    let res_data = await res.json()
-    if (res_data.success) {
-      global.user = res_data['info']
-      global.socket = io(`${global.serverURL}?token=${global.login_info.token}`, { transports: ['websocket'] });
-      global.socket.emit('authenticate', global.login_info.token);
-    } else {
-      Alert.alert('Error', res_data.error)
-    }
-  }).catch(error => {
-    Alert.alert('Error', error);
-  })
+    .then(async res => {
+      let res_data = await res.json();
+      if (res_data.success) {
+        global.user = res_data['info'];
+        global.socket = io(
+          `${global.serverURL}?token=${global.login_info.token}`,
+          { transports: ['websocket'] }
+        );
+        global.socket.emit('authenticate', global.login_info.token);
+      } else {
+        Alert.alert('Error', res_data.error);
+      }
+    })
+    .catch(error => {
+      Alert.alert('Error', error);
+    });
 }
 
-export async function execute_login(email,password) {
-  let login_response = await login(email,password);
+export async function execute_login(email, password) {
+  let login_response = await login(email, password);
   if (login_response.success) {
-    if (check_login(login_response)) {
-      storeUserInfo();
-      this.setState({loading:false});
-      this.props.navigation.navigate('Feed');
-    } else {
-      this.setState({loading:false});
-      Alert.alert('Invalid Username or Password');
-    }
-  }
-  else {
-    this.setState({loading:false});
+    storeUserInfo();
+    this.setState({ loading: false });
+    this.props.navigation.navigate('Feed');
+  } else {
+    this.setState({ loading: false });
   }
 }
 
-export async function login(email,password) {
+export async function login(email, password) {
   let api_url = global.serverURL + '/api/login';
   let data = {
-    email, password
+    email,
+    password,
   };
-  for (item of Object.entries(data)) {
+  for (let item of Object.entries(data)) {
     if (!item[1]) {
-      Alert.alert("Blank fields", `All fields must be filled. ${item[0]} is blank.`)
+      Alert.alert(
+        'Blank fields',
+        `All fields must be filled. ${item[0]} is blank.`
+      );
       return false;
     }
   }
@@ -61,16 +63,22 @@ export async function login(email,password) {
     method: 'POST',
     body: JSON.stringify(data),
   })
-  .then(async res => {
-    login_response = await res.json();
-    global.login_info = { token: login_response.token, user_id: login_response.user_id };
-    await AsyncStorage.setItem('login_info', JSON.stringify(global.login_info)); // Storing User Login
-  })
-  .catch(error => {
-    Alert.alert('Error ', error);
-  });
+    .then(async res => {
+      login_response = await res.json();
+      global.login_info = {
+        token: login_response.token,
+        user_id: login_response.user_id,
+      };
+      await AsyncStorage.setItem(
+        'login_info',
+        JSON.stringify(global.login_info)
+      ); // Storing User Login
+    })
+    .catch(error => {
+      Alert.alert('Error ', error);
+    });
 
-  return login_response
+  return login_response;
 }
 
 export async function register() {
@@ -82,10 +90,13 @@ export async function register() {
     dob: this.state.dob,
     username: this.state.username,
   };
-  for (item of Object.entries(data)) {
+  for (let item of Object.entries(data)) {
     if (!item[1]) {
-      Alert.alert("Blank fields", `All fields must be filled. ${item[0]} is blank.`)
-      this.setState({loading:false})
+      Alert.alert(
+        'Blank fields',
+        `All fields must be filled. ${item[0]} is blank.`
+      );
+      this.setState({ loading: false });
       return 0; //Exit function
     }
   }
@@ -100,49 +111,49 @@ export async function register() {
       })
       .then(
         async res => {
-          res = await res.json()
-          let login_response = check_login(res);
-          if (login_response) {
+          res = await res.json();
+          if (res.success) {
             storeUserInfo();
-            this.setState({loading:false})
+            this.setState({ loading: false });
             this.props.navigation.navigate('FeedFollowing');
           }
         },
         reason => {
-          this.setState({loading:false})
+          this.setState({ loading: false });
           Alert.alert('Error connecting to server', reason);
         }
       );
   } catch (err) {
     //Catch any other errors
     Alert.alert('Error', err);
-    this.setState({loading:false})
+    this.setState({ loading: false });
   }
 }
 
 export async function googleLogin() {
   try {
-    const url = global.serverURL + '/api/google_login'
+    const url = global.serverURL + '/api/google_login';
     const config = {
       androidClientId: global.googleLoginID.android,
-    }
+    };
     const result = await Google.logInAsync(config);
     if (result.type == 'success') {
       fetch(url, {
         method: 'POST',
-        body: JSON.stringify({idToken:result.idToken}),
+        body: JSON.stringify({ idToken: result.idToken }),
       })
         .catch(res => {
-          console.log(res)
+          console.log(res);
           Alert.alert('Error connecting to server', res);
         })
         .then(
           async res => {
-            res = await res.json()
-            let login_response = check_login(res);
-            if (login_response) {
+            res = await res.json();
+            if (res.success) {
               storeUserInfo();
-              this.props.navigation.navigate('FeedFollowing');
+              this.props.navigation.navigate('Feed');
+            } else {
+              Alert.alert('Error', res.error);
             }
           },
           reason => {

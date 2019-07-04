@@ -3,7 +3,7 @@
 import React from 'react';
 import { Component } from 'react';
 import { Image } from 'react-native-elements'
-import { View, Text, StyleSheet, Image, Alert, Dimensions, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, Alert, Dimensions, ActivityIndicator } from 'react-native';
 import TextInputCustom from '../components/TextInput';
 import Button from '../components/Button';
 import BackButtonHeader from '../components/BackButtonHeader'

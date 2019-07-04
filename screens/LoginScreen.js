@@ -4,7 +4,7 @@ import React from 'react';
 import { Component } from 'react';
 import Color from '../constants/Color'
 import { Image } from 'react-native-elements'
-import { View, Text, StyleSheet, Image, Alert, Dimensions, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, Alert, Dimensions, ActivityIndicator } from 'react-native';
 import { login, execute_login, googleLogin } from '../functions/login';
 import Button from '../components/Button.js';
 import TextInputCustom from '../components/TextInput';
