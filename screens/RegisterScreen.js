@@ -3,7 +3,7 @@
 import React from 'react';
 import { Component } from 'react';
 import { Image } from 'react-native-elements'
-import { View, Text, StyleSheet, Alert, Dimensions, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, Alert, Dimensions, ActivityIndicator, KeyboardAvoidingView } from 'react-native';
 import TextInputCustom from '../components/TextInput';
 import Button from '../components/Button';
 import BackButtonHeader from '../components/BackButtonHeader'
@@ -102,17 +102,6 @@ export default class RegisterScreen extends React.Component {
             returnKeyType="go"
             placeholder="Email"
             placeholderTextColor="rgba(225,225,225,0.8)"
-          />
-          <DatePicker
-            style={STYLES.dob}
-            mode="date" //The enum of date, datetime and time
-            placeholder="Enter Date of Birth"
-            format="DD-MM-YYYY"
-            confirmBtnText="Confirm"
-            cancelBtnText="Cancel"
-            onDateChange={date => {
-              this.setState({ date: date });
-            }}
           />
           <TextInputCustom
             autoCorrect={false}
