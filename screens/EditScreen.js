@@ -66,7 +66,7 @@ export default class EditScreen extends React.Component {
   }
 
   async saveChanges() {
-    let login_data = login.login(global.email, this.state.current_password)
+    let login_data = login(global.user.email, this.state.current_password)
     let equivalent_new = this.state.passowrd == this.state.confirmation_password
     let data = {
       username: this.state.username,
@@ -75,7 +75,6 @@ export default class EditScreen extends React.Component {
       full_name: this.state.full_name,
       image: this.state.image,
     };
-
     if (login_data.success) {
       if (equivalent_new) {
         let api_url = global.serverURL + '/api/update_profile';
@@ -172,7 +171,7 @@ export default class EditScreen extends React.Component {
         <Button
           text="Save Changes"
           style={STYLES.saveButton}
-          onPress={this.saveChanges}
+          onPress={this.saveChanges.bind(this)}
         />
       </KeyboardAvoidingView>
     );

@@ -29,10 +29,11 @@ const STYLES = StyleSheet.create({
     color: Color.textColor,
   },
   stat_btn: {
-    marginBottom: -15,
-    // flexDirection: 'row',
-    flex: 1,
-    // backgroundColor: 'transparent',
+    backgroundColor: 'transparent',
+    width: undefined,
+    marginTop: 5,
+    paddingLeft: 5,
+    paddingRight: 5,
     borderLeftWidth: 2,
     borderLeftColor: Color.lightBackground
   }
@@ -132,7 +133,7 @@ export default class ProfileScreen extends React.Component {
                 <View style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
                     <Button
                     style={STYLES.stat_btn}
-                    text={`${global.user.stats.points} Points`}
+                    text={`${global.user.stats.points} points`}
                     onPress={() => this.props.navigation.navigate('Level')}
                     />
                     <Button
@@ -155,7 +156,7 @@ export default class ProfileScreen extends React.Component {
                     />
                 </View>
 
-                <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: -20}}>
                     <Button
                         style={{width: '70%', backgroundColor: Color.buttonColor}}
                         text="Edit Profile"
