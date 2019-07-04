@@ -26,7 +26,7 @@ export default class FeedScreen extends React.Component {
   }
 
   render() {
-    if (!global.login_status.success && !global.TEST) {
+    if (!global.login_info.success && !global.TEST) {
       return <Text>Please login to see your feed</Text>
     }
     else if (!this.state.feed) {
@@ -106,7 +106,7 @@ export default class FeedScreen extends React.Component {
             ))}
           <Button
             style={{
-              ...global.component_styles.roundedButton,
+              ...roundedButton,
               alignSelf: 'center',
             }}
             text_style={{
