@@ -15,9 +15,6 @@ import Color from '../constants/Color'
 export default class TextInputCustom extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      placeholderAbove: Boolean(this.props.placeholder)
-    }
   }
 
   render() {
@@ -44,16 +41,11 @@ export default class TextInputCustom extends React.Component {
     });
     return (
       <View style={STYLES.view}>
-        {this.state.placeholderAbove &&
-          <Text style={STYLES.text}>{this.props.placeholder}</Text>
-        }
+        <Text style={STYLES.text}>{this.props.placeholder}</Text>
         <TextInput
           {...this.props}
           style={STYLES.input}
-          onChangeText={text => {
-            this.props.onChangeText(text);
-            this.setState({ placeholderAbove: text != '' });
-          }}
+		  placeholder=""
         />
       </View>
     );
