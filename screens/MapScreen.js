@@ -80,7 +80,6 @@ export default class MapScreen extends React.Component {
     };
   }
 
-
   defaultLocationAsync() {
     let { status } = Permissions.askAsync(Permissions.LOCATION);
     if (status) { //Check whether permission granted

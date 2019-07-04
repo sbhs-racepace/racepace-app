@@ -6,7 +6,7 @@ import { Image } from 'react-native-elements'
 import Button from './Button';
 import request from '../functions/request';
 import '../global';
-import Color from '../constants/Color'
+import Color from '../constants/Color';
 
 const STYLES = StyleSheet.create({
   feed_item: {
@@ -52,13 +52,29 @@ const STYLES = StyleSheet.create({
   },
 });
 
+class Comment extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <View style={{ flexDirection: 'row' }}>
+        <Text style={{ fontWeight: 'bold' }}>{this.props.name}:</Text>
+        <Text> {this.props.comment}</Text>
+      </View>
+    );
+  }
+}
+
 export class FeedItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      likes: 0,
+      likes: this.props.likes || [],
       liked: false,
-      comments: [{ name: 'Test User', mess: 'Test Message' }],
+      comments: this.props.comments || [],
+      commentInput: '',
       showComments: false,
     };
   }
@@ -67,6 +83,7 @@ export class FeedItem extends React.Component {
     this.setState(prevState => {
       return {
         liked: !prevState.liked,
+        likes: this.props.likes + !prevState.liked,
       };
     });
     request('api/likeRoute', 'POST', { id: this.props.id }, true);
@@ -80,15 +97,13 @@ export class FeedItem extends React.Component {
 
   sendComment() {
     this.setState(prevState => {
-      prevState.comments.push({
-        name: global.user.full_name,
-        mess: this.state.mess,
-      });
+      prevState.comments.push([global.user.full_name, this.state.commentInput]);
       return {
         comments: prevState.comments,
       };
     });
   }
+
   render() {
     return (
       <View style={STYLES.feed_item}>
@@ -108,16 +123,39 @@ export class FeedItem extends React.Component {
         <View style={{ padding: '5%' , paddingLeft: '0%'}}>
           <Text style={STYLES.text}>{this.props.routename}</Text>
           <Text style={STYLES.text}>Description: {this.props.description}</Text>
-          <Text style={STYLES.text}>
-            Stats: {this.props.length}km {this.props.time}m
-          </Text>
+          <Text style={STYLES.text}>Length: {this.props.length}km</Text>
         </View>
-        
+		
         <Image source={require('../assets/map.png')} style={STYLES.routePic} />
         <View style={{ flexDirection: "row", justifyContent: 'space-between', width:"100%", padding: '5%' }}>
-          <Text style={STYLES.text}>0 Likes</Text>
-          <Text style={STYLES.text}>0 Comments</Text>
+          <Text style={STYLES.text}>{this.state.likes.length} Likes</Text>
+          <Text style={STYLES.text}>{this.state.comments.length} Comments</Text>
         </View>
+        {this.state.showComments && (
+          <View>
+            {this.state.comments.map(comment => (
+              <Comment name={comment[0]} comment={comment[1]} />
+            ))}
+            <View style={{ flexDirection: 'row', marginBottom: 5 }}>
+              <TextInput
+                placeholder="Enter a comment here..."
+                placeholderTextColor={Color.textColor}
+                style={{
+                  width: '90%',
+                  borderRadius: 10,
+                  borderWidth: 1,
+                  padding: 1,
+                  fontSize: 20,
+                }}
+                onChangeText={text => this.setState({ commentInput: text })}
+              />
+              <Button
+                style={{ height: 30, width: 30, borderRadius: 15, marginLeft: 5 }}
+                onPress={this.sendComment.bind(this)}
+              />
+            </View>
+          </View>
+        )}
         <View style={STYLES.likeCommentCombo}>
           <Button
             text="Like"

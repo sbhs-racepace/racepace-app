@@ -29,13 +29,11 @@ export default async function request(
   })
   .then(
     async resp => {
-      
       this.resp = await resp.json();
     },
     reason => {
       Alert.alert(errorMess, reason);
     }
   );
-
   return this.resp;
 }

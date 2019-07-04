@@ -22,32 +22,33 @@ export default class PreviousRunsScreen extends React.Component {
       return <Text>Please login to see your feed</Text>;
     }
 
-    if (!global.TEST) {
-      let resp = JSON.parse(
-        request('/api/get_recent_routes', 'POST', {}, true)._bodyText
-      );
+    if (global.login_status.success) {
+      let resp = request('/api/get_recent_routes', 'POST', {}, true);
+      if (resp.error) {
+        return <Text>An error occurred. {resp.description}</Text>
+      }
       resp = resp.recent_routes;
     }
 
     const test_data = (
       <ScrollView contentContainerStyle={STYLES.scrollView}>
         <FeedRoute
-          routeName="Run number 1"
+          from="Hyde Park"
+          to="Circular Quay"
           postTime="10am"
           length="1"
-          time="7"
         />
         <FeedRoute
-          routeName="Run number 1"
+          from="Hyde Park"
+          to="Circular Quay"
           postTime="10am"
           length="1"
-          time="7"
         />
         <FeedRoute
-          routeName="Run number 1"
+          from="Hyde Park"
+          to="Circular Quay"
           postTime="10am"
           length="1"
-          time="7"
         />
       </ScrollView>
     );
@@ -62,7 +63,16 @@ export default class PreviousRunsScreen extends React.Component {
             onPress={() => this.props.navigation.navigate('FollowRequests')}
           />
         </View>
-          {test_data}
+        {global.TEST && test_data}
+        {!global.TEST &&
+          resp.map(route=>
+          <FeedRoute
+            from={route.real_time_route.route.from}
+            to={route.real_time_route.route.to}
+            postTime={route.real_time_route.start_time}
+            length={route.real_time_route.route.distance}
+          />)
+        }
       </View>
     );
   }

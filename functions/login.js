@@ -3,6 +3,7 @@
 import '../global';
 import { Alert, AsyncStorage } from 'react-native';
 import Expo from 'expo';
+import { Google } from 'expo';
 import io from 'socket.io-client';
 
 export async function storeUserInfo() {
@@ -28,16 +29,33 @@ export async function storeUserInfo() {
 }
 
 export async function execute_login(email,password) {
-  let login_response = await login(email,password)
+  let login_response = await login(email,password);
   if (login_response.success) {
-    await storeUserInfo();
-    this.props.navigation.navigate('Feed');
+    if (check_login(login_response)) {
+      storeUserInfo();
+      this.setState({loading:false});
+      this.props.navigation.navigate('Feed');
+    } else {
+      this.setState({loading:false});
+      Alert.alert('Invalid Username or Password');
+    }
+  }
+  else {
+    this.setState({loading:false});
   }
 }
 
 export async function login(email,password) {
-  let data = { email: email, password: password };
   let api_url = global.serverURL + '/api/login';
+  let data = {
+    email, password
+  };
+  for (item of Object.entries(data)) {
+    if (!item[1]) {
+      Alert.alert("Blank fields", `All fields must be filled. ${item[0]} is blank.`)
+      return false;
+    }
+  }
   let login_response = false;
   await fetch(api_url, {
     method: 'POST',
@@ -64,51 +82,77 @@ export async function register() {
     dob: this.state.dob,
     username: this.state.username,
   };
-  let api_url = global.serverURL + '/api/register';
-  fetch(api_url, {
-    method: 'POST',
-    body: JSON.stringify(data),
-  })
-  .then(async res => {
-    let res_data = await res.json()
-    if (res_data.success) {
-      storeUserInfo();
-      this.props.navigation.navigate('Feed');
-    } else {
-      Alert.alert('Error', res_data.error)
+  for (item of Object.entries(data)) {
+    if (!item[1]) {
+      Alert.alert("Blank fields", `All fields must be filled. ${item[0]} is blank.`)
+      this.setState({loading:false})
+      return 0; //Exit function
     }
-  })
-  .catch(error => {
-    Alert.alert('Error', error);
-  })
+  }
+  const url = global.serverURL + '/api/register';
+  try {
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    })
+      .catch(res => {
+        Alert.alert('Error connecting to server', res);
+      })
+      .then(
+        async res => {
+          res = await res.json()
+          let login_response = check_login(res);
+          if (login_response) {
+            storeUserInfo();
+            this.setState({loading:false})
+            this.props.navigation.navigate('FeedFollowing');
+          }
+        },
+        reason => {
+          this.setState({loading:false})
+          Alert.alert('Error connecting to server', reason);
+        }
+      );
+  } catch (err) {
+    //Catch any other errors
+    Alert.alert('Error', err);
+    this.setState({loading:false})
+  }
 }
 
 export async function googleLogin() {
-  let api_url = global.serverURL + '/api/google_login'
-  let googleLoginID = {
-    android: "Insert key here", 
-    ios: "Insert key here"
-  };
-  let result = await Expo.Google.logInAsync({ androidClientId: googleLoginID.android });
-  if (result.type == 'success') {
-    fetch(api_url, {
-      method: 'POST',
-      body: "idToken="+result.idToken,
-    })
-    .then(async res => {
-        let res_data = await res.json()
-        if (res_data.success) {
-          storeUserInfo();
-          this.props.navigation.navigate('Feed');
-        } else {
-          Alert.alert('Error', res_data.error)
-        }
-      }
-    )
-    .catch(error => {
-      Alert.alert('Error connecting to server', error);
-    })
-  } else {
-    Alert.alert('Error')
+  try {
+    const url = global.serverURL + '/api/google_login'
+    const config = {
+      androidClientId: global.googleLoginID.android,
+    }
+    const result = await Google.logInAsync(config);
+    if (result.type == 'success') {
+      fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({idToken:result.idToken}),
+      })
+        .catch(res => {
+          console.log(res)
+          Alert.alert('Error connecting to server', res);
+        })
+        .then(
+          async res => {
+            res = await res.json()
+            let login_response = check_login(res);
+            if (login_response) {
+              storeUserInfo();
+              this.props.navigation.navigate('FeedFollowing');
+            }
+          },
+          reason => {
+            console.log('Promise rejected');
+            Alert.alert('Error connecting to server', reason);
+          }
+        );
+    }
+  } catch (err) {
+    console.log(err);
+    Alert.alert('Google Login Error', err);
   }
 }
