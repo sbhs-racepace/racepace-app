@@ -30,7 +30,7 @@ export async function storeUserInfo() {
 export async function execute_login(email,password) {
   let login_response = await login(email,password)
   if (login_response.success) {
-    storeUserInfo();
+    await storeUserInfo();
     this.props.navigation.navigate('Feed');
   }
 }
