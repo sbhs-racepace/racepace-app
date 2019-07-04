@@ -98,7 +98,7 @@ export default class ProfileScreen extends React.Component {
     <ScrollView>
       <View style={STYLES.container}>
         <View>
-            <Text style={[STYLES.text, { fontSize: 30, textAlign: 'center', paddingTop: '5%'}]}>
+            <Text style={[STYLES.text, { fontSize: 30, textAlign: 'center', paddingTop: '5%', marginBottom: -10}]}>
             {this.state.name}
             </Text>
             <View style={{ height: 150, padding: '3%' }}>
