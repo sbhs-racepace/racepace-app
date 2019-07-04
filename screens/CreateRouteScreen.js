@@ -104,6 +104,7 @@ class RunSetupScreen extends React.Component {
     } else {
       Alert.alert('Failure Generating Route')
     }
+	this.setState({loading:false});
   }
   
   render() {
@@ -156,9 +157,17 @@ class RunSetupScreen extends React.Component {
           style={{borderRadius:10}} 
           text="Generate Route Info"
           onPress={() => {
-            this.generateRouteInfo()
+			this.setState({loading:true}, this.generateRouteInfo.bind(this))
           }}
-        />
+        >
+		  {this.state.loading && (
+		    <ActivityIndicator
+			  animating={true}
+			  color="white"
+			  size="large"
+			/>
+		  )}
+		</Button>
       </View>
     );
   }

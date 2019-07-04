@@ -3,8 +3,8 @@
 import React from 'react';
 import { Component } from 'react';
 import Color from '../constants/Color'
-import { View, Text, StyleSheet, Alert, Dimensions } from 'react-native';
 import { Image } from 'react-native-elements'
+import { View, Text, StyleSheet, Image, Alert, Dimensions, ActivityIndicator } from 'react-native';
 import { login, execute_login, googleLogin } from '../functions/login';
 import Button from '../components/Button.js';
 import TextInputCustom from '../components/TextInput';
@@ -38,7 +38,7 @@ export default class LoginScreen extends React.Component {
     this.state = {
       email: 'email',
       pword: 'password',
-      isSigninInProgress: false,
+      loading: false,
     };
   }
 
@@ -81,9 +81,23 @@ export default class LoginScreen extends React.Component {
           <Button
             style={STYLES.roundedButton}
             text_style={STYLES.button_text}
-            onPress={execute_login.bind(this, this.state.email, this.state.pword)}
+            onPress={()=>
+              this.setState(
+                {loading:true},
+                execute_login.bind(this,this.state.email, this.state.pword)
+                //Loading is reset to false inside this function ^
+              )
+            }
             text="Login"
-          />
+          >
+            {this.state.loading && (
+              <ActivityIndicator
+                animating={true}
+                color="white"
+                size="large"
+              />
+            )}
+          </Button>
           <Button
             style={STYLES.roundedButton}
             text_style={STYLES.button_text}
