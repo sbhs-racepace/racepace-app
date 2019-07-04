@@ -1,7 +1,7 @@
 // Jason Yu, Sunny Yan
 
 import React from 'react';
-import { StyleSheet, View, Text, Alert, ScrollView, TextInput, Dimensions, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, View, Text, Alert, ScrollView, TextInput, Dimensions, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
 import {createAppContainer,createMaterialTopTabNavigator} from 'react-navigation';
 import { CheckBox } from 'react-native-elements'
 import Button from "../components/Button"
