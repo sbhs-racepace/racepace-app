@@ -66,8 +66,8 @@ export default class EditScreen extends React.Component {
   }
 
   async saveChanges() {
-    let login_data = login(global.user.email, this.state.current_password)
-    let equivalent_new = this.state.passowrd == this.state.confirmation_password
+    let login_data = await login(global.user.email, this.state.current_password)
+    let equivalent_new = this.state.password == this.state.confirmation_password
     let data = {
       username: this.state.username,
       password: this.state.password,
@@ -146,16 +146,19 @@ export default class EditScreen extends React.Component {
           <TextInput 
             placeholder="Current Password" 
             style={STYLES.input} 
+            autoCapitalize="none"
             onChangeText={current_password => this.setState({ current_password })}
           />
           <TextInput 
             placeholder="New Password" 
             style={STYLES.input} 
+            autoCapitalize="none"
             onChangeText={password => this.setState({ password })}
           />
           <TextInput 
             placeholder="Confirm New Password" 
             style={STYLES.input} 
+            autoCapitalize="none"
             onChangeText={confirmation_pword => this.setState({ confirmation_pword })}
           />
           

@@ -25,9 +25,10 @@ export default class StartupScreen extends React.Component {
     })
     let login_info = await AsyncStorage.getItem('login_info')
     if (login_info !== null) {
+      console.log(login_info,'dfsa')
       let json_login_info = JSON.parse(login_info)
       global.login_info = json_login_info
-      storeUserInfo()
+      await storeUserInfo()
       this.props.navigation.navigate('Feed')
     } else {
       this.props.navigation.navigate('Splash')
