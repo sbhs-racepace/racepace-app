@@ -1,7 +1,7 @@
 // Jason Yu
 
 import React from 'react'
-import { View, AsyncStorage, YellowBox } from 'react-native'
+import { View, AsyncStorage, StatusBar } from 'react-native'
 import '../global'
 import * as Font from 'expo-font'
 import { storeUserInfo } from '../functions/login'
@@ -15,7 +15,7 @@ export default class StartupScreen extends React.Component {
 
   async componentDidMount () {
     console.disableYellowBox = true
-
+    StatusBar.setBarStyle('light-content', true);
     global.location_permission = Boolean((await Permissions.askAsync(Permissions.LOCATION)).status)
     await Font.loadAsync({
       'RobotoCondensed-BoldItalic': require('../assets/fonts/RobotoCondensed-BoldItalic.ttf'),
