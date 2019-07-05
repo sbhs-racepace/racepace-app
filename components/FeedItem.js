@@ -146,6 +146,7 @@ export class FeedItem extends React.Component {
                   borderWidth: 1,
                   padding: 1,
                   fontSize: 20,
+                  color:Color.textColor,
                 }}
                 onChangeText={text => this.setState({ commentInput: text })}
               />
