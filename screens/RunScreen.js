@@ -105,7 +105,7 @@ class RunScreen extends React.Component {
       <View style={{backgroundColor:Color.lightBackground, flex:1}}>
         <View style={{flex:1,alignItems:'center'}}>
           <Text style={STYLES.title}>Run</Text>      
-          <Text style={STYLES.text}>Distance: {this.state.distance}</Text>
+          <Text style={STYLES.text}>Distance: {this.state.distance}m</Text>
           <Text style={STYLES.text}>Timer: {this.timeString()}</Text>
           <Text style={STYLES.text}>Pace: {this.state.pace.minutes} :{this.state.pace.seconds}</Text>
           <Text style={STYLES.text}>Average Pace: {this.props.real_time_info.average_pace.minutes} :{this.props.real_time_info.average_pace.seconds}</Text>

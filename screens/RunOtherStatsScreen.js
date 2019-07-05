@@ -58,7 +58,7 @@ class RunOtherStatsScreen extends React.Component {
           <Text style={STYLES.title}>Other Stats</Text>      
           <Text style={STYLES.text}>Timer: </Text>
           <Text style={STYLES.text}>Lap Pace: {this.props.real_time_info.lap_pace.minutes} :{this.props.real_time_info.lap_pace.seconds}</Text>
-          <Text style={STYLES.text}>Lap Distance: {this.props.real_time_info.lap_distance}</Text>
+          <Text style={STYLES.text}>Lap Distance: {this.props.real_time_info.lap_distance}m</Text>
         </View>
 
         <View style={{backgroundColor:Color.darkBackground, height: windowHeight * 0.20}}>

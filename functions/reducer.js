@@ -4,7 +4,7 @@ import { calculateAveragePace, speedToPace, coordDistance, calculateTimeFromPace
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
 
-const INITIAL_STATE = {
+const INITIAL_RUN_STATE = {
   real_time_info: {
     distance: 0,
     current_pace: {minutes: '--', seconds:'--'},
@@ -55,7 +55,7 @@ function calculateRealTimeInfo(state, location_packet) {
   return state;
 }
 
-export function runReducer(state = INITIAL_STATE, action) {
+export function runReducer(state = INITIAL_RUN_STATE, action) {
   switch (action.type) {
     case CREATE_RUN:
       return Object.assign({}, state, {
@@ -138,6 +138,18 @@ export function runReducer(state = INITIAL_STATE, action) {
   }
 };
 
+const INITIAL_GENERAL_STATE = {
+  
+}
+
+export function generalReducer(state = INITIAL_GENERAL_STATE, action) {
+  switch (action.type) {
+    default:
+      return state
+  }
+};
+
 export default combineReducers({
   runReducer,
+  generalReducer
 });

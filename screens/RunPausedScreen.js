@@ -74,7 +74,7 @@ class RunPausedScreen extends React.Component {
     return (
       <View style={{backgroundColor:Color.lightBackground, flex:1}}>
         <View style={{flex:1,alignItems:'center'}}>
-          <Text style={STYLES.title}>Run Stats</Text>      
+          <Text style={STYLES.title}>Paused</Text>      
           <Text style={STYLES.text}>Distance: {this.props.real_time_info.distance}</Text>
           <Text style={STYLES.text}>Average Pace: {this.props.real_time_info.average_pace.minutes} :{this.props.real_time_info.average_pace.seconds}</Text>
           <Text style={STYLES.text}>Calories/Kilojoules: Not implemented</Text>
