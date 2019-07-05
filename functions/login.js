@@ -17,7 +17,7 @@ export async function storeUserInfo() {
     .then(async res => {
       let res_data = await res.json();
       if (res_data.success) {
-        global.user = res_data['info'];
+        global.user = await res_data['info'];
         global.socket = io(
           `${global.serverURL}?token=${global.login_info.token}`,
           { transports: ['websocket'] }
@@ -73,6 +73,7 @@ export async function login(email, password) {
         'login_info',
         JSON.stringify(global.login_info)
       ); // Storing User Login
+
     })
     .catch(error => {
       Alert.alert('Error ', error);

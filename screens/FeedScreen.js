@@ -58,7 +58,7 @@ export default class FeedScreen extends React.Component {
     return (
       <KeyboardAvoidingView
         behavior="position"
-        style={{ backgroundColor: Color.lightBackground }}>
+        style={{ backgroundColor: Color.darkBackground }}>
         <ScrollView
           contentContainerStyle={{
             backgroundColor: Color.darkBackground,

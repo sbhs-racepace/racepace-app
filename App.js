@@ -161,7 +161,7 @@ const LoginNavigator = createStackNavigator({
             indicatorStyle: {
                 backgroundColor: Color.primaryColor
             },
-            style: {backgroundColor: Color.darkBackground},
+            style: {backgroundColor: Color.darkBackground,},
           },
         }
       ),
@@ -198,9 +198,9 @@ const LoginNavigator = createStackNavigator({
       tabBarOptions: {
         activeTintColor: Color.textColor,
         inactiveTintColor: Color.offColor,
-        style: { backgroundColor: Color.darkBackground },
-        labelStyle: {fontSize: 12},
-        tabStyle: {height:50},
+        style: { backgroundColor: Color.darkBackground},
+        labelStyle: {fontSize: 11},
+        tabStyle: {height:50,},
         showIcon: true,
       }
     })
@@ -218,7 +218,7 @@ export default class App extends React.Component {
   render() {
     return (
       <Provider store={store}>
-          <View style={{height:20, backgroundColor: Color.lightBackground}}/>
+          <View style={{height:20, backgroundColor: Color.darkBackground}}/>
           <AppContainer 
             style={{backgroundColor: Color.darkBackground}}
           />
