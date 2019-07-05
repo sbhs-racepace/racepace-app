@@ -59,7 +59,7 @@ export default class RegisterScreen extends React.Component {
 
   render() {
     return (
-      <KeyboardAvoidingView style={{backgroundColor:Color.darkBackground, flex:1}}>
+      <KeyboardAvoidingView style={{backgroundColor:Color.darkBackground, flex:1}} behavior="padding">
         <BackButtonHeader
           onPress={this.props.navigation.goBack}
           title='Register'

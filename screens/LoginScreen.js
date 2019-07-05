@@ -4,7 +4,7 @@ import React from 'react';
 import { Component } from 'react';
 import Color from '../constants/Color'
 import { Image } from 'react-native-elements'
-import { View, Text, StyleSheet, Alert, Dimensions, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, Alert, Dimensions, ActivityIndicator, KeyboardAvoidingView } from 'react-native';
 import { login, execute_login, googleLogin } from '../functions/login';
 import Button from '../components/Button.js';
 import TextInputCustom from '../components/TextInput';
@@ -44,7 +44,7 @@ export default class LoginScreen extends React.Component {
 
   render() {
     return (
-      <View style={{backgroundColor: Color.darkBackground, flex:1}}>
+      <KeyboardAvoidingView style={{backgroundColor: Color.darkBackground, flex:1}} behavior="padding">
         <BackButtonHeader
           title="Login Screen"
           onPress={this.props.navigation.goBack}
@@ -105,7 +105,7 @@ export default class LoginScreen extends React.Component {
             text="Login with Google"
           />
         </View>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
