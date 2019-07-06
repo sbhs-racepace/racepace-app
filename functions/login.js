@@ -88,7 +88,6 @@ export async function register() {
     email: this.state.email,
     password: this.state.pword,
     full_name: this.state.full_name,
-    dob: this.state.dob,
     username: this.state.username,
   };
   for (let item of Object.entries(data)) {
