@@ -7,7 +7,6 @@ import { View, Text, StyleSheet, Alert, Dimensions, ActivityIndicator, KeyboardA
 import TextInputCustom from '../components/TextInput';
 import Button from '../components/Button';
 import BackButtonHeader from '../components/BackButtonHeader'
-import DatePicker from 'react-native-datepicker';
 import { register } from '../functions/login';
 import Color from '../constants/Color'
 
@@ -35,9 +34,6 @@ const STYLES = StyleSheet.create({
     height: Dimensions.get('window').width * 0.5,
     borderRadius: (Dimensions.get('window').width * 0.5) / 2,
   },
-  dob: {
-    width: '80%',
-  },
 });
 
 export default class RegisterScreen extends React.Component {
@@ -50,7 +46,6 @@ export default class RegisterScreen extends React.Component {
       full_name: '',
       email: '',
       pword: '',
-      dob: '',
       username: '',
       loading: false,
     };
