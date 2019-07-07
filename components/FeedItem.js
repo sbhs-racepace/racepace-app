@@ -67,7 +67,7 @@ class Comment extends React.Component {
   }
 }
 
-export class FeedItem extends React.Component {
+export default class FeedItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -111,7 +111,7 @@ export class FeedItem extends React.Component {
           <Image
             style={STYLES.profilePic}
             source={{
-              uri: `${global.serverURL}/api/avatars/${global.login_info.user_id}.png`,
+              uri: `${global.serverURL}/api/avatars/${this.props.userid}.png`,
             }}
           />
           <View style={STYLES.user_info}>
