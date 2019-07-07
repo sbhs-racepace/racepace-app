@@ -77,7 +77,6 @@ class TrackingScreen extends React.Component {
         {
           accuracy: 4, //Accurate to 10m
           timeInterval: 5000,
-          distanceInterval:10,
         },
         (location) => {
           // Always moves to current location if activated
