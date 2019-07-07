@@ -24,36 +24,36 @@ class FeedScreen extends React.Component {
   }
 
   render() {
-    if (!this.props.user.token && !global.TEST) { 
-      return <Text>Please login to see your feed</Text>
-    } else if (!this.state.feed) {
-      let feed = request('/get_feed', 'POST', {}, true);
-      this.setState({ feed: feed.feed_items });
-    } else if (!global.TEST && this.state.feed.length==0) {
-      return (
-        <View>
-          <Text>Your feed is empty</Text>
-          <Button
-            style={{
-              ...roundedButton,
-              alignSelf: 'center',
-            }}
-            text_style={{
-              padding: '1%',
-              fontSize: 16,
-            }}
-            onPress={() => {
-              let feed = request('/get_feed', 'POST', {}, true);
-              this.setState({ feed: feed.feed_items });
-            }}
-            text="Refresh"
-          />
-        </View>
-      );
-    } else {
-      return (<View></View>);
-    }
-    
+    return (<View></View>)
+    // if (!this.props.user.token && !global.TEST) { 
+    //   return <Text>Please login to see your feed</Text>
+    // } else if (!this.state.feed) {
+    //   let feed = request('/get_feed', 'POST', {}, true);
+    //   this.setState({ feed: feed.feed_items });
+    //   return <View></View>
+    // } else if (!global.TEST && this.state.feed.length==0) {
+    //   return (
+    //     <View>
+    //       <Text>Your feed is empty</Text>
+    //       <Button
+    //         style={{
+    //           ...roundedButton,
+    //           alignSelf: 'center',
+    //         }}
+    //         text_style={{
+    //           padding: '1%',
+    //           fontSize: 16,
+    //         }}
+    //         onPress={() => {
+    //           let feed = request('/get_feed', 'POST', {}, true);
+    //           this.setState({ feed: feed.feed_items });
+    //         }}
+    //         text="Refresh"
+    //       />
+    //     </View>
+    //   );
+    // }
+
     // return (
     //   <KeyboardAvoidingView
     //     behavior="position"
