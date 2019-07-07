@@ -3,7 +3,6 @@
 import React from 'react';
 import { ScrollView, Text, View, StyleSheet, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import Button from "../components/Button"
-import "../global"
 import Color from '../constants/Color'
 
 const STYLES = StyleSheet.create({
@@ -59,7 +58,7 @@ export default class GroupScreen extends React.Component {
   render() {
     return (
       <View style={{flex:1, backgroundColor:Color.lightBackground}}>
-        <Text style={{fontFamily:'RobotoCondensed-BoldItalic',fontSize:40,padding:"3%",color:Color.primaryColor}}>Running Groups</Text>
+        <Text style={{fontFamily:'Roboto-Bold',fontSize:40,padding:"3%",color:Color.primaryColor}}>Running Groups</Text>
 
         <KeyboardAvoidingView keyboardVerticalOffset={100} behavior="position" style={{backgroundColor: Color.lightBackground}}>
           <ScrollView>

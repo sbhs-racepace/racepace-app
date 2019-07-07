@@ -7,22 +7,20 @@ import { FeedItem } from '../components/FeedItem';
 import '../global.js';
 import request from '../functions/request';
 import Color from '../constants/Color';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 let roundedButton = {
   width: '80%',
   borderRadius: 10,
 }
 
-export default class FeedScreen extends React.Component {
+class FeedScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       feed: [],
     };
-  }
-
-  componentDidMount() {
-    
   }
 
   render() {
@@ -124,3 +122,14 @@ export default class FeedScreen extends React.Component {
     );
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ }, dispatch)
+}
+
+function mapStateToProps(state) {
+  const { user } = state;
+  return { user };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(FeedScreen);

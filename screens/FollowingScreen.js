@@ -6,7 +6,6 @@ import { Image } from 'react-native-elements'
 import {createMaterialTopTabNavigator,createAppContainer} from 'react-navigation'
 import Button from "../components/Button"
 import BackButtonHeader from '../components/BackButtonHeader'
-import '../global'
 import Color from '../constants/Color'
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');

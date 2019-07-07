@@ -6,11 +6,12 @@ import { Image } from 'react-native-elements'
 import Button from '../components/Button'
 import BackButton from '../components/BackButton'
 import Color from '../constants/Color'
+import {noLabel, cobalt,lunar} from '../constants/mapstyle'
 import MapView from 'react-native-maps';
 import { Marker, Polyline } from 'react-native-maps';
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
-import { startRun, addLocationPacket, pauseRun } from '../functions/action'
+import { startRun, addLocationPacket, pauseRun } from '../functions/run_action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
@@ -76,8 +77,7 @@ class TrackingScreen extends React.Component {
       Location.watchPositionAsync(
         {
           accuracy: 4, //Accurate to 10m
-          timeInterval: 5000,
-          distanceInterval:10,
+          timeInterval: 3000,
         },
         (location) => {
           // Always moves to current location if activated
@@ -98,9 +98,11 @@ class TrackingScreen extends React.Component {
 
   render() {
     return (
-      <View style={{flex:1}}>
+      <View style={{flex:1, backgroundColor:Color.darkBackground}}>
         <MapView
           style={STYLES.map}
+          provider = { MapView.PROVIDER_GOOGLE } // Usage of google maps
+          customMapStyle = { lunar }
           showsUserLocation={true}
           showsMyLocationButton={false}
           region={this.state.region}
@@ -158,7 +160,8 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-  return state;
+  const { run, user } = state;
+  return { run, user };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TrackingScreen);

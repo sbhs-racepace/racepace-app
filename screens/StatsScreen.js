@@ -3,7 +3,8 @@
 import React from 'react';
 import { StyleSheet, View, Text, Alert, ScrollView } from 'react-native';
 import { Card } from 'react-native-elements'
-import "../global.js"
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import Color from '../constants/Color'
 
@@ -21,13 +22,13 @@ const STYLES = StyleSheet.create({
   }
 })
 
-export default class StatsScreen extends React.Component {
+class StatsScreen extends React.Component {
   constructor(props) {
     super(props);
   }
   
   render() {
-    let stats = global.user.stats
+    let stats = this.props.user.stats
     
     return (
     <View style={{flexDirection: 'row', flexWrap: 'wrap',  padding: 10}}>
@@ -84,7 +85,19 @@ export default class StatsScreen extends React.Component {
         <Card title="Estimated V02 Max"><Text>{stats.estimated_v02_max ? stats.estimated_v02_max : 'None'}</Text></Card>
         <Card title="Average Heart Rate"><Text>{stats.average_heart_rate ? stats.average_heart_rate : 'None'}</Text></Card>
         <Card title="Cadence"><Text>{stats.cadence ? stats.cadence : 'None'}</Text></Card> */}
+
     </View>
     );
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ }, dispatch)
+}
+
+function mapStateToProps(state) {
+  const { user } = state
+  return { user };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(StatsScreen);

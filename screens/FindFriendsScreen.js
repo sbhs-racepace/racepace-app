@@ -1,12 +1,15 @@
 import React from 'react';
 import { Component } from 'react';
-import { Alert, View, ScrollView, Text,TextInput, Dimensions, StyleSheet } from 'react-native';
+import { Alert, View, ScrollView, Text, Dimensions, StyleSheet } from 'react-native';
+import TextInput from '../components/TextInput'
 import { Image } from 'react-native-elements'
 import Button from '../components/Button.js';
 import BackButtonHeader from '../components/BackButtonHeader'
 import '../global'
 import Color from '../constants/Color'
 import request from '../functions/request'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
@@ -39,7 +42,7 @@ const STYLES = StyleSheet.create({
     alignItems:'center',
   },
   title: {
-    fontFamily:'RobotoCondensed-BoldItalic',fontSize:40,color:Color.primaryColor, textAlign:'center',
+    fontFamily:'Roboto-Bold',fontSize:40,color:Color.primaryColor, textAlign:'center',
   },
 });
 
@@ -65,7 +68,7 @@ class FriendBox extends React.Component {
   }
 }
 
-export default class FindFriendsScreen extends React.Component {
+class FindFriendsScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -81,7 +84,7 @@ export default class FindFriendsScreen extends React.Component {
       method: 'POST',
       body: JSON.stringify({name: this.searchString}),
       headers: {
-          authorization: global.login_info.token
+          authorization: this.props.user.token
       }
     })
     .catch(res => {
@@ -142,3 +145,14 @@ export default class FindFriendsScreen extends React.Component {
     );
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ }, dispatch)
+}
+
+function mapStateToProps(state) {
+  const { user } = state;
+  return { user };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(FindFriendsScreen);

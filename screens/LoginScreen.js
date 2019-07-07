@@ -4,12 +4,14 @@ import React from 'react';
 import { Component } from 'react';
 import Color from '../constants/Color'
 import { Image } from 'react-native-elements'
-import { View, Text, StyleSheet, Alert, Dimensions, ActivityIndicator, KeyboardAvoidingView } from 'react-native';
-import { login, execute_login, googleLogin } from '../functions/login';
+import { View, Text, StyleSheet, Alert, Dimensions, ActivityIndicator } from 'react-native';
+import { login, googleLogin, getUserInfo } from '../functions/login';
 import Button from '../components/Button.js';
 import TextInputCustom from '../components/TextInput';
-import '../global';
 import BackButtonHeader from '../components/BackButtonHeader'
+import { storeUserInfo, storeLoginInfo } from '../functions/user_info_action'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
@@ -32,7 +34,7 @@ const STYLES = StyleSheet.create({
   }
 });
 
-export default class LoginScreen extends React.Component {
+class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -81,13 +83,18 @@ export default class LoginScreen extends React.Component {
           <Button
             style={STYLES.roundedButton}
             text_style={STYLES.button_text}
-            onPress={()=>
-              this.setState(
-                {loading:true},
-                execute_login.bind(this,this.state.email, this.state.pword)
-                //Loading is reset to false inside this function ^
-              )
-            }
+            onPress={async ()=> {
+              this.setState({loading:true})
+              let login_response = await login(this.state.email, this.state.pword);
+              console.log(login_response)
+              if (login_response != false) {
+                await this.props.storeLoginInfo(login_response);
+                let userInfo = await getUserInfo(this.props.user.token);
+                this.props.storeUserInfo(userInfo)
+                this.props.navigation.navigate('Feed');
+              }
+              this.setState({loading:false})
+            }}
             text="Login"
           >
             {this.state.loading && (
@@ -109,3 +116,14 @@ export default class LoginScreen extends React.Component {
     );
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ storeUserInfo, storeLoginInfo }, dispatch)
+}
+
+function mapStateToProps(state) {
+  const {user} = state
+  return {user};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);

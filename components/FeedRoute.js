@@ -1,11 +1,10 @@
 // Jason Yu
 
 import * as React from 'react';
-import { Text, TextInput, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Image } from 'react-native-elements'
 import Button from "./Button"
 import Color from '../constants/Color'
-import '../global'
 
 const STYLES = StyleSheet.create({
 	feed_item : {

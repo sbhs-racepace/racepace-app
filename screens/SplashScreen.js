@@ -4,7 +4,6 @@ import React from 'react';
 import { View, Text, Dimensions, StyleSheet } from 'react-native';
 import { Image } from 'react-native-elements'
 import Button from '../components/Button.js'
-import '../global.js'
 import Color from '../constants/Color'
 
 const STYLES = StyleSheet.create({

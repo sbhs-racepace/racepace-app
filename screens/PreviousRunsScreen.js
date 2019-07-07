@@ -7,6 +7,8 @@ import Button from '../components/Button';
 import request from '../functions/request';
 import '../global'
 import Color from '../constants/Color'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 const STYLES = StyleSheet.create({
   scrollView: {
@@ -16,14 +18,14 @@ const STYLES = StyleSheet.create({
   },
 });
 
-export default class PreviousRunsScreen extends React.Component {
+class PreviousRunsScreen extends React.Component {
   render() {
-    if (!global.login_info.token && !global.TEST) {
+    if (!this.props.user.token && !global.TEST) {
       return <Text>Please login to see your feed</Text>;
     }
 
-    if (global.login_info.success) {
-      let resp = request('/api/get_recent_routes', 'POST', {}, true);
+    if (this.props.user.token) {
+      resp = request('/api/get_recent_routes', 'POST', {}, true);
       if (resp.error) {
         return <Text>An error occurred. {resp.description}</Text>
       }
@@ -77,6 +79,17 @@ export default class PreviousRunsScreen extends React.Component {
     );
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ }, dispatch)
+}
+
+function mapStateToProps(state) {
+  const { user } = state;
+  return { user };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PreviousRunsScreen);
 
 
 {/* {global.TEST && (

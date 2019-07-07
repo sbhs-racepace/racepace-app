@@ -1,7 +1,8 @@
 // Jason Yu
 
 import * as React from 'react';
-import { Text, TextInput, View, StyleSheet, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import TextInput from './TextInput'
 import { Image } from 'react-native-elements'
 import Button from './Button';
 import request from '../functions/request';
@@ -67,7 +68,7 @@ class Comment extends React.Component {
   }
 }
 
-export class FeedItem extends React.Component {
+export default class FeedItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -111,7 +112,7 @@ export class FeedItem extends React.Component {
           <Image
             style={STYLES.profilePic}
             source={{
-              uri: `${global.serverURL}/api/avatars/${global.login_info.user_id}.png`,
+              uri: `${global.serverURL}/api/avatars/${this.props.userid}.png`,
             }}
           />
           <View style={STYLES.user_info}>
@@ -139,7 +140,6 @@ export class FeedItem extends React.Component {
             <View style={{ flexDirection: 'row', marginBottom: 5 }}>
               <TextInput
                 placeholder="Enter a comment here..."
-                placeholderTextColor={Color.textColor}
                 style={{
                   width: '90%',
                   borderRadius: 10,

@@ -8,7 +8,7 @@ import * as Permissions from 'expo-permissions'
 import Button from "../components/Button"
 import Color from '../constants/Color.js'
 import "../global.js"
-import { startRun, addLocationPacket, pauseRun } from '../functions/action'
+import { startRun, addLocationPacket, pauseRun } from '../functions/run_action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
@@ -28,7 +28,7 @@ const STYLES = StyleSheet.create({
     textAlign:'center',
   },
   title: {
-    fontFamily:'RobotoCondensed-BoldItalic',fontSize:50,color:Color.primaryColor,
+    fontFamily:'Roboto-Bold',fontSize:50,color:Color.primaryColor,
     borderColor:'white',
     flex:3,
     justifyContent:'center'
@@ -72,13 +72,13 @@ class RunScreen extends React.Component {
     let location_packet = await Location.getCurrentPositionAsync({
       accuracy: 4,
     })
-    if (this.props.run_info.real_time_tracking) global.socket.emit('location_update',location_packet);
+    if (this.props.run.run_info.real_time_tracking) global.socket.emit('location_update',location_packet);
     this.props.addLocationPacket(location_packet)
   }
 
   async locationUpdateLoop() {
-    if (this.props.run_info.active == true) {
-      if (this.props.run_info.real_time_tracking) global.socket.emit('start_run', start_time);
+    if (this.props.run.run_info.active == true) {
+      if (this.props.run.run_info.real_time_tracking) global.socket.emit('start_run', start_time);
       this.locationUpdate()
       let timerId = setTimeout(this.locationUpdateLoop.bind(this), 3000);
     } 
@@ -105,10 +105,10 @@ class RunScreen extends React.Component {
       <View style={{backgroundColor:Color.lightBackground, flex:1}}>
         <View style={{flex:1,alignItems:'center'}}>
           <Text style={STYLES.title}>Run</Text>      
-          <Text style={STYLES.text}>Distance: {this.state.distance}</Text>
+          <Text style={STYLES.text}>Distance: {this.state.distance}m</Text>
           <Text style={STYLES.text}>Timer: {this.timeString()}</Text>
           <Text style={STYLES.text}>Pace: {this.state.pace.minutes} :{this.state.pace.seconds}</Text>
-          <Text style={STYLES.text}>Average Pace: {this.props.real_time_info.average_pace.minutes} :{this.props.real_time_info.average_pace.seconds}</Text>
+          <Text style={STYLES.text}>Average Pace: {this.props.run.real_time_info.average_pace.minutes} :{this.props.run.real_time_info.average_pace.seconds}</Text>
         </View>
 
         <View style={{backgroundColor:Color.darkBackground, height: windowHeight * 0.20}}>
@@ -152,7 +152,8 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-  return state;
+  const { user, run } = state;
+  return { user, run };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RunScreen);

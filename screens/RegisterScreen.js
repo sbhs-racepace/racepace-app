@@ -7,10 +7,11 @@ import { View, Text, StyleSheet, Alert, Dimensions, ActivityIndicator, KeyboardA
 import TextInputCustom from '../components/TextInput';
 import Button from '../components/Button';
 import BackButtonHeader from '../components/BackButtonHeader'
-import DatePicker from 'react-native-datepicker';
-import { register } from '../functions/login';
-import '../global';
+import { register, getUserInfo } from '../functions/login';
 import Color from '../constants/Color'
+import { storeUserInfo, storeLoginInfo } from '../functions/user_info_action'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 const STYLES = StyleSheet.create({
   button: {
@@ -36,12 +37,9 @@ const STYLES = StyleSheet.create({
     height: Dimensions.get('window').width * 0.5,
     borderRadius: (Dimensions.get('window').width * 0.5) / 2,
   },
-  dob: {
-    width: '80%',
-  },
 });
 
-export default class RegisterScreen extends React.Component {
+class RegisterScreen extends React.Component {
   static navigationOptions = {
     title: 'Register',
   };
@@ -51,7 +49,6 @@ export default class RegisterScreen extends React.Component {
       full_name: '',
       email: '',
       pword: '',
-      dob: '',
       username: '',
       loading: false,
     };
@@ -118,8 +115,21 @@ export default class RegisterScreen extends React.Component {
             style={STYLES.button}
             text_style={STYLES.button_text}
             text="Register"
-            onPress={()=> this.setState({loading:true}, register.bind(this))}
-            // ^ Loading is reset to false inside func
+            onPress={()=> {
+              this.setState({loading:true})
+              register(this.state.email, this.state.pword,this.state.full_name,this.state.username);
+            }}
+            onPress={async ()=> {
+              this.setState({loading:true})
+              let registration_response = await register(this.state.email, this.state.pword,this.state.full_name,this.state.username);
+              if (registration_response != false) {
+                await this.props.storeLoginInfo(registration_response);
+                let userInfo = await getUserInfo(this.props.user.token);
+                this.props.storeUserInfo(userInfo)
+                this.props.navigation.navigate('Feed');
+              }
+              this.setState({loading:false})
+            }}
           >
             {this.state.loading && (
               <ActivityIndicator
@@ -134,3 +144,14 @@ export default class RegisterScreen extends React.Component {
     );
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ storeUserInfo, storeLoginInfo }, dispatch)
+}
+
+function mapStateToProps(state) {
+  const { user } = state;
+  return { user };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterScreen);

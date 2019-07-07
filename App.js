@@ -2,7 +2,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux'
-import { runReducer } from './functions/reducer';
+import reducer from './functions/reducer';
 
 import {
   createStackNavigator,
@@ -34,11 +34,9 @@ import TrackingScreen from './screens/TrackingScreen';
 import RunScreen from './screens/RunScreen';
 import FindFriendsScreen from './screens/FindFriendsScreen';
 import SaveRunScreen from './screens/SaveRunScreen';
-import SaveRecentRunScreen from './screens/SaveRecentRunScreen';
 import LevelScreen from './screens/LevelScreen';
 import StartupScreen from './screens/StartupScreen';
 import CreateRouteScreen from './screens/CreateRouteScreen'
-import OldRunInformationScreen from './screens/OldRunInformationScreen';
 
 import Color from './constants/Color'
 
@@ -99,16 +97,8 @@ const LoginNavigator = createStackNavigator({
     screen: RunPausedScreen,
     navigationOptions: { header: null },
   },
-  SaveRecentRun: {
-    screen: SaveRecentRunScreen,
-    navigationOptions: { header: null },
-  },
   Level: {
     screen: LevelScreen,
-    navigationOptions: { header: null },
-  },
-  OldRunInformation: {
-    screen: OldRunInformationScreen,
     navigationOptions: { header: null },
   },
   Routes: { screen: RouteListScreen, navigationOptions: { header: null } },
@@ -208,7 +198,7 @@ const LoginNavigator = createStackNavigator({
 });
 
 const AppContainer = createAppContainer(LoginNavigator);
-const store = createStore(runReducer);
+const store = createStore(reducer)
 
 export default class App extends React.Component {
   constructor(props) {
