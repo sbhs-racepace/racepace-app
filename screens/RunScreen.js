@@ -28,7 +28,7 @@ const STYLES = StyleSheet.create({
     textAlign:'center',
   },
   title: {
-    fontFamily:'RobotoCondensed-BoldItalic',fontSize:50,color:Color.primaryColor,
+    fontFamily:'Roboto-Bold',fontSize:50,color:Color.primaryColor,
     borderColor:'white',
     flex:3,
     justifyContent:'center'

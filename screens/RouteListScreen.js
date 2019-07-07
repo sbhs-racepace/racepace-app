@@ -58,7 +58,9 @@ class RouteListScreen extends React.Component {
   }
   
   render() {
-    let routes = this.props.user.user_routes.map(route => <RouteItem route={route}/>);
+    list_saved_routes = [];
+    for (route_id in this.props.user.saved_routes) {list_saved_routes.push(this.props.user.saved_routes.route_id)};
+    let routes = list_saved_routes.map(route => <RouteItem route={route}/>);
     return (
       <View style={{backgroundColor: Color.darkBackground, padding: 10}}>
         {routes}

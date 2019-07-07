@@ -34,7 +34,6 @@ import TrackingScreen from './screens/TrackingScreen';
 import RunScreen from './screens/RunScreen';
 import FindFriendsScreen from './screens/FindFriendsScreen';
 import SaveRunScreen from './screens/SaveRunScreen';
-import SaveRecentRunScreen from './screens/SaveRecentRunScreen';
 import LevelScreen from './screens/LevelScreen';
 import StartupScreen from './screens/StartupScreen';
 import CreateRouteScreen from './screens/CreateRouteScreen'
@@ -96,10 +95,6 @@ const LoginNavigator = createStackNavigator({
   },
   Paused: {
     screen: RunPausedScreen,
-    navigationOptions: { header: null },
-  },
-  SaveRecentRun: {
-    screen: SaveRecentRunScreen,
     navigationOptions: { header: null },
   },
   Level: {

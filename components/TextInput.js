@@ -21,7 +21,7 @@ export default class TextInputCustom extends React.Component {
       view: {
         width: "80%",
         borderRadius: 10,
-        backgroundColor: Color.lightBackground,
+        backgroundColor: Color.lightBackground2,
         ...this.props.style
       },
       text: {
@@ -31,7 +31,7 @@ export default class TextInputCustom extends React.Component {
       input: {
         height: 40,
         borderRadius: 10,
-        borderWidth: 1,
+        left:5,
         padding: 1,
         fontSize:20,
         color: Color.textColor,
@@ -40,10 +40,10 @@ export default class TextInputCustom extends React.Component {
     });
     return (
       <View style={STYLES.view}>
-        <Text style={STYLES.text}>{this.props.placeholder}</Text>
+        <Text style={[STYLES.text, {left:5}]}>{this.props.placeholder}</Text>
         <TextInput
           {...this.props}
-          style={STYLES.input}
+          style={[STYLES.input, this.props.text_style]}
 		  placeholder=""
         />
       </View>

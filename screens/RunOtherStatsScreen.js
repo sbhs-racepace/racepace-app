@@ -24,7 +24,7 @@ const STYLES = StyleSheet.create({
     textAlign:'center',
   },
   title: {
-    fontFamily:'RobotoCondensed-BoldItalic',fontSize:50,color:Color.primaryColor,
+    fontFamily:'Roboto-Bold',fontSize:50,color:Color.primaryColor,
     borderColor:'white',
     flex:3,
     justifyContent:'center'
@@ -56,8 +56,8 @@ class RunOtherStatsScreen extends React.Component {
         <View style={{flex:1,alignItems:'center'}}>
           <Text style={STYLES.title}>Other Stats</Text>      
           <Text style={STYLES.text}>Timer: </Text>
-          <Text style={STYLES.text}>Lap Pace: {this.props.runs.real_time_info.lap_pace.minutes} :{this.props.runs.real_time_info.lap_pace.seconds}</Text>
-          <Text style={STYLES.text}>Lap Distance: {this.props.runs.real_time_info.lap_distance}m</Text>
+          <Text style={STYLES.text}>Lap Pace: {this.props.run.real_time_info.lap_pace.minutes} :{this.props.run.real_time_info.lap_pace.seconds}</Text>
+          <Text style={STYLES.text}>Lap Distance: {this.props.run.real_time_info.lap_distance}m</Text>
         </View>
 
         <View style={{backgroundColor:Color.darkBackground, height: windowHeight * 0.20}}>

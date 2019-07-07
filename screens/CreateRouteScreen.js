@@ -1,14 +1,14 @@
 // Jason Yu, Sunny Yan
 
 import React from 'react';
-import { StyleSheet, View, Text, Alert, ScrollView, TextInput, Dimensions, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, Text, Alert, ScrollView, Dimensions, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
 import {createAppContainer,createMaterialTopTabNavigator} from 'react-navigation';
+import TextInput from '../components/TextInput'
 import { CheckBox } from 'react-native-elements'
 import Button from "../components/Button"
 import "../global.js"
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
-import TextInputCustom from '../components/TextInput';
 import Color from '../constants/Color'
 import { createRun, createRunRoute } from '../functions/run_action'
 import { connect } from 'react-redux';
@@ -110,14 +110,14 @@ class RunSetupScreen extends React.Component {
   render() {
     return(
       <View style={[STYLES.container, {flex:1, backgroundColor:Color.lightBackground}]}>
-        <TextInputCustom 
+        <TextInput 
           placeholder="Start"
           defaultValue={this.state.start}
           onChangeText={start => {
             this.setState({ start: start });
           }}
         />
-        <TextInputCustom 
+        <TextInput 
           placeholder="End"
           defaultValue={this.props.navigation.state.params==undefined ? this.state.end : this.props.navigation.state.params.name}
           onChangeText={end => {
@@ -125,7 +125,7 @@ class RunSetupScreen extends React.Component {
           }}
         />
         <View style={{flexDirection:'row', justifyContent:'space-between', width:'80%'}}>
-          <TextInputCustom 
+          <TextInput 
             style={{width:'45%'}}
             placeholder="Minutes"
             onChangeText={minutes => {
@@ -135,7 +135,7 @@ class RunSetupScreen extends React.Component {
             keyboardType="number-pad"
             returnKeyType="go"
           />
-          <TextInputCustom 
+          <TextInput 
             style={{width:'45%'}}
             placeholder="Seconds"
             onChangeText={seconds => {

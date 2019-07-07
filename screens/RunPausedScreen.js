@@ -27,7 +27,7 @@ const STYLES = StyleSheet.create({
     textAlign:'center',
   },
   title: {
-    fontFamily:'RobotoCondensed-BoldItalic',fontSize:50,color:Color.primaryColor,
+    fontFamily:'Roboto-Bold',fontSize:50,color:Color.primaryColor,
     borderColor:'white',
     flex:3,
     justifyContent:'center'
@@ -106,11 +106,7 @@ class RunPausedScreen extends React.Component {
             style={[STYLES.circularButton, STYLES.smallButton]}
             onPress={() => {
               this.props.saveRun();
-              if (this.props.run.run_info.route == null) {
-                this.props.navigation.navigate('SaveRecentRun');
-              } else {
-                this.props.navigation.navigate('SaveRun');
-              }
+              this.props.navigation.navigate('SaveRun');
             }}
           >
             <FontAwesomeIcon name="save" size={STYLES.smallIcon} color={Color.primaryColor}/>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Component } from 'react';
-import { Alert, View, ScrollView, Text,TextInput, Dimensions, StyleSheet } from 'react-native';
+import { Alert, View, ScrollView, Text, Dimensions, StyleSheet } from 'react-native';
+import TextInput from '../components/TextInput'
 import { Image } from 'react-native-elements'
 import Button from '../components/Button.js';
 import BackButtonHeader from '../components/BackButtonHeader'
@@ -41,7 +42,7 @@ const STYLES = StyleSheet.create({
     alignItems:'center',
   },
   title: {
-    fontFamily:'RobotoCondensed-BoldItalic',fontSize:40,color:Color.primaryColor, textAlign:'center',
+    fontFamily:'Roboto-Bold',fontSize:40,color:Color.primaryColor, textAlign:'center',
   },
 });
 
