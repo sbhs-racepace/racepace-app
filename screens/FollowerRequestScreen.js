@@ -42,7 +42,7 @@ class FollowRequest extends React.Component {
       <View style={{width:'100%',alignItems:'center',flex:1, flexDirection:'row', justifyContent:'space-between', height:windowHeight*0.2}}>
         <Image
           style={STYLES.profile_image}
-          source={{uri: `${global.serverURL}/api/avatars/${this.props.user.user_id}.png`}}
+          source={{uri: `${global.serverURL}/api/avatars/${this.props.userid}.png`}}
         />
         <Text style={{width:"30%",fontSize:20, color:Color.textColor}}>{this.props.name} wants to follow you!</Text>
         <Button 
@@ -70,7 +70,7 @@ class FollowerRequestScreen extends React.Component {
           onPress={this.props.navigation.goBack}
         />
         <ScrollView contentContainerStyle={Color.lightBackground}>
-          {this.state.follow_requests.map(name => <FollowRequest name={name}/>)}
+          {this.state.follow_requests.map(name => <FollowRequest name={name} userid={"000"}/>)}
         </ScrollView>
       </View>
     )
