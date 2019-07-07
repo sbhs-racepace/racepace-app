@@ -73,7 +73,7 @@ class ProfileScreen extends React.Component {
     const Nav = createMaterialTopTabNavigator({
 
       Stats: { screen: StatsScreen },
-      Runs: { screen: RouteListScreen }
+      Routes: { screen: RouteListScreen }
 
     }, {
       initialRouteName: this.props.navigation.state.params == undefined ? 'Stats' : this.props.navigation.state.params.screen,

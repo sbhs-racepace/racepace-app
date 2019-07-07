@@ -9,10 +9,11 @@ import { Constants } from 'expo';
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
 import "../global";
-import { label, cobalt } from '../constants/mapstyle'
+import { label, cobalt, lunar } from '../constants/mapstyle'
 import Color from '../constants/Color'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
+import { startRun } from '../functions/run_action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -217,7 +218,7 @@ class MapScreen extends React.Component {
         <MapView
           style={STYLES.map}
           provider = { MapView.PROVIDER_GOOGLE } // Usage of google maps
-          customMapStyle = { cobalt }
+          customMapStyle = { lunar }
           showsUserLocation={true}
           showsMyLocationButton={false}
           region={this.state.region}
@@ -289,7 +290,7 @@ class MapScreen extends React.Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ addLocationPacket, startRun }, dispatch)
+  return bindActionCreators({ startRun }, dispatch)
 }
 
 function mapStateToProps(state) {

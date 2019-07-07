@@ -6,7 +6,7 @@ import { Image } from 'react-native-elements'
 import Button from '../components/Button'
 import BackButton from '../components/BackButton'
 import Color from '../constants/Color'
-import {noLabel, cobalt} from '../constants/mapstyle'
+import {noLabel, cobalt,lunar} from '../constants/mapstyle'
 import MapView from 'react-native-maps';
 import { Marker, Polyline } from 'react-native-maps';
 import * as Location from 'expo-location'
@@ -102,7 +102,7 @@ class TrackingScreen extends React.Component {
         <MapView
           style={STYLES.map}
           provider = { MapView.PROVIDER_GOOGLE } // Usage of google maps
-          customMapStyle = { cobalt }
+          customMapStyle = { lunar }
           showsUserLocation={true}
           showsMyLocationButton={false}
           region={this.state.region}
