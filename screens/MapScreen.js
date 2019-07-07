@@ -9,7 +9,7 @@ import { Constants } from 'expo';
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
 import "../global";
-import { label, cobalt, lunar } from '../constants/mapstyle'
+import { label, cobalt, lunar,neutral_blue } from '../constants/mapstyle'
 import Color from '../constants/Color'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
@@ -218,7 +218,7 @@ class MapScreen extends React.Component {
         <MapView
           style={STYLES.map}
           provider = { MapView.PROVIDER_GOOGLE } // Usage of google maps
-          customMapStyle = { lunar }
+          customMapStyle = { neutral_blue }
           showsUserLocation={true}
           showsMyLocationButton={false}
           region={this.state.region}

@@ -45,9 +45,10 @@ class StartupScreen extends React.Component {
     return (
       <View style={{flex:1}}>
         <LinearGradient 
-          colors={[Color.darkBackground, Color.lightBackground, Color.primaryColor]}
+          colors={[Color.darkBackground, Color.lightBackground, Color.primaryColor, "transparent"]}
           style={{flex:1}}
         >
+          <Text style={{textAlign:'center', justifyContent:'center',color:'white'}}>Loading</Text>
         </LinearGradient>
       </View>
     )
