@@ -6,23 +6,28 @@ import Expo from 'expo';
 import { Google } from 'expo';
 import io from 'socket.io-client';
 
-export async function storeUserInfo() {
+
+export async function getUserInfo(token) {
   let api_url = global.serverURL + '/api/get_info';
-  fetch(api_url, {
+  let user_info = false;
+  let data = {};
+  await fetch(api_url, {
     method: 'POST',
+    body: JSON.stringify(data),
     headers: new Headers({
-      Authorization: global.login_info.token,
+      Authorization: token,
     }),
   })
     .then(async res => {
       let res_data = await res.json();
       if (res_data.success) {
-        global.user = await res_data['info'];
-        global.socket = io(
-          `${global.serverURL}?token=${global.login_info.token}`,
+        user_info = await res_data['info'];
+        let socket = io(
+          `${global.serverURL}?token=${token}`,
           { transports: ['websocket'] }
         );
-        global.socket.emit('authenticate', global.login_info.token);
+        socket.emit('authenticate', token);
+        user_info.socket = socket;
       } else {
         Alert.alert('Error', res_data.error);
       }
@@ -30,17 +35,7 @@ export async function storeUserInfo() {
     .catch(error => {
       Alert.alert('Error', error);
     });
-}
-
-export async function execute_login(email, password) {
-  let login_response = await login(email, password);
-  if (login_response.success) {
-    storeUserInfo();
-    this.setState({ loading: false });
-    this.props.navigation.navigate('Feed');
-  } else {
-    this.setState({ loading: false });
-  }
+  return user_info;
 }
 
 export async function login(email, password) {
@@ -65,13 +60,9 @@ export async function login(email, password) {
   })
     .then(async res => {
       login_response = await res.json();
-      global.login_info = {
-        token: login_response.token,
-        user_id: login_response.user_id,
-      };
       await AsyncStorage.setItem(
         'login_info',
-        JSON.stringify(global.login_info)
+        JSON.stringify(login_response)
       ); // Storing User Login
 
     })
@@ -82,55 +73,50 @@ export async function login(email, password) {
   return login_response;
 }
 
-export async function register() {
+export async function register(email, pword, full_name, username) {
   //Sends register request to server (also logs in after user is registered)
   let data = {
-    email: this.state.email,
-    password: this.state.pword,
-    full_name: this.state.full_name,
-    username: this.state.username,
+    email: email,
+    password: pword,
+    full_name: full_name,
+    username: username,
   };
+  let register_response = false;
   for (let item of Object.entries(data)) {
     if (!item[1]) {
       Alert.alert(
         'Blank fields',
         `All fields must be filled. ${item[0]} is blank.`
       );
-      this.setState({ loading: false });
-      return 0; //Exit function
+      return register_response;
     }
   }
   const url = global.serverURL + '/api/register';
-  try {
-    fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(data),
+  await fetch(url, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  })
+    .catch(res => {
+      Alert.alert('Error connecting to server', res);
     })
-      .catch(res => {
-        Alert.alert('Error connecting to server', res);
-      })
-      .then(
-        async res => {
-          res = await res.json();
-          if (res.success) {
-            storeUserInfo();
-            this.setState({ loading: false });
-            this.props.navigation.navigate('FeedFollowing');
-          }
-        },
-        reason => {
-          this.setState({ loading: false });
-          Alert.alert('Error connecting to server', reason);
+    .then(
+      async res => {
+        res = await res.json();
+        if (res.success) {
+          register_response = res;
+        } else {
+          Alert.alert(res.error)
         }
-      );
-  } catch (err) {
-    //Catch any other errors
-    Alert.alert('Error', err);
-    this.setState({ loading: false });
-  }
+      },
+      reason => {
+        Alert.alert('Error connecting to server', reason);
+      }
+    );
+  return register_response
 }
 
 export async function googleLogin() {
+  let login_response = false;
   try {
     const url = global.serverURL + '/api/google_login';
     const config = {
@@ -143,27 +129,24 @@ export async function googleLogin() {
         body: JSON.stringify({ idToken: result.idToken }),
       })
         .catch(res => {
-          console.log(res);
           Alert.alert('Error connecting to server', res);
         })
         .then(
           async res => {
             res = await res.json();
             if (res.success) {
-              storeUserInfo();
-              this.props.navigation.navigate('Feed');
+              login_response = res;
             } else {
               Alert.alert('Error', res.error);
             }
           },
           reason => {
-            console.log('Promise rejected');
             Alert.alert('Error connecting to server', reason);
           }
         );
     }
   } catch (err) {
-    console.log(err);
     Alert.alert('Google Login Error', err);
   }
+  return login_response;
 }
