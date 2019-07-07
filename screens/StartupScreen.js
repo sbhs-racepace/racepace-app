@@ -1,7 +1,8 @@
 // Jason Yu
 
 import React from 'react'
-import { View, AsyncStorage, StatusBar, Alert } from 'react-native'
+import { View, AsyncStorage, StatusBar, Alert, Text } from 'react-native'
+import { LinearGradient } from 'expo-linear-gradient';
 import '../global'
 import * as Font from 'expo-font'
 import { getUserInfo } from '../functions/login'
@@ -42,7 +43,13 @@ class StartupScreen extends React.Component {
 
   render () {
     return (
-      <View style={{ flex: 1, backgroundColor: Color.darkBackground }}/>
+      <View style={{flex:1}}>
+        <LinearGradient 
+          colors={[Color.darkBackground, Color.lightBackground, Color.primaryColor]}
+          style={{flex:1}}
+        >
+        </LinearGradient>
+      </View>
     )
   }
 }
