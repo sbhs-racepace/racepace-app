@@ -7,6 +7,8 @@ import BackButtonHeader from '../components/BackButtonHeader'
 import '../global'
 import Color from '../constants/Color'
 import request from '../functions/request'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
@@ -65,7 +67,7 @@ class FriendBox extends React.Component {
   }
 }
 
-export default class FindFriendsScreen extends React.Component {
+class FindFriendsScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -81,7 +83,7 @@ export default class FindFriendsScreen extends React.Component {
       method: 'POST',
       body: JSON.stringify({name: this.searchString}),
       headers: {
-          authorization: global.login_info.token
+          authorization: this.props.user.token
       }
     })
     .catch(res => {
@@ -142,3 +144,14 @@ export default class FindFriendsScreen extends React.Component {
     );
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ }, dispatch)
+}
+
+function mapStateToProps(state) {
+  const { user } = state;
+  return { user };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(FindFriendsScreen);

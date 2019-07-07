@@ -1,14 +1,17 @@
 // Jason Yu
 
 import React from 'react'
-import { View, AsyncStorage, StatusBar } from 'react-native'
+import { View, AsyncStorage, StatusBar, Alert } from 'react-native'
 import '../global'
 import * as Font from 'expo-font'
-import { storeUserInfo } from '../functions/login'
+import { getUserInfo } from '../functions/login'
 import Color from '../constants/Color'
 import * as Permissions from 'expo-permissions'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { storeLoginInfo, storeUserInfo } from '../functions/user_info_action'
 
-export default class StartupScreen extends React.Component {
+class StartupScreen extends React.Component {
   constructor (props) {
     super(props)
   }
@@ -25,9 +28,12 @@ export default class StartupScreen extends React.Component {
     })
     let login_info = await AsyncStorage.getItem('login_info')
     if (login_info !== null) {
+      // Storing Login Info
       let json_login_info = JSON.parse(login_info)
-      global.login_info = json_login_info
-      await storeUserInfo()
+      await this.props.storeLoginInfo(json_login_info)
+      // Storing User Info
+      let user_info =  await getUserInfo(this.props.user.token);
+      this.props.storeUserInfo(user_info)
       this.props.navigation.navigate('Feed')
     } else {
       this.props.navigation.navigate('Splash')
@@ -40,3 +46,15 @@ export default class StartupScreen extends React.Component {
     )
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ storeUserInfo, storeLoginInfo }, dispatch)
+}
+
+
+function mapStateToProps(state) {
+  const { user } = state;
+  return { user };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(StartupScreen);

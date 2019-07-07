@@ -8,7 +8,7 @@ import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
 import Button from "../components/Button"
 import Color from '../constants/Color.js'
-import { startRun, addLocationPacket, saveRun,resumeRun } from '../functions/action'
+import { startRun, addLocationPacket, saveRun,resumeRun } from '../functions/run_action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
@@ -75,8 +75,8 @@ class RunPausedScreen extends React.Component {
       <View style={{backgroundColor:Color.lightBackground, flex:1}}>
         <View style={{flex:1,alignItems:'center'}}>
           <Text style={STYLES.title}>Paused</Text>      
-          <Text style={STYLES.text}>Distance: {this.props.real_time_info.distance}</Text>
-          <Text style={STYLES.text}>Average Pace: {this.props.real_time_info.average_pace.minutes} :{this.props.real_time_info.average_pace.seconds}</Text>
+          <Text style={STYLES.text}>Distance: {this.props.run.real_time_info.distance}</Text>
+          <Text style={STYLES.text}>Average Pace: {this.props.run.real_time_info.average_pace.minutes} :{this.props.run.real_time_info.average_pace.seconds}</Text>
           <Text style={STYLES.text}>Calories/Kilojoules: Not implemented</Text>
           <Text style={STYLES.text}>Elevation: Not implemented</Text>
           <Text style={STYLES.text}>Graphs: Not implemented</Text>
@@ -106,7 +106,7 @@ class RunPausedScreen extends React.Component {
             style={[STYLES.circularButton, STYLES.smallButton]}
             onPress={() => {
               this.props.saveRun();
-              if (this.props.run_info.route == null) {
+              if (this.props.run.run_info.route == null) {
                 this.props.navigation.navigate('SaveRecentRun');
               } else {
                 this.props.navigation.navigate('SaveRun');
@@ -126,7 +126,8 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-  return state;
+  const { user, run } = state;
+  return { user, run };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RunPausedScreen);

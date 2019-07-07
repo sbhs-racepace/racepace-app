@@ -10,7 +10,7 @@ import MapView from 'react-native-maps';
 import { Marker, Polyline } from 'react-native-maps';
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
-import { startRun, addLocationPacket, pauseRun } from '../functions/action'
+import { startRun, addLocationPacket, pauseRun } from '../functions/run_action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
@@ -158,7 +158,8 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-  return state;
+  const { run, user } = state;
+  return { run, user };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TrackingScreen);

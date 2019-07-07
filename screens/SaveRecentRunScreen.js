@@ -8,7 +8,7 @@ import Button from '../components/Button.js';
 import BackButtonHeader from '../components/BackButtonHeader.js';
 import Color from '../constants/Color.js';
 import '../global.js';
-import { startRun, addLocationPacket, endRun } from '../functions/action'
+import { endRun } from '../functions/run_action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -41,7 +41,7 @@ class SaveRecentRunScreen extends React.Component {
     fetch(api_url, {
       method: 'POST',
       headers: new Headers({
-        'Authorization': global.login_info.token,
+        'Authorization': this.props.user.token,
       })
     })
     .catch(res => {
@@ -65,10 +65,10 @@ class SaveRecentRunScreen extends React.Component {
         <View style={{flex:1, justifyContent:'space-evenly', alignItems:'center'}}>
           <Text style={STYLES.title_style}>Run Information</Text>
           <Image source={require('../assets/map.png')} style={STYLES.routePic} />
-          <Text style={STYLES.text_style}>Average Pace: {this.props.real_time_info.average_pace.minutes} minutes {this.props.real_time_info.average_pace.seconds} seconds</Text>
-          <Text style={STYLES.text_style}>Distance Ran: {this.props.real_time_info.distance}</Text>
-          <Text style={STYLES.text_style}>Duration: {this.props.run_info.duration}</Text>
-          <Text style={STYLES.text_style}>Points: {this.props.run_info.points}</Text>
+          <Text style={STYLES.text_style}>Average Pace: {this.props.run.real_time_info.average_pace.minutes} minutes {this.props.run.real_time_info.average_pace.seconds} seconds</Text>
+          <Text style={STYLES.text_style}>Distance Ran: {this.props.run.real_time_info.distance}</Text>
+          <Text style={STYLES.text_style}>Duration: {this.props.run.run_info.duration}</Text>
+          <Text style={STYLES.text_style}>Points: {this.props.run.run_info.points}</Text>
         </View>
         <Button 
           style={{width:'100%'}}
@@ -83,11 +83,12 @@ class SaveRecentRunScreen extends React.Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ addLocationPacket, startRun, endRun }, dispatch)
+  return bindActionCreators({ endRun }, dispatch)
 }
 
 function mapStateToProps(state) {
-  return state;
+  const { user, run } = state;
+  return { user, run };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SaveRecentRunScreen);

@@ -7,6 +7,8 @@ import Button from "../components/Button"
 import BackButtonHeader from '../components/BackButtonHeader'
 import "../global.js"
 import Color from '../constants/Color'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
@@ -40,7 +42,7 @@ class FollowRequest extends React.Component {
       <View style={{width:'100%',alignItems:'center',flex:1, flexDirection:'row', justifyContent:'space-between', height:windowHeight*0.2}}>
         <Image
           style={STYLES.profile_image}
-          source={{uri: `${global.serverURL}/api/avatars/${global.login_info.user_id}.png`}}
+          source={{uri: `${global.serverURL}/api/avatars/${this.props.user.user_id}.png`}}
         />
         <Text style={{width:"30%",fontSize:20, color:Color.textColor}}>{this.props.name} wants to follow you!</Text>
         <Button 
@@ -52,7 +54,7 @@ class FollowRequest extends React.Component {
   }
 }
 
-export default class FollowerRequestScreen extends React.Component {
+class FollowerRequestScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -75,4 +77,13 @@ export default class FollowerRequestScreen extends React.Component {
   }
 }
 
-// {/* {this.state.follow_requests.map(name => <FollowRequest name={name}/>)} */}
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ }, dispatch)
+}
+
+function mapStateToProps(state) {
+  const { user } = state;
+  return { user };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(FollowerRequestScreen);

@@ -4,8 +4,10 @@ import React from 'react';
 import { StyleSheet, View, Text, Alert, ScrollView } from 'react-native';
 import Button from "../components/Button"
 import { Card } from 'react-native-elements'
-import "../global.js"
 import Color from '../constants/Color'
+import { logoutCall } from '../functions/user_info_action'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 
 const STYLES = StyleSheet.create({
@@ -50,13 +52,13 @@ class RouteItem extends React.Component {
   }
 }
 
-export default class RouteListScreen extends React.Component {
+class RouteListScreen extends React.Component {
   constructor(props) {
     super(props);
   }
   
   render() {
-    let routes = global.user_routes.map(route => <RouteItem route={route}/>);
+    let routes = this.props.user.user_routes.map(route => <RouteItem route={route}/>);
     return (
       <View style={{backgroundColor: Color.darkBackground, padding: 10}}>
         {routes}
@@ -64,3 +66,14 @@ export default class RouteListScreen extends React.Component {
     );
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({  }, dispatch)
+}
+
+function mapStateToProps(state) {
+  const {user} = state
+  return {user};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RouteListScreen);

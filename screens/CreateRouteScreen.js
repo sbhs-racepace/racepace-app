@@ -10,7 +10,7 @@ import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
 import TextInputCustom from '../components/TextInput';
 import Color from '../constants/Color'
-import { createRun, createRunRoute } from '../functions/action'
+import { createRun, createRunRoute } from '../functions/run_action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 

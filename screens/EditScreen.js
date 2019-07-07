@@ -9,6 +9,8 @@ import Button from '../components/Button';
 import BackButtonHeader from '../components/BackButtonHeader';
 import Color from '../constants/Color';
 import '../global.js';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
@@ -50,13 +52,14 @@ const STYLES = StyleSheet.create({
     fontSize: 14,
   }
 });
-export default class EditScreen extends React.Component {
+
+class EditScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      uri: global.serverURL + `/api/avatars/${global.login_info.user_id}.png`,
+      uri: global.serverURL + `/api/avatars/${this.props.user_id}.png`,
       username: null,
-      password: null,
+      new_password: null,
       bio: null,
       full_name: null,
       image: null,
@@ -66,11 +69,11 @@ export default class EditScreen extends React.Component {
   }
 
   async saveChanges() {
-    let login_data = await login(global.user.email, this.state.current_password)
-    let equivalent_new = this.state.password == this.state.confirmation_password
+    let login_data = await login(this.props.user.email, this.state.current_password)
+    let equivalent_new = this.state.new_password == this.state.confirmation_password
     let data = {
       username: this.state.username,
-      password: this.state.password,
+      password: this.state.new_password,
       bio: this.state.bio,
       full_name: this.state.full_name,
       image: this.state.image,
@@ -153,17 +156,17 @@ export default class EditScreen extends React.Component {
             placeholder="New Password" 
             style={STYLES.input} 
             autoCapitalize="none"
-            onChangeText={password => this.setState({ password })}
+            onChangeText={new_password => this.setState({ new_password })}
           />
           <TextInput 
             placeholder="Confirm New Password" 
             style={STYLES.input} 
             autoCapitalize="none"
-            onChangeText={confirmation_pword => this.setState({ confirmation_pword })}
+            onChangeText={confirmation_pword => this.setState({ confirmation_password })}
           />
           
           <Text style={{ fontSize: 30, color: 'white' }}>Change Username</Text>
-          <Text style={{ fontSize: 15, color: 'white' }}>Current Username: {global.user.username}</Text>
+          <Text style={{ fontSize: 15, color: 'white' }}>Current Username: {this.props.user.username}</Text>
           <TextInput 
             style={STYLES.input} 
             placeholder="New Username"
@@ -180,3 +183,14 @@ export default class EditScreen extends React.Component {
     );
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ }, dispatch)
+}
+
+function mapStateToProps(state) {
+  const { user } = state;
+  return { user };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditScreen);

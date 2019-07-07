@@ -17,10 +17,10 @@ const RUN_INITIAL_STATE = {
     start: null,
     end: null,
     goal_pace: {minutes:'--', seconds:'--'},
-    estimated_duration: null,
+    estimated_duration: {minutes:'--', seconds:'--'},
     estimated_distance: null,
     estimated_energy: null,
-    final_duration: null,
+    final_duration: {minutes:'--', seconds:'--'},
     final_distance: null,
     final_energy: null,
     active: false,
@@ -117,7 +117,7 @@ export default function runReducer(state = RUN_INITIAL_STATE, action) {
         }
       }) 
     case END_RUN:
-      return RUN_INITIAL_STATE
+      return RUN_INITIAL_STATE;
     case PAUSE_RUN:
       return Object.assign({}, state, {
         run_info: {
