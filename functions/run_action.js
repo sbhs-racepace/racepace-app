@@ -1,3 +1,5 @@
+// Run Actions
+
 export const CREATE_RUN_ROUTE = 'CREATE_RUN_ROUTE'
 export const CREATE_RUN = 'CREATE_RUN'
 export const START_RUN = 'START_RUN'
@@ -6,7 +8,6 @@ export const END_RUN = 'END_RUN'
 export const SAVE_RUN = 'SAVE_RUN'
 export const PAUSE_RUN = 'PAUSE_RUN'
 export const RESUME_RUN = 'RESUME_RUN'
-
 
 export function createRun(real_time_tracking, distance) {
   return { type: CREATE_RUN, real_time_tracking, distance }
