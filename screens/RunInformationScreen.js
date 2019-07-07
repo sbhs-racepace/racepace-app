@@ -64,7 +64,10 @@ class RunInformationScreen extends React.Component {
         <Button 
           text="Start Run"
           style={{borderRadius:10, alignSelf:'center'}} 
-          onPress={() => this.props.navigation.navigate("RunManager")}
+          onPress={() => {
+            this.props.startRun();
+            this.props.navigation.navigate("RunManager");
+          }}
         />
       </View>
     );

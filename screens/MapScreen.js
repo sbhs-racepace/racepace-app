@@ -9,11 +9,12 @@ import { Constants } from 'expo';
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
 import "../global";
-import Button from '../components/Button';
-import Timer from '../components/Timer';
+import { label, cobalt } from '../constants/mapstyle'
 import Color from '../constants/Color'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 const LATITUDE_DELTA = 0.0922 * 1.5;
 const LONGITUDE_DELTA = 0.0421 * 1.5;
@@ -56,7 +57,7 @@ const STYLES = StyleSheet.create({
   smallIcon: windowWidth * 0.12 / 2,
 });
 
-export default class MapScreen extends React.Component {
+class MapScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -215,6 +216,8 @@ export default class MapScreen extends React.Component {
       <View style={{flex:1}}>
         <MapView
           style={STYLES.map}
+          provider = { MapView.PROVIDER_GOOGLE } // Usage of google maps
+          customMapStyle = { cobalt }
           showsUserLocation={true}
           showsMyLocationButton={false}
           region={this.state.region}
@@ -260,7 +263,10 @@ export default class MapScreen extends React.Component {
           <View style={{flex:1, alignItems:'center'}}>
             <TouchableOpacity
               style={[STYLES.circularButton,STYLES.largeButton]}
-              onPress={()=>{this.props.navigation.navigate('RunManager')}}
+              onPress={()=>{
+                this.props.startRun();
+                this.props.navigation.navigate('RunManager')
+              }}
             >
               <FontAwesomeIcon name="play" size={STYLES.largeIcon} color={Color.primaryColor}/>
             </TouchableOpacity>
@@ -281,3 +287,14 @@ export default class MapScreen extends React.Component {
     )
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ addLocationPacket, startRun }, dispatch)
+}
+
+function mapStateToProps(state) {
+  const { user, run } = state;
+  return { user, run };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MapScreen);
