@@ -20,16 +20,8 @@ const STYLES = StyleSheet.create({
 
 class PreviousRunsScreen extends React.Component {
   render() {
-    if (!this.props.user.token && !global.TEST) {
+    if (!this.props.user.token) {
       return <Text>Please login to see your feed</Text>;
-    }
-
-    if (this.props.user.token) {
-      resp = request('/api/get_recent_routes', 'POST', {}, true);
-      if (resp.error) {
-        return <Text>An error occurred. {resp.description}</Text>
-      }
-      resp = resp.recent_routes;
     }
 
     const test_data = (
@@ -65,9 +57,8 @@ class PreviousRunsScreen extends React.Component {
             onPress={() => this.props.navigation.navigate('FollowRequests')}
           />
         </View>
-        {global.TEST && test_data}
-        {!global.TEST &&
-          resp.map(route=>
+        {
+          this.props.user.runs.map(route=>
           <FeedRoute
             from={route.real_time_route.route.from}
             to={route.real_time_route.route.to}
@@ -90,21 +81,3 @@ function mapStateToProps(state) {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PreviousRunsScreen);
-
-
-{/* {global.TEST && (
-  <ScrollView contentContainerStyle={STYLES.scrollView}>
-    {resp.map(route => {
-      {
-        route.real_time_route.active && (
-          <FeedRoute
-            routeName=""
-            postTime={route.real_time_route.start_time}
-            length={route.real_time_route.current_distance}
-            time={route.real_time_route.current_duration}
-          />
-        );
-      }
-    })}
-  </ScrollView>
-)} */}

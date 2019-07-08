@@ -146,7 +146,7 @@ class ProfileScreen extends React.Component {
                 console.log(this.props.user.token)
                 this.props.navigation.navigate('Edit')
                 }}
-                disabled={!this.props.user.token && !global.TEST}
+                disabled={!this.props.user.token}
               />
               <Button
                 style={{width: '30%', borderLeftWidth: 2, borderLeftColor: Color.lightBackground}}
