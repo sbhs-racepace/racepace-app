@@ -61,11 +61,11 @@ export async function login(email, password) {
     .then(async res => {
       res = await res.json();
       if (res.success == true) {
+        login_response = res;
         await AsyncStorage.setItem(
           'login_info',
           JSON.stringify(login_response)
         ); // Storing User Login
-        login_response = res;
       } else {
         Alert.alert(res.error)
       }
