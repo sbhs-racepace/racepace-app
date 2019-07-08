@@ -46,19 +46,6 @@ const STYLES = StyleSheet.create({
 class ProfileScreen extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {
-      name: this.props.user.full_name,
-      username: this.props.user.username,
-      age: 16,
-      statistics: {
-        fastest_100: 9.4,
-        total_distance_run: 100,
-        fastest_800: 120,
-        v02_max: 56,
-        average_pace: 3.4
-      },
-      bio: this.props.user.bio
-    }
   }
 
   async logoutCall() {
@@ -92,7 +79,7 @@ class ProfileScreen extends React.Component {
 
     return (
       <View style={STYLES.container}>
-        <Text style={[STYLES.text, { fontSize: 30, textAlign: 'center', paddingTop: '5%', marginBottom: -15, fontFamily:'Roboto-Bold', color:Color.primaryColor}]}>{this.state.name}</Text>
+        <Text style={[STYLES.text, { fontSize: 30, textAlign: 'center', paddingTop: '5%', marginBottom: -15, fontFamily:'Roboto-Bold', color:Color.primaryColor}]}>{this.props.user.full_name}</Text>
         <View style={{ height: 150, padding: '3%' }}>
           <View style={{flexDirection: 'row',flex: 1}}>
             <View style={{flexDirection: 'row',flex: 1,alignItems: 'center'}}>
