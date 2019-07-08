@@ -143,8 +143,7 @@ class ProfileScreen extends React.Component {
                 style={{width: '70%', backgroundColor: Color.buttonColor}}
                 text="Edit Profile"
                 onPress={() => {
-                console.log(this.props.user.token)
-                this.props.navigation.navigate('Edit')
+                  this.props.navigation.navigate('Edit')
                 }}
                 disabled={!this.props.user.token}
               />
@@ -161,7 +160,7 @@ class ProfileScreen extends React.Component {
           </View>
         </View>
       </View>
-      <Text multiline={true} style={[STYLES.text, { paddingBottom: '8%', paddingLeft: '5%'}]}>{this.state.bio}</Text>
+      <Text multiline={true} style={[STYLES.text, { paddingBottom: '8%', paddingLeft: '5%'}]}>{this.props.user.bio}</Text>
       <View style={{ flex: 1, backgroundColor: Color.darkBackground }}>
         <AppContainer style={{ flex: 1 }}/>
       </View>

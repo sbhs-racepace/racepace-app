@@ -86,7 +86,6 @@ class LoginScreen extends React.Component {
             onPress={async ()=> {
               this.setState({loading:true})
               let login_response = await login(this.state.email, this.state.pword);
-              console.log(login_response)
               if (login_response != false) {
                 await this.props.storeLoginInfo(login_response);
                 let userInfo = await getUserInfo(this.props.user.token);
