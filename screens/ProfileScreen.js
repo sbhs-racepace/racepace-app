@@ -1,4 +1,4 @@
-// Jason Yu
+// Jason Yu and Abdur Raqeeb Mohammed
 
 import React from 'react'
 import { View, Text, StyleSheet, AsyncStorage, ScrollView, KeyboardAvoidingView } from 'react-native'
