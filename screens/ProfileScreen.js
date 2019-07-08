@@ -92,7 +92,7 @@ class ProfileScreen extends React.Component {
 
     return (
       <View style={STYLES.container}>
-        <Text style={[STYLES.text, { fontSize: 30, textAlign: 'center', paddingTop: '5%', fontFamily:'Roboto-Bold', color:Color.primaryColor}]}>{this.state.name}</Text>
+        <Text style={[STYLES.text, { fontSize: 30, textAlign: 'center', paddingTop: '5%', marginBottom: -15, fontFamily:'Roboto-Bold', color:Color.primaryColor}]}>{this.state.name}</Text>
         <View style={{ height: 150, padding: '3%' }}>
           <View style={{flexDirection: 'row',flex: 1}}>
             <View style={{flexDirection: 'row',flex: 1,alignItems: 'center'}}>
