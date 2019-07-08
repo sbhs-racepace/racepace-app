@@ -20,7 +20,7 @@ export default class TextInputCustom extends React.Component {
     const STYLES = StyleSheet.create({
       view: {
         width: "80%",
-        borderRadius: 10,
+        borderRadius:7,
         backgroundColor: Color.lightBackground2,
         ...this.props.style
       },
@@ -30,7 +30,6 @@ export default class TextInputCustom extends React.Component {
       },
       input: {
         height: 40,
-        borderRadius: 10,
         left:5,
         padding: 1,
         fontSize:20,

@@ -23,18 +23,13 @@ const STYLES = StyleSheet.create({
     alignSelf: 'center'
   },
   input: {
-    fontSize: 20,
-    borderWidth: 1,
     width: windowWidth * 0.8,
-    borderRadius: 10,
     marginTop: 5,
-    color: Color.textColor,
-    backgroundColor: Color.lightBackground2,
   },
   profile_image: {
-    height: windowWidth * 0.25,
-    width: windowWidth * 0.25,
-    borderRadius: windowWidth * 0.25 / 2,
+    height: windowWidth * 0.3,
+    width: windowWidth * 0.3,
+    borderRadius: windowWidth * 0.3 / 2,
     alignSelf: 'center'
   },
   container : {
@@ -46,7 +41,6 @@ const STYLES = StyleSheet.create({
   },
   saveButton: {
     width: '80%',
-    borderRadius: 10,
     fontSize: 14,
     alignSelf:'center'
   }
@@ -108,7 +102,12 @@ class EditScreen extends React.Component {
 
   render() {
     return (
-      <KeyboardAvoidingView style={STYLES.container}>
+      // <KeyboardAvoidingView
+      //   keyboardVerticalOffset={100} 
+      //   behavior="position"
+      //   style={{ backgroundColor: Color.darkBackground }}
+      // >
+      <View style={{ flex: 1, backgroundColor: Color.lightBackground}}>
         <BackButtonHeader title='Edit Screen' onPress={this.props.navigation.goBack} />
         <ScrollView>
           <View style={{flexDirection: 'row', justifyContent:'space-between', alignItems:'center'}}>
@@ -135,22 +134,22 @@ class EditScreen extends React.Component {
             <View style={{ flex:3/5 }}>
               <TextInput 
                 placeholder="Name" 
-                style={{ ...STYLES.input, width: windowWidth * 0.45 }}
+                style={{ ...STYLES.input, width: windowWidth * 0.50 }}
                 returnKeyType="go"
                 onChangeText={full_name => this.setState({ full_name })}
               />
               <TextInput
                 placeholder="Enter Bio"
                 onChangeText={bio => this.setState({ bio })}
-                style={{ ...STYLES.input, width: windowWidth * 0.45 }}
-                text_style={{height: windowWidth * 0.3, fontSize: 12, width: windowWidth * 0.45}}
+                style={{ ...STYLES.input, width: windowWidth * 0.50 }}
+                text_style={{height: windowWidth * 0.3, fontSize: 12, width: windowWidth * 0.50}}
                 returnKeyType="go"
                 multiline={true}
               />
             </View>
           </View>
 
-          <View style={{alignItems:'center', justifyContent:'space-evenly', height: windowHeight * 0.5}}>
+          <View style={{alignItems:'center', justifyContent:'space-evenly', height: windowHeight * 0.8}}>
             <TextInput 
               style={STYLES.input} 
               placeholder="New Username"
@@ -184,11 +183,14 @@ class EditScreen extends React.Component {
             <Button
               text="Save Changes"
               style={STYLES.saveButton}
-              onPress={this.saveChanges.bind(this)}
+              onPress={() => {
+                this.saveChanges.bind(this)
+                this.props.navigation.navigate('Edit')
+              }}
             />
           </View>
         </ScrollView>
-      </KeyboardAvoidingView>
+      </View>
     );
   }
 }

@@ -28,13 +28,11 @@ const STYLES = StyleSheet.create({
   input: {
     fontSize: 20,
     width: '80%',
-    borderRadius: 10,
     color: Color.textColor,
   },
   multiline_input: {
     fontSize: 20,
     width: '80%',
-    borderRadius: 10,
     color: Color.textColor,
     height:windowHeight*0.15,
   },
@@ -52,8 +50,6 @@ class SaveRunScreen extends React.Component {
     this.state = {
       runName: 'Run Name',
       runDescription: 'Run Description',
-      routeName: 'Route Name',
-      routeDescription:'Route Description',
     };
   }
 
@@ -107,12 +103,12 @@ class SaveRunScreen extends React.Component {
     return (
       <View style={{ flex: 1, backgroundColor: Color.lightBackground}}>
         <BackButtonHeader 
-          title="Save Screen"
+          title="Save Run Screen"
           onPress={this.props.navigation.goBack}
         />
         <ScrollView style={{flex: 4/5, backgroundColor: Color.lightBackground}}>
           <View style={{height:windowHeight*0.8, justifyContent:'space-evenly', alignItems:'center'}}>
-            <Text style={STYLES.title_style}>Run Information</Text>
+            <Text style={STYLES.title_style}>Run Stats</Text>
             <Image source={require('../assets/map.png')} style={STYLES.routePic} />
             <Text style={STYLES.text_style}>Average Pace: {this.props.run.real_time_info.average_pace.minutes} minutes {this.props.run.real_time_info.average_pace.seconds} seconds</Text>
             <Text style={STYLES.text_style}>Distance Ran: {this.props.run.real_time_info.distance}m</Text>
@@ -138,35 +134,17 @@ class SaveRunScreen extends React.Component {
               defaultValue='Run Description'
             />
           </View>
-          {this.props.run.run_info.route != null && (
-            <View style={{height:windowHeight*0.5, justifyContent:'space-evenly', alignItems:'center'}}>
-            <Text style={STYLES.title_style}>Save your Route</Text>
-            <TextInput
-              style={STYLES.input}
-              placeholder="Route Name"
-              onChangeText={routeName => {
-                this.setState({ routeName: routeName });
-              }}
-              defaultValue='Route Name'
-            />
-            <TextInput
-              text_style={STYLES.multiline_input}
-              multiline={true}
-              placeholder="Route Description"
-              onChangeText={routeDescription => {
-                this.setState({ routeDescription: routeDescription });
-              }}
-              defaultValue='Route Description'
-            />
-          </View>
-          )}
           <View style={{height:windowHeight*0.3, justifyContent:'space-evenly', alignItems:'center'}}>
             <Button 
               style={{width:'80%',alignSelf:'center'}}
               text="Post and Save Run"
               onPress={()=> {
                 this.saveRun()
-                this.props.navigation.navigate('Feed');
+                if (this.props.run.run_info.route == null) {
+                  this.props.navigation.navigate('Feed');
+                } else {
+                  this.props.navigation.navigate('SaveRoute');
+                }
               }}
             />
             <Text style={[{alignSelf:'center'}, STYLES.text_style]}>Or</Text>
@@ -175,7 +153,11 @@ class SaveRunScreen extends React.Component {
               text="Just Save Run"
               onPress={()=> {
                 this.addRun()
-                this.props.navigation.navigate('Feed');
+                if (this.props.run.run_info.route == null) {
+                  this.props.navigation.navigate('Feed');
+                } else {
+                  this.props.navigation.navigate('SaveRoute');
+                }
               }}
             />
           </View>

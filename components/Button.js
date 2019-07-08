@@ -18,6 +18,7 @@ class Button extends React.Component {
           ? Color.offColor
           : Color.buttonColor
         ,
+        borderRadius:5,
         width: this.props.back_btn ? 40 : "80%",
         height: 40,
         flexDirection: "row",

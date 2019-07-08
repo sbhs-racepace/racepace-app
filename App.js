@@ -37,6 +37,9 @@ import SaveRunScreen from './screens/SaveRunScreen';
 import LevelScreen from './screens/LevelScreen';
 import StartupScreen from './screens/StartupScreen';
 import CreateRouteScreen from './screens/CreateRouteScreen'
+import PlanRunScreen from './screens/PlanRunScreen'
+import LoadRouteScreen from './screens/LoadRouteScreen'
+import SaveRouteScreen from './screens/SaveRouteScreen'
 
 import Color from './constants/Color'
 
@@ -101,6 +104,10 @@ const LoginNavigator = createStackNavigator({
     screen: LevelScreen,
     navigationOptions: { header: null },
   },
+  SaveRoute: {
+    screen: SaveRouteScreen,
+    navigationOptions: { header: null },
+  },
   Routes: { screen: RouteListScreen, navigationOptions: { header: null } },
   Follow: { screen: FollowingScreen, navigationOptions: { header: null } },
   Main: {
@@ -134,9 +141,9 @@ const LoginNavigator = createStackNavigator({
       ),
       Setup: createMaterialTopTabNavigator(
         {
-          Run: { screen: LevelScreen, navigationOptions: { title: 'Plan Run' }},
+          Run: { screen: PlanRunScreen, navigationOptions: { title: 'Plan Run' }},
           Route: { screen: CreateRouteScreen, navigationOptions: { title: 'Create Route' }},
-          Load: { screen: LevelScreen, navigationOptions: { title: 'Load Route' }},
+          Load: { screen: LoadRouteScreen, navigationOptions: { title: 'Load Route' }},
         },
         {
           initialRouteName: 'Route',

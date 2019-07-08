@@ -14,22 +14,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 const STYLES = StyleSheet.create({
-  button: {
-    width: '80%',
-    borderRadius: 10,
-  },
   button_text: {
     padding: '1%',
     fontSize: 16,
-  },
-  back_btn: {
-    width: 40,
-    height: '5%',
-    left: 5,
-    top: 20,
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   logo: {
     margin: '5%',
@@ -112,7 +99,7 @@ class RegisterScreen extends React.Component {
             placeholderTextColor="rgba(225,225,225,0.8)"
           />
           <Button
-            style={STYLES.button}
+            style={{width:"80%"}}
             text_style={STYLES.button_text}
             text="Register"
             onPress={()=> {

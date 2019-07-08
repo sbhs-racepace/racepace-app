@@ -59,15 +59,20 @@ export async function login(email, password) {
     body: JSON.stringify(data),
   })
     .then(async res => {
-      login_response = await res.json();
-      await AsyncStorage.setItem(
-        'login_info',
-        JSON.stringify(login_response)
-      ); // Storing User Login
+      res = await res.json();
+      if (res.success == true) {
+        await AsyncStorage.setItem(
+          'login_info',
+          JSON.stringify(login_response)
+        ); // Storing User Login
+        login_response = res;
+      } else {
+        Alert.alert(res.error)
+      }
 
     })
     .catch(error => {
-      Alert.alert('Error ', error);
+      Alert.alert('Error', error);
     });
 
   return login_response;
