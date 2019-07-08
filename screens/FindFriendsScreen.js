@@ -92,9 +92,7 @@ class FindFriendsScreen extends React.Component {
     })
     .then(
       async res => {
-        console.log(res)
         res = await res.json(); //Parse response as JSON
-        console.log(res)
         this.setState({searchResults: res});
       }
     );

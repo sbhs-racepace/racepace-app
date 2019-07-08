@@ -28,7 +28,7 @@ class StartupScreen extends React.Component {
       'Roboto': require('../assets/fonts/Roboto-Regular.ttf')
     })
     let login_info = await AsyncStorage.getItem('login_info')
-    if (login_info !== null) {
+    if (login_info != "false") {
       // Storing Login Info
       let json_login_info = JSON.parse(login_info)
       await this.props.storeLoginInfo(json_login_info)

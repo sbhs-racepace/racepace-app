@@ -5,11 +5,12 @@ import { DocumentPicker } from 'expo';
 import { View, Alert, Text, ScrollView, AppRegistry, StyleSheet, KeyboardAvoidingView, Dimensions } from 'react-native';
 import TextInput from '../components/TextInput'
 import { Image } from 'react-native-elements'
-import { login } from '../functions/login'
+import { login, getUserInfo } from '../functions/login'
 import Button from '../components/Button';
 import BackButtonHeader from '../components/BackButtonHeader';
 import Color from '../constants/Color';
 import '../global.js';
+import { storeUserInfo, storeLoginInfo } from '../functions/user_info_action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -87,6 +88,8 @@ class EditScreen extends React.Component {
         .then(async res => {
           res = await res.json()
           if (res.success == true) {
+            let user_info = await getUserInfo(this.props.user.token)
+            await this.props.storeUserInfo(user_info)
             Alert.alert('Changed details')
           } else {
             Alert.alert(res.error)
@@ -102,11 +105,6 @@ class EditScreen extends React.Component {
 
   render() {
     return (
-      // <KeyboardAvoidingView
-      //   keyboardVerticalOffset={100} 
-      //   behavior="position"
-      //   style={{ backgroundColor: Color.darkBackground }}
-      // >
       <View style={{ flex: 1, backgroundColor: Color.lightBackground}}>
         <BackButtonHeader title='Edit Screen' onPress={this.props.navigation.goBack} />
         <ScrollView>
@@ -183,9 +181,9 @@ class EditScreen extends React.Component {
             <Button
               text="Save Changes"
               style={STYLES.saveButton}
-              onPress={() => {
-                this.saveChanges.bind(this)
-                this.props.navigation.navigate('Edit')
+              onPress={async () => {
+                await this.saveChanges()
+                this.props.navigation.navigate('Profile')
               }}
             />
           </View>
@@ -196,7 +194,7 @@ class EditScreen extends React.Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ }, dispatch)
+  return bindActionCreators({ storeUserInfo, storeLoginInfo }, dispatch)
 }
 
 function mapStateToProps(state) {
