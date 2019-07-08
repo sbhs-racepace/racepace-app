@@ -36,11 +36,11 @@ function calculateRealTimeInfo(state, location_packet) {
   let change_in_distance = 0
   if (state.location_packets.length > 0) {
     let previous_location = state.location_packets[state.location_packets.length-1]
-    let change_in_distance = coordDistance(previous_location.coords, location_packet.coords)
+    let change_in_distance = coordDistance(previous_location, location_packet)
   }
   state.real_time_info.distance = state.real_time_info.distance + change_in_distance
   state.real_time_info.average_pace = calculateAveragePace(new_distance, start_time, end_time)
-  state.real_time_info.current_pace = speedToPace(location_packet.coords.speed)
+  state.real_time_info.current_pace = speedToPace(location_packet.speed)
   // Updating Lap Pace and Distance
   let new_lap_distance = state.real_time_info.lap_distance + change_in_distance
   if (new_lap_distance > 1000) {

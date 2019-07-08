@@ -72,13 +72,14 @@ class RunScreen extends React.Component {
     let location_packet = await Location.getCurrentPositionAsync({
       accuracy: 4,
     })
-    if (this.props.run.run_info.real_time_tracking) global.socket.emit('location_update',location_packet);
-    this.props.addLocationPacket(location_packet)
+    if (this.props.run.run_info.real_time_tracking == true) this.props.user.socket.emit('location_update',json_location_packet);
+    let json_location_packet = {latitude: location_packet.coords.latitude, latitude: location_packet.coords.longitude, speed: location_packet.coords.speed, timestamp: location_packet.timestamp}
+    this.props.addLocationPacket(json_location_packet)
   }
 
   async locationUpdateLoop() {
     if (this.props.run.run_info.active == true) {
-      if (this.props.run.run_info.real_time_tracking) global.socket.emit('start_run', start_time);
+      if (this.props.run.run_info.real_time_tracking == true) this.props.user.socket.emit('start_run', start_time);
       this.locationUpdate()
       let timerId = setTimeout(this.locationUpdateLoop.bind(this), 3000);
     } 

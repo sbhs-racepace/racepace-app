@@ -55,10 +55,12 @@ class SaveRunScreen extends React.Component {
 
   async addRun() {
     let data = {
-      run_info: this.props.run_info,
-      location_packets: this.props.location_packets,
+      run_info: this.props.run.run_info,
+      location_packets: this.props.run.location_packets,
     }
-    let api_url = `${global.serverURL}/api/save_run`;
+    console.log(data.run_info)
+    console.log(data.location_packets)
+    let api_url = `${global.serverURL}/api/add_run`;
     fetch(api_url, {
       method: 'POST',
       body: JSON.stringify(data),
@@ -79,8 +81,8 @@ class SaveRunScreen extends React.Component {
     let data = {
       name: this.state.name,
       description: this.state.description,
-      run_info: this.props.run_info,
-      location_packets: this.props.location_packets,
+      run_info: this.props.run.run_info,
+      location_packets: this.props.run.location_packets,
     }
     let api_url = `${global.serverURL}/api/save_run`;
     fetch(api_url, {
@@ -138,8 +140,8 @@ class SaveRunScreen extends React.Component {
             <Button 
               style={{width:'80%',alignSelf:'center'}}
               text="Post and Save Run"
-              onPress={()=> {
-                this.saveRun()
+              onPress={async ()=> {
+                await this.saveRun()
                 if (this.props.run.run_info.route == null) {
                   this.props.navigation.navigate('Feed');
                 } else {
@@ -151,8 +153,8 @@ class SaveRunScreen extends React.Component {
             <Button 
               style={{width:'80%', alignSelf:'center'}}
               text="Just Save Run"
-              onPress={()=> {
-                this.addRun()
+              onPress={async ()=> {
+                await this.addRun()
                 if (this.props.run.run_info.route == null) {
                   this.props.navigation.navigate('Feed');
                 } else {
