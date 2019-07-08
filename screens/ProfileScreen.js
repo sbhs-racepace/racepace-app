@@ -1,7 +1,7 @@
 // Jason Yu and Abdur Raqeeb Mohammed
 
 import React from 'react'
-import { View, Text, StyleSheet, AsyncStorage, ScrollView, KeyboardAvoidingView } from 'react-native'
+import { View, Text, StyleSheet, AsyncStorage, Alert } from 'react-native'
 import { Image, Icon } from 'react-native-elements'
 import Button from '../components/Button'
 import '../global'
@@ -48,12 +48,29 @@ class ProfileScreen extends React.Component {
     super(props)
   }
 
-  async logoutCall() {
+  async doLogout() {
     if (this.props.user.token != null) { // Is not a Guest account
-      this.props.user.socket.emit('disconnect') // Disconnects io connection
-      await AsyncStorage.removeItem('login_info') // Deletes async storage for login
-    }
-    this.props.logout(); // Reset
+        this.props.user.socket.emit('disconnect') // Disconnects io connection
+        await AsyncStorage.removeItem('login_info') // Deletes async storage for login
+      }
+      this.props.logout(); // Reset
+      this.props.navigation.navigate('Splash');
+  }
+
+  logoutCall() {
+    Alert.alert(
+        'Logout',
+        'Are you sure you want to logout?',
+        [
+          {
+            text: 'No',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {text: 'Yes', onPress: () => this.doLogout()},
+        ],
+        {cancelable: false},
+      );
   }
 
   render () {
@@ -140,7 +157,6 @@ class ProfileScreen extends React.Component {
                 text="Logout"
                 onPress={async () => {
                   if (this.props.user.token) this.logoutCall();
-                  this.props.navigation.navigate('Splash');
                 }}
               />
             </View>
