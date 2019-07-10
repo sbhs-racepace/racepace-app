@@ -1,7 +1,7 @@
 // Jason Yu and Abdur Raqeeb Mohammed
 
 import React from 'react'
-import { View, Text, StyleSheet, AsyncStorage, Alert, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, AsyncStorage, Alert, ScrollView, KeyboardAvoidingView } from 'react-native'
 import { Image, Icon } from 'react-native-elements'
 import Button from '../components/Button'
 import '../global'
@@ -77,18 +77,9 @@ class ProfileScreen extends React.Component {
 
   render () {
     const Nav = createMaterialTopTabNavigator({
-      Stats: { 
-        screen: StatsScreen ,
-        navigationOptions: { title: 'Stats' },
-      },
-      Routes: { 
-        screen: RouteListScreen,
-        navigationOptions: { title: 'Routes' },
-      },
-      SavedRuns: {
-        screen: SavedRunListScreen, 
-        navigationOptions: { title: 'Saved' },
-      },
+        Stats: { screen: StatsScreen },
+        Routes: { screen: RouteListScreen },
+        Saved: {screen: SavedRunListScreen},
     }, {
       initialRouteName: this.props.navigation.state.params == undefined ? 'Stats' : this.props.navigation.state.params.screen,
       tabBarOptions: {
@@ -105,8 +96,9 @@ class ProfileScreen extends React.Component {
     const AppContainer = createAppContainer(Nav)
 
     return (
+    <KeyboardAvoidingView keyboardVerticalOffset={100} behavior="position" style={{backgroundColor: Color.darkBackground}}>
+    <ScrollView>
       <View style={STYLES.container}>
-        <ScrollView>
         
         <Text style={[STYLES.text, { fontSize: 30, textAlign: 'center', paddingTop: '5%', marginBottom: -15, fontFamily:'Roboto-Bold', color:Color.primaryColor}]}>{this.props.user.full_name}</Text>
         <View style={{ height: 150, padding: '3%' }}>
@@ -176,12 +168,14 @@ class ProfileScreen extends React.Component {
         </View>
       </View>
       <Text multiline={true} style={[STYLES.text, { paddingBottom: '8%', paddingLeft: '5%'}]}>{this.props.user.bio}</Text>
-      
-      <View style={{ flex: 1, backgroundColor: Color.darkBackground }}>
+
+      <View style={{ backgroundColor: Color.darkBackground }}>
         <AppContainer style={{ flex: 1 }}/>
       </View>
-      </ScrollView>
+      
     </View>
+    </ScrollView>
+    </KeyboardAvoidingView>
     
 
     );
