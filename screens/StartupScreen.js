@@ -28,7 +28,7 @@ class StartupScreen extends React.Component {
       'Roboto': require('../assets/fonts/Roboto-Regular.ttf')
     })
     let login_info = await AsyncStorage.getItem('login_info')
-    if (login_info != "false") {
+    if (login_info !== null) {
       // Storing Login Info
       let json_login_info = JSON.parse(login_info)
       await this.props.storeLoginInfo(json_login_info)
@@ -45,7 +45,7 @@ class StartupScreen extends React.Component {
     return (
       <View style={{flex:1}}>
         <LinearGradient 
-          colors={[Color.darkBackground, Color.lightBackground, Color.primaryColor, "transparent"]}
+          colors={[Color.darkBackground, Color.primaryColor]}
           style={{flex:1}}
         >
           <Text style={{textAlign:'center', justifyContent:'center',color:'white'}}>Loading...</Text>
