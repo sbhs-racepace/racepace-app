@@ -19,8 +19,7 @@ const STYLES = StyleSheet.create({
       backgroundColor: Color.lightBackground,
       borderColor: Color.darkBackground,
       color: Color.textColor,
-      margin: 5,
-      marginBottom: 5,
+      margin: 10,
   }
 })
 

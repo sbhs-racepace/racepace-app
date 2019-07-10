@@ -20,11 +20,10 @@ const STYLES = StyleSheet.create({
     color:Color.textColor
   },
   card: {
-      backgroundColor: Color.lightBackground,
-      borderColor: Color.darkBackground,
-      color: Color.textColor,
-      margin: 5,
-      marginBottom: 5,
+    backgroundColor: Color.lightBackground,
+    borderColor: Color.darkBackground,
+    color: Color.textColor,
+    margin: 20,
   }
 })
 
@@ -68,7 +67,7 @@ class RunListScreen extends React.Component {
     );
 
     return (
-      <View style={{flex:1,backgroundColor:Color.lightBackground}}>
+      <View style={{flex:1,backgroundColor:Color.darkBackground}}>
         <ScrollView>
           {test_data}
         </ScrollView>
