@@ -86,7 +86,7 @@ class ProfileScreen extends React.Component {
       },
       SavedRuns: {
         screen: SavedRunListScreen, 
-        navigationOptions: { title: 'Runs' },
+        navigationOptions: { title: 'Saved' },
       },
     }, {
       initialRouteName: this.props.navigation.state.params == undefined ? 'Stats' : this.props.navigation.state.params.screen,

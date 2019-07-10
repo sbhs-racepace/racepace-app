@@ -120,7 +120,7 @@ const LoginNavigator = createStackNavigator({
           },
           RecentRuns: {
             screen: RunListScreen,
-            navigationOptions: { title: 'Recent Runs' },
+            navigationOptions: { title: 'Runs' },
           },
         },
         {

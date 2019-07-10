@@ -1,7 +1,7 @@
 // Jason Yu, Sunny Yan
 
 import React from 'react';
-import { StyleSheet, View, Text, Alert, ScrollView, Dimensions, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, Text, Alert, Dimensions, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
 import {createAppContainer,createMaterialTopTabNavigator} from 'react-navigation';
 import TextInput from '../components/TextInput'
 import { CheckBox } from 'react-native-elements'
@@ -94,7 +94,6 @@ class RunSetupScreen extends React.Component {
   async generateRouteInfo() {
     let start_packet = this.createLocationPacket(this.state.start);
     let end_packet = this.createLocationPacket(this.state.end);
-    console.log(start_packet)
     let route_data = await this.generateRoute(start_packet.coord,end_packet.coord);
     if (route_data != false) {
       let route = route_data.route
