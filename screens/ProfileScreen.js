@@ -55,6 +55,7 @@ class ProfileScreen extends React.Component {
       await AsyncStorage.removeItem('login_info') // Deletes async storage for login
     }
     this.props.logout(); // Reset
+    this.props.navigation.navigate('Splash');
   }
 
   logoutCall() {
