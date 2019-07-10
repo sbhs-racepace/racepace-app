@@ -16,7 +16,6 @@ const STYLES = StyleSheet.create({
   card: {
       backgroundColor: Color.lightBackground,
       borderColor: Color.darkBackground,
-      color: Color.textColor,
       margin: 5,
       marginBottom: 5,
   }
