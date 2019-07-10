@@ -51,10 +51,10 @@ class ProfileScreen extends React.Component {
 
   async doLogout() {
     if (this.props.user.token != null) { // Is not a Guest account
-        this.props.user.socket.emit('disconnect') // Disconnects io connection
-        await AsyncStorage.removeItem('login_info') // Deletes async storage for login
-      }
-      this.props.logout(); // Reset
+      this.props.user.socket.emit('disconnect') // Disconnects io connection
+      await AsyncStorage.removeItem('login_info') // Deletes async storage for login
+    }
+    this.props.logout(); // Reset
   }
 
   logoutCall() {
