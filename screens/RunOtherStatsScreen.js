@@ -7,7 +7,10 @@ import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
 import Button from "../components/Button"
 import Color from '../constants/Color.js'
-import "../global.js"
+import {  } from '../functions/run_action'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
@@ -21,38 +24,30 @@ const STYLES = StyleSheet.create({
     textAlign:'center',
   },
   title: {
-    fontFamily:'RobotoCondensed-BoldItalic',fontSize:50,color:Color.primaryColor,
+    fontFamily:'Roboto-Bold',fontSize:50,color:Color.primaryColor,
     borderColor:'white',
     flex:3,
     justifyContent:'center'
   },
   circularButton:{
     margin:5,
-    borderWidth:1,
-    backgroundColor:'blue',
+    backgroundColor:Color.lightBackground,
     alignItems:'center',
     alignSelf:'center',
     justifyContent:'center',
+  },
+  largeButton: {
     width: windowWidth * 0.20,
     height: windowWidth * 0.20,
     borderRadius: windowWidth * 0.20 / 2,
-  }
+  }, 
+  largeIcon: windowWidth * 0.2 / 2,
 })
 
-export default class RunOtherStasScreen extends React.Component {
-  constructor(state) {
-    super(state);
-    this.state = {
-      pace: {minutes:'--', seconds:'--'},
-      distance: 0,
-      time: {hours:'00',minutes:'00',seconds:'00',milliseconds:'00'},
-      paused: false,
-      interval_id: null,
-    }
-  }
+class RunOtherStatsScreen extends React.Component {
+  constructor(props) {
+    super(props);
 
-  timeString() {
-    return `${this.state.time.hours}: ${this.state.time.minutes}: ${this.state.time.seconds}.${this.state.time.milliseconds}`
   }
   
   render() {
@@ -60,28 +55,18 @@ export default class RunOtherStasScreen extends React.Component {
       <View style={{backgroundColor:Color.lightBackground, flex:1}}>
         <View style={{flex:1,alignItems:'center'}}>
           <Text style={STYLES.title}>Other Stats</Text>      
-          <Text style={STYLES.text}>Timer: {this.timeString()}</Text>
-          <Text style={STYLES.text}>Lap Pace: {this.state.pace.minutes} :{this.state.pace.seconds}</Text>
-          <Text style={STYLES.text}>Lap Distance: {this.state.distance}</Text>
+          <Text style={STYLES.text}>Timer: </Text>
+          <Text style={STYLES.text}>Lap Pace: {this.props.run.real_time_info.lap_pace.minutes} :{this.props.run.real_time_info.lap_pace.seconds}</Text>
+          <Text style={STYLES.text}>Lap Distance: {this.props.run.real_time_info.lap_distance}m</Text>
         </View>
 
         <View style={{backgroundColor:Color.darkBackground, height: windowHeight * 0.20}}>
           <View style={{flex:1,flexDirection:'row', width:'100%', justifyContent:'space-evenly'}}>
             <TouchableOpacity
-              style={STYLES.circularButton}
-              onPress={()=>{this.props.navigation.navigate('RunManager')}}
+              style={[STYLES.circularButton, STYLES.largeButton]}
+              onPress={()=>{this.props.navigation.goBack()}}
             >
-              <Text style={{fontSize:20, color:Color.textColor}}>Main (ICON)</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={STYLES.circularButton}
-              onPress={()=>{
-                this.setState({paused: !this.state.paused})
-                this.props.navigation.navigate('Paused');
-              }}
-            >
-              <Text style={{fontSize:20, color:Color.textColor}}>Pause (ICON)</Text>
+              <FontAwesome5Icon name="running" size={STYLES.largeIcon} color={Color.primaryColor}/>
             </TouchableOpacity>
           </View>
         </View>
@@ -89,3 +74,14 @@ export default class RunOtherStasScreen extends React.Component {
     )
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ }, dispatch)
+}
+
+function mapStateToProps(state) {
+  const { user, run } = state;
+  return { user, run };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RunOtherStatsScreen);

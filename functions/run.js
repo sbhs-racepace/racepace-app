@@ -1,21 +1,22 @@
 export function speedToPace(speed) {
   let kmTime = 1000 / speed   // in seconds
-  let minutes = Math.floor(kmTime/60)
-  let seconds = kmTime - minutes * 60
-  let pace = {
-    minutes: minutes,
-    seconds: seconds,
-  }
-  return pace
+  let pace = secondsToMinutesAndSeconds(kmTime)
+  return returnIfRunning(pace) // Returns invalid pace if unreasonable
 }
 
 export function calculateAveragePace(distance, initial_time, end_time) {
-  let duration = calculate_duration(initial_time, end_time)
+  let duration = calulateDuration(initial_time, end_time)
   return calculatePace(distance, duration)
 }
 
-export function calculate_duration(initial_time, end_time) {
-  return Math.abs(end_time - initial_time) / 1000 // Seconds
+export function secondsToMinutesAndSeconds(time) {
+  let minutes = Math.floor(time / 60)
+  let seconds = Math.floor(time - (minutes * 60))
+  return {minutes:minutes, seconds:seconds}
+}
+
+export function calulateDuration(initial_time, end_time) {
+  return Math.abs(end_time - initial_time) / 1000 // Assumption is that time is in milliseconds
 }
 
 export function calculatePace(distance, duration) {
@@ -47,4 +48,24 @@ export function returnIfRunning(pace) {
   } else {
     return pace
   }
+}
+
+export function calculateTimeFromPace(distance, pace) {
+  let time = (distance / 1000) * pace.minutes * 60 + (distance / 1000) * pace.seconds // Time is in seconds
+  return secondsToMinutesAndSeconds(time)
+}
+
+export function calculateCaloriesBurnt(distance) {
+  let weight = 60
+  let calories = distance * weight * 1.036 / 1000
+  return Math.floor(calories)
+}
+
+export function calculateKilojoulesBurnt(distance) {
+  let calories = calculateCaloriesBurnt(distance)
+  return Math.floor(calories *4.184)
+}
+
+export function calculatePoints(distance, pace) {
+  return Math.floor(distance * 100 * Math.pow((1/pace.minutes),2))
 }

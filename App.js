@@ -2,7 +2,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux'
-import { runReducer } from './functions/reducer';
+import reducer from './functions/reducer';
 
 import {
   createStackNavigator,
@@ -10,11 +10,13 @@ import {
   createBottomTabNavigator,
   createMaterialTopTabNavigator,
 } from 'react-navigation';
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
 
 import { View } from 'react-native';
 import EditScreen from './screens/EditScreen';
 import FeedScreen from './screens/FeedScreen';
-import PreviousRunsScreen from './screens/PreviousRunsScreen';
+import RunListScreen from './screens/RunListScreen';
 import FollowingScreen from './screens/FollowingScreen';
 import SplashScreen from './screens/SplashScreen';
 import MapScreen from './screens/MapScreen';
@@ -24,7 +26,6 @@ import RegisterScreen from './screens/RegisterScreen';
 import ChatScreen from './screens/ChatScreen';
 import RouteListScreen from './screens/RouteListScreen';
 import FollowerRequestScreen from './screens/FollowerRequestScreen';
-import RunSetupScreen from './screens/RunSetupScreen';
 import RunOtherStatsScreen from './screens/RunOtherStatsScreen';
 import RunInformationScreen from './screens/RunInformationScreen';
 import RunPausedScreen from './screens/RunPausedScreen';
@@ -33,9 +34,12 @@ import TrackingScreen from './screens/TrackingScreen';
 import RunScreen from './screens/RunScreen';
 import FindFriendsScreen from './screens/FindFriendsScreen';
 import SaveRunScreen from './screens/SaveRunScreen';
-import SaveRecentRunScreen from './screens/SaveRecentRunScreen';
 import LevelScreen from './screens/LevelScreen';
 import StartupScreen from './screens/StartupScreen';
+import CreateRouteScreen from './screens/CreateRouteScreen'
+import PlanRunScreen from './screens/PlanRunScreen'
+import LoadRouteScreen from './screens/LoadRouteScreen'
+import SaveRouteScreen from './screens/SaveRouteScreen'
 
 import Color from './constants/Color'
 
@@ -96,12 +100,12 @@ const LoginNavigator = createStackNavigator({
     screen: RunPausedScreen,
     navigationOptions: { header: null },
   },
-  SaveRecentRun: {
-    screen: SaveRecentRunScreen,
-    navigationOptions: { header: null },
-  },
   Level: {
     screen: LevelScreen,
+    navigationOptions: { header: null },
+  },
+  SaveRoute: {
+    screen: SaveRouteScreen,
     navigationOptions: { header: null },
   },
   Routes: { screen: RouteListScreen, navigationOptions: { header: null } },
@@ -114,12 +118,17 @@ const LoginNavigator = createStackNavigator({
             screen: FeedScreen,
             navigationOptions: { title: 'Feed' },
           },
-          PreviousRuns: {
-            screen: PreviousRunsScreen,
-            navigationOptions: { title: 'You' },
+          RecentRuns: {
+            screen: RunListScreen,
+            navigationOptions: { title: 'Runs' },
           },
         },
         {
+          navigationOptions: {
+            tabBarIcon: ({ tintColor }) => (
+              <FontAwesomeIcon name="feed" size={25} color={Color.primaryColor}/>
+            )
+          },
           tabBarOptions: {
             activeTintColor: Color.textColor,
             inactiveTintColor: Color.offColor,
@@ -130,10 +139,53 @@ const LoginNavigator = createStackNavigator({
           },
         }
       ),
-      Setup: { screen: RunSetupScreen },
-      Map: { screen: MapScreen },
-      Groups: { screen: GroupScreen },
-      Profile: { screen: ProfileScreen },
+      Setup: createMaterialTopTabNavigator(
+        {
+          Run: { screen: PlanRunScreen, navigationOptions: { title: 'Plan Run' }},
+          Route: { screen: CreateRouteScreen, navigationOptions: { title: 'Create Route' }},
+          Load: { screen: LoadRouteScreen, navigationOptions: { title: 'Load Route' }},
+        },
+        {
+          initialRouteName: 'Route',
+          navigationOptions: {
+            tabBarIcon: ({ tintColor }) => (
+              <FontAwesomeIcon name="gear" size={25} color={Color.primaryColor}/>
+            )
+          },
+          tabBarOptions: {
+            activeTintColor: Color.textColor,
+            inactiveTintColor: Color.offColor,
+            indicatorStyle: {
+                backgroundColor: Color.primaryColor
+            },
+            style: {backgroundColor: Color.darkBackground,},
+          },
+        }
+      ),
+      Map: { 
+        screen: MapScreen, 
+        navigationOptions: {
+          tabBarIcon: ({ tintColor }) => (
+            <MaterialCommunityIcon name="map-marker" size={25} color={Color.primaryColor}/>
+          )
+        } 
+      },
+      Groups: { 
+        screen: GroupScreen,
+        navigationOptions: {
+          tabBarIcon: ({ tintColor }) => (
+            <FontAwesomeIcon name="group" size={25} color={Color.primaryColor}/>
+          )
+        },
+      },
+      Profile: { 
+        screen: ProfileScreen,
+        navigationOptions: {
+          tabBarIcon: ({ tintColor }) => (
+            <FontAwesomeIcon name="user" size={25} color={Color.primaryColor}/>
+          )
+        },
+       },
     },
     {
       navigationOptions: { 
@@ -143,14 +195,17 @@ const LoginNavigator = createStackNavigator({
       tabBarOptions: {
         activeTintColor: Color.textColor,
         inactiveTintColor: Color.offColor,
-        style: { backgroundColor: Color.darkBackground },
+        style: { backgroundColor: Color.darkBackground},
+        labelStyle: {fontSize: 11},
+        tabStyle: {height:50,},
+        showIcon: true,
       }
     })
   },
 });
 
 const AppContainer = createAppContainer(LoginNavigator);
-const store = createStore(runReducer);
+const store = createStore(reducer)
 
 export default class App extends React.Component {
   constructor(props) {
@@ -164,7 +219,6 @@ export default class App extends React.Component {
           <AppContainer 
             style={{backgroundColor: Color.darkBackground}}
           />
-          
       </Provider>
     );
   }

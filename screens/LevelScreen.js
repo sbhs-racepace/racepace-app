@@ -6,7 +6,6 @@ import {
   Text,
   StyleSheet,
 } from 'react-native';
-import '../global';
 import Color from '../constants/Color'
 import BackButtonHeader from '../components/BackButtonHeader';
 

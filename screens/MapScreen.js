@@ -9,9 +9,13 @@ import { Constants } from 'expo';
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
 import "../global";
-import Button from '../components/Button';
-import Timer from '../components/Timer';
+import { label, cobalt, lunar,neutral_blue } from '../constants/mapstyle'
 import Color from '../constants/Color'
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
+import { startRun } from '../functions/run_action'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 const LATITUDE_DELTA = 0.0922 * 1.5;
 const LONGITUDE_DELTA = 0.0421 * 1.5;
@@ -21,9 +25,10 @@ const STYLES = StyleSheet.create({
   search: {
     borderRadius: 5,
     borderWidth: 1,
-    backgroundColor: 'white',
+    backgroundColor: Color.darkBackground,
+    color:Color.textColor,
     width: windowWidth*0.6,
-    height: 30,
+    height: 40,
   },
   map: {
     ...StyleSheet.absoluteFillObject,
@@ -34,7 +39,7 @@ const STYLES = StyleSheet.create({
   circularButton:{
     margin:5,
     borderWidth:1,
-    backgroundColor:'blue',
+    backgroundColor:Color.darkBackground,
     alignItems:'center',
     alignSelf:'center',
     justifyContent:'center',
@@ -49,9 +54,11 @@ const STYLES = StyleSheet.create({
     height: windowWidth * 0.10,
     borderRadius: windowWidth * 0.10 / 2,
   },
+  largeIcon: windowWidth * 0.2 / 2,
+  smallIcon: windowWidth * 0.12 / 2,
 });
 
-export default class MapScreen extends React.Component {
+class MapScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -74,7 +81,6 @@ export default class MapScreen extends React.Component {
       distance: 0,
     };
   }
-
 
   defaultLocationAsync() {
     let { status } = Permissions.askAsync(Permissions.LOCATION);
@@ -208,9 +214,11 @@ export default class MapScreen extends React.Component {
 
   render() {
     return (
-      <View style={{flex:1}}>
+      <View style={{flex:1, backgroundColor:Color.darkBackground}}>
         <MapView
           style={STYLES.map}
+          provider = { MapView.PROVIDER_GOOGLE } // Usage of google maps
+          customMapStyle = { neutral_blue }
           showsUserLocation={true}
           showsMyLocationButton={false}
           region={this.state.region}
@@ -230,6 +238,7 @@ export default class MapScreen extends React.Component {
           <TextInput
             placeholder="Search"
             style={STYLES.search}
+            placeholderTextColor={Color.textColor}
             onChangeText={text => this.setState({ searchStr: text })}
           />
 
@@ -237,20 +246,14 @@ export default class MapScreen extends React.Component {
             style={[STYLES.circularButton, STYLES.smallButton]}
             onPress={() => this.goToLocation(this.state.searchStr)}
           >
-            <Image
-            style={STYLES.smallButton}
-            source = {require('../assets/icons/search.png')}
-            />
+            <FontAwesomeIcon name="search" size={STYLES.smallIcon} color={Color.primaryColor}/>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={[STYLES.circularButton, STYLES.smallButton]}
             onPress={() => this.runHere(this.state.searchStr, this.state.searchLoc)}
           >
-            <Image
-            style={STYLES.smallButton}
-            source = {require('../assets/icons/run.png')}
-            />
+            <FontAwesome5Icon name="running" size={STYLES.smallIcon} color={Color.primaryColor}/>
           </TouchableOpacity>
         </View>
 
@@ -261,9 +264,12 @@ export default class MapScreen extends React.Component {
           <View style={{flex:1, alignItems:'center'}}>
             <TouchableOpacity
               style={[STYLES.circularButton,STYLES.largeButton]}
-              onPress={()=>{this.props.navigation.navigate('RunManager')}}
+              onPress={()=>{
+                this.props.startRun();
+                this.props.navigation.navigate('RunManager')
+              }}
             >
-              <Text style={{fontSize:20, color:Color.textColor}}>Run (ICON)</Text>
+              <FontAwesomeIcon name="play" size={STYLES.largeIcon} color={Color.primaryColor}/>
             </TouchableOpacity>
           </View>
           <View style={{flex:1, alignItems:'center'}}>
@@ -274,10 +280,7 @@ export default class MapScreen extends React.Component {
                 this.goToCurrent();
               }}
             >
-              <Image
-                style={STYLES.smallButton}
-                source = {require('../assets/icons/compass.jpg')}
-              />
+              <FontAwesomeIcon name="location-arrow" size={STYLES.smallIcon} color={Color.primaryColor}/>
             </TouchableOpacity>
           </View>
         </View>
@@ -285,3 +288,14 @@ export default class MapScreen extends React.Component {
     )
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ startRun }, dispatch)
+}
+
+function mapStateToProps(state) {
+  const { user, run } = state;
+  return { user, run };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MapScreen);

@@ -4,7 +4,6 @@ import React from 'react';
 import { View, Text, Dimensions, StyleSheet } from 'react-native';
 import { Image } from 'react-native-elements'
 import Button from '../components/Button.js'
-import '../global.js'
 import Color from '../constants/Color'
 
 const STYLES = StyleSheet.create({
@@ -13,7 +12,7 @@ const STYLES = StyleSheet.create({
   },
   button_text: {
     padding:"2%",
-    fontSize: 16
+    fontSize: 20,
   },
   title: {
     fontFamily:'Roboto-Bold',fontSize:70,color:Color.primaryColor,

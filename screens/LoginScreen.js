@@ -3,13 +3,15 @@
 import React from 'react';
 import { Component } from 'react';
 import Color from '../constants/Color'
-import { View, Text, StyleSheet, Alert, Dimensions } from 'react-native';
 import { Image } from 'react-native-elements'
-import { login, execute_login, googleLogin } from '../functions/login';
+import { View, Text, StyleSheet, Alert, Dimensions, ActivityIndicator, KeyboardAvoidingView } from 'react-native';
+import { login, googleLogin, getUserInfo } from '../functions/login';
 import Button from '../components/Button.js';
 import TextInputCustom from '../components/TextInput';
-import '../global';
 import BackButtonHeader from '../components/BackButtonHeader'
+import { storeUserInfo, storeLoginInfo } from '../functions/user_info_action'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
@@ -32,19 +34,19 @@ const STYLES = StyleSheet.create({
   }
 });
 
-export default class LoginScreen extends React.Component {
+class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       email: 'email',
       pword: 'password',
-      isSigninInProgress: false,
+      loading: false,
     };
   }
 
   render() {
     return (
-      <View style={{backgroundColor: Color.darkBackground, flex:1}}>
+      <KeyboardAvoidingView style={{backgroundColor: Color.darkBackground, flex:1}} behavior="padding">
         <BackButtonHeader
           title="Login Screen"
           onPress={this.props.navigation.goBack}
@@ -66,7 +68,7 @@ export default class LoginScreen extends React.Component {
             autoCapitalize="none"
             returnKeyType="go"
             placeholder="Email"
-            placeholderTextColor="rgba(225,225,225,0.8)"
+            placeholderTextColor={Color.textColor}
           />
           <TextInputCustom
             autoCorrect={false}
@@ -76,14 +78,32 @@ export default class LoginScreen extends React.Component {
             secureTextEntry={true}
             placeholder="Password"
             autoCapitalize="none"
-            placeholderTextColor="rgba(225,225,225,0.8)"
+            placeholderTextColor={Color.textColor}
           />
           <Button
             style={STYLES.roundedButton}
             text_style={STYLES.button_text}
-            onPress={execute_login.bind(this, this.state.email, this.state.pword)}
+            onPress={async ()=> {
+              this.setState({loading:true})
+              let login_response = await login(this.state.email, this.state.pword);
+              if (login_response != false) {
+                await this.props.storeLoginInfo(login_response);
+                let userInfo = await getUserInfo(this.props.user.token);
+                this.props.storeUserInfo(userInfo)
+                this.props.navigation.navigate('Feed');
+              }
+              this.setState({loading:false})
+            }}
             text="Login"
-          />
+          >
+            {this.state.loading && (
+              <ActivityIndicator
+                animating={true}
+                color="white"
+                size="large"
+              />
+            )}
+          </Button>
           <Button
             style={STYLES.roundedButton}
             text_style={STYLES.button_text}
@@ -91,7 +111,18 @@ export default class LoginScreen extends React.Component {
             text="Login with Google"
           />
         </View>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ storeUserInfo, storeLoginInfo }, dispatch)
+}
+
+function mapStateToProps(state) {
+  const {user} = state
+  return {user};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);

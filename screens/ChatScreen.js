@@ -5,8 +5,10 @@ import React from "react";
 import { GiftedChat } from "react-native-gifted-chat";
 import SlackMessage from '../components/SlackMessage';
 import emojiUtils from 'emoji-utils';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-export default class ChatScreen extends React.Component {
+class ChatScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -16,8 +18,7 @@ export default class ChatScreen extends React.Component {
     this.onSend = this.onSend.bind(this);
 
     this._storeMessages = this._storeMessages.bind(this);
-
-    this.socket = global.socket;
+    this.socket = this.props.user.socket
     this.socket.on('global_message', this.onReceivedMessage);
     this.socket.on('connect', this.onConnect)
   }
@@ -28,7 +29,7 @@ export default class ChatScreen extends React.Component {
     fetch(messagesURL, {
       method: 'GET',
       headers: new Headers({
-        'Authorization': global.login_info.token,
+        'Authorization': this.props.user.token,
       })
     })
     .then(async res => await res.json())
@@ -115,9 +116,9 @@ export default class ChatScreen extends React.Component {
         messages={this.state.messages}
         onSend={messages => this.onSend(messages)}
         user={{
-          _id: global.login_info.user_id,
-          avatar: `${global.serverURL}/api/avatars/${global.login_info.user_id}.png`,
-          name: global.user.username
+          _id: this.props.user.user_id,
+          avatar: `${blo.serverURL}/api/avatars/${this.props.login_info.user_id}.png`,
+          name: this.props.user.username
         }}
         renderMessage={this.renderMessage}
         showUserAvatar={true}
@@ -127,3 +128,14 @@ export default class ChatScreen extends React.Component {
     );
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ }, dispatch)
+}
+
+function mapStateToProps(state) {
+  const { user } = state;
+  return { user };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChatScreen);

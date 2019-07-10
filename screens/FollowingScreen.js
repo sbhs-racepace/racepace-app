@@ -6,7 +6,6 @@ import { Image } from 'react-native-elements'
 import {createMaterialTopTabNavigator,createAppContainer} from 'react-navigation'
 import Button from "../components/Button"
 import BackButtonHeader from '../components/BackButtonHeader'
-import '../global'
 import Color from '../constants/Color'
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
@@ -39,8 +38,8 @@ class Follower extends React.Component {
 }
 
 class FollowingScreen extends React.Component {
-  constructor(state){
-    super(state);
+  constructor(props){
+    super(props);
     this.state = {
       following: [
         {img: require('../assets/cat.jpeg'), name: "John F"},
@@ -59,8 +58,8 @@ class FollowingScreen extends React.Component {
 }
 
 class FollowerScreen extends React.Component {
-  constructor(state){
-    super(state);
+  constructor(props){
+    super(props);
     this.state = {
       following: [
         {img: require('../assets/cat.jpeg'), name: "John F"},
@@ -83,7 +82,17 @@ export default class FollowListScreen extends React.Component {
     const Nav = createMaterialTopTabNavigator({
       Following: {screen: FollowingScreen},
       Followers: {screen: FollowerScreen},
-    }, {initialRouteName: this.props.navigation.state.params==undefined ? "Following" : this.props.navigation.state.params.screen})
+    }, {
+      initialRouteName: this.props.navigation.state.params==undefined ? "Following" : this.props.navigation.state.params.screen,
+      tabBarOptions: {
+        activeTintColor: Color.textColor,
+        indicatorStyle: {
+            backgroundColor: Color.primaryColor
+        },
+        inactiveTintColor: Color.offColor,
+        style: { backgroundColor: Color.buttonColor }
+      }
+    })
     const AppContainer = createAppContainer(Nav);
     return (
       <View style={{flex: 1, backgroundColor:Color.lightBackground}}>

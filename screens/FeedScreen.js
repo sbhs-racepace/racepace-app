@@ -1,57 +1,102 @@
 // Jason Yu
 
 import React from 'react';
-import { ScrollView, Text, Alert, KeyboardAvoidingView } from 'react-native';
+import { ScrollView, Text, Alert, KeyboardAvoidingView, View } from 'react-native';
 import Button from '../components/Button';
 import { FeedItem } from '../components/FeedItem';
 import '../global.js';
-import Color from '../constants/Color'
+import request from '../functions/request';
+import Color from '../constants/Color';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-let roundedButton = {
-  width: '80%',
-  borderRadius: 10,
-}
-
-export default class FeedScreen extends React.Component {
-  constructor(state) {
-    super(state);
+class FeedScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      feed: [],
+    };
   }
+
   render() {
-    if (!global.login_info.token && !global.TEST) {
-      return <Text>Please login to see your feed</Text>;
-    }
-    return (
-      <KeyboardAvoidingView keyboardVerticalOffset={100} behavior="position" style={{backgroundColor: Color.darkBackground}}>
-        <ScrollView
-          contentContainerStyle={{
-            backgroundColor: Color.darkBackground,
-          }}>
-          <FeedItem
-            username="Test User"
-            posttime="3 hours ago"
-            routename="Test Route"
-            description="This is a great route"
-            length="2.2"
-            time="30"
-          />
-          <FeedItem
-            username="Test User"
-            posttime="3 hours ago"
-            routename="Test Route"
-            description="This is a great route"
-            length="2.2"
-            time="30"
-          />
-          <FeedItem
-            username="Test User"
-            posttime="3 hours ago"
-            routename="Test Route"
-            description="This is a great route"
-            length="2.2"
-            time="30"
-          />
-        </ScrollView>
-      </KeyboardAvoidingView>
-    );
+    return (<View style={{flex:1,backgroundColor:Color.darkBackground}}></View>);
+    // if (!this.props.user.token == null) {
+    //   return <Text>Please login to see your feed</Text>
+    // } else if (!this.state.feed) {
+    //   let feed = request('/get_feed', 'POST', {}, true);
+    //   this.setState({ feed: feed.feed_items });
+    // } else if (!this.state.feed) {
+    //   return (
+    //     <View>
+    //       <Text>Your feed is empty</Text>
+    //       <Button
+    //         style={{
+    //           width: '80%',
+    //           alignSelf: 'center',
+    //         }}
+    //         text_style={{
+    //           padding: '1%',
+    //           fontSize: 16,
+    //         }}
+    //         onPress={() => {
+    //           let feed = request('/get_feed', 'POST', {}, true);
+    //           this.setState({ feed: feed.feed_items });
+    //         }}
+    //         text="Refresh"
+    //       />
+    //     </View>
+    //   );
+    // } else {
+    //   return (
+    //     <KeyboardAvoidingView
+    //       behavior="position"
+    //       style={{ backgroundColor: Color.darkBackground }}>
+    //       <ScrollView
+    //         contentContainerStyle={{
+    //           backgroundColor: Color.darkBackground,
+    //         }}>
+    //         {this.feed &&
+    //           this.feed.map(item => (
+    //             <FeedItem
+    //               username={item.username}
+    //               posttime={item.route.real_time_route.start_time}
+    //               routename={item.route.real_time_route.name}
+    //               description={item.route.real_time_route.description}
+    //               length={item.route.real_time_route.route.distance}
+    //               likes={item.route.likes.length}
+    //               comments={item.route.comments}
+    //               routePic={item.route_image}
+    //             />
+    //           ))}
+    //         <Button
+    //           style={{
+    //             width: '80%',
+    //             alignSelf: 'center',
+    //           }}
+    //           text_style={{
+    //             padding: '1%',
+    //             fontSize: 16,
+    //           }}
+    //           onPress={() => {
+    //             let feed = request('/get_feed', 'POST', {}, true);
+    //             this.setState({ feed: feed.feed_items });
+    //           }}
+    //           text="Refresh"
+    //         />
+    //       </ScrollView>
+    //     </KeyboardAvoidingView>
+    //   );
+    // }
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ }, dispatch)
+}
+
+function mapStateToProps(state) {
+  const { user } = state;
+  return { user };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(FeedScreen);

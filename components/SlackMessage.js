@@ -7,7 +7,6 @@ import {
   ViewPropTypes,
   StyleSheet,
 } from 'react-native';
-import '../global'
 import { Avatar, Day, utils } from 'react-native-gifted-chat';
 import Bubble from './SlackBubble';
 

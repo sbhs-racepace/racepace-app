@@ -1,21 +1,25 @@
 // Jason Yu
 
 import React from 'react'
-import { View, AsyncStorage, YellowBox } from 'react-native'
+import { View, AsyncStorage, StatusBar, Alert, Text } from 'react-native'
+import { LinearGradient } from 'expo-linear-gradient';
 import '../global'
 import * as Font from 'expo-font'
-import { storeUserInfo } from '../functions/login'
+import { getUserInfo } from '../functions/login'
 import Color from '../constants/Color'
 import * as Permissions from 'expo-permissions'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { storeLoginInfo, storeUserInfo } from '../functions/user_info_action'
 
-export default class StartupScreen extends React.Component {
+class StartupScreen extends React.Component {
   constructor (props) {
     super(props)
   }
 
   async componentDidMount () {
     console.disableYellowBox = true
-
+    StatusBar.setBarStyle('light-content', true);
     global.location_permission = Boolean((await Permissions.askAsync(Permissions.LOCATION)).status)
     await Font.loadAsync({
       'RobotoCondensed-BoldItalic': require('../assets/fonts/RobotoCondensed-BoldItalic.ttf'),
@@ -24,10 +28,13 @@ export default class StartupScreen extends React.Component {
       'Roboto': require('../assets/fonts/Roboto-Regular.ttf')
     })
     let login_info = await AsyncStorage.getItem('login_info')
-    if (login_info !== null) {
+    if (login_info != "false") {
+      // Storing Login Info
       let json_login_info = JSON.parse(login_info)
-      global.login_info = json_login_info
-      storeUserInfo()
+      await this.props.storeLoginInfo(json_login_info)
+      // Storing User Info
+      let user_info =  await getUserInfo(this.props.user.token);
+      this.props.storeUserInfo(user_info)
       this.props.navigation.navigate('Feed')
     } else {
       this.props.navigation.navigate('Splash')
@@ -36,8 +43,26 @@ export default class StartupScreen extends React.Component {
 
   render () {
     return (
-      <View style={{ flex: 1, backgroundColor: Color.darkBackground }}>
+      <View style={{flex:1}}>
+        <LinearGradient 
+          colors={[Color.darkBackground, Color.lightBackground, Color.primaryColor, "transparent"]}
+          style={{flex:1}}
+        >
+          <Text style={{textAlign:'center', justifyContent:'center',color:'white'}}>Loading...</Text>
+        </LinearGradient>
       </View>
     )
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ storeUserInfo, storeLoginInfo }, dispatch)
+}
+
+
+function mapStateToProps(state) {
+  const { user } = state;
+  return { user };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(StartupScreen);

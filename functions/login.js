@@ -3,112 +3,155 @@
 import '../global';
 import { Alert, AsyncStorage } from 'react-native';
 import Expo from 'expo';
+import { Google } from 'expo';
 import io from 'socket.io-client';
 
-export async function storeUserInfo() {
+
+export async function getUserInfo(token) {
   let api_url = global.serverURL + '/api/get_info';
-  fetch(api_url, {
+  let user_info = false;
+  let data = {};
+  await fetch(api_url, {
     method: 'POST',
+    body: JSON.stringify(data),
     headers: new Headers({
-      Authorization: global.login_info.token,
+      Authorization: token,
     }),
   })
-  .then(async res => {
-    let res_data = await res.json()
-    if (res_data.success) {
-      global.user = res_data['info']
-      global.socket = io(`${global.serverURL}?token=${global.login_info.token}`, { transports: ['websocket'] });
-      global.socket.emit('authenticate', global.login_info.token);
-    } else {
-      Alert.alert('Error', res_data.error)
-    }
-  }).catch(error => {
-    Alert.alert('Error', error);
-  })
+    .then(async res => {
+      let res_data = await res.json();
+      if (res_data.success) {
+        user_info = await res_data['info'];
+        let socket = io(
+          `${global.serverURL}?token=${token}`,
+          { transports: ['websocket'] }
+        );
+        socket.emit('authenticate', token);
+        user_info.socket = socket;
+      } else {
+        Alert.alert('Error', res_data.error);
+      }
+    })
+    .catch(error => {
+      Alert.alert('Error', error);
+    });
+  return user_info;
 }
 
-export async function execute_login(email,password) {
-  let login_response = await login(email,password)
-  if (login_response.success) {
-    storeUserInfo();
-    this.props.navigation.navigate('Feed');
-  }
-}
-
-export async function login(email,password) {
-  let data = { email: email, password: password };
+export async function login(email, password) {
   let api_url = global.serverURL + '/api/login';
+  let data = {
+    email,
+    password,
+  };
+  for (let item of Object.entries(data)) {
+    if (!item[1]) {
+      Alert.alert(
+        'Blank fields',
+        `All fields must be filled. ${item[0]} is blank.`
+      );
+      return false;
+    }
+  }
   let login_response = false;
   await fetch(api_url, {
     method: 'POST',
     body: JSON.stringify(data),
   })
-  .then(async res => {
-    login_response = await res.json();
-    global.login_info = { token: login_response.token, user_id: login_response.user_id };
-    await AsyncStorage.setItem('login_info', JSON.stringify(global.login_info)); // Storing User Login
-  })
-  .catch(error => {
-    Alert.alert('Error ', error);
-  });
+    .then(async res => {
+      res = await res.json();
+      if (res.success == true) {
+        login_response = res;
+        await AsyncStorage.setItem(
+          'login_info',
+          JSON.stringify(login_response)
+        ); // Storing User Login
+      } else {
+        Alert.alert(res.error)
+      }
 
-  return login_response
+    })
+    .catch(error => {
+      Alert.alert('Error', error);
+    });
+
+  return login_response;
 }
 
-export async function register() {
+export async function register(email, pword, full_name, username) {
   //Sends register request to server (also logs in after user is registered)
   let data = {
-    email: this.state.email,
-    password: this.state.pword,
-    full_name: this.state.full_name,
-    dob: this.state.dob,
-    username: this.state.username,
+    email: email,
+    password: pword,
+    full_name: full_name,
+    username: username,
   };
-  let api_url = global.serverURL + '/api/register';
-  fetch(api_url, {
+  let register_response = false;
+  for (let item of Object.entries(data)) {
+    if (!item[1]) {
+      Alert.alert(
+        'Blank fields',
+        `All fields must be filled. ${item[0]} is blank.`
+      );
+      return register_response;
+    }
+  }
+  const url = global.serverURL + '/api/register';
+  await fetch(url, {
     method: 'POST',
     body: JSON.stringify(data),
   })
-  .then(async res => {
-    let res_data = await res.json()
-    if (res_data.success) {
-      storeUserInfo();
-      this.props.navigation.navigate('Feed');
-    } else {
-      Alert.alert('Error', res_data.error)
-    }
-  })
-  .catch(error => {
-    Alert.alert('Error', error);
-  })
+    .catch(res => {
+      Alert.alert('Error connecting to server', res);
+    })
+    .then(
+      async res => {
+        res = await res.json();
+        if (res.success) {
+          register_response = res;
+        } else {
+          Alert.alert(res.error)
+        }
+      },
+      reason => {
+        Alert.alert('Error connecting to server', reason);
+      }
+    );
+  return register_response
 }
 
 export async function googleLogin() {
-  let api_url = global.serverURL + '/api/google_login'
-  let googleLoginID = {
-    android: "Insert key here", 
-    ios: "Insert key here"
-  };
-  let result = await Expo.Google.logInAsync({ androidClientId: googleLoginID.android });
-  if (result.type == 'success') {
-    fetch(api_url, {
-      method: 'POST',
-      body: "idToken="+result.idToken,
-    })
-    .then(async res => {
-        let res_data = await res.json()
-        if (res_data.success) {
-          storeUserInfo();
-          this.props.navigation.navigate('Feed');
-        } else {
-          Alert.alert('Error', res_data.error)
-        }
-      }
-    )
-    .catch(error => {
-      Alert.alert('Error connecting to server', error);
-    })
-  } else {
-    Alert.alert('Error')
+  let login_response = false;
+  try {
+    const url = global.serverURL + '/api/google_login';
+    const config = {
+      androidClientId: global.googleLoginID.android,
+    };
+    const result = await Google.logInAsync(config);
+    if (result.type == 'success') {
+      fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({ idToken: result.idToken }),
+      })
+        .catch(res => {
+          Alert.alert('Error connecting to server', res);
+        })
+        .then(
+          async res => {
+            res = await res.json();
+            if (res.success) {
+              login_response = res;
+            } else {
+              Alert.alert('Error', res.error);
+            }
+          },
+          reason => {
+            Alert.alert('Error connecting to server', reason);
+          }
+        );
+    }
+  } catch (err) {
+    Alert.alert('Google Login Error', err);
   }
+  return login_response;
 }
