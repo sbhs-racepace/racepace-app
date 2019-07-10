@@ -26,7 +26,6 @@ export async function getUserInfo(token) {
           `${global.serverURL}?token=${token}`,
           { transports: ['websocket'] }
         );
-        socket.emit('authenticate', token);
         user_info.socket = socket;
       } else {
         Alert.alert('Error', res_data.error);
