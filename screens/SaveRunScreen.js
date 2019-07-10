@@ -58,8 +58,6 @@ class SaveRunScreen extends React.Component {
       run_info: this.props.run.run_info,
       location_packets: this.props.run.location_packets,
     }
-    console.log(data.run_info)
-    console.log(data.location_packets)
     let api_url = `${global.serverURL}/api/add_run`;
     fetch(api_url, {
       method: 'POST',
@@ -74,7 +72,6 @@ class SaveRunScreen extends React.Component {
     .then( async () => {
       console.log('Success Saving Route');
     });
-    this.props.endRun();
   }
 
   async saveRun() {
@@ -155,8 +152,10 @@ class SaveRunScreen extends React.Component {
               text="Just Save Run"
               onPress={async ()=> {
                 await this.addRun()
+                console.log(this.props.run.run_info.route)
                 if (this.props.run.run_info.route == null) {
                   this.props.navigation.navigate('Feed');
+                  this.props.endRun();
                 } else {
                   this.props.navigation.navigate('SaveRoute');
                 }

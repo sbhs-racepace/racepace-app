@@ -42,6 +42,8 @@ class SaveRunScreen extends React.Component {
     this.state = {
       routeName: 'Route Name',
       routeDescription:'Route Description',
+      start_name: this.props.run.run_info.start.name,
+      end_name: this.props.run.run_info.end.name,
     };
   }
 
@@ -51,9 +53,11 @@ class SaveRunScreen extends React.Component {
       route: this.props.run.run_info.route,
       name: this.state.routeName,
       description: this.state.routeDescription,
+      start_name: this.state.start_name,
+      end_name: this.state.end_name,
     }
     let api_url = `${global.serverURL}/api/save_route`;
-    fetch(api_url, {
+    await fetch(api_url, {
       method: 'POST',
       body: JSON.stringify(data),
       headers: new Headers({
@@ -66,7 +70,6 @@ class SaveRunScreen extends React.Component {
     .then( async () => {
       console.log('Success Saving Route');
     });
-    this.props.endRun();
   }
 
   render() {
@@ -81,6 +84,22 @@ class SaveRunScreen extends React.Component {
               this.setState({ routeName: routeName });
             }}
             defaultValue='Route Name'
+          />
+          <TextInput
+            style={STYLES.input}
+            placeholder="Start Name"
+            onChangeText={start_name => {
+              this.setState({ start_name: start_name });
+            }}
+            defaultValue={this.props.run.run_info.start.name}
+          />
+          <TextInput
+            style={STYLES.input}
+            placeholder="End Name"
+            onChangeText={end_name => {
+              this.setState({ end_name: end_name });
+            }}
+            defaultValue={this.props.run.run_info.end.name}
           />
           <TextInput
             text_style={STYLES.multiline_input}
@@ -107,6 +126,7 @@ class SaveRunScreen extends React.Component {
             text="Just Exit"
             onPress={()=> {
               this.props.navigation.navigate('Feed');
+              this.props.endRun();
             }}
           />
         </View>

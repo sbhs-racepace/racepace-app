@@ -65,11 +65,10 @@ export default function runReducer(state = RUN_INITIAL_STATE, action) {
         }
       })
     case CREATE_RUN_ROUTE:
-      let {route, real_time_tracking, distance, goal_pace} = action
+      let {start_packet, end_packet, route, real_time_tracking, distance, goal_pace} = action
       let estimated_duration = calculateTimeFromPace(distance, goal_pace)
       let estimated_energy = calculateKilojoulesBurnt(distance)
       let points = calculatePoints(distance, goal_pace)
-
       return Object.assign({}, state, {
         run_info: {
           ...state.run_info, 
@@ -80,8 +79,8 @@ export default function runReducer(state = RUN_INITIAL_STATE, action) {
           estimated_energy: estimated_energy,
           goal_pace: goal_pace,
           points: points,
-          start: action.start_packet,
-          end: action.end_packet,
+          start: start_packet,
+          end: end_packet,
         }
       })
     case START_RUN:
