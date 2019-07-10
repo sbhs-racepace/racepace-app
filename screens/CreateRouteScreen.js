@@ -42,32 +42,38 @@ class RunSetupScreen extends React.Component {
       start: "-33.878363,151.104490", //Burwood
       end: "-33.912466,151.103120", //Campsie
       goal_pace: {minutes: "5", seconds: "0"},
-      time: {minutes: 0, seconds: 0},
-      distance: 0,
-      points: 0,
-      calories: 0,
-      route: null,
       real_time_tracking: false,
     }
   }
 
-  async getRouteFromAddress(start,end) {
-    let {latitude:s_lat, longitude:s_lon} = (await Location.geocodeAsync(start+","+global.region.name))[0];
-    let startCoord = `${s_lat},${s_lon}`;
-    let {latitude:e_lat, longitude:e_lon} = (await Location.geocodeAsync(end+","+global.region.name))[0];
-    let endCoord = `${e_lat},${e_lon}`;
-
-    if (start == end) {
-      Alert.alert("Error","From location can't be same as to location");
-    } else if (startCoord == endCoord) {
-      Alert.alert("Error","Start or end position couldn't be understood");
-    } else {
-      this.getRouteFromCoords(startCoord,endCoord);
-    }
+  async addressToCoord(address) {
+    let location = (await Location.geocodeAsync(address+","+global.region.name))[0];
+    return location;
   }
 
-  async getRouteFromCoords(start, end) {
-    let api_url = `${global.serverURL}/api/route?start=${start}&end=${end}`;
+  coordStringToCoord(coordString) {
+    let [latitude, longitude] = coordString.split(",");
+    return { latitude, longitude };
+  }
+
+  createLocationPacket(location_reference) {
+    // Creates location packet with name and location. Takes in coord or address
+    let coordPattern = /\-?[0-9]+,\-?[0-9]+/ // Checking for coords
+    let coord, name = null;
+    if (coordPattern.test(location_reference) == false) {
+      coord = this.addressToCoord(location_reference);
+      name = location_reference;
+    } else {
+      coord = this.coordStringToCoord(location_reference);
+      name = "Unknown"
+    }
+    return {coord, name};
+  }
+
+  async generateRoute(start_coord, end_coord) {
+    let start_string = `${start_coord.latitude},${start_coord.longitude}`;
+    let end_string = `${end_coord.latitude},${end_coord.longitude}`;
+    let api_url = `${global.serverURL}/api/route?start=${start_string}&end=${end_string}`;
     let route_data = false
     await fetch(api_url,{
       method: "GET"
@@ -84,27 +90,21 @@ class RunSetupScreen extends React.Component {
     return route_data;
   }
 
-  generateRoute(start, end) {
-    let coordPattern = /\-?[0-9]+,\-?[0-9]+/ // Checking for coords
-    let coordinate_form = coordPattern.test(start) && coordPattern.test(end)
-    if (coordinate_form) {
-      return this.getRouteFromCoords(start,end)
-    } else {
-      return this.getRouteFromAddress(start,end)
-    }
-  }
 
   async generateRouteInfo() {
-    let route_data = await this.generateRoute(this.state.start,this.state.end);
+    let start_packet = this.createLocationPacket(this.state.start);
+    let end_packet = this.createLocationPacket(this.state.end);
+    console.log(start_packet)
+    let route_data = await this.generateRoute(start_packet.coord,end_packet.coord);
     if (route_data != false) {
       let route = route_data.route
       let distance = route_data.dist
-      this.props.createRunRoute(route, this.state.real_time_tracking, distance, this.state.goal_pace);
+      this.props.createRunRoute(route, start_packet, end_packet, this.state.real_time_tracking, distance, this.state.goal_pace);
       this.props.navigation.navigate("Information"); // Go To Run Information Screen
     } else {
       Alert.alert('Failure Generating Route')
     }
-	this.setState({loading:false});
+	  this.setState({loading:false});
   }
   
   render() {
@@ -157,7 +157,7 @@ class RunSetupScreen extends React.Component {
           style={{borderRadius:10}} 
           text="Generate Route Info"
           onPress={() => {
-			this.setState({loading:true}, this.generateRouteInfo.bind(this))
+			      this.setState({loading:true}, this.generateRouteInfo.bind(this))
           }}
         >
 		  {this.state.loading && (

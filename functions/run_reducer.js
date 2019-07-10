@@ -79,7 +79,9 @@ export default function runReducer(state = RUN_INITIAL_STATE, action) {
           estimated_duration: estimated_duration,
           estimated_energy: estimated_energy,
           goal_pace: goal_pace,
-          points: points
+          points: points,
+          start: action.start_packet,
+          end: action.end_packet,
         }
       })
     case START_RUN:

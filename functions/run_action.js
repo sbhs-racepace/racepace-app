@@ -12,8 +12,8 @@ export const RESUME_RUN = 'RESUME_RUN'
 export function createRun(real_time_tracking, distance) {
   return { type: CREATE_RUN, real_time_tracking, distance }
 }
-export function createRunRoute(route, real_time_tracking, distance, goal_pace) {
-  return { type: CREATE_RUN_ROUTE, route, real_time_tracking, distance, goal_pace}
+export function createRunRoute(route, start_packet, end_packet, real_time_tracking, distance, goal_pace) {
+  return { type: CREATE_RUN_ROUTE, route, start_packet, end_packet, real_time_tracking, distance, goal_pace}
 }
 export function startRun(start_time) {
   return { type: START_RUN, start_time}

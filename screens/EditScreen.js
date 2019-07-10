@@ -90,16 +90,16 @@ class EditScreen extends React.Component {
           if (res.success == true) {
             let user_info = await getUserInfo(this.props.user.token)
             await this.props.storeUserInfo(user_info)
-            Alert.alert('Changed details')
+            Alert.alert('Changed User Details')
           } else {
             Alert.alert(res.error)
           }
         });
       } else {
-        Alert.alert("New Passwords don't match")
+        Alert.alert("New Password doesn't match with Confirmation Password")
       }
     } else {
-      Alert.alert('Current Password was not correct')
+      Alert.alert('Password was incorrect')
     }
   }
 
@@ -182,7 +182,7 @@ class EditScreen extends React.Component {
               text="Save Changes"
               style={STYLES.saveButton}
               onPress={async () => {
-                await this.saveChanges()
+                await this.saveChanges();
                 this.props.navigation.navigate('Profile')
               }}
             />

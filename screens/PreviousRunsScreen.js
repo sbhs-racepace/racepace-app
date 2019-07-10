@@ -58,13 +58,13 @@ class PreviousRunsScreen extends React.Component {
           />
         </View>
         {
-          this.props.user.runs.map(route=>
-          <FeedRoute
-            from={route.real_time_route.route.from}
-            to={route.real_time_route.route.to}
-            postTime={route.real_time_route.start_time}
-            length={route.real_time_route.route.distance}
-          />)
+          // this.props.user.runs.map(route=>
+          // <FeedRoute
+          //   from={route.real_time_route.route.from}
+          //   to={route.real_time_route.route.to}
+          //   postTime={route.real_time_route.start_time}
+          //   length={route.real_time_route.route.distance}
+          // />)
         }
       </View>
     );

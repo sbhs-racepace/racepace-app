@@ -46,7 +46,27 @@ class SaveRunScreen extends React.Component {
   }
 
   async saveRoute() {
-    return null;
+    let data = {
+      distance: this.props.run.run_info.estimated_distance,
+      route: this.props.run.run_info.route,
+      name: this.state.routeName,
+      description: this.state.routeDescription,
+    }
+    let api_url = `${global.serverURL}/api/save_route`;
+    fetch(api_url, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: new Headers({
+        Authorization: this.props.user.token,
+      }),
+    })
+    .catch(res => {
+      Alert.alert('Error connecting to server', res);
+    })
+    .then( async () => {
+      console.log('Success Saving Route');
+    });
+    this.props.endRun();
   }
 
   render() {
@@ -76,8 +96,8 @@ class SaveRunScreen extends React.Component {
           <Button 
             style={{width:windowWidth*0.8, alignSelf:'center'}}
             text="Save Route"
-            onPress={()=> {
-              this.saveRoute()
+            onPress={async ()=> {
+              await this.saveRoute()
               this.props.navigation.navigate('Feed');
             }}
           />
