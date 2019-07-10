@@ -2,9 +2,8 @@
 
 import React from 'react';
 import { ScrollView, Text, View, StyleSheet } from 'react-native';
-import FeedRoute from '../components/FeedRoute';
+import RunItem from '../components/RunItem';
 import Button from '../components/Button';
-import request from '../functions/request';
 import '../global'
 import Color from '../constants/Color'
 import { connect } from 'react-redux';
@@ -26,21 +25,24 @@ class PreviousRunsScreen extends React.Component {
 
     const test_data = (
       <ScrollView contentContainerStyle={STYLES.scrollView}>
-        <FeedRoute
-          from="Hyde Park"
-          to="Circular Quay"
+        <RunItem
+          name="Circular Quay Run"
+          start="Hyde Park"
+          end="Circular Quay"
           postTime="10am"
           length="1"
         />
-        <FeedRoute
-          from="Hyde Park"
-          to="Circular Quay"
+        <RunItem
+        name="Circular Quay Run"
+          start="Hyde Park"
+          end="Circular Quay"
           postTime="10am"
           length="1"
         />
-        <FeedRoute
-          from="Hyde Park"
-          to="Circular Quay"
+        <RunItem
+          name="Circular Quay Run"
+          start="Hyde Park"
+          end="Circular Quay"
           postTime="10am"
           length="1"
         />
@@ -49,23 +51,14 @@ class PreviousRunsScreen extends React.Component {
 
     return (
       <View style={{flex:1,backgroundColor:Color.lightBackground}}>
-        <View style={{height:40}}>
-          <Button
-            text="Follow Requests"
-            style={{height:"100%",width:"100%", backgroundColor:Color.darkBackground}}
-            text_style={{color: Color.offColor, padding:"3%"}}
-            onPress={() => this.props.navigation.navigate('FollowRequests')}
-          />
-        </View>
-        {
-          // this.props.user.runs.map(route=>
-          // <FeedRoute
-          //   from={route.real_time_route.route.from}
-          //   to={route.real_time_route.route.to}
-          //   postTime={route.real_time_route.start_time}
-          //   length={route.real_time_route.route.distance}
-          // />)
-        }
+        {test_data}
+        {/* {
+          this.props.user.runs.map(run=>
+          <RunItem
+            postTime={run.start_time}
+            length={run.distance}
+          />)
+        } */}
       </View>
     );
   }

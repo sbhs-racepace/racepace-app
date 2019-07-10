@@ -69,6 +69,11 @@ export default class GroupScreen extends React.Component {
             text="Find Friends"
             onPress={() => this.props.navigation.navigate('FindFriends')}
           />
+          <Button
+            text="Follow Requests"
+            style={{ alignSelf: 'center' }}
+            onPress={() => this.props.navigation.navigate('FollowRequests')}
+          />
         </KeyboardAvoidingView>
 
       </View>
