@@ -76,9 +76,7 @@ class SavedRunListScreen extends React.Component {
     return (
       
       <View style={{backgroundColor: Color.darkBackground, flex:1}}>
-        <ScrollView>
           {test_data}
-        </ScrollView>
       </View>
     );
   }

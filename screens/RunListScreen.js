@@ -71,13 +71,6 @@ class RunListScreen extends React.Component {
         <ScrollView>
           {test_data}
         </ScrollView>
-        {/* {
-          this.props.user.runs.map(run=>
-          <RunItem
-            postTime={run.start_time}
-            length={run.distance}
-          />)
-        } */}
       </View>
     );
   }

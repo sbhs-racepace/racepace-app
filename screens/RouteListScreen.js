@@ -18,7 +18,6 @@ const STYLES = StyleSheet.create({
   card: {
       backgroundColor: Color.lightBackground,
       borderColor: Color.darkBackground,
-      color: Color.textColor,
       margin: 10,
   }
 })
@@ -75,9 +74,7 @@ class RouteListScreen extends React.Component {
     return (
       
       <View style={{backgroundColor: Color.darkBackground, flex:1}}>
-        <ScrollView>
           {test_data}
-        </ScrollView>
       </View>
     );
   }

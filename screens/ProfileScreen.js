@@ -1,7 +1,7 @@
 // Jason Yu and Abdur Raqeeb Mohammed
 
 import React from 'react'
-import { View, Text, StyleSheet, AsyncStorage, Alert } from 'react-native'
+import { View, Text, StyleSheet, AsyncStorage, Alert, ScrollView } from 'react-native'
 import { Image, Icon } from 'react-native-elements'
 import Button from '../components/Button'
 import '../global'
@@ -106,6 +106,8 @@ class ProfileScreen extends React.Component {
 
     return (
       <View style={STYLES.container}>
+        <ScrollView>
+        
         <Text style={[STYLES.text, { fontSize: 30, textAlign: 'center', paddingTop: '5%', marginBottom: -15, fontFamily:'Roboto-Bold', color:Color.primaryColor}]}>{this.props.user.full_name}</Text>
         <View style={{ height: 150, padding: '3%' }}>
           <View style={{flexDirection: 'row',flex: 1}}>
@@ -174,10 +176,14 @@ class ProfileScreen extends React.Component {
         </View>
       </View>
       <Text multiline={true} style={[STYLES.text, { paddingBottom: '8%', paddingLeft: '5%'}]}>{this.props.user.bio}</Text>
+      
       <View style={{ flex: 1, backgroundColor: Color.darkBackground }}>
         <AppContainer style={{ flex: 1 }}/>
       </View>
+      </ScrollView>
     </View>
+    
+
     );
   }
 }
