@@ -56,7 +56,7 @@ class RunSetupScreen extends React.Component {
     return { latitude, longitude };
   }
 
-  createLocationPacket(location_reference) {
+  async createLocationPacket(location_reference) {
     // Creates location packet with name and location. Takes in coord or address
     let coordPattern = /\-?[0-9]+,\-?[0-9]+/ // Checking for coords
     let coord, name = null;
@@ -65,7 +65,8 @@ class RunSetupScreen extends React.Component {
       name = location_reference;
     } else {
       coord = this.coordStringToCoord(location_reference);
-      name = "Unknown"
+      let floatCoord = {latitude:parseFloat(coord.latitude), longitude:parseFloat(coord.longitude)}
+      name = (await Location.reverseGeocodeAsync(floatCoord))[0].name
     }
     return {coord, name};
   }
@@ -92,8 +93,8 @@ class RunSetupScreen extends React.Component {
 
 
   async generateRouteInfo() {
-    let start_packet = this.createLocationPacket(this.state.start);
-    let end_packet = this.createLocationPacket(this.state.end);
+    let start_packet = await this.createLocationPacket(this.state.start);
+    let end_packet = await this.createLocationPacket(this.state.end);
     let route_data = await this.generateRoute(start_packet.coord,end_packet.coord);
     if (route_data != false) {
       let route = route_data.route
