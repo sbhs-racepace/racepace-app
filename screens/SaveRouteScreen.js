@@ -36,7 +36,7 @@ const STYLES = StyleSheet.create({
   },
 })
 
-class SaveRunScreen extends React.Component {
+class SaveRouteScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -144,4 +144,4 @@ function mapStateToProps(state) {
   return { user, run };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SaveRunScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(SaveRouteScreen);

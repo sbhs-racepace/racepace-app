@@ -59,15 +59,9 @@ class RunPausedScreen extends React.Component {
     this.state = {
       pace: {minutes:'--', seconds:'--'},
       distance: 0,
-      time: {hours:'00',minutes:'00',seconds:'00',milliseconds:'00'},
       paused: false,
       interval_id: null,
     }
-  }
-
-
-  timeString() {
-    return `${this.state.time.hours}: ${this.state.time.minutes}: ${this.state.time.seconds}.${this.state.time.milliseconds}`
   }
   
   render() {

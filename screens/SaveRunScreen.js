@@ -93,9 +93,8 @@ class SaveRunScreen extends React.Component {
       Alert.alert('Error connecting to server', res);
     })
     .then( async () => {
-      console.log('Success Saving Route');
+      console.log('Success Saving Run');
     });
-    this.props.endRun();
   }
 
   render() {
@@ -141,6 +140,7 @@ class SaveRunScreen extends React.Component {
                 await this.saveRun()
                 if (this.props.run.run_info.route == null) {
                   this.props.navigation.navigate('Feed');
+                  this.props.endRun();
                 } else {
                   this.props.navigation.navigate('SaveRoute');
                 }
@@ -152,7 +152,6 @@ class SaveRunScreen extends React.Component {
               text="Just Save Run"
               onPress={async ()=> {
                 await this.addRun()
-                console.log(this.props.run.run_info.route)
                 if (this.props.run.run_info.route == null) {
                   this.props.navigation.navigate('Feed');
                   this.props.endRun();
