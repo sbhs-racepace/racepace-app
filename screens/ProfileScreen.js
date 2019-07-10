@@ -9,6 +9,7 @@ import '../assets/cat.jpeg'
 import { createMaterialTopTabNavigator, createAppContainer } from 'react-navigation'
 import RouteListScreen from './RouteListScreen'
 import StatsScreen from './StatsScreen'
+import SavedRunListScreen from './SavedRunListScreen'
 import Color from '../constants/Color'
 import { logout } from '../functions/user_info_action'
 import { connect } from 'react-redux';
@@ -75,10 +76,18 @@ class ProfileScreen extends React.Component {
 
   render () {
     const Nav = createMaterialTopTabNavigator({
-
-      Stats: { screen: StatsScreen },
-      Routes: { screen: RouteListScreen }
-
+      Stats: { 
+        screen: StatsScreen ,
+        navigationOptions: { title: 'Stats' },
+      },
+      Routes: { 
+        screen: RouteListScreen,
+        navigationOptions: { title: 'Routes' },
+      },
+      SavedRuns: {
+        screen: SavedRunListScreen, 
+        navigationOptions: { title: 'Runs' },
+      },
     }, {
       initialRouteName: this.props.navigation.state.params == undefined ? 'Stats' : this.props.navigation.state.params.screen,
       tabBarOptions: {

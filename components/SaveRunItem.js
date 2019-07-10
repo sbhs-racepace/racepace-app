@@ -7,7 +7,7 @@ import Button from "./Button"
 import Color from '../constants/Color'
 
 const STYLES = StyleSheet.create({
-	feed_item : {
+	box : {
 		borderWidth:1,
 		padding: "5%",
 		width:"100%",
@@ -20,17 +20,16 @@ const STYLES = StyleSheet.create({
 	}
 })
 
-export default class FeedRoute extends React.Component {
+export default class RunItem extends React.Component {
 	constructor(props) {
 		super(props);
 	}
 	
 	render() {
 		return (
-			<View style={STYLES.feed_item}>
-      	<Text style={[STYLES.routeName,STYLES.text]}>{this.props.from} to {this.props.to}</Text>
-        <Text style={STYLES.text}>{this.props.postTime}</Text>
-      	<Text style={STYLES.text}>Stats: {this.props.length}km</Text>
+			<View style={STYLES.box}>
+        <Text style={STYLES.text}>Start Time: {this.props.start_time}</Text>
+      	<Text style={STYLES.text}>Distance: {this.props.length}km</Text>
 			</View>
 		)
 	}

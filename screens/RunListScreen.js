@@ -17,7 +17,7 @@ const STYLES = StyleSheet.create({
   },
 });
 
-class PreviousRunsScreen extends React.Component {
+class RunListScreen extends React.Component {
   render() {
     if (!this.props.user.token) {
       return <Text>Please login to see your feed</Text>;
@@ -36,14 +36,14 @@ class PreviousRunsScreen extends React.Component {
         name="Circular Quay Run"
           start="Hyde Park"
           end="Circular Quay"
-          postTime="10am"
+          start_time="10am"
           length="1"
         />
         <RunItem
           name="Circular Quay Run"
           start="Hyde Park"
           end="Circular Quay"
-          postTime="10am"
+          start_time="10am"
           length="1"
         />
       </ScrollView>
@@ -73,4 +73,4 @@ function mapStateToProps(state) {
   return { user };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PreviousRunsScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(RunListScreen);

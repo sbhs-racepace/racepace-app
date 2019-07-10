@@ -16,7 +16,7 @@ import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
 import { View } from 'react-native';
 import EditScreen from './screens/EditScreen';
 import FeedScreen from './screens/FeedScreen';
-import PreviousRunsScreen from './screens/PreviousRunsScreen';
+import RunListScreen from './screens/RunListScreen';
 import FollowingScreen from './screens/FollowingScreen';
 import SplashScreen from './screens/SplashScreen';
 import MapScreen from './screens/MapScreen';
@@ -118,9 +118,9 @@ const LoginNavigator = createStackNavigator({
             screen: FeedScreen,
             navigationOptions: { title: 'Feed' },
           },
-          PreviousRuns: {
-            screen: PreviousRunsScreen,
-            navigationOptions: { title: 'Runs' },
+          RecentRuns: {
+            screen: RunListScreen,
+            navigationOptions: { title: 'Recent Runs' },
           },
         },
         {
