@@ -117,7 +117,7 @@ class ChatScreen extends React.Component {
         onSend={messages => this.onSend(messages)}
         user={{
           _id: this.props.user.user_id,
-          avatar: `${blo.serverURL}/api/avatars/${this.props.login_info.user_id}.png`,
+          avatar: `${global.serverURL}/api/avatars/${this.props.user_id}.png`,
           name: this.props.user.username
         }}
         renderMessage={this.renderMessage}
