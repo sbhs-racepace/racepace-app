@@ -32,7 +32,8 @@ export async function getUserInfo(token) {
       }
     })
     .catch(error => {
-      Alert.alert('Error', error);
+      console.log("Caught")
+      Alert.alert('Error', error.message);
     });
   return user_info;
 }
@@ -71,7 +72,7 @@ export async function login(email, password) {
 
     })
     .catch(error => {
-      Alert.alert('Error', error);
+      Alert.alert('Error', error.message);
     });
 
   return login_response;
@@ -101,7 +102,7 @@ export async function register(email, pword, full_name, username) {
     body: JSON.stringify(data),
   })
     .catch(res => {
-      Alert.alert('Error connecting to server', res);
+      Alert.alert('Error connecting to server', res.message);
     })
     .then(
       async res => {
@@ -133,7 +134,7 @@ export async function googleLogin() {
         body: JSON.stringify({ idToken: result.idToken }),
       })
         .catch(res => {
-          Alert.alert('Error connecting to server', res);
+          Alert.alert('Error connecting to server', res.message);
         })
         .then(
           async res => {
