@@ -167,7 +167,7 @@ class ProfileScreen extends React.Component {
           </View>
         </View>
       </View>
-      <Text multiline={true} style={[STYLES.text, { paddingBottom: '8%', paddingLeft: '5%'}]}>{this.props.user.bio}</Text>
+      <Text multiline={true} style={[STYLES.text,{margin:"4%", marginTop:0}]}>{this.props.user.bio}</Text>
 
       <View style={{ backgroundColor: Color.darkBackground }}>
         <AppContainer style={{ flex: 1 }}/>

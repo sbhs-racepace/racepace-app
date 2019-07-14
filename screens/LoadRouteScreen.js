@@ -10,7 +10,7 @@ import "../global.js"
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
 import Color from '../constants/Color'
-import { createRun, createRunRoute } from '../functions/run_action'
+import { createRun } from '../functions/run_action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -51,7 +51,7 @@ class LoadRouteScreen extends React.Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ createRunRoute, createRun }, dispatch)
+  return bindActionCreators({ createRun }, dispatch)
 }
 
 function mapStateToProps(state) {
