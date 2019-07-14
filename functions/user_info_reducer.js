@@ -7,6 +7,8 @@ const USER_INFO_INITIAL_STATE =  {
   bio: "guest",
   following: [],
   followers: [],
+  follow_requests:[],
+  pending_follows:[],
   saved_routes: {},
   saved_runs: {}, 
   runs: [],

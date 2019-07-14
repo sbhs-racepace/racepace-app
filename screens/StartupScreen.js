@@ -34,8 +34,12 @@ class StartupScreen extends React.Component {
       await this.props.storeLoginInfo(json_login_info)
       // Storing User Info
       let user_info =  await getUserInfo(this.props.user.token);
-      this.props.storeUserInfo(user_info)
-      this.props.navigation.navigate('Feed')
+      if (user_info == false) {
+        this.props.navigation.navigate('Splash')
+      } else {
+        this.props.storeUserInfo(user_info)
+        this.props.navigation.navigate('Feed')
+      }
     } else {
       this.props.navigation.navigate('Splash')
     }
