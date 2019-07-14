@@ -32,7 +32,6 @@ export async function getUserInfo(token) {
       }
     })
     .catch(error => {
-      console.log("Caught")
       Alert.alert('Error', error.message);
     });
   return user_info;

@@ -1,7 +1,7 @@
 // Jason Yu
 
 import React from 'react';
-import { ScrollView, View, Text, Alert, StyleSheet, Dimensions } from 'react-native';
+import { ScrollView, View, Text, Alert, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import { Image } from 'react-native-elements'
 import Button from "../components/Button"
 import BackButtonHeader from '../components/BackButtonHeader'
@@ -9,6 +9,7 @@ import "../global.js"
 import Color from '../constants/Color'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
@@ -29,7 +30,27 @@ const STYLES = StyleSheet.create({
   roundedButton: {
     width: '20%',
     borderRadius: 10,
-  }
+  },
+  circularButton:{
+    margin:5,
+    borderWidth:1,
+    backgroundColor:Color.darkBackground,
+    alignItems:'center',
+    alignSelf:'center',
+    justifyContent:'center',
+  },
+  largeButton: {
+    width: windowWidth * 0.20,
+    height: windowWidth * 0.20,
+    borderRadius: windowWidth * 0.20 / 2,
+  }, 
+  smallButton: {
+    width: windowWidth * 0.10,
+    height: windowWidth * 0.10,
+    borderRadius: windowWidth * 0.10 / 2,
+  },
+  largeIcon: windowWidth * 0.2 / 2,
+  smallIcon: windowWidth * 0.12 / 2,
 });
 
 
@@ -80,9 +101,8 @@ class FollowRequest extends React.Component {
     })
     .then( async res => {
       let res_data = await res.json();
-      console.log(res_data)
       if (res_data.success == true) {
-        Alert.alert("Request Accepted")
+        Alert.alert("Request SuccessfullyAccepted")
       } else {
         console.log("Couldn't accept request");
       }
@@ -92,21 +112,49 @@ class FollowRequest extends React.Component {
     });
   }
 
+  async declineRequest() {
+    let api_url = `${global.serverURL}/api/declineFollowRequest`
+    let data = { other_user_id:this.state.other_user_id }
+    await fetch(api_url, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: new Headers({
+        Authorization: this.props.user_token, // Taking user_token from parent
+      }),
+    })
+    .then( async res => {
+      let res_data = await res.json();
+      if (res_data.success == true) {
+        Alert.alert("Request Successfuly Declined")
+      } else {
+        console.log("Couldn't decline request");
+      }
+    })
+    .catch(error => {
+      Alert.alert('Error connecting to server', error);
+    });
+  }
+
   render() {
     return (
-      <View style={{width:'100%',alignItems:'center',flex:1, flexDirection:'row', justifyContent:'space-between', height:windowHeight*0.2}}>
+      <View style={{width:'100%',alignItems:'center',flex:1, flexDirection:'row', justifyContent:'space-around', height:windowHeight*0.2}}>
         <Image
           style={STYLES.profile_image}
           source={{uri: `${global.serverURL}/api/avatars/${this.state.other_user_id}.png`}}
         />
-        <Text style={{width:"30%",fontSize:20, color:Color.textColor}}>{this.state.username} wants to follow you!</Text>
-        <Button 
-          style={STYLES.roundedButton} 
-          text="Accept Request"
-          onPress={()=> {
-            this.acceptRequest();
-          }}
-        />
+        <Text style={{width:"30%",fontSize:15, color:Color.textColor}}>{this.state.username} wants to follow you!</Text>
+        <TouchableOpacity
+          style={[STYLES.circularButton, STYLES.smallButton]}
+          onPress={() => this.acceptRequest()}
+        >
+          <FontAwesomeIcon name="check" size={STYLES.smallIcon} color={Color.primaryColor}/>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[STYLES.circularButton, STYLES.smallButton]}
+          onPress={() => this.declineRequest()}
+        >
+          <FontAwesomeIcon name="remove" size={STYLES.smallIcon} color={Color.primaryColor}/>
+        </TouchableOpacity>
       </View>
     )
   }
