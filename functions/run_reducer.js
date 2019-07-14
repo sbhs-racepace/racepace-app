@@ -1,11 +1,17 @@
 import { CREATE_RUN_ROUTE, CREATE_RUN, START_RUN, ADD_LOCATION_PACKET, END_RUN, SAVE_RUN, PAUSE_RUN, RESUME_RUN, CHANGE_END, CHANGE_START } from './run_action'
 import { calculateAveragePace, speedToPace, coordDistance, calculateTimeFromPace, calculateKilojoulesBurnt, calculatePoints  } from './run.js'
-
+import '../global'
 const RUN_INITIAL_STATE = {
   real_time_info: {
     distance: 0,
     current_pace: {minutes: '--', seconds:'--'},
     average_pace: {minutes: '--', seconds:'--'},
+    current_region: {
+      latitude:-33.9672563, 
+      longitude:151.1002119, 
+      latitudeDelta: global.latitudeDelta,
+      longitudeDelta: global.longitudeDelta,
+    }, // Default Campsi Location
     lap_pace: {minutes: '--', seconds:'--'},
     lap_distance: 0,
     lap_start: null,
@@ -35,6 +41,11 @@ const RUN_INITIAL_STATE = {
 function calculateRealTimeInfo(state, location_packet) {
   // General Distance and Pace Update
   state.location_packets.push(location_packet)
+  state.real_time_info.current_region = {
+    ...state.real_time_info.current_region,
+    latitude: location_packet.latitude,
+    longitude: location_packet.longitude,
+  }
   let end_time = location_packet.timestamp
   let start_time = state.run_info.start_time.getTime()
   let change_in_distance = 0
@@ -43,7 +54,7 @@ function calculateRealTimeInfo(state, location_packet) {
     let change_in_distance = coordDistance(previous_location, location_packet)
   }
   state.real_time_info.distance = state.real_time_info.distance + change_in_distance
-  state.real_time_info.average_pace = calculateAveragePace(new_distance, start_time, end_time)
+  state.real_time_info.average_pace = calculateAveragePace(state.real_time_info.distance, start_time, end_time)
   state.real_time_info.current_pace = speedToPace(location_packet.speed)
   // Updating Lap Pace and Distance
   let new_lap_distance = state.real_time_info.lap_distance + change_in_distance
@@ -53,7 +64,7 @@ function calculateRealTimeInfo(state, location_packet) {
     state.real_time_info.lap_start = end_time // Setting new time to last location request
   } else {
     state.real_time_info.lap_distance = new_lap_distance
-    state.real_time_info.lap_pace = calculateAveragePace(lap_distance, state.real_time_info.lap_start, end_time)
+    state.real_time_info.lap_pace = calculateAveragePace(new_lap_distance, state.real_time_info.lap_start, end_time)
   }
   return state;
 }

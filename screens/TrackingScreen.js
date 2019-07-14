@@ -16,6 +16,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
+import '../global'
 
 const LATITUDE_DELTA = 0.0922*1.5
 const LONGITUDE_DELTA = 0.0421*1.5
@@ -55,10 +56,10 @@ class TrackingScreen extends React.Component {
     super(props);
     this.state = {
       region: {
-        latitude: -33.9672563, //this.props.run.run_info.start.latitude
-        longitude: 151.1002119, //this.props.run.run_info.start.longitude
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
+        latitude: -33.9672563, //
+        longitude: 151.1002119, //
+        latitudeDelta: global.latitudeDelta,
+        longitudeDelta: global.longitudeDelta,
       },
     }
   }
@@ -67,22 +68,7 @@ class TrackingScreen extends React.Component {
     if (Platform.OS === 'android' && !Constants.isDevice) {
       Alert.alert('Device is not of valid type to record location.')
     } else {
-      this.defaultLocationAsync(); // Activates Location Loop
-    }
-  }
-
-  defaultLocationAsync() {
-    let { status } = Permissions.askAsync(Permissions.LOCATION);
-    if (status) { //Check whether permission granted
-      Location.watchPositionAsync(
-        {
-          accuracy: 4, //Accurate to 10m
-          timeInterval: 3000,
-        },
-        (location) => {
-          this.goToCurrent();
-        }
-      )
+      this.goToCurrent();
     }
   }
 
@@ -99,6 +85,8 @@ class TrackingScreen extends React.Component {
             ...this.state.region,
             latitude: location.coords.latitude,
             longitude: location.coords.longitude,
+            latitudeDelta: global.latitudeDelta,
+            longitudeDelta: global.longitudeDelta,
           }
         })
       }
@@ -111,7 +99,6 @@ class TrackingScreen extends React.Component {
   onRegionChange(region) {
     this.setState({
       region: region,
-      moveToCurrentLocation: false,
     });
   };
 
@@ -121,7 +108,7 @@ class TrackingScreen extends React.Component {
         <MapView
           style={STYLES.map}
           provider = { MapView.PROVIDER_GOOGLE } // Usage of google maps
-          // customMapStyle = { lunar }
+          customMapStyle = { lunar }
           showsUserLocation={true}
           showsMyLocationButton={false}
           region={this.state.region}
@@ -130,7 +117,8 @@ class TrackingScreen extends React.Component {
           {this.props.run.run_info.route != null && (
             <Polyline
               coordinates={this.props.run.run_info.route}
-              strokeColor="#9900FF"
+              strokeColor={Color.primaryColor}
+              strokeWidth={4}
             />
           )}
         </MapView>

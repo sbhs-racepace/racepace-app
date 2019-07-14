@@ -61,7 +61,7 @@ class RunSetupScreen extends React.Component {
     let coordPattern = /\-?[0-9]+,\-?[0-9]+/ // Checking for coords
     let coord, name = null;
     if (coordPattern.test(location_reference) == false) {
-      coord = this.addressToCoord(location_reference);
+      coord = await this.addressToCoord(location_reference);
       name = location_reference;
     } else {
       coord = this.coordStringToCoord(location_reference);
@@ -83,7 +83,7 @@ class RunSetupScreen extends React.Component {
         timeout: 5000,
       })
       .then(
-        location => {
+        async location => {
           coords = {
             latitude: location.coords.latitude,
             longitude: location.coords.longitude,

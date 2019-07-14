@@ -18,8 +18,6 @@ import { startRun, changeEnd } from '../functions/run_action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-const LATITUDE_DELTA = 0.0922 * 1.5;
-const LONGITUDE_DELTA = 0.0421 * 1.5;
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
 const STYLES = StyleSheet.create({
@@ -66,8 +64,8 @@ class MapScreen extends React.Component {
       region: {
         latitude: -33.9672563, // Generic Starting Location
         longitude: 151.1002119,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
+        latitudeDelta: global.latitudeDelta,
+        longitudeDelta: global.longitudeDelta,
       },
       showSearch: false,
       searchStr: '',
@@ -148,6 +146,8 @@ class MapScreen extends React.Component {
             ...this.state.region,
             latitude: location.coords.latitude,
             longitude: location.coords.longitude,
+            latitudeDelta: global.latitudeDelta,
+            longitudeDelta: global.longitudeDelta,
           }
         })
       }
@@ -184,7 +184,7 @@ class MapScreen extends React.Component {
           onRegionChangeComplete={this.onRegionChange.bind(this)}
         >
           {
-            this.state.showSearch && (<Marker coordinate={this.state.searchLoc} pinColor="#9900FF" />)
+            this.state.showSearch && (<Marker coordinate={this.state.searchLoc} pinColor={Color.primaryColor} />)
           }
         </MapView>
         

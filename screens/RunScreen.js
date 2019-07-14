@@ -85,8 +85,6 @@ class RunScreen extends React.Component {
     } 
   }
 
-  
-
   async componentDidMount() {
     if (global.location_permission) {
       await this.props.startRun(new Date())
