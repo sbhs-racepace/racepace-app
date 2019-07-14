@@ -170,7 +170,7 @@ const LoginNavigator = createStackNavigator({
           )
         } 
       },
-      Groups: { 
+      People: { 
         screen: GroupScreen,
         navigationOptions: {
           tabBarIcon: ({ tintColor }) => (
