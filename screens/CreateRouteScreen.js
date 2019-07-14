@@ -1,7 +1,7 @@
 // Jason Yu, Sunny Yan
 
 import React from 'react';
-import { StyleSheet, View, Text, Alert, Dimensions, KeyboardAvoidingView, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, Alert, Dimensions, KeyboardAvoidingView, ActivityIndicator, TouchableOpacity, Platform } from 'react-native';
 import {createAppContainer,createMaterialTopTabNavigator} from 'react-navigation';
 import TextInput from '../components/TextInput'
 import { CheckBox } from 'react-native-elements'
@@ -123,22 +123,26 @@ class RunSetupScreen extends React.Component {
     let start = this.props.run.run_setup.start
     let end = this.props.run.run_setup.end
     let start_packet = null
-    if (start == 'Current Location' && this.state.startAtCurrent == true) {
-      start_packet = {name: start, coord: (await this.getCurrentLocation())}
+    if (start == '' || end == '') {
+      Alert.alert('Incomplete fields')
     } else {
-      start_packet = await this.createLocationPacket(start);
+      if (start == 'Current Location' && this.state.startAtCurrent == true) {
+        start_packet = {name: start, coord: (await this.getCurrentLocation())} // Current Location cannot be retrieved on simulator
+      } else {
+        start_packet = await this.createLocationPacket(start);
+      }
+      let end_packet = await this.createLocationPacket(end);
+      let route_data = await this.generateRoute(start_packet.coord,end_packet.coord);
+      if (route_data != false) {
+        let route = route_data.route
+        let distance = route_data.dist
+        this.props.createRunRoute(route, start_packet, end_packet, this.state.real_time_tracking, distance, this.state.goal_pace);
+        this.props.navigation.navigate("Information"); // Go To Run Information Screen
+      } else {
+        Alert.alert('Failure Generating Route')
+      }
     }
-    let end_packet = await this.createLocationPacket(end);
-    let route_data = await this.generateRoute(start_packet.coord,end_packet.coord);
-    if (route_data != false) {
-      let route = route_data.route
-      let distance = route_data.dist
-      this.props.createRunRoute(route, start_packet, end_packet, this.state.real_time_tracking, distance, this.state.goal_pace);
-      this.props.navigation.navigate("Information"); // Go To Run Information Screen
-    } else {
-      Alert.alert('Failure Generating Route')
-    }
-	  this.setState({loading:false});
+    this.setState({loading:false}); // End loading always at the end
   }
 
   setToCurrentLocation() {
@@ -183,7 +187,7 @@ class RunSetupScreen extends React.Component {
             onPress={() => this.setToCurrentLocation()}
           >
             <FontAwesomeIcon name="location-arrow" size={20} color={Color.primaryColor}/>
-            <Text multiline={true} style={[STYLES.text_style,{fontSize:10}]}>Current Location</Text>
+            <Text style={[STYLES.text_style,{fontSize:14}]}>Current Location</Text>
           </TouchableOpacity>
         </View>
         
