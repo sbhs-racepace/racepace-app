@@ -1,4 +1,4 @@
-import { CREATE_RUN_ROUTE, CREATE_RUN, START_RUN, ADD_LOCATION_PACKET, END_RUN, SAVE_RUN, PAUSE_RUN, RESUME_RUN } from './run_action'
+import { CREATE_RUN_ROUTE, CREATE_RUN, START_RUN, ADD_LOCATION_PACKET, END_RUN, SAVE_RUN, PAUSE_RUN, RESUME_RUN, CHANGE_END, CHANGE_START } from './run_action'
 import { calculateAveragePace, speedToPace, coordDistance, calculateTimeFromPace, calculateKilojoulesBurnt, calculatePoints  } from './run.js'
 
 const RUN_INITIAL_STATE = {
@@ -24,6 +24,10 @@ const RUN_INITIAL_STATE = {
     final_distance: null,
     final_energy: null,
     active: false,
+  },
+  run_setup: {
+    start: 'Current Location',
+    end: ''
   },
   location_packets: [],
 };
@@ -108,7 +112,6 @@ export default function runReducer(state = RUN_INITIAL_STATE, action) {
         let start_time = state.run_info.start_time.getTime()
         final_duration = Math.abs(end_time - start) / 1000
       }
-
       return Object.assign({}, state, {
         run_info: {
           ...state.run_info,
@@ -131,6 +134,20 @@ export default function runReducer(state = RUN_INITIAL_STATE, action) {
         run_info: {
           ...state.run_info,
           active: true,
+        }
+      }) 
+    case CHANGE_END:
+        return Object.assign({}, state, {
+          run_setup: {
+            ...state.run_setup,
+            end: action.end,
+          }
+        }) 
+    case CHANGE_START:
+      return Object.assign({}, state, {
+        run_setup: {
+          ...state.run_setup,
+          start: action.start, // Just sets up the end location
         }
       }) 
     default:
