@@ -8,6 +8,9 @@ export const END_RUN = 'END_RUN'
 export const SAVE_RUN = 'SAVE_RUN'
 export const PAUSE_RUN = 'PAUSE_RUN'
 export const RESUME_RUN = 'RESUME_RUN'
+export const CHANGE_START = 'CHANGE_START'
+export const CHANGE_END = 'CHANGE_END'
+
 
 export function createRun(real_time_tracking, distance) {
   return { type: CREATE_RUN, real_time_tracking, distance }
@@ -32,4 +35,10 @@ export function pauseRun() {
 }
 export function resumeRun() {
   return { type: RESUME_RUN }
+}
+export function changeStart(start) {
+  return { type: CHANGE_START, start }
+}
+export function changeEnd(end) {
+  return { type: CHANGE_END, end }
 }
