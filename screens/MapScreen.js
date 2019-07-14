@@ -14,7 +14,7 @@ import { label, cobalt, lunar,neutral_blue } from '../constants/mapstyle'
 import Color from '../constants/Color'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
-import { startRun } from '../functions/run_action'
+import { startRun, changeEnd } from '../functions/run_action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -64,55 +64,42 @@ class MapScreen extends React.Component {
     super(props);
     this.state = {
       region: {
-        latitude: -33.9672563,
+        latitude: -33.9672563, // Generic Starting Location
         longitude: 151.1002119,
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA,
       },
-      viewHeight: 0,
-      moveToCurrentLoc: false,
       showSearch: false,
-      showSaveDialog: false,
       searchStr: '',
       searchLoc: {
-        latitude: -33.9672563,
-        longitude: 151.1002119,
+        latitude: '',
+        longitude: '',
       },
-      searchResults: []
-    };
-  }
-
-  defaultLocationAsync() {
-    let { status } = Permissions.askAsync(Permissions.LOCATION);
-    if (status) { //Check whether permission granted
-      Location.watchPositionAsync(
+      searchResults: [ // Test Variabls
         {
-          accuracy: 4, //Accurate to 10m
-          timeInterval: 5000,
-          distanceInterval:10,
+          id: 1,
+          name: 'JavaScript',
         },
-        (location) => {
-          // Always moves to current location if activated
-          if (this.state.moveToCurrentLoc) {
-            this.userTracking(location);
-          }
-        }
-      )
-    }
+        {
+          id: 2,
+          name: 'Java',
+        },
+      ]
+    };
   }
 
   componentDidMount() {
     if (Platform.OS === 'android' && !Constants.isDevice) {
       Alert.alert('Device is not of valid type to record location.')
+      this.props.navigation.navigate('Feed')
     } else {
-      this.defaultLocationAsync();
+      this.goToCurrent() // Automatically go to current location
     }
   }
 
-  onRegionChange = region => {
+  onRegionChange(region) {
     this.setState({
       region: region,
-      moveToCurrentLoc: false,
     });
   };
 
@@ -122,35 +109,29 @@ class MapScreen extends React.Component {
     return locationResults
   }
 
-  async goToLocation(location) {
+  async goToSearchLocation(location) {
     if (location == '') {
       Alert.alert('Error', 'Input was blank.');
-      return 0;
-    }
-    try {
-      let searchResults = await this.getSearchResults(location)
-      let topResult = searchResults[0];
-      let { latitude, longitude } = topResult
-    } catch {
-      Alert.alert('Error', "Input couldn't be understood.");
-      return 0;
-    }
-
-    if (latitude != global.region.coords[0] || longitude != global.region.coords[1]) {
-      this.setState(prevState => ({
-        region: {
-          ...prevState.region, //Copy in other parts of the object
-          latitude: latitude,
-          longitude: longitude,
-        },
-        searchLoc: {
-          latitude: latitude,
-          longitude: longitude,
-        },
-        showSearch: true,
-      }));
     } else {
-      Alert.alert('Error', "Input couldn't be understood.");
+      try {
+        let searchResults = await this.getSearchResults(location)
+        let topResult = searchResults[0];
+        let { latitude, longitude } = topResult
+        this.setState(prevState => ({
+          region: {
+            ...prevState.region, //Copy in other parts of the object
+            latitude: latitude,
+            longitude: longitude,
+          },
+          searchLoc: {
+            latitude: latitude,
+            longitude: longitude,
+          },
+          showSearch: true,
+        }));
+      } catch {
+        Alert.alert('Error', "Input couldn't be understood.");
+      }
     }
   }
 
@@ -160,31 +141,29 @@ class MapScreen extends React.Component {
       maximumAge: 5000,
       timeout: 5000,
     })
-      .then(
-        location => {
-          this.setState(prevState => ({
-            region: {
-              ...prevState.region, //Copy in other parts of the object
-              latitude: location.coords.latitude,
-              longitude: location.coords.longitude,
-            },
-          }));
-        },
-        reason =>
-          Alert.alert('Error', 'Location tracking failed. Error: ' + reason)
-      )
-      .catch(error =>
-        Alert.alert('Error', 'Location tracking failed. Error: ' + error)
-      );
+    .then(
+      location => {
+        this.setState({
+          region: {
+            ...this.state.region,
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+          }
+        })
+      }
+    )
+    .catch(error =>
+      Alert.alert('Error', 'Location tracking failed. Error: ' + error)
+    );
   }
 
-  runHere(name, coords) {
-    if (!name) {
+  setupRun(name) {
+    if (name == '') { // Empty String input
       Alert.alert('Error', 'Please enter an address in the search box');
-    } this.props.navigation.navigate('Setup', {
-      name: name,
-      coords: coords,
-    });
+    } else {
+      this.props.changeEnd(name);
+      this.props.navigation.navigate('Setup')
+    }
   }
 
   updateSearch(searchStr) {
@@ -202,16 +181,11 @@ class MapScreen extends React.Component {
           showsUserLocation={true}
           showsMyLocationButton={false}
           region={this.state.region}
-          onRegionChangeComplete={this.onRegionChange.bind(this)}>
-          {this.state.showSearch && (
-            <Marker coordinate={this.state.searchLoc} pinColor="#9900FF" />
-          )}
-          {this.props.navigation.state.params != undefined && (
-            <Polyline
-              coordinates={this.props.navigation.state.params.route}
-              strokeColor="#9900FF"
-            />
-          )}
+          onRegionChangeComplete={this.onRegionChange.bind(this)}
+        >
+          {
+            this.state.showSearch && (<Marker coordinate={this.state.searchLoc} pinColor="#9900FF" />)
+          }
         </MapView>
         
         <View style={{position:'absolute',flexDirection: 'row', top:windowHeight*0.05,left:windowWidth*0.1, zIndex:3, justifyContent:'space-evenly'}}>
@@ -235,14 +209,14 @@ class MapScreen extends React.Component {
           <View style={{flexDirection:'row', alignItems:'center', height:40}}>
             <TouchableOpacity
               style={[STYLES.circularButton, STYLES.smallButton]}
-              onPress={() => this.goToLocation(this.state.searchStr)}
+              onPress={() => this.goToSearchLocation(this.state.searchStr)}
             >
               <FontAwesomeIcon name="search" size={STYLES.smallIcon} color={Color.primaryColor}/>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={[STYLES.circularButton, STYLES.smallButton]}
-              onPress={() => this.runHere(this.state.searchStr, this.state.searchLoc)}
+              onPress={() => this.setupRun(this.state.searchStr)}
             >
               <FontAwesome5Icon name="running" size={STYLES.smallIcon} color={Color.primaryColor}/>
             </TouchableOpacity>
@@ -267,22 +241,20 @@ class MapScreen extends React.Component {
           <View style={{flex:1, alignItems:'center'}}>
             <TouchableOpacity
               style={[STYLES.circularButton,STYLES.smallButton]}
-              onPress={() => {
-                this.setState({ moveToCurrentLoc: true });
-                this.goToCurrent();
-              }}
+              onPress={() => this.goToCurrent()}
             >
               <FontAwesomeIcon name="location-arrow" size={STYLES.smallIcon} color={Color.primaryColor}/>
             </TouchableOpacity>
           </View>
         </View>
+
       </View>
     )
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ startRun }, dispatch)
+  return bindActionCreators({ startRun, changeEnd }, dispatch)
 }
 
 function mapStateToProps(state) {

@@ -55,8 +55,8 @@ class TrackingScreen extends React.Component {
     super(props);
     this.state = {
       region: {
-        latitude: -33.9672563,
-        longitude: 151.1002119,
+        latitude: -33.9672563, //this.props.run.run_info.start.latitude
+        longitude: 151.1002119, //this.props.run.run_info.start.longitude
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA,
       },
@@ -67,7 +67,7 @@ class TrackingScreen extends React.Component {
     if (Platform.OS === 'android' && !Constants.isDevice) {
       Alert.alert('Device is not of valid type to record location.')
     } else {
-      this.defaultLocationAsync();
+      this.defaultLocationAsync(); // Activates Location Loop
     }
   }
 
@@ -80,19 +80,38 @@ class TrackingScreen extends React.Component {
           timeInterval: 3000,
         },
         (location) => {
-          // Always moves to current location if activated
-          if (this.state.moveToCurrentLoc) {
-            this.userTracking(location);
-          }
+          this.goToCurrent();
         }
       )
     }
   }
 
-  onRegionChange = region => {
+  async goToCurrent() {
+    Location.getCurrentPositionAsync({
+      accuracy: 4,
+      maximumAge: 5000,
+      timeout: 5000,
+    })
+    .then(
+      location => {
+        this.setState({
+          region: {
+            ...this.state.region,
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+          }
+        })
+      }
+    )
+    .catch(error =>
+      Alert.alert('Error', 'Location tracking failed. Error: ' + error)
+    );
+  }
+
+  onRegionChange(region) {
     this.setState({
       region: region,
-      moveToCurrentLoc: false,
+      moveToCurrentLocation: false,
     });
   };
 
@@ -102,17 +121,15 @@ class TrackingScreen extends React.Component {
         <MapView
           style={STYLES.map}
           provider = { MapView.PROVIDER_GOOGLE } // Usage of google maps
-          customMapStyle = { lunar }
+          // customMapStyle = { lunar }
           showsUserLocation={true}
           showsMyLocationButton={false}
           region={this.state.region}
-          onRegionChangeComplete={this.onRegionChange.bind(this)}>
-          {this.state.showSearch && (
-            <Marker coordinate={this.state.searchLoc} pinColor="#9900FF" />
-          )}
-          {this.props.navigation.state.params != undefined && (
+          onRegionChangeComplete={this.onRegionChange.bind(this)
+        }>
+          {this.props.run.run_info.route != null && (
             <Polyline
-              coordinates={this.props.navigation.state.params.route}
+              coordinates={this.props.run.run_info.route}
               strokeColor="#9900FF"
             />
           )}
@@ -142,7 +159,7 @@ class TrackingScreen extends React.Component {
             <TouchableOpacity
               style={[STYLES.circularButton,STYLES.smallButton]}
               onPress={() => {
-                this.setState({ moveToCurrentLoc: true });
+                this.setState({ moveToCurrentLocation: true });
                 this.goToCurrent();
               }}
             >

@@ -62,6 +62,21 @@ class RunInformationScreen extends React.Component {
           <Text style={STYLES.text_style}>Points: {this.props.run.run_info.points}</Text>
         </View>
         <Button 
+          style={{borderRadius:10}} 
+          text="Preview"
+          onPress={() => {
+			      this.setState({loading:true}, this.generateRouteInfo.bind(this))
+          }}
+        >
+          {this.state.loading && (
+          <ActivityIndicator
+            animating={true}
+            color="white"
+            size="large"
+          />
+          )}
+        </Button>
+        <Button 
           text="Start Run"
           style={{borderRadius:10, alignSelf:'center'}} 
           onPress={() => {

@@ -1,7 +1,7 @@
 // Jason Yu, Sunny Yan
 
 import React from 'react';
-import { StyleSheet, View, Text, Alert, Dimensions, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, Text, Alert, Dimensions, KeyboardAvoidingView, ActivityIndicator, TouchableOpacity } from 'react-native';
 import {createAppContainer,createMaterialTopTabNavigator} from 'react-navigation';
 import TextInput from '../components/TextInput'
 import { CheckBox } from 'react-native-elements'
@@ -10,7 +10,8 @@ import "../global.js"
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
 import Color from '../constants/Color'
-import { createRun, createRunRoute } from '../functions/run_action'
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
+import { createRun, createRunRoute, changeEnd, changeStart } from '../functions/run_action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -39,8 +40,7 @@ class RunSetupScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      start: "-33.878363,151.104490", //Burwood
-      end: "-33.912466,151.103120", //Campsie
+      startAtCurrent: true,
       goal_pace: {minutes: "5", seconds: "0"},
       real_time_tracking: false,
     }
@@ -71,6 +71,33 @@ class RunSetupScreen extends React.Component {
     return {coord, name};
   }
 
+  async getCurrentLocation() {
+    let coords = false;
+    if (Platform.OS === 'android' && !Constants.isDevice) {
+      Alert.alert('Device is not of valid type to record location.')
+      this.props.navigation.navigate('Feed')
+    } else {
+      await Location.getCurrentPositionAsync({
+        accuracy: 4,
+        maximumAge: 5000,
+        timeout: 5000,
+      })
+      .then(
+        location => {
+          coords = {
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+          }
+          return coords;
+        }
+      )
+      .catch(error =>
+        Alert.alert('Error', 'Location tracking failed. Error: ' + error)
+      );
+    }
+    return coords;
+  }
+
   async generateRoute(start_coord, end_coord) {
     let start_string = `${start_coord.latitude},${start_coord.longitude}`;
     let end_string = `${end_coord.latitude},${end_coord.longitude}`;
@@ -93,8 +120,15 @@ class RunSetupScreen extends React.Component {
 
 
   async generateRouteInfo() {
-    let start_packet = await this.createLocationPacket(this.state.start);
-    let end_packet = await this.createLocationPacket(this.state.end);
+    let start = this.props.run.run_setup.start
+    let end = this.props.run.run_setup.end
+    let start_packet = null
+    if (start == 'Current Location' && this.state.startAtCurrent == true) {
+      start_packet = {name: start, coord: (await this.getCurrentLocation())}
+    } else {
+      start_packet = await this.createLocationPacket(start);
+    }
+    let end_packet = await this.createLocationPacket(end);
     let route_data = await this.generateRoute(start_packet.coord,end_packet.coord);
     if (route_data != false) {
       let route = route_data.route
@@ -106,31 +140,58 @@ class RunSetupScreen extends React.Component {
     }
 	  this.setState({loading:false});
   }
+
+  setToCurrentLocation() {
+    this.setState({startAtCurrent:true})
+    this.props.changeStart('Current Location')
+  }
   
   render() {
     return(
       <View style={[STYLES.container, {flex:1, backgroundColor:Color.lightBackground}]}>
         <TextInput 
+          style={{width:windowWidth*0.8, margin:0, padding:0}}
           placeholder="Start"
-          defaultValue={this.state.start}
+          value={this.props.run.run_setup.start}
           onChangeText={start => {
-            this.setState({ start: start });
+            this.props.changeStart(start);
           }}
         />
-        <TextInput 
-          placeholder="End"
-          defaultValue={this.props.navigation.state.params==undefined ? this.state.end : this.props.navigation.state.params.name}
-          onChangeText={end => {
-            this.setState({ end: end });
-          }}
-        />
-        <View style={{flexDirection:'row', justifyContent:'space-between', width:'80%'}}>
+
+
+        <View style={{flexDirection:'row', justifyContent:'space-evenly', width: windowWidth*1}}>
+          <TextInput 
+            placeholder="End"
+            style={{width:windowWidth*0.8}}
+            value={this.props.run.run_setup.end}
+            onChangeText={end => {
+              this.props.changeEnd(end);
+            }}
+          />
+        </View>
+
+        <View style={{flexDirection:'row', justifyContent:'space-evenly', width:'80%', alignItems:'center'}}>
+          <CheckBox
+            containerStyle={{backgroundColor:Color.lightBackground2, borderColor:Color.darkBackground, width:'45%', height:50}}
+            textStyle={{color:Color.textColor}}
+            title='Real Time'
+            checked={this.state.real_time_tracking}
+            onPress={() => {this.setState({real_time_tracking:!this.state.real_time_tracking})}}
+          />
+          <TouchableOpacity
+            style={{width:"45%", backgroundColor:Color.lightBackground2, flexDirection:'row', alignItems:'center', height:50, justifyContent:'space-evenly'}}
+            onPress={() => this.setToCurrentLocation()}
+          >
+            <FontAwesomeIcon name="location-arrow" size={20} color={Color.primaryColor}/>
+            <Text multiline={true} style={[STYLES.text_style,{fontSize:10}]}>Current Location</Text>
+          </TouchableOpacity>
+        </View>
+        
+        <View style={{flexDirection:'row', justifyContent:'space-evenly', width:'80%'}}>
           <TextInput 
             style={{width:'45%'}}
             placeholder="Minutes"
-            onChangeText={minutes => {
-              this.setState({ goal_pace: {minutes: minutes} });
-            }}
+            onChangeText={minutes => this.setState({goal_pace: {minutes: minutes}})}
             defaultValue={this.state.goal_pace.minutes}
             keyboardType="number-pad"
             returnKeyType="go"
@@ -138,21 +199,12 @@ class RunSetupScreen extends React.Component {
           <TextInput 
             style={{width:'45%'}}
             placeholder="Seconds"
-            onChangeText={seconds => {
-              this.setState({ goal_pace: {seconds: seconds} });
-            }}
+            onChangeText={seconds => this.setState({goal_pace: {seconds: seconds}})}
             defaultValue={this.state.goal_pace.seconds}
             returnKeyType="go" 
             keyboardType="number-pad"
           />
         </View>
-        <CheckBox
-          containerStyle={{backgroundColor:Color.lightBackground, borderColor:Color.darkBackground, width:'80%'}}
-          textStyle={{color:Color.textColor}}
-          title='Real Time Tracking'
-          checked={this.state.real_time_tracking}
-          onPress={() => {this.setState({real_time_tracking:!this.state.real_time_tracking})}}
-        />
         <Button 
           style={{borderRadius:10}} 
           text="Generate Route Info"
@@ -160,21 +212,21 @@ class RunSetupScreen extends React.Component {
 			      this.setState({loading:true}, this.generateRouteInfo.bind(this))
           }}
         >
-		  {this.state.loading && (
-		    <ActivityIndicator
-			  animating={true}
-			  color="white"
-			  size="large"
-			/>
-		  )}
-		</Button>
+          {this.state.loading && (
+          <ActivityIndicator
+            animating={true}
+            color="white"
+            size="large"
+          />
+          )}
+        </Button>
       </View>
     );
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ createRunRoute, createRun }, dispatch)
+  return bindActionCreators({ createRunRoute, createRun, changeEnd, changeStart }, dispatch)
 }
 
 function mapStateToProps(state) {
