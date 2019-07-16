@@ -34,17 +34,22 @@ class StartupScreen extends React.Component {
       await this.props.storeLoginInfo(json_login_info)
       // Storing User Info
       let user_info =  await getUserInfo(this.props.user.token);
-      this.props.storeUserInfo(user_info)
-      this.props.navigation.navigate('Feed')
+      if (!user_info) {
+        Alert.alert("Error","Due to the previous error, we couldn't log you in automatically. Please try logging in manually.")
+        this.props.navigation.navigate('Splash');
+        return 0; //Early exit
+      }
+      this.props.storeUserInfo(user_info);
+      this.props.navigation.navigate('Feed');
     } else {
-      this.props.navigation.navigate('Splash')
+      this.props.navigation.navigate('Splash');
     }
   }
 
   render () {
     return (
       <View style={{flex:1}}>
-        <LinearGradient 
+        <LinearGradient
           colors={[Color.darkBackground, Color.primaryColor]}
           style={{flex:1}}
         >
