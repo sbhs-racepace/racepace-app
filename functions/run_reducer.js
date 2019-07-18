@@ -7,11 +7,9 @@ const RUN_INITIAL_STATE = {
     current_pace: {minutes: '--', seconds:'--'},
     average_pace: {minutes: '--', seconds:'--'},
     current_region: {
-      latitude:-33.9672563, 
-      longitude:151.1002119, 
-      latitudeDelta: global.latitudeDelta,
-      longitudeDelta: global.longitudeDelta,
-    }, // Default Campsi Location
+      ...global.zoom_factor,
+      ...global.default_location,
+    },
     lap_pace: {minutes: '--', seconds:'--'},
     lap_distance: 0,
     lap_start: null,
