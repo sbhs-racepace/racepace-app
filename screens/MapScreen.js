@@ -91,19 +91,13 @@ class MapScreen extends React.Component {
     });
   };
 
-  async getSearchResults(location) {
-    let inputString = location + ',' + global.region.name;
-    let locationResults = await Location.geocodeAsync(inputString)
-    return locationResults
-  }
-
-  async goToSearchLocation(location) {
-    if (location == '') {
+  async goToSearchLocation(searchStr) {
+    if (searchStr == '') {
       Alert.alert('Error', 'Input was blank.');
     } else {
       try {
-        let searchResults = await this.getSearchResults(location)
-        let topResult = searchResults[0];
+        let inputString = searchStr + ',' + global.region.name;
+        let topResult = await Location.geocodeAsync(inputString)[0]
         let { latitude, longitude } = topResult
         this.setState(prevState => ({
           region: {
@@ -156,8 +150,25 @@ class MapScreen extends React.Component {
     }
   }
 
-  updateSearch(searchStr) {
+  async updateSearch(searchStr) {
+    let radius = 10000 // Limiting search to 10km
+    let location_string = `${this.state.region.latitude},${this.state.region.longitude}`
+    let api_url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${location_string}&radius=${radius}&keyword=${searchStr}&rankby=prominennce&key=${global.google_maps_api}`
     let newSearchResults = []
+    await fetch(api_url, {
+      method: 'GET',
+    })
+    .then(async res => {
+      let res_data = await res.json();
+      if (res_data.status != 'INVALID_REQUEST') {
+        console.log(res_data)
+      } else {
+        Alert.alert('Error', res_data.status);
+      }
+    })
+    .catch(error => {
+      Alert.alert('Error', error.message);
+    });
     this.setState({ searchStr: searchStr, searchResults: newSearchResults });
   };
 
