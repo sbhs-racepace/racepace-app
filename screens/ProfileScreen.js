@@ -1,7 +1,7 @@
 // Jason Yu and Abdur Raqeeb Mohammed
 
 import React from 'react'
-import { View, Text, StyleSheet, AsyncStorage, Alert, ScrollView, KeyboardAvoidingView } from 'react-native'
+import { View, Text, StyleSheet, AsyncStorage, Alert, ScrollView, KeyboardAvoidingView, Dimensions} from 'react-native'
 import { Image, Icon } from 'react-native-elements'
 import Button from '../components/Button'
 import '../global'
@@ -15,13 +15,9 @@ import { logout } from '../functions/user_info_action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
+
 const STYLES = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-evenly',
-    backgroundColor: Color.lightBackground
-  },
   profile_image: {
     height: 100,
     width: 100,
@@ -98,7 +94,11 @@ class ProfileScreen extends React.Component {
     return (
     <KeyboardAvoidingView keyboardVerticalOffset={100} behavior="position" style={{backgroundColor: Color.darkBackground}}>
     <ScrollView>
-      <View style={STYLES.container}>
+      <View style={{
+        flexDirection: 'column',
+        justifyContent: 'space-evenly',
+        backgroundColor: Color.lightBackground
+      }}>
         
         <Text style={[STYLES.text, { fontSize: 30, textAlign: 'center', paddingTop: '5%', marginBottom: -15, fontFamily:'Roboto-Bold', color:Color.primaryColor}]}>{this.props.user.full_name}</Text>
         <View style={{ height: 150, padding: '3%' }}>
@@ -169,8 +169,8 @@ class ProfileScreen extends React.Component {
       </View>
       <Text multiline={true} style={[STYLES.text,{margin:"4%", marginTop:0}]}>{this.props.user.bio}</Text>
 
-      <View style={{ backgroundColor: Color.darkBackground }}>
-        <AppContainer style={{ flex: 1 }}/>
+      <View style={{ backgroundColor: Color.darkBackground, height:windowHeight * 0.8}}>
+        <AppContainer style={{ flex:1 }}/>
       </View>
       
     </View>

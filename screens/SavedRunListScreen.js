@@ -36,10 +36,10 @@ class SavedRunItem extends React.Component {
         dividerStyle={{display: 'none'}}
         containerStyle={STYLES.card}
       >
-        <Text style={STYLES.text}>Start Time: {this.props.run.start_time}</Text>
-        <Text style={STYLES.text}>Distance: {this.props.run.dist}km</Text>
-        <Text style={STYLES.text}>Pace: {this.props.run.average_pace.minutes}:{this.props.run.average_pace.seconds}</Text>
-        <Text style={STYLES.text}>Pace: {this.props.run.duration.minutes}:{this.props.run.duration.seconds}</Text>
+        <Text style={STYLES.text}>Start Time: {this.props.run.run_info.start_time}</Text>
+        <Text style={STYLES.text}>Distance: {this.props.run.run_info.final_distance}km</Text>
+        <Text style={STYLES.text}>Pace: {this.props.run.run_info.average_pace.minutes}:{this.props.run.run_info.average_pace.seconds}</Text>
+        <Text style={STYLES.text}>Duration: {this.props.run.run_info.final_duration.minutes}:{this.props.run.run_info.final_duration.seconds}</Text>
         <Text style={STYLES.text}>{this.props.run.description}</Text>
       </Card>
     )
@@ -52,23 +52,14 @@ class SavedRunListScreen extends React.Component {
   }
   
   render() {
-    // Conversion of Routes to being in array
-    // list_saved_routes = [];
-    // for (route_id in this.props.user.saved_routes) {list_saved_routes.push(this.props.user.saved_routes.route_id)};
-    // let routes = list_saved_routes.map(route => <RouteItem route={route}/>);
-
-
-    list_saved_routes = [1,2,3]
-    let test_data = list_saved_routes.map(route => 
+    let saved_runs = [];
+    for (run_id in this.props.user.saved_runs) {
+      saved_runs.push(this.props.user.saved_runs[run_id])
+    };
+    console.log(saved_runs)
+    let runs = saved_runs.map(run => 
       <SavedRunItem 
-        run={{
-          name:'PB mile run', 
-          description:'Best run of my life 430 pace! :)',
-          average_pace: {minutes:4,seconds:30},
-          duration: {minutes:20,seconds:30},
-          start_time:'10am',
-          distance:1, 
-        }}
+        run={run}
       />
     );
 
@@ -76,7 +67,9 @@ class SavedRunListScreen extends React.Component {
     return (
       
       <View style={{backgroundColor: Color.darkBackground, flex:1}}>
-          {test_data}
+        <ScrollView>
+          {runs}
+        </ScrollView>
       </View>
     );
   }
