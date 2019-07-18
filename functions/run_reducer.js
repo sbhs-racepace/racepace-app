@@ -21,6 +21,7 @@ const RUN_INITIAL_STATE = {
     start: null,
     end: null,
     goal_pace: {minutes:'--', seconds:'--'},
+    average_pace: {minutes:'--', seconds:'--'},
     estimated_duration: {minutes:'--', seconds:'--'},
     estimated_distance: null,
     estimated_energy: null,
@@ -127,6 +128,7 @@ export default function runReducer(state = RUN_INITIAL_STATE, action) {
           final_duration: final_duration,
           final_distance: final_distance,
           final_energy: final_energy,
+          average_pace: state.real_time_info.average_pace,
         }
       }) 
     case END_RUN:
