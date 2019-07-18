@@ -1,3 +1,5 @@
+// JAson YU
+
 import { STORE_LOGIN_INFO, STORE_USER_INFO, LOGOUT } from './user_info_action'
 
 const USER_INFO_INITIAL_STATE =  {

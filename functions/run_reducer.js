@@ -1,3 +1,5 @@
+// Jason YU
+
 import { CREATE_RUN_ROUTE, CREATE_RUN, START_RUN, ADD_LOCATION_PACKET, END_RUN, SAVE_RUN, PAUSE_RUN, RESUME_RUN, CHANGE_END, CHANGE_START } from './run_action'
 import { calculateAveragePace, speedToPace, coordDistance, calculateTimeFromPace, calculateKilojoulesBurnt, calculatePoints  } from './run.js'
 import '../global'

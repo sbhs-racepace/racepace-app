@@ -1,3 +1,5 @@
+// Jason YU
+
 export const STORE_USER_INFO = 'STORE_USER_INFO'
 export const STORE_LOGIN_INFO = 'STORE_LOGIN_INFO'
 export const LOGOUT = 'LOGOUT'

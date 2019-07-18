@@ -1,4 +1,4 @@
-// Roy Wu
+// Roy Wu, Jason
 
 import React from 'react';
 import {
@@ -15,11 +15,6 @@ import { bindActionCreators } from 'redux';
 class LevelScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      level: 1,
-      points: 24759,
-      remainder: 5241,
-    };
   }
 
   levelcalc(points) {
