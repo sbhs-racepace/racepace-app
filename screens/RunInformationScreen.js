@@ -61,6 +61,16 @@ class RunInformationScreen extends React.Component {
           <Text style={STYLES.text_style}>Kilojoules Burnt: {this.props.run.run_info.estimated_energy} Kj</Text>
           <Text style={STYLES.text_style}>Points: {this.props.run.run_info.points}</Text>
         </View>
+
+        <Button 
+          text="Save Route"
+          style={{borderRadius:10, alignSelf:'center'}} 
+          onPress={() => {
+            this.props.navigation.navigate("SaveRoute");
+          }}
+        />
+
+        
         <Button 
           text="Start Run"
           style={{borderRadius:10, alignSelf:'center'}} 

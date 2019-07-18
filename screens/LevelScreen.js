@@ -50,19 +50,24 @@ class LevelScreen extends React.Component {
       progressBar: {
         backgroundColor: 'gray',
         width: '80%',
-        height: '15%',
-        borderRadius: 20,
+        height: '30%',
+        borderRadius: 25,
       },
       progressBarFill: {
         backgroundColor: 'blue',
         width: (this.calculateLevelProgress(this.props.user.stats.points)) * 100 + '%',
         height: '100%',
-        borderRadius: 20,
+        borderRadius: 25,
+      },
+      text: {
+        fontSize: 40,
+        color:Color.textColor,
       },
       remainderText: {
-          fontSize: 25, 
+          fontSize: 20, 
           textAlign: 'center', 
           width: '80%',
+          color:Color.textColor,
       },
       header: {
       top: '0%',
@@ -76,15 +81,17 @@ class LevelScreen extends React.Component {
           title='Level'
           onPress={this.props.navigation.goBack}
         />
-        <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
-          <Text style={{ fontSize: 40 }}>You are level {this.levelcalc(this.props.user.stats.points)}</Text>
-          <Text style={{ fontSize: 40 }}>{this.props.user.stats.points} points</Text>
-          <View style={STYLES.progressBar}>
-            <View style={STYLES.progressBarFill} />
+        <View style={{justifyContent: 'center', flex:1}}>
+          <View style={{ alignItems: 'center', height:"50%", justifyContent:'space-around' }}>
+            <Text style={STYLES.text}>You are level {this.levelcalc(this.props.user.stats.points)}</Text>
+            <Text style={STYLES.text}>{this.props.user.stats.points} points</Text>
+            <View style={STYLES.progressBar}>
+              <View style={STYLES.progressBarFill} />
+            </View>
+            <Text style={STYLES.remainderText} multiline={true}>
+              {this.calculateRemainder(this.props.user.stats.points)} more point{this.props.user.stats.points>1 ? ' is' :'s are'} required to level up. Race on!
+            </Text>
           </View>
-          <Text style={STYLES.remainderText}>
-            {this.calculateRemainder(this.props.user.stats.points)} more points are required to level up. Race on!
-          </Text>
         </View>
       </View>
     );
