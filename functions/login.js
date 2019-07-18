@@ -34,8 +34,29 @@ export async function getUserInfo(token) {
     .catch(error => {
       Alert.alert('Error', error.message);
     });
+  await get_keys(); // Storing any api keys
   return user_info;
 }
+
+export async function get_keys() {
+  let api_url = global.serverURL + '/api/get_keys';
+  await fetch(api_url, {
+    method: 'POST',
+  })
+    .then(async res => {
+      let res_data = await res.json();
+      if (res_data.success) {
+        global.google_maps_api = res_data.google_maps_api
+      } else {
+        Alert.alert('Error', res_data.error);
+      }
+    })
+    .catch(error => {
+      Alert.alert('Error', error.message);
+    });
+}
+
+
 
 export async function login(email, password) {
   let api_url = global.serverURL + '/api/login';
