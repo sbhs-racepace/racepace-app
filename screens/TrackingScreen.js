@@ -18,8 +18,6 @@ import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 import '../global'
 
-const LATITUDE_DELTA = 0.0922*1.5
-const LONGITUDE_DELTA = 0.0421*1.5
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
 const STYLES = StyleSheet.create({
@@ -56,10 +54,8 @@ class TrackingScreen extends React.Component {
     super(props);
     this.state = {
       region: {
-        latitude: -33.9672563, //
-        longitude: 151.1002119, //
-        latitudeDelta: global.latitudeDelta,
-        longitudeDelta: global.longitudeDelta,
+        ...global.default_location,
+        ...global.zoom_factor,
       },
     }
   }

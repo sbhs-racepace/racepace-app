@@ -27,7 +27,7 @@ const USER_INFO_INITIAL_STATE =  {
     points: 0,
   },
   token: false,  
-  user_id: false 
+  user_id: false,
 }
 
 export default function userInfoReducer(state = USER_INFO_INITIAL_STATE, action) {

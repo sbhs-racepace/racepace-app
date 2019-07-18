@@ -62,10 +62,8 @@ class MapScreen extends React.Component {
     super(props);
     this.state = {
       region: {
-        latitude: -33.9672563, // Generic Starting Location
-        longitude: 151.1002119,
-        latitudeDelta: global.latitudeDelta,
-        longitudeDelta: global.longitudeDelta,
+        ...global.default_location,
+        ...global.zoom_factor,
       },
       showSearch: false,
       searchStr: '',
