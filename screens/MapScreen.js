@@ -74,14 +74,6 @@ class MapScreen extends React.Component {
         longitude: '',
       },
       searchResults: [ // Test Variabls
-        {
-          id: 1,
-          name: 'JavaScript',
-        },
-        {
-          id: 2,
-          name: 'Java',
-        },
       ]
     };
   }

@@ -181,6 +181,7 @@ class FollowerRequestScreen extends React.Component {
 
     return (
       <View style={{backgroundColor:Color.lightBackground, flex:1}}>
+        <BackButtonHeader title='Follow Requests' onPress={this.props.navigation.goBack} />
         <ScrollView contentContainerStyle={Color.lightBackground}>
           {test_data}
         </ScrollView>

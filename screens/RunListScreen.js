@@ -6,6 +6,8 @@ import { Card } from 'react-native-elements'
 import '../global'
 import Color from '../constants/Color'
 import { connect } from 'react-redux';
+import Button from '../components/Button'
+import BackButtonHeader from '../components/BackButtonHeader';
 import { bindActionCreators } from 'redux';
 
 const STYLES = StyleSheet.create({
@@ -68,6 +70,11 @@ class RunListScreen extends React.Component {
 
     return (
       <View style={{flex:1,backgroundColor:Color.darkBackground}}>
+        <Button
+          text="Follow Requests"
+          style={{ alignSelf: 'center', width:'100%' }}
+          onPress={() => this.props.navigation.navigate('FollowRequests')}
+        />
         <ScrollView>
           {test_data}
         </ScrollView>
