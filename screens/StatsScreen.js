@@ -28,52 +28,51 @@ class StatsScreen extends React.Component {
   
   render() {
     let stats = this.props.user.stats
-    
     return (
-    <View style={{flexDirection: 'row', flexWrap: 'wrap',  padding: 10}}>
-        <Card 
-            title="Average Heart Rate"
-            containerStyle={STYLES.card} 
-            titleStyle={{color: Color.textColor}} 
-            dividerStyle={{display: 'none'}}>
-            <Text style={STYLES.text}>89 bpm</Text>
-        </Card>
-        <Card 
-            title="Cadence"
-            containerStyle={STYLES.card} 
-            titleStyle={{color: Color.textColor}} 
-            dividerStyle={{display: 'none'}}>
-            <Text style={STYLES.text}>wtf is cadence</Text>
-        </Card>
-        <Card 
-            title="Runs made"
-            containerStyle={STYLES.card} 
-            titleStyle={{color: Color.textColor}} 
-            dividerStyle={{display: 'none'}}>
-            <Text style={STYLES.text}>300</Text>
-        </Card>
-        <Card 
-            title="Distance Ran"
-            containerStyle={STYLES.card} 
-            titleStyle={{color: Color.textColor}} 
-            dividerStyle={{display: 'none'}}>
-            <Text style={STYLES.text}>69 km</Text>
-        </Card>
-        <Card 
-            title="Longest Distance"
-            containerStyle={STYLES.card} 
-            titleStyle={{color: Color.textColor}} 
-            dividerStyle={{display: 'none'}}>
-            <Text style={STYLES.text}>21 km</Text>
-        </Card>
-        <Card 
-            title="Fastest 1km"
-            containerStyle={STYLES.card} 
-            titleStyle={{color: Color.textColor}} 
-            dividerStyle={{display: 'none'}}>
-            <Text style={STYLES.text}>3m 10s</Text>
-        </Card>
-    </View>
+      <View style={{flexDirection: 'row', flexWrap: 'wrap',  padding: 10}}>
+          {/* <Card 
+              title="Average Heart Rate"
+              containerStyle={STYLES.card} 
+              titleStyle={{color: Color.textColor}} 
+              dividerStyle={{display: 'none'}}>
+              <Text style={STYLES.text}>89 bpm</Text>
+          </Card>
+          <Card 
+              title="Cadence"
+              containerStyle={STYLES.card} 
+              titleStyle={{color: Color.textColor}} 
+              dividerStyle={{display: 'none'}}>
+              <Text style={STYLES.text}>wtf is cadence</Text>
+          </Card> */}
+          <Card 
+              title="Runs made"
+              containerStyle={STYLES.card} 
+              titleStyle={{color: Color.textColor}} 
+              dividerStyle={{display: 'none'}}>
+              <Text style={STYLES.text}>{stats.num_runs} Runs</Text>
+          </Card>
+          <Card 
+              title="Distance Ran"
+              containerStyle={STYLES.card} 
+              titleStyle={{color: Color.textColor}} 
+              dividerStyle={{display: 'none'}}>
+              <Text style={STYLES.text}>{stats.total_distance} km</Text>
+          </Card>
+          <Card 
+              title="Longest Distance"
+              containerStyle={STYLES.card} 
+              titleStyle={{color: Color.textColor}} 
+              dividerStyle={{display: 'none'}}>
+              <Text style={STYLES.text}>{stats.longest_distance_ran} km</Text>
+          </Card>
+          {/* <Card 
+              title="Fastest 1km"
+              containerStyle={STYLES.card} 
+              titleStyle={{color: Color.textColor}} 
+              dividerStyle={{display: 'none'}}>
+              <Text style={STYLES.text}>3m 10s</Text>
+          </Card> */}
+      </View>
     );
   }
 }

@@ -24,7 +24,7 @@ class Follower extends React.Component {
       },
     })
     return (
-      <View style={{width:'100%',flexDirection: "row",justifyContent:'space-between', height:windowWidth * 0.25, alignItems:'center'}}>
+      <View style={{width:'100%',flexDirection: "row",justifyContent:'space-around', height:windowWidth * 0.25, alignItems:'center'}}>
         <Image
           style={STYLES.profile_image}
           source={this.props.img}

@@ -56,7 +56,7 @@ class SavedRunListScreen extends React.Component {
     for (run_id in this.props.user.saved_runs) {
       saved_runs.push(this.props.user.saved_runs[run_id])
     };
-    console.log(saved_runs)
+
     let runs = saved_runs.map(run => 
       <SavedRunItem 
         run={run}

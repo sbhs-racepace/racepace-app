@@ -167,7 +167,7 @@ class FollowerRequestScreen extends React.Component {
 
   render() {
     if (!this.props.user.token) {
-      return <Text>Please login to see your runs</Text>;
+      return <Text>Please login to see your follow requests</Text>;
     }
 
     let user_ids = ['5165773889219314892','5165773889219314892']
