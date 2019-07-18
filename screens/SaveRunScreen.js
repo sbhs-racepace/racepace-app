@@ -76,8 +76,8 @@ class SaveRunScreen extends React.Component {
 
   async saveRun() {
     let data = {
-      name: this.state.name,
-      description: this.state.description,
+      name: this.state.runName,
+      description: this.state.runDescription,
       run_info: this.props.run.run_info,
       location_packets: this.props.run.location_packets,
     }
