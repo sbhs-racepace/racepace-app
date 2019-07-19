@@ -1,7 +1,7 @@
 // Jason Yu, Sunny Yan
 
 import React from 'react';
-import { StyleSheet, View, Text, Alert, Dimensions, KeyboardAvoidingView, ActivityIndicator, TouchableOpacity, Platform } from 'react-native';
+import { StyleSheet, View, Text, Alert, Dimensions, KeyboardAvoidingView, ActivityIndicator, TouchableOpacity, Platform, ScrollView } from 'react-native';
 import {createAppContainer,createMaterialTopTabNavigator} from 'react-navigation';
 import TextInput from '../components/TextInput'
 import { CheckBox } from 'react-native-elements'
@@ -11,7 +11,7 @@ import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
 import Color from '../constants/Color'
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
-import { createRun, createRunRoute, changeEnd, changeStart } from '../functions/run_action'
+import { createRun, createRunRoute, changeEnd, changeStart, changeLocationInput } from '../functions/run_action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -43,6 +43,7 @@ class RunSetupScreen extends React.Component {
       startAtCurrent: true,
       goal_pace: {minutes: "5", seconds: "0"},
       real_time_tracking: false,
+      locationInputs:[]
     }
   }
 
@@ -78,7 +79,7 @@ class RunSetupScreen extends React.Component {
       this.props.navigation.navigate('Feed')
     } else {
       await Location.getCurrentPositionAsync({
-        accuracy: 4,
+        accuracy: Location.Accuracy.Low,
         maximumAge: 5000,
         timeout: 5000,
       })
@@ -118,21 +119,49 @@ class RunSetupScreen extends React.Component {
     return route_data;
   }
 
+  async generateMultiRoute(waypoints) {
+    let api_comma = '%2C'
+    let waypoint_strings = waypoints.map(location=>`${location.latitude}${api_comma}${location.longitude}`)
+    waypoint_string = '?waypoints=' + waypoint_strings.join('&waypoints=') // Joining values
+    let api_url = `${global.serverURL}/api/route/multiple${waypoint_string}`;
+    await fetch(api_url,{
+      method: "GET"
+    })
+    .catch(error => Alert.alert("Error connecting to server",error))
+    .then(async res => {
+      let res_data = await res.json()
+      if (!res_data.success) {
+        Alert.alert("Error",res_data.error);
+      } else {
+        route_data = res_data;
+      }
+    });
+    return route_data;
+  }
+
 
   async generateRouteInfo() {
     let start = this.props.run.run_setup.start
     let end = this.props.run.run_setup.end
     let start_packet = null
+    if (start == 'Current Location' && this.state.startAtCurrent == true) {
+      start_packet = {name: start, coord: (await this.getCurrentLocation())} // Current Location cannot be retrieved on simulator
+    } else {
+      start_packet = await this.createLocationPacket(start);
+    }
+    let end_packet = await this.createLocationPacket(end);
+
     if (start == '' || end == '') {
       Alert.alert('Incomplete fields')
     } else {
-      if (start == 'Current Location' && this.state.startAtCurrent == true) {
-        start_packet = {name: start, coord: (await this.getCurrentLocation())} // Current Location cannot be retrieved on simulator
+      let route_data = false;
+      if (this.props.run.run_setup.locations.length > 0) {
+        let location_packets = this.props.run.run_setup.locations.map(async location =>  await this.createLocationPacket(location))
+        let way_points = [start_packet, ...location_packets, end_packet]
+        route_data = await this.generateMultiRoute(way_points);
       } else {
-        start_packet = await this.createLocationPacket(start);
+        route_data = await this.generateRoute(start_packet.coord,end_packet.coord);
       }
-      let end_packet = await this.createLocationPacket(end);
-      let route_data = await this.generateRoute(start_packet.coord,end_packet.coord);
       if (route_data != false) {
         let route = route_data.route
         let distance = route_data.dist
@@ -149,66 +178,112 @@ class RunSetupScreen extends React.Component {
     this.setState({startAtCurrent:true})
     this.props.changeStart('Current Location')
   }
-  
-  render() {
-    return(
-      <View style={[STYLES.container, {flex:1, backgroundColor:Color.lightBackground}]}>
-        <TextInput 
-          style={{width:windowWidth*0.8, margin:0, padding:0}}
-          placeholder="Start"
-          value={this.props.run.run_setup.start}
-          onChangeText={start => {
-            this.props.changeStart(start);
-          }}
-        />
 
-
-        <View style={{flexDirection:'row', justifyContent:'space-evenly', width: windowWidth*1}}>
+  addInput() {
+    let index = this.state.locationInputs.length
+    this.props.changeLocationInput('', index);
+    this.setState({
+      locationInputs: [
+        ...this.state.locationInputs,
+        (            
+          <View style={{flexDirection:'row', alignItems:'center', marginBottom: 20, width:"90%", justifyContent:'space-between'}}>
           <TextInput 
-            placeholder="End"
-            style={{width:windowWidth*0.8}}
-            value={this.props.run.run_setup.end}
-            onChangeText={end => {
-              this.props.changeEnd(end);
+            style={{width:windowWidth*0.7}}
+            onChangeText={locationText => {
+              this.props.changeLocationInput(locationText, index);
             }}
           />
-        </View>
+            <View style={{width:windowWidth*0.1}}></View>
+          </View>
+        )
+      ]
+    })
+  }
 
-        <View style={{flexDirection:'row', justifyContent:'space-evenly', width:'80%', alignItems:'center'}}>
-          <CheckBox
-            containerStyle={{backgroundColor:Color.lightBackground2, borderColor:Color.darkBackground, width:'45%', height:50}}
-            textStyle={{color:Color.textColor}}
-            title='Real Time'
-            checked={this.state.real_time_tracking}
-            onPress={() => {this.setState({real_time_tracking:!this.state.real_time_tracking})}}
-          />
-          <TouchableOpacity
-            style={{width:"45%", backgroundColor:Color.lightBackground2, flexDirection:'row', alignItems:'center', height:50, justifyContent:'space-evenly'}}
-            onPress={() => this.setToCurrentLocation()}
-          >
-            <FontAwesomeIcon name="location-arrow" size={20} color={Color.primaryColor}/>
-            <Text style={[STYLES.text_style,{fontSize:14}]}>Current Location</Text>
-          </TouchableOpacity>
-        </View>
+  async removeInput() {
+    this.setState(prevState=>{
+      prevState.locationInputs.pop()
+      return {locationInputs: prevState.locationInputs}
+    })
+  }
+  
+  render() {
+    let locationInputs = this.state.locationInputs;
+    return(
+      <View style={[STYLES.container, {flex:1, backgroundColor:Color.lightBackground}]}>
+        <ScrollView contentContainerStyle={{alignItems:'center'}}>
+          <View style={{flexDirection:'row', alignItems:'center', marginBottom: 20, marginTop:20, width:"90%", justifyContent:'space-between'}}>
+            <TextInput 
+              style={{width:windowWidth*0.7}}
+              placeholder="Start"
+              value={this.props.run.run_setup.start}
+              onChangeText={start => {
+                this.props.changeStart(start);
+              }}
+            />
+            <View style={{width:windowWidth*0.1}}>
+              <TouchableOpacity 
+                onPress={()=>{this.addInput()}}
+              >
+                <FontAwesomeIcon name="plus" size={30} color={Color.primaryColor}/>
+              </TouchableOpacity>
+            </View>
+          </View>
+          {locationInputs.map(input=>input)}
+          <View style={{flexDirection:'row', alignItems:'center', marginBottom: 10, width:"90%", justifyContent:'space-between'}}>
+            <TextInput 
+              placeholder="End"
+              style={{width:windowWidth*0.7}}
+              value={this.props.run.run_setup.end}
+              onChangeText={end => {
+                this.props.changeEnd(end);
+              }}
+            />
+            <View style={{width:windowWidth*0.1}}>
+              <TouchableOpacity 
+                onPress={()=>{ this.removeInput()}}
+              >
+                <FontAwesomeIcon name="minus" size={30} color={Color.primaryColor}/>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <View style={{flexDirection:'row', justifyContent:'space-between', width:'90%', alignItems:'center', marginBottom:10}}>
+            <CheckBox
+              containerStyle={{backgroundColor:Color.lightBackground2, borderColor:Color.darkBackground, width:'45%', height:50}}
+              textStyle={{color:Color.textColor}}
+              title='Real Time'
+              checked={this.state.real_time_tracking}
+              onPress={() => {this.setState({real_time_tracking:!this.state.real_time_tracking})}}
+            />
+            <TouchableOpacity
+              style={{width:"45%", backgroundColor:Color.lightBackground2, flexDirection:'row', alignItems:'center', height:50, justifyContent:'space-evenly'}}
+              onPress={() => this.setToCurrentLocation()}
+            >
+              <FontAwesomeIcon name="location-arrow" size={20} color={Color.primaryColor}/>
+              <Text style={[STYLES.text_style,{fontSize:14}]}>Current Location</Text>
+            </TouchableOpacity>
+          </View>
         
-        <View style={{flexDirection:'row', justifyContent:'space-evenly', width:'80%'}}>
-          <TextInput 
-            style={{width:'45%'}}
-            placeholder="Minutes"
-            onChangeText={minutes => this.setState({goal_pace: {minutes: minutes}})}
-            defaultValue={this.state.goal_pace.minutes}
-            keyboardType="number-pad"
-            returnKeyType="go"
-          />
-          <TextInput 
-            style={{width:'45%'}}
-            placeholder="Seconds"
-            onChangeText={seconds => this.setState({goal_pace: {seconds: seconds}})}
-            defaultValue={this.state.goal_pace.seconds}
-            returnKeyType="go" 
-            keyboardType="number-pad"
-          />
-        </View>
+          <View style={{flexDirection:'row', justifyContent:'space-between', width:'90%', marginBottom:10}}>
+            <TextInput 
+              style={{width:'45%'}}
+              placeholder="Minutes"
+              onChangeText={minutes => this.setState({goal_pace: {minutes: minutes}})}
+              defaultValue={this.state.goal_pace.minutes}
+              keyboardType="number-pad"
+              returnKeyType="go"
+            />
+            <TextInput 
+              style={{width:'45%'}}
+              placeholder="Seconds"
+              onChangeText={seconds => this.setState({goal_pace: {seconds: seconds}})}
+              defaultValue={this.state.goal_pace.seconds}
+              returnKeyType="go" 
+              keyboardType="number-pad"
+            />
+          </View>
+        </ScrollView>
         <Button 
           style={{borderRadius:10}} 
           text="Generate Route Info"
@@ -230,7 +305,7 @@ class RunSetupScreen extends React.Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ createRunRoute, createRun, changeEnd, changeStart }, dispatch)
+  return bindActionCreators({ createRunRoute, createRun, changeEnd, changeStart, changeLocationInput }, dispatch)
 }
 
 function mapStateToProps(state) {

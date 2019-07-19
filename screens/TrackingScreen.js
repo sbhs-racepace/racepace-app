@@ -70,7 +70,7 @@ class TrackingScreen extends React.Component {
 
   async goToCurrent() {
     Location.getCurrentPositionAsync({
-      accuracy: 4,
+      accuracy: Location.Accuracy.Low,
       maximumAge: 5000,
       timeout: 5000,
     })
