@@ -1,16 +1,26 @@
 // Calvin Chang
 
 import React from 'react';
+import * as ImageManipulator from 'expo-image-manipulator';
 import { DocumentPicker } from 'expo';
-import { View, Alert, Text, ScrollView, AppRegistry, StyleSheet, KeyboardAvoidingView, Dimensions } from 'react-native';
-import TextInput from '../components/TextInput'
-import { Image } from 'react-native-elements'
-import { login, getUserInfo } from '../functions/login'
+import {
+  View,
+  Alert,
+  Text,
+  ScrollView,
+  AppRegistry,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Dimensions,
+} from 'react-native';
+import TextInput from '../components/TextInput';
+import { Image } from 'react-native-elements';
+import { login, getUserInfo } from '../functions/login';
 import Button from '../components/Button';
 import BackButtonHeader from '../components/BackButtonHeader';
 import Color from '../constants/Color';
 import '../global.js';
-import { storeUserInfo, storeLoginInfo } from '../functions/user_info_action'
+import { storeUserInfo, storeLoginInfo } from '../functions/user_info_action';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -21,7 +31,7 @@ const STYLES = StyleSheet.create({
     width: 80,
     height: 30,
     borderRadius: 10,
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   input: {
     width: windowWidth * 0.8,
@@ -30,10 +40,10 @@ const STYLES = StyleSheet.create({
   profile_image: {
     height: windowWidth * 0.3,
     width: windowWidth * 0.3,
-    borderRadius: windowWidth * 0.3 / 2,
-    alignSelf: 'center'
+    borderRadius: (windowWidth * 0.3) / 2,
+    alignSelf: 'center',
   },
-  container : {
+  container: {
     flex: 1,
     backgroundColor: Color.lightBackground,
     justifyContent: 'space-between',
@@ -43,8 +53,8 @@ const STYLES = StyleSheet.create({
   saveButton: {
     width: '80%',
     fontSize: 14,
-    alignSelf:'center'
-  }
+    alignSelf: 'center',
+  },
 });
 
 class EditScreen extends React.Component {
@@ -52,64 +62,116 @@ class EditScreen extends React.Component {
     super(props);
     this.state = {
       uri: global.serverURL + `/api/avatars/${this.props.user.user_id}.png`,
-      new_username: null,
-      new_password: null,
-      bio: null,
-      full_name: null,
-      image: null,
-      current_password: null,
-      confirmation_password: null,
+      new_username: '',
+      new_password: '',
+      bio: '',
+      full_name: '',
+      image: '',
+      current_password: '',
+      confirmation_password: '',
     };
   }
 
   async saveChanges() {
-    let login_data = await login(this.props.user.email, this.state.current_password)
-    let equivalent_new = this.state.new_password == this.state.confirmation_password
+    let base64 = false;
+    if (this.state.uri != null) {
+      let result = await ImageManipulator.manipulateAsync(this.state.uri, [], {
+        base64: true,
+        format: ImageManipulator.SaveFormat.PNG,
+      });
+      console.log(result);
+      base64 = result.base64;
+    }
+    let equivalent_new =
+      this.state.new_password == this.state.confirmation_password;
     let data = {
       username: this.state.new_username,
       password: this.state.new_password,
       bio: this.state.bio,
       full_name: this.state.full_name,
-      image: this.state.image,
     };
+    if (
+      this.state.current_password != '' &&
+      this.state.current_password == this.state.new_password
+    ) {
+      Alert.alert('New password and Old password are the same');
+      return 0;
+    }
+    if (this.state.current_password == '') {
+      Alert.alert('Current Password required');
+      return 0;
+    }
+    if (this.state.new_password != this.state.confirmation_password) {
+      Alert.alert("New Password doesn't match with Confirmation Password");
+      return 0;
+    }
+    let login_data = await login(
+      this.props.user.email,
+      this.state.current_password
+    );
     if (login_data.success) {
       if (equivalent_new) {
-        let api_url = global.serverURL + '/api/update_profile';
-        fetch(api_url, {
-          method: 'POST',
-          body: JSON.stringify(data),
-          headers: new Headers({
-            Authorization: this.props.user.token,
-          }),
-        })
-        .catch(res => {
-          Alert.alert('Error connecting to server', res);
-        })
-        .then(async res => {
-          res = await res.json()
-          if (res.success == true) {
-            let user_info = await getUserInfo(this.props.user.token)
-            await this.props.storeUserInfo(user_info)
-            Alert.alert('Changed User Details')
-          } else {
-            Alert.alert(res.error)
-          }
-        });
-      } else {
-        Alert.alert("New Password doesn't match with Confirmation Password")
+        if (base64 != false) {
+          console.log(base64);
+          fetch(global.serverURL + '/api/avatars/update', {
+            method: 'PATCH',
+            body: base64,
+            headers: new Headers({
+              Authorization: this.props.user.token,
+            }),
+          })
+            .catch(res => {
+              Alert.alert('Error connecting to server', res);
+            })
+            .then(async res => {
+              res = await res.json();
+              if (res.success == true) {
+                console.log('Image upload success');
+              } else {
+                Alert.alert(res.error);
+              }
+            });
+          fetch(global.serverURL + '/api/update_profile', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: new Headers({
+              Authorization: this.props.user.token,
+            }),
+          })
+            .catch(res => {
+              Alert.alert('Error connecting to server', res);
+            })
+            .then(async res => {
+              res = await res.json();
+              if (res.success == true) {
+                let user_info = await getUserInfo(this.props.user.token);
+                await this.props.storeUserInfo(user_info);
+                Alert.alert('Changed User Details');
+                this.props.navigation.navigate('Profile');
+              } else {
+                Alert.alert(res.error);
+              }
+            });
+        }
       }
-    } else {
-      Alert.alert('Password was incorrect')
     }
   }
 
   render() {
     return (
-      <View style={{ flex: 1, backgroundColor: Color.lightBackground}}>
-        <BackButtonHeader title='Edit Screen' onPress={this.props.navigation.goBack} />
+      <View style={{ flex: 1, backgroundColor: Color.lightBackground }}>
+        <BackButtonHeader
+          title="Edit Screen"
+          onPress={this.props.navigation.goBack}
+        />
         <ScrollView>
-          <View style={{flexDirection: 'row', justifyContent:'space-between', alignItems:'center'}}>
-            <View style={{flex:2/5}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}>
+            <View style={{ flex: 2 / 5 }}>
               <Image
                 style={STYLES.profile_image}
                 source={{
@@ -129,61 +191,76 @@ class EditScreen extends React.Component {
                 }}
               />
             </View>
-            <View style={{ flex:3/5 }}>
-              <TextInput 
-                placeholder="Name" 
-                style={{ ...STYLES.input, width: windowWidth * 0.50 }}
+            <View style={{ flex: 3 / 5 }}>
+              <TextInput
+                placeholder="Name"
+                style={{ ...STYLES.input, width: windowWidth * 0.5 }}
                 returnKeyType="go"
                 onChangeText={full_name => this.setState({ full_name })}
               />
               <TextInput
                 placeholder="Enter Bio"
                 onChangeText={bio => this.setState({ bio })}
-                style={{ ...STYLES.input, width: windowWidth * 0.50 }}
-                text_style={{height: windowWidth * 0.3, fontSize: 12, width: windowWidth * 0.50}}
+                style={{ ...STYLES.input, width: windowWidth * 0.5 }}
+                text_style={{
+                  height: windowWidth * 0.3,
+                  fontSize: 12,
+                  width: windowWidth * 0.5,
+                }}
                 returnKeyType="go"
                 multiline={true}
               />
             </View>
           </View>
 
-          <View style={{alignItems:'center', justifyContent:'space-evenly', height: windowHeight * 0.8}}>
-            <TextInput 
-              style={STYLES.input} 
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'space-evenly',
+              height: windowHeight * 0.8,
+            }}>
+            <TextInput
+              style={STYLES.input}
               placeholder="New Username"
               returnKeyType="go"
-              onChangeText={new_username => this.setState({ new_username })} 
+              onChangeText={new_username => this.setState({ new_username })}
             />
-            <TextInput 
-              placeholder="New Password" 
-              style={STYLES.input} 
+            <View>
+              <TextInput
+                placeholder="Current Password"
+                style={STYLES.input}
+                secureTextEntry={true}
+                autoCapitalize="none"
+                returnKeyType="go"
+                onChangeText={current_password =>
+                  this.setState({ current_password })
+                }
+              />
+              <Text style={{ fontSize: 12, color: 'red' }}>*Required</Text>
+            </View>
+            <TextInput
+              placeholder="New Password"
+              style={STYLES.input}
               secureTextEntry={true}
               autoCapitalize="none"
               returnKeyType="go"
               onChangeText={new_password => this.setState({ new_password })}
             />
-            <TextInput 
-              placeholder="New Password Confirmation" 
-              style={STYLES.input} 
+            <TextInput
+              placeholder="New Password Confirmation"
+              style={STYLES.input}
               secureTextEntry={true}
               autoCapitalize="none"
               returnKeyType="go"
-              onChangeText={confirmation_password => this.setState({ confirmation_password })}
-            />
-            <TextInput 
-              placeholder="Current Password" 
-              style={STYLES.input} 
-              secureTextEntry={true}
-              autoCapitalize="none"
-              returnKeyType="go"
-              onChangeText={current_password => this.setState({ current_password })}
+              onChangeText={confirmation_password =>
+                this.setState({ confirmation_password })
+              }
             />
             <Button
               text="Save Changes"
               style={STYLES.saveButton}
               onPress={async () => {
                 await this.saveChanges();
-                this.props.navigation.navigate('Profile')
               }}
             />
           </View>
@@ -194,12 +271,15 @@ class EditScreen extends React.Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ storeUserInfo, storeLoginInfo }, dispatch)
+  return bindActionCreators({ storeUserInfo, storeLoginInfo }, dispatch);
 }
 
 function mapStateToProps(state) {
   const { user } = state;
   return { user };
-};
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditScreen);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EditScreen);
