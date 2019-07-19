@@ -11,7 +11,7 @@ export const PAUSE_RUN = 'PAUSE_RUN'
 export const RESUME_RUN = 'RESUME_RUN'
 export const CHANGE_START = 'CHANGE_START'
 export const CHANGE_END = 'CHANGE_END'
-
+export const CHANGE_LOCATION_INPUT = 'CHANGE_LOCATION_INPUT'
 
 export function createRun(real_time_tracking, distance) {
   return { type: CREATE_RUN, real_time_tracking, distance }
@@ -42,4 +42,7 @@ export function changeStart(start) {
 }
 export function changeEnd(end) {
   return { type: CHANGE_END, end }
+}
+export function changeLocationInput(value, index) {
+  return { type: CHANGE_LOCATION_INPUT, value, index }
 }
