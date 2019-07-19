@@ -47,6 +47,8 @@ export async function get_keys() {
       let res_data = await res.json();
       if (res_data.success) {
         global.google_maps_api = res_data.google_maps_api
+        global.google_android_login_id = res_data.google_android_login_id
+        global.google_ios_login_id = res_data.google_ios_login_id
       } else {
         Alert.alert('Error', res_data.error);
       }
@@ -145,7 +147,8 @@ export async function googleLogin() {
   try {
     const url = global.serverURL + '/api/google_login';
     const config = {
-      androidClientId: global.googleLoginID.android,
+      androidClientId: global.google_android_login_id,
+      iosClientId: global.google_ios_login_id,
     };
     const result = await Google.logInAsync(config);
     if (result.type == 'success') {

@@ -15,5 +15,8 @@ global.default_location = {
 } // Campsi
 
 global.google_maps_api = null
+global.google_android_login_id = null
+global.google_ios_login_id = null
+
 
 
