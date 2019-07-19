@@ -1,7 +1,7 @@
 // JAson Yu
 
 export function speedToPace(speed) {
-  let kmTime = 1000 / speed   // in seconds
+  let kmTime = Math.abs(1000 / speed)   // in seconds
   let pace = secondsToMinutesAndSeconds(kmTime)
   return returnIfRunning(pace) // Returns invalid pace if unreasonable
 }
