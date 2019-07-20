@@ -55,20 +55,19 @@ class ProfileScreen extends React.Component {
   }
 
   logoutCall() {
-
     Alert.alert(
-        'Logout',
-        'Are you sure you want to logout?',
-        [
-          {
-            text: 'Cancel',
-            onPress: () => console.log('Cancel Pressed'),
-            style: 'cancel',
-          },
-          {text: 'Yes', onPress: () => this.doLogout()},
-        ],
-        {cancelable: false},
-      );
+      'Logout',
+      'Are you sure you want to logout?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {text: 'Yes', onPress: () => this.doLogout()},
+      ],
+      {cancelable: false},
+    );
   }
 
   render () {
@@ -100,7 +99,7 @@ class ProfileScreen extends React.Component {
         backgroundColor: Color.lightBackground
       }}>
 
-        <Text style={[STYLES.text, { fontSize: 30, textAlign: 'center', paddingTop: '5%', marginBottom: -15, fontFamily:'Roboto-Bold', color:Color.primaryColor}]}>{this.props.user.full_name}</Text>
+        <Text style={[STYLES.text, { fontSize: 30, textAlign: 'center', paddingTop: '5%', fontFamily:'Roboto-Bold', color:Color.primaryColor}]}>{this.props.user.full_name}</Text>
         <View style={{ height: 150, padding: '3%' }}>
           <View style={{flexDirection: 'row',flex: 1}}>
             <View style={{flexDirection: 'row',flex: 1,alignItems: 'center'}}>
@@ -159,7 +158,7 @@ class ProfileScreen extends React.Component {
                 style={{width: '30%', borderLeftWidth: 2, borderLeftColor: Color.lightBackground}}
                 text_style={{color: "#e74c3c"}}
                 text="Logout"
-                onPress={this.logoutCall}
+                onPress={this.logoutCall.bind(this)}
               />
             </View>
           </View>
