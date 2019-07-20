@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 import Button from '../components/Button';
-import { FeedItem } from '../components/FeedItem';
+import FeedItem from '../components/FeedItem';
 import '../global.js';
 import request from '../functions/request';
 import Color from '../constants/Color';
@@ -26,8 +26,7 @@ class FeedScreen extends React.Component {
   }
 
   generateFeed() {
-    console.log(this.state.feed)
-    return this.state.feed.map(item => {
+    let feed = this.state.feed.map(item => {
       return (
         <FeedItem
           username={item.user_name}
@@ -39,6 +38,7 @@ class FeedScreen extends React.Component {
         />
       );
     });
+    return feed
   }
 
   render() {
