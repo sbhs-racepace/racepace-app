@@ -99,7 +99,7 @@ class ProfileScreen extends React.Component {
         justifyContent: 'space-evenly',
         backgroundColor: Color.lightBackground
       }}>
-        
+
         <Text style={[STYLES.text, { fontSize: 30, textAlign: 'center', paddingTop: '5%', marginBottom: -15, fontFamily:'Roboto-Bold', color:Color.primaryColor}]}>{this.props.user.full_name}</Text>
         <View style={{ height: 150, padding: '3%' }}>
           <View style={{flexDirection: 'row',flex: 1}}>
@@ -159,9 +159,7 @@ class ProfileScreen extends React.Component {
                 style={{width: '30%', borderLeftWidth: 2, borderLeftColor: Color.lightBackground}}
                 text_style={{color: "#e74c3c"}}
                 text="Logout"
-                onPress={async () => {
-                  if (this.props.user.token) this.logoutCall();
-                }}
+                onPress={this.logoutCall}
               />
             </View>
           </View>
@@ -172,11 +170,11 @@ class ProfileScreen extends React.Component {
       <View style={{ backgroundColor: Color.darkBackground, height:windowHeight * 0.8}}>
         <AppContainer style={{ flex:1 }}/>
       </View>
-      
+
     </View>
     </ScrollView>
     </KeyboardAvoidingView>
-    
+
 
     );
   }

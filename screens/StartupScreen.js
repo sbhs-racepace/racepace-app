@@ -35,20 +35,21 @@ class StartupScreen extends React.Component {
       // Storing User Info
       let user_info =  await getUserInfo(this.props.user.token);
       if (user_info == false) {
+        Alert.alert("Auto-login failure","Due to the previous error, auto-login failed. Please login manually.")
         this.props.navigation.navigate('Splash')
       } else {
         this.props.storeUserInfo(user_info)
         this.props.navigation.navigate('Feed')
       }
     } else {
-      this.props.navigation.navigate('Splash')
+      this.props.navigation.navigate('Splash');
     }
   }
 
   render () {
     return (
       <View style={{flex:1}}>
-        <LinearGradient 
+        <LinearGradient
           colors={[Color.darkBackground, Color.primaryColor]}
           style={{flex:1}}
         >

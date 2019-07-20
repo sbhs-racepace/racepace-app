@@ -1,7 +1,13 @@
 // Jason Yu
-
+//TODO: Fix update
 import React from 'react';
-import { ScrollView, Text, Alert, KeyboardAvoidingView, View } from 'react-native';
+import {
+  ScrollView,
+  Text,
+  Alert,
+  KeyboardAvoidingView,
+  View,
+} from 'react-native';
 import Button from '../components/Button';
 import { FeedItem } from '../components/FeedItem';
 import '../global.js';
@@ -15,88 +21,89 @@ class FeedScreen extends React.Component {
     super(props);
     this.state = {
       feed: [],
+      reload: true
     };
   }
 
+  generateFeed() {
+    console.log(this.state.feed)
+    return this.state.feed.map(item => {
+      return (
+        <FeedItem
+          username={item.user_name}
+          posttime={item.route.start_time}
+          routename={item.route.description}
+          length={item.route.estimated_distance}
+          likes={item.route.likes.length}
+          comments={item.route.comments}
+        />
+      );
+    });
+  }
+
   render() {
-    return (<View style={{flex:1,backgroundColor:Color.darkBackground}}></View>);
-    // if (!this.props.user.token == null) {
-    //   return <Text>Please login to see your feed</Text>
-    // } else if (!this.state.feed) {
-    //   let feed = request('/get_feed', 'POST', {}, true);
-    //   this.setState({ feed: feed.feed_items });
-    // } else if (!this.state.feed) {
-    //   return (
-    //     <View>
-    //       <Text>Your feed is empty</Text>
-    //       <Button
-    //         style={{
-    //           width: '80%',
-    //           alignSelf: 'center',
-    //         }}
-    //         text_style={{
-    //           padding: '1%',
-    //           fontSize: 16,
-    //         }}
-    //         onPress={() => {
-    //           let feed = request('/get_feed', 'POST', {}, true);
-    //           this.setState({ feed: feed.feed_items });
-    //         }}
-    //         text="Refresh"
-    //       />
-    //     </View>
-    //   );
-    // } else {
-    //   return (
-    //     <KeyboardAvoidingView
-    //       behavior="position"
-    //       style={{ backgroundColor: Color.darkBackground }}>
-    //       <ScrollView
-    //         contentContainerStyle={{
-    //           backgroundColor: Color.darkBackground,
-    //         }}>
-    //         {this.feed &&
-    //           this.feed.map(item => (
-    //             <FeedItem
-    //               username={item.username}
-    //               posttime={item.route.real_time_route.start_time}
-    //               routename={item.route.real_time_route.name}
-    //               description={item.route.real_time_route.description}
-    //               length={item.route.real_time_route.route.distance}
-    //               likes={item.route.likes.length}
-    //               comments={item.route.comments}
-    //               routePic={item.route_image}
-    //             />
-    //           ))}
-    //         <Button
-    //           style={{
-    //             width: '80%',
-    //             alignSelf: 'center',
-    //           }}
-    //           text_style={{
-    //             padding: '1%',
-    //             fontSize: 16,
-    //           }}
-    //           onPress={() => {
-    //             let feed = request('/get_feed', 'POST', {}, true);
-    //             this.setState({ feed: feed.feed_items });
-    //           }}
-    //           text="Refresh"
-    //         />
-    //       </ScrollView>
-    //     </KeyboardAvoidingView>
-    //   );
-    // }
+    if (!this.props.user.token == null) {
+      return <Text>Please login to see your feed</Text>;
+    } else if (this.state.reload) {
+      console.log('Generate feed');
+      request('/api/get_feed', 'POST', {}, this.props.user.token, feed => {
+        this.setState({ feed: feed.feed_items, reload: false });
+      });
+      this.load = false
+      return (
+        <Text style={{
+          backgroundColor: Color.darkBackground,
+          color:Color.textColor,
+          flex:1
+        }}>
+        Loading...
+        </Text>
+      );
+    }
+
+    console.log('Render feed');
+    return (
+      <KeyboardAvoidingView
+        behavior="position"
+        style={{ backgroundColor: Color.darkBackground }}>
+        <ScrollView
+          contentContainerStyle={{
+            backgroundColor: Color.darkBackground,
+            alignItems: "center",
+            height:"100%"
+          }}>
+          {this.generateFeed()}
+          {this.state.feed.length == 0 && <Text style={{color:Color.textColor}}>Your feed is empty</Text>}
+          <Button
+            style={{
+              width: '80%',
+              alignSelf: 'center',
+            }}
+            text_style={{
+              padding: '1%',
+              fontSize: 16,
+            }}
+            onPress={() => {
+              this.setState({reload:true})
+            }}
+            text="Refresh"
+          />
+        </ScrollView>
+      </KeyboardAvoidingView>
+    );
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ }, dispatch)
+  return bindActionCreators({}, dispatch);
 }
 
 function mapStateToProps(state) {
   const { user } = state;
   return { user };
-};
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(FeedScreen);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(FeedScreen);
