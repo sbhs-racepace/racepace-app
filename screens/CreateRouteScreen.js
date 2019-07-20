@@ -164,7 +164,7 @@ class RunSetupScreen extends React.Component {
       }
       if (route_data != false) {
         let route = route_data.route
-        let distance = route_data.dist
+        let distance = route_data.distance
         this.props.createRunRoute(route, start_packet, end_packet, this.state.real_time_tracking, distance, this.state.goal_pace);
         this.props.navigation.navigate("Information"); // Go To Run Information Screen
       } else {
@@ -212,7 +212,16 @@ class RunSetupScreen extends React.Component {
     return(
       <View style={[STYLES.container, {flex:1, backgroundColor:Color.lightBackground}]}>
         <ScrollView contentContainerStyle={{alignItems:'center'}}>
-          <View style={{flexDirection:'row', alignItems:'center', marginBottom: 20, marginTop:20, width:"90%", justifyContent:'space-between'}}>
+
+          <TouchableOpacity
+            style={{width:"90%", backgroundColor:Color.lightBackground2, flexDirection:'row', alignItems:'center', height:50, justifyContent:'space-evenly', marginBottom: 20, marginTop:20, borderRadius: 5}}
+            onPress={() => this.setToCurrentLocation()}
+          >
+            <FontAwesomeIcon name="location-arrow" size={20} color={Color.primaryColor}/>
+            <Text style={[STYLES.text_style,{fontSize:14}]}>Set Start to Current Location</Text>
+          </TouchableOpacity>
+
+          <View style={{flexDirection:'row', alignItems:'center', marginBottom: 20, width:"90%", justifyContent:'space-between'}}>
             <TextInput 
               style={{width:windowWidth*0.7}}
               placeholder="Start"
@@ -230,7 +239,7 @@ class RunSetupScreen extends React.Component {
             </View>
           </View>
           {locationInputs.map(input=>input)}
-          <View style={{flexDirection:'row', alignItems:'center', marginBottom: 10, width:"90%", justifyContent:'space-between'}}>
+          <View style={{flexDirection:'row', alignItems:'center', marginBottom: 20, width:"90%", justifyContent:'space-between'}}>
             <TextInput 
               placeholder="End"
               style={{width:windowWidth*0.7}}
@@ -248,39 +257,32 @@ class RunSetupScreen extends React.Component {
             </View>
           </View>
 
-          <View style={{flexDirection:'row', justifyContent:'space-between', width:'90%', alignItems:'center', marginBottom:10}}>
+          <View style={{alignItems:'center', flexDirection:'column', width:'100%'}}>
+            <View style={{flexDirection:'row', justifyContent:'space-between', width:'90%', marginBottom:20}}>
+              <TextInput 
+                style={{width:'45%'}}
+                placeholder="Minutes"
+                onChangeText={minutes => this.setState({goal_pace: {minutes: minutes}})}
+                defaultValue={this.state.goal_pace.minutes}
+                keyboardType="number-pad"
+                returnKeyType="go"
+              />
+              <TextInput 
+                style={{width:'45%'}}
+                placeholder="Seconds"
+                onChangeText={seconds => this.setState({goal_pace: {seconds: seconds}})}
+                defaultValue={this.state.goal_pace.seconds}
+                returnKeyType="go" 
+                keyboardType="number-pad"
+              />
+            </View>
+
             <CheckBox
-              containerStyle={{backgroundColor:Color.lightBackground2, borderColor:Color.darkBackground, width:'45%', height:50}}
+              containerStyle={{backgroundColor:Color.lightBackground2, borderColor:Color.darkBackground, width:'90%', height:50, borderRadius:5,}}
               textStyle={{color:Color.textColor}}
-              title='Real Time'
+              title='Enable Real Time Tracking'
               checked={this.state.real_time_tracking}
               onPress={() => {this.setState({real_time_tracking:!this.state.real_time_tracking})}}
-            />
-            <TouchableOpacity
-              style={{width:"45%", backgroundColor:Color.lightBackground2, flexDirection:'row', alignItems:'center', height:50, justifyContent:'space-evenly'}}
-              onPress={() => this.setToCurrentLocation()}
-            >
-              <FontAwesomeIcon name="location-arrow" size={20} color={Color.primaryColor}/>
-              <Text style={[STYLES.text_style,{fontSize:14}]}>Current Location</Text>
-            </TouchableOpacity>
-          </View>
-        
-          <View style={{flexDirection:'row', justifyContent:'space-between', width:'90%', marginBottom:10}}>
-            <TextInput 
-              style={{width:'45%'}}
-              placeholder="Minutes"
-              onChangeText={minutes => this.setState({goal_pace: {minutes: minutes}})}
-              defaultValue={this.state.goal_pace.minutes}
-              keyboardType="number-pad"
-              returnKeyType="go"
-            />
-            <TextInput 
-              style={{width:'45%'}}
-              placeholder="Seconds"
-              onChangeText={seconds => this.setState({goal_pace: {seconds: seconds}})}
-              defaultValue={this.state.goal_pace.seconds}
-              returnKeyType="go" 
-              keyboardType="number-pad"
             />
           </View>
         </ScrollView>

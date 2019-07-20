@@ -36,7 +36,7 @@ class RouteItem extends React.Component {
         containerStyle={STYLES.card}
       >
         <Text style={STYLES.text}>{this.props.route.start_name + " to " + this.props.route.end_name}</Text>
-        <Text style={STYLES.text}>Distance: {this.props.route.route.dist}km</Text>
+        <Text style={STYLES.text}>Distance: {this.props.route.route.distance}km</Text>
         <Text style={STYLES.text}>{this.props.route.description}</Text>
       </Card>
     )

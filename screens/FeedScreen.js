@@ -45,7 +45,6 @@ class FeedScreen extends React.Component {
     if (!this.props.user.token == null) {
       return <Text>Please login to see your feed</Text>;
     } else if (this.state.reload) {
-      console.log('Generate feed');
       request('/api/get_feed', 'POST', {}, this.props.user.token, feed => {
         this.setState({ feed: feed.feed_items, reload: false });
       });
@@ -61,7 +60,6 @@ class FeedScreen extends React.Component {
       );
     }
 
-    console.log('Render feed');
     return (
       <KeyboardAvoidingView
         behavior="position"
