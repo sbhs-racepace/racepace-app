@@ -1,7 +1,13 @@
 // Jason Yu
 //TODO: Fix update
 import React from 'react';
-import { ScrollView, Text, Alert, KeyboardAvoidingView, View } from 'react-native';
+import {
+  ScrollView,
+  Text,
+  Alert,
+  KeyboardAvoidingView,
+  View,
+} from 'react-native';
 import Button from '../components/Button';
 import { FeedItem } from '../components/FeedItem';
 import '../global.js';
@@ -15,37 +21,47 @@ class FeedScreen extends React.Component {
     super(props);
     this.state = {
       feed: [],
+      reload: true
     };
   }
 
   generateFeed() {
-    return this.state.feed.map(item =>
-        {return (<FeedItem
+    console.log(this.state.feed)
+    return this.state.feed.map(item => {
+      return (
+        <FeedItem
           username={item.user_name}
           posttime={item.route.start_time}
           routename={item.route.description}
           length={item.route.estimated_distance}
           likes={item.route.likes.length}
           comments={item.route.comments}
-        />)}
-      )
+        />
+      );
+    });
   }
 
   render() {
     if (!this.props.user.token == null) {
-      return <Text>Please login to see your feed</Text>
-    } else if (this.state.feed===[]) {
-      console.log("Generate feed")
-      request('/api/get_feed', 'POST', {}, this.props.user.token,
-      feed => {this.setState({ feed: feed.feed_items })})
-      return <View
-        style={{
+      return <Text>Please login to see your feed</Text>;
+    } else if (this.state.reload) {
+      console.log('Generate feed');
+      request('/api/get_feed', 'POST', {}, this.props.user.token, feed => {
+        this.setState({ feed: feed.feed_items, reload: false });
+      });
+      this.load = false
+      return (
+        <Text style={{
           backgroundColor: Color.darkBackground,
+          color:Color.textColor,
+          flex:1
         }}>
-        <Text>Loading...</Text>
-        </View>
+        Loading...
+        </Text>
+      );
     }
-    console.log("Render feed")
+
+    console.log('Render feed');
     return (
       <KeyboardAvoidingView
         behavior="position"
@@ -53,9 +69,11 @@ class FeedScreen extends React.Component {
         <ScrollView
           contentContainerStyle={{
             backgroundColor: Color.darkBackground,
+            alignItems: "center",
+            height:"100%"
           }}>
           {this.generateFeed()}
-          {!this.state.feed===[] && <Text>Your feed is empty</Text>}
+          {this.state.feed.length == 0 && <Text style={{color:Color.textColor}}>Your feed is empty</Text>}
           <Button
             style={{
               width: '80%',
@@ -66,7 +84,7 @@ class FeedScreen extends React.Component {
               fontSize: 16,
             }}
             onPress={() => {
-              this.setState({feed: null});
+              this.setState({reload:true})
             }}
             text="Refresh"
           />
@@ -77,12 +95,15 @@ class FeedScreen extends React.Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ }, dispatch)
+  return bindActionCreators({}, dispatch);
 }
 
 function mapStateToProps(state) {
   const { user } = state;
   return { user };
-};
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(FeedScreen);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(FeedScreen);
