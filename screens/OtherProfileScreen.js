@@ -7,6 +7,10 @@ import Button from '../components/Button'
 import '../global'
 import '../assets/cat.jpeg'
 import BackButtonHeader from '../components/BackButtonHeader'
+import { createMaterialTopTabNavigator, createAppContainer } from 'react-navigation'
+import RouteListScreen from './RouteListScreen'
+import StatsScreen from './StatsScreen'
+import SavedRunListScreen from './SavedRunListScreen'
 import Color from '../constants/Color'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -14,36 +18,100 @@ import { bindActionCreators } from 'redux';
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
 const STYLES = StyleSheet.create({
-  profile_image: {
-    height: 100,
-    width: 100,
-    borderRadius: 50,
-    paddingRight: '1%',
-    alignSelf:'center',
-  },
-  text: {
-    fontSize: 15,
-    color: Color.textColor,
-  },
-  stat_btn: {
-    backgroundColor: 'transparent',
-    marginTop: 5,
-    paddingLeft: 5,
-    paddingRight: 5,
-    borderLeftWidth: 2,
-    borderLeftColor: Color.lightBackground,
-    width:'30%'
-  }
-})
+    profile_image: {
+      height: 100,
+      width: 100,
+      borderRadius: 50,
+      paddingRight: '1%',
+      alignSelf:'center',
+    },
+    text: {
+      fontSize: 15,
+      color: Color.textColor,
+    },
+    stat_btn: {
+      backgroundColor: 'transparent',
+      width: '33%',
+      marginTop: -10,
+      marginBottom: 10,
+      paddingLeft: 5,
+      paddingRight: 5,
+      borderLeftWidth: 2,
+      borderLeftColor: Color.lightBackground
+    }
+  })
 
 class OtherProfileScreen extends React.Component {
   constructor (props) {
     super(props)
+    let info = this.props.navigation.state.params.info
+    console.log(info)
+
+    this.state = {
+        info: info,
+        following: info.followers.includes(this.props.user.user_id),
+        requested: info.follow_requests.includes(this.props.user.user_id)
+    }
   }
+
+  followUser() {
+
+    let following = this.state.following 
+    let user_id = this.props.navigation.state.params['user_id']
+    let url = global.serverURL+`/api/sendFollowRequest/${user_id}`
+
+    if (following) {
+        url = global.serverURL+`/api/unfollow/${user_id}`
+    }
+
+    fetch(url, 
+        {
+          method: 'POST',
+          headers: {
+            authorization: this.props.user.token
+          }
+        })
+      .catch(res => {
+        Alert.alert('Error connecting to server', res);
+      })
+      .then(
+        async res => {
+          res = await res.json(); //Parse response as JSON
+          if (following) { 
+              this.setState({'following': false})
+          } else {
+              this.setState({'requested': true})
+          }
+
+        }
+      );
+  }
+
 
   render () {
     let info = this.props.navigation.state.params['info']
     let user_id = this.props.navigation.state.params['user_id']
+    let following = this.state.following
+    let requested = this.state.requested
+
+    const Nav = createMaterialTopTabNavigator({
+        Stats: { screen: StatsScreen },
+        Routes: { screen: RouteListScreen },
+        Saved: {screen: SavedRunListScreen},
+    }, {
+      initialRouteName: this.props.navigation.state.params == undefined ? 'Stats' : this.props.navigation.state.params.screen,
+      tabBarOptions: {
+        activeTintColor: Color.textColor,
+        indicatorStyle: {
+            backgroundColor: Color.primaryColor
+        },
+        inactiveTintColor: Color.offColor,
+        style: { backgroundColor: Color.buttonColor }
+      }
+    }
+    )
+
+    const AppContainer = createAppContainer(Nav)
     console.log(info)
 
     return (
@@ -52,7 +120,7 @@ class OtherProfileScreen extends React.Component {
           onPress={this.props.navigation.goBack}
           title='Profile'
         />
-        <View style={{backgroundColor:Color.lightBackground, height:300}}>
+        <ScrollView style={{backgroundColor:Color.lightBackground, height:300}}>
           <Text style={[STYLES.text, { fontSize: 30, textAlign: 'center', paddingTop: '5%', fontFamily:'Roboto-Bold', color:Color.primaryColor}]}>{info.full_name}</Text>
           <View style={{ height: 150, padding: '3%', flexDirection:'row'}}>
             <View style={{flexDirection: 'row',flex: 1,alignItems: 'center'}}>
@@ -75,26 +143,36 @@ class OtherProfileScreen extends React.Component {
               <View style={{flexDirection: 'row', justifyContent:'space-evenly'}}>
                 <Button
                   style={STYLES.stat_btn}
-                  text={`${info.stats.points} points`}
+                  text={`${info.stats.points}\npoints`}
                 />
                 <Button
                   style={STYLES.stat_btn}
-                  text={`${info.following.length} Following`}
+                  text={`${info.following.length}\nFollowing`}
                 />
                 <Button
                   style={STYLES.stat_btn}
-                  text={`${info.followers.length} Followers`}
+                  text={`${info.followers.length}\nFollowers`}
                 />
               </View>
 
-              <Button
-                style={STYLES.stat_btn}
-                text={`${info.followers.length} Follow/Unfollow`}
-              />
+              <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: -20}}>
+                <Button
+                style={{width: '100%', backgroundColor: Color.buttonColor}}
+                text={requested ? "Requested" : (following ? "Unfollow" : "Follow")}
+                onPress={() => {
+                    this.followUser()
+                }}
+                disabled={requested}
+                />
+            </View>
             </View>
           </View>
           <Text multiline={true} style={[STYLES.text,{margin:"4%", marginTop:0}]}>Bio: {info.bio}</Text>
-        </View>        
+
+            <View style={{ backgroundColor: Color.darkBackground, height:windowHeight * 0.8}}>
+                <AppContainer style={{ flex:1 }}/>
+            </View>
+        </ScrollView>        
       </View>
     );
   }

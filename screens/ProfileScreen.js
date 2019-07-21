@@ -31,8 +31,9 @@ const STYLES = StyleSheet.create({
   },
   stat_btn: {
     backgroundColor: 'transparent',
-    width: undefined,
-    marginTop: 5,
+    width: '33%',
+    marginTop: -10,
+    marginBottom: 10,
     paddingLeft: 5,
     paddingRight: 5,
     borderLeftWidth: 2,
@@ -157,12 +158,12 @@ class ProfileScreen extends React.Component {
             <View style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
               <Button
                 style={STYLES.stat_btn}
-                text={`${this.props.user.stats.points} points`}
+                text={`${this.props.user.stats.points}\npoints`}
                 onPress={() => this.props.navigation.navigate('Level')}
               />
               <Button
                 style={STYLES.stat_btn}
-                text={`${this.props.user.following.length} Following`}
+                text={`${this.props.user.following.length}\nFollowing`}
                 onPress={() =>
                   this.props.navigation.navigate('Follow', {
                   screen: 'Following'
@@ -171,7 +172,7 @@ class ProfileScreen extends React.Component {
               />
               <Button
                 style={STYLES.stat_btn}
-                text={`${this.props.user.followers.length} Followers`}
+                text={`${this.props.user.followers.length}\nFollowers`}
                 onPress={() =>
                   this.props.navigation.navigate('Follow', {
                   screen: 'Followers'

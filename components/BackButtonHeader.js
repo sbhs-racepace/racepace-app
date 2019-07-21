@@ -16,7 +16,7 @@ export default class BackButtonHeader extends React.Component {
   render() {
     return (
     <Header
-      leftComponent={{ text: '< Back', style: {color: Color.textColor }, onPress: this.onPress.bind(this)}}
+      leftComponent={{ text: 'Back', style: {color: Color.textColor }, onPress: this.onPress.bind(this)}}
       centerComponent={{ text: this.props.title, style: {color: Color.textColor }}}
       backgroundColor={Color.darkBackground}
       containerStyle={{ marginTop: -20, borderBottomWidth: 0}}
