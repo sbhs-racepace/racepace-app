@@ -30,6 +30,6 @@ export function calculateLevelProgress(points) {
 export function run_stats(distance, time) {
   // returns 10 points per km, and 1 point per minute
   let x = (distance / 1000) * 10 
-  let y = (time.hours * 60 + time.minutes) * 60 + time.seconds
+  let y = ((time.hours * 60 + time.minutes) * 60 + time.seconds ) / 120
   return x + y;
 }
