@@ -59,34 +59,41 @@ class FollowRequest extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: "",
-      other_user_id: this.props.other_user_id
+      full_name: "",
+      other_user_id: this.props.other_user_id,
+      username: '',
     }
   }
 
-  async getUsername() {
-    let api_url = `${global.serverURL}/api/get_other_info/${this.state.other_user_id}`
-    let username = ''
-    await fetch(api_url, {
-      method: 'GET',
+  async get_details() {
+    await fetch(
+      global.serverURL+`/api/get_info/${this.state.other_user_id}`, 
+      {
+        method: 'GET',
+        headers: {
+          authorization: this.props.user_token
+        }
+      })
+    .catch(res => {
+      Alert.alert('Error connecting to server', res);
     })
-    .then( async res => {
-      let res_data = await res.json();
-      if (res_data.success == true) {
-        username = res_data.info.username
-      } else {
-        console.log("Couldn't retrieve other user info");
+    .then(
+      async res => {
+        res_data = await res.json(); //Parse response as JSON
+        if (res_data.success == true) {
+          username = res_data.info.username
+          full_name = res_data.info.full_name
+          this.setState({full_name:full_name});
+          this.setState({username:username});
+        } else {
+          console.log("Couldn't retrieve other user info");
+        }
       }
-    })
-    .catch(error => {
-      Alert.alert('Error connecting to server', error);
-    });
-    return username
+    );
   }
 
   async componentDidMount() {
-    let username = await this.getUsername()
-    this.setState({username:username});
+    await this.get_details()
   }
 
   async acceptRequest() {
@@ -170,12 +177,11 @@ class FollowerRequestScreen extends React.Component {
       return <Text>Please login to see your follow requests</Text>;
     }
 
-    let user_ids = ['5165773889219314892','5165773889219314892']
-    let test_data = user_ids.map(other_user_id => 
-          <FollowRequest 
-            other_user_id={other_user_id}
-            user_token={this.props.user.token}
-          />
+    let test_data = this.props.user.follow_requests.map(other_user_id => 
+      <FollowRequest 
+        other_user_id={other_user_id}
+        user_token={this.props.user.token}
+      />
     );
 
 

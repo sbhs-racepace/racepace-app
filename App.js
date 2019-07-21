@@ -17,6 +17,8 @@ import { View } from 'react-native';
 import EditScreen from './screens/EditScreen';
 import FeedScreen from './screens/FeedScreen';
 import RunListScreen from './screens/RunListScreen';
+import FollowListScreen from './screens/FollowListScreen';
+import FollowerScreen from './screens/FollowerScreen';
 import FollowingScreen from './screens/FollowingScreen';
 import SplashScreen from './screens/SplashScreen';
 import MapScreen from './screens/MapScreen';
@@ -69,6 +71,14 @@ const LoginNavigator = createStackNavigator({
     screen: FollowerRequestScreen,
     navigationOptions: { header: null },
   },
+  Followers: {
+    screen: FollowerScreen,
+    navigationOptions: { header: null },
+  },
+  Following: {
+    screen: FollowingScreen,
+    navigationOptions: { header: null },
+  },
   Chat: {
     screen: ChatScreen,
     navigationOptions: { header: null },
@@ -114,7 +124,7 @@ const LoginNavigator = createStackNavigator({
     navigationOptions: { header: null },
   },
   Routes: { screen: RouteListScreen, navigationOptions: { header: null } },
-  Follow: { screen: FollowingScreen, navigationOptions: { header: null } },
+  Follow: { screen: FollowListScreen, navigationOptions: { header: null } },
   Main: {
     screen: createBottomTabNavigator({
       Feed: createMaterialTopTabNavigator(

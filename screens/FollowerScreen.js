@@ -7,7 +7,6 @@ import "../global.js"
 import Color from '../constants/Color'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
@@ -94,29 +93,6 @@ class FollowRequest extends React.Component {
     await this.get_details()
   }
 
-  async unfollow() {
-    let api_url = `${global.serverURL}/api/unfollow`
-    let data = { other_user_id:this.state.other_user_id }
-    await fetch(api_url, {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: new Headers({
-        Authorization: this.props.user_token, // Taking user_token from parent
-      }),
-    })
-    .then( async res => {
-      let res_data = await res.json();
-      if (res_data.success == true) {
-        Alert.alert("Successfuly Unfollowed")
-      } else {
-        console.log("Unfollow Unsuccessfulyt");
-      }
-    })
-    .catch(error => {
-      Alert.alert('Error connecting to server', error);
-    });
-  }
-
   render() {
     return (
       <View style={{width:'100%',alignItems:'center',flex:1, flexDirection:'row', justifyContent:'space-around', height:windowHeight*0.2}}>
@@ -124,21 +100,16 @@ class FollowRequest extends React.Component {
           style={STYLES.profile_image}
           source={{uri: `${global.serverURL}/api/avatars/${this.state.other_user_id}.png`}}
         />
-        <Text style={{width:"30%",fontSize:15, color:Color.textColor}}>You are following {this.state.username}</Text>
+        <Text style={{width:"30%",fontSize:15, color:Color.textColor}}>{this.state.username} is following you</Text>
         <View style={{width:"30%"}}>
-          <TouchableOpacity
-            style={[STYLES.circularButton, STYLES.smallButton]}
-            onPress={() => this.unfollow()}
-          >
-            <FontAwesomeIcon name="remove" size={STYLES.smallIcon} color={Color.primaryColor}/>
-          </TouchableOpacity>
+
         </View>
       </View>
     )
   }
 }
 
-class FollowingScreen extends React.Component {
+class FollowerScreen extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -148,7 +119,7 @@ class FollowingScreen extends React.Component {
       return <Text>Please login to see your follow requests</Text>;
     }
 
-    let test_data = this.props.user.following.map(other_user_id => 
+    let test_data = this.props.user.followers.map(other_user_id => 
       <FollowRequest 
         other_user_id={other_user_id}
         user_token={this.props.user.token}
@@ -175,4 +146,4 @@ function mapStateToProps(state) {
   return { user };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(FollowingScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(FollowerScreen);
