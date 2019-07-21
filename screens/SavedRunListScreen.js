@@ -30,7 +30,7 @@ class SavedRunItem extends React.Component {
 
   render() {
     return (
-      <Card 
+      <Card
         title={this.props.run.name}
         titleStyle={{color: Color.textColor}}
         dividerStyle={{display: 'none'}}
@@ -38,8 +38,8 @@ class SavedRunItem extends React.Component {
       >
         <Text style={STYLES.text}>Start Time: {this.props.run.run_info.start_time}</Text>
         <Text style={STYLES.text}>Distance: {Math.ceil(this.props.run.run_info.final_distance)} m</Text>
-        <Text style={STYLES.text}>Pace: {this.minuteSecondString(this.props.run.run_info.average_pace)}</Text>
-        <Text style={STYLES.text}>Duration: {this.minuteSecondString(this.props.run.run_info.final_duration)}</Text>
+        <Text style={STYLES.text}>Pace: {minuteSecondString(this.props.run.run_info.average_pace)}</Text>
+        <Text style={STYLES.text}>Duration: {minuteSecondString(this.props.run.run_info.final_duration)}</Text>
         <Text style={STYLES.text}>{this.props.run.description}</Text>
       </Card>
     )
@@ -50,22 +50,22 @@ class SavedRunListScreen extends React.Component {
   constructor(props) {
     super(props);
   }
-  
+
   render() {
     let saved_runs = [];
     for (run_id in this.props.user.saved_runs) {
       saved_runs.push(this.props.user.saved_runs[run_id])
     };
 
-    let runs = saved_runs.map(run => 
-      <SavedRunItem 
+    let runs = saved_runs.map(run =>
+      <SavedRunItem
         run={run}
       />
     );
 
 
     return (
-      
+
       <View style={{backgroundColor: Color.darkBackground, flex:1}}>
         <ScrollView>
           {runs}

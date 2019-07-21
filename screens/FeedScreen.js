@@ -29,6 +29,7 @@ class FeedScreen extends React.Component {
     let feed = this.state.feed.map(item => {
       return (
         <FeedItem
+          userid={item.user_id}
           username={item.user_name}
           posttime={item.route.start_time}
           routename={item.route.description}

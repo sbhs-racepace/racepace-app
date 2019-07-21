@@ -31,8 +31,8 @@ const STYLES = StyleSheet.create({
     alignItems: 'center',
   },
   routePic: {
-      aspectRatio: 1.7, 
-      width: '100%', 
+      aspectRatio: 1.7,
+      width: '100%',
       height: undefined,
       borderRadius: 5
 
@@ -110,6 +110,7 @@ export default class FeedItem extends React.Component {
       <View style={STYLES.feed_item}>
         <View style={STYLES.user_profile}>
           <Image
+            key={Math.random()}
             style={STYLES.profilePic}
             source={{
               uri: `${global.serverURL}/api/avatars/${this.props.userid}.png`,
@@ -126,7 +127,7 @@ export default class FeedItem extends React.Component {
           <Text style={STYLES.text}>Description: {this.props.description}</Text>
           <Text style={STYLES.text}>Length: {this.props.length}km</Text>
         </View>
-		
+
         <Image source={require('../assets/map.png')} style={STYLES.routePic} />
         <View style={{ flexDirection: "row", justifyContent: 'space-between', width:"100%", padding: '5%' }}>
           <Text style={STYLES.text}>{this.state.likes.length} Likes</Text>

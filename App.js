@@ -197,7 +197,10 @@ const LoginNavigator = createStackNavigator({
         inactiveTintColor: Color.offColor,
         style: { backgroundColor: Color.darkBackground,},
         labelStyle: {fontSize: 10},
-        tabStyle: {height:50, borderBottomWidth:3, borderColor:Color.primaryColor},
+        tabStyle: {
+            height:50, 
+            borderColor:Color.primaryColor,
+        },
         showIcon: true,
       }
     })

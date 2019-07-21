@@ -100,7 +100,25 @@ class FindFriendsScreen extends React.Component {
   }
 
   goToUserProfile(user) {
-      console.log(user)
+      if (user.user_id == this.props.user.user_id) {
+          this.props.navigation.navigate('Profile')
+          return
+      }
+
+      fetch(global.serverURL+`/api/get_info/${user.id}`, {
+          method: 'GET',
+          headers: {
+            authorization: this.props.user.token
+        }
+      })
+      .catch(res => {
+        Alert.alert('Error connecting to server', res);
+      })
+      .then(
+        async res => {
+          res = await res.json(); //Parse response as JSON
+        }
+      );
   }
 
   showUsers() {

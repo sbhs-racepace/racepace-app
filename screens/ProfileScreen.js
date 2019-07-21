@@ -71,8 +71,8 @@ class ProfileScreen extends React.Component {
   }
 
   renderButtons() {
-    if (!this.props.otherUser) { 
-        return ( 
+    if (!this.props.otherUser) {
+        return (
             <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: -20}}>
                 <Button
                 style={{width: '70%', backgroundColor: Color.buttonColor}}
@@ -91,7 +91,7 @@ class ProfileScreen extends React.Component {
             </View>
             )
         } else {
-        return ( 
+        return (
             <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: -20}}>
                 <Button
                 style={{width: '70%', backgroundColor: Color.buttonColor}}
@@ -140,11 +140,10 @@ class ProfileScreen extends React.Component {
           <View style={{flexDirection: 'row',flex: 1}}>
             <View style={{flexDirection: 'row',flex: 1,alignItems: 'center'}}>
               <Image
+                key={Math.random()}
                 style={STYLES.profile_image}
                 source={{
-                uri: `${global.serverURL}/api/avatars/${
-                  this.props.user.user_id
-                }.png`
+                uri: `${global.serverURL}/api/avatars/${this.props.user.user_id}.png`
                 }}
               />
             </View>
