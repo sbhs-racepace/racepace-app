@@ -1,14 +1,16 @@
 // Jason YU
 
-import { CREATE_RUN_ROUTE, CREATE_RUN, START_RUN, ADD_LOCATION_PACKET, END_RUN, SAVE_RUN, PAUSE_RUN, RESUME_RUN, CHANGE_END, CHANGE_START, CHANGE_LOCATION_INPUT } from './run_action'
+import { CREATE_RUN_ROUTE, CREATE_RUN, START_RUN, ADD_LOCATION_PACKET, END_RUN, SAVE_RUN, PAUSE_RUN, RESUME_RUN, CHANGE_END, CHANGE_START, CHANGE_LOCATION_INPUT, INCREMENT_TIMER } from './run_action'
 import { calculateAveragePace, speedToPace, coordDistance, calculateTimeFromPace, calculateKilojoulesBurnt, calculatePoints  } from './run.js'
 import '../global'
+
 const RUN_INITIAL_STATE = {
   real_time_info: {
     current_distance: 0,
     current_pace: {minutes: '--', seconds:'--'},
     average_pace: {minutes: '--', seconds:'--'},
     lap_pace: {minutes: '--', seconds:'--'},
+    timer: {hours: 0, minutes: 0, seconds:0},
     lap_distance: 0,
     lap_start_time: null,
   },
@@ -62,6 +64,20 @@ function generateNewState(state, location_packet) {
   return state;
 }
 
+function incrementTimer(time) {
+  let {hours,minutes,seconds} = time;
+  seconds++;
+  if (seconds == 60) {
+    minutes++;
+    seconds=0;
+  }
+  if (minutes == 60) {
+    hours++;
+    minutes=0;
+  }
+  return {hours, minutes, seconds};
+}
+
 export default function runReducer(state = RUN_INITIAL_STATE, action) {
   switch (action.type) {
     case CREATE_RUN:
@@ -106,6 +122,14 @@ export default function runReducer(state = RUN_INITIAL_STATE, action) {
     case ADD_LOCATION_PACKET:
       let new_state = Object.assign({}, state);
       return generateNewState(new_state, action.location_packet)
+    case INCREMENT_TIMER:
+      let new_time = incrementTimer(state.real_time_info.timer)
+      return Object.assign({}, state, {
+        real_time_info: {
+          ...state.real_time_info,
+          timer: new_time,
+        },
+      }) 
     case SAVE_RUN:
       let final_duration = 0
       let final_distance = state.real_time_info.current_distance

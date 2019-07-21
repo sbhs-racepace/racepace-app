@@ -2,13 +2,10 @@
 
 import React from 'react';
 import { Platform, StyleSheet, View, Text, Alert, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
-import { Constants } from 'expo';
-import * as Location from 'expo-location'
-import * as Permissions from 'expo-permissions'
-import Button from "../components/Button"
 import Color from '../constants/Color.js'
 import {  } from '../functions/run_action'
 import { connect } from 'react-redux';
+import { minuteSecondString } from '../functions/conversions';
 import { bindActionCreators } from 'redux';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 
@@ -56,8 +53,8 @@ class RunOtherStatsScreen extends React.Component {
         <View style={{flex:1,alignItems:'center'}}>
           <Text style={STYLES.title}>Other Stats</Text>      
           <Text style={STYLES.text}>Timer: </Text>
-          <Text style={STYLES.text}>Lap Pace: {this.props.run.real_time_info.lap_pace.minutes} :{this.props.run.real_time_info.lap_pace.seconds}</Text>
-          <Text style={STYLES.text}>Lap Distance: {this.props.run.real_time_info.lap_distance}m</Text>
+          <Text style={STYLES.text}>Lap Pace: {minuteSecondString(this.props.run.real_time_info.lap_pace)}</Text>
+          <Text style={STYLES.text}>Lap Distance: {Math.ceil(this.props.run.real_time_info.lap_distance)} m</Text>
         </View>
 
         <View style={{backgroundColor:Color.darkBackground, height: windowHeight * 0.20}}>

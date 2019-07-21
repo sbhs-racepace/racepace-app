@@ -9,6 +9,7 @@ import BackButtonHeader from '../components/BackButtonHeader';
 import { endRun } from '../functions/run_action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { minuteSecondString } from '../functions/conversions';
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 

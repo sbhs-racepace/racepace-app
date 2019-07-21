@@ -5,7 +5,7 @@ import { Platform, StyleSheet, View, Text, Alert, ScrollView, TouchableOpacity, 
 import * as Location from 'expo-location'
 import Color from '../constants/Color.js'
 import "../global.js"
-import { startRun, addLocationPacket, pauseRun } from '../functions/run_action'
+import { startRun, addLocationPacket, pauseRun, incrementTimer } from '../functions/run_action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { minuteSecondString, hourMinuteSecondString } from '../functions/conversions';
@@ -59,23 +59,9 @@ class RunScreen extends React.Component {
     }
   }
 
-incrementTimer() {
-    let {hours,minutes,seconds} = this.state.time;
-    seconds++;
-    if (seconds == 60) {
-      minutes++;
-      seconds=0;
-    }
-    if (minutes == 60) {
-      hours++;
-      minutes=0;
-    }
-    this.setState({time: { hours, minutes, seconds }});
-}
-
   async timerUpdateLoop() {
     if (this.props.run.run_info.active == true) {
-      this.incrementTimer();
+      this.props.incrementTimer();
       let timerId = setTimeout(this.timerUpdateLoop.bind(this), 1000);
     } 
   }
@@ -98,8 +84,8 @@ incrementTimer() {
   }
 
   loops() {
-    this.locationUpdateLoop();
     this.timerUpdateLoop();
+    this.locationUpdateLoop();
   }
 
   async componentDidMount() {
@@ -123,7 +109,7 @@ incrementTimer() {
         <View style={{flex:1,alignItems:'center'}}>
           <Text style={STYLES.title}>Run</Text>      
           <Text style={STYLES.text}>Distance: {this.props.run.real_time_info.current_distance} m</Text>
-          <Text style={STYLES.text}>Timer: {hourMinuteSecondString(this.state.time)}</Text>
+          <Text style={STYLES.text}>Timer: {hourMinuteSecondString(this.props.run.real_time_info.timer)}</Text>
           <Text style={STYLES.text}>Current Pace: {minuteSecondString(this.props.run.real_time_info.current_pace)}</Text>
           <Text style={STYLES.text}>Average Pace: {minuteSecondString(this.props.run.real_time_info.average_pace)}</Text>
         </View>
@@ -165,7 +151,7 @@ incrementTimer() {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ addLocationPacket, startRun, pauseRun }, dispatch)
+  return bindActionCreators({ addLocationPacket, startRun, pauseRun, incrementTimer }, dispatch)
 }
 
 function mapStateToProps(state) {

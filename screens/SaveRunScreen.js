@@ -11,6 +11,7 @@ import BackButtonHeader from '../components/BackButtonHeader';
 import { endRun } from '../functions/run_action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { minuteSecondString } from '../functions/conversions';
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
@@ -108,9 +109,9 @@ class SaveRunScreen extends React.Component {
           <View style={{height:windowHeight*0.8, justifyContent:'space-evenly', alignItems:'center'}}>
             <Text style={STYLES.title_style}>Run Stats</Text>
             <Image source={require('../assets/map.png')} style={STYLES.routePic} />
-            <Text style={STYLES.text_style}>Average Pace: {this.props.run.real_time_info.average_pace.minutes} minutes {this.props.run.real_time_info.average_pace.seconds} seconds</Text>
-            <Text style={STYLES.text_style}>Distance Ran: {this.props.run.real_time_info.current_distance} m</Text>
-            <Text style={STYLES.text_style}>Duration: {this.props.run.run_info.duration}</Text>
+            <Text style={STYLES.text_style}>Average Pace: {minuteSecondString(this.props.run.real_time_info.average_pace)}</Text>
+            <Text style={STYLES.text_style}>Distance Ran: {Math.ceil(this.props.run.real_time_info.current_distance)} m</Text>
+            <Text style={STYLES.text_style}>Duration: {minuteSecondString(this.props.run.run_info.final_duration)}</Text>
             <Text style={STYLES.text_style}>Points: {this.props.run.run_info.points}</Text>
           </View>
           <View style={{height:windowHeight*0.5, justifyContent:'space-evenly', alignItems:'center'}}>
