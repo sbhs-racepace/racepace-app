@@ -70,18 +70,10 @@ class EditScreen extends React.Component {
       current_password: '',
       confirmation_password: '',
     };
+    this.base64 = false;
   }
 
   async saveChanges() {
-    let base64 = false;
-    if (this.state.uri != null) {
-      let result = await ImageManipulator.manipulateAsync(this.state.uri, [], {
-        base64: true,
-        format: ImageManipulator.SaveFormat.PNG,
-      });
-      console.log(result);
-      base64 = result.base64;
-    }
     let equivalent_new =
       this.state.new_password == this.state.confirmation_password;
     let data = {
@@ -111,11 +103,10 @@ class EditScreen extends React.Component {
     );
     if (login_data.success) {
       if (equivalent_new) {
-        if (base64 != false) {
-          console.log(base64);
+        if (this.base64 != false) {
           fetch(global.serverURL + '/api/avatars/update', {
             method: 'PATCH',
-            body: base64,
+            body: this.base64,
             headers: new Headers({
               Authorization: this.props.user.token,
             }),
@@ -173,6 +164,7 @@ class EditScreen extends React.Component {
             }}>
             <View style={{ flex: 2 / 5 }}>
               <Image
+                key={Math.random()}
                 style={STYLES.profile_image}
                 source={{
                   uri: this.state.uri,
@@ -186,7 +178,16 @@ class EditScreen extends React.Component {
                     type: 'image/*',
                   });
                   if (type == 'success') {
-                    this.setState({ uri });
+                    let result = await ImageManipulator.manipulateAsync(
+                      this.state.uri,
+                      [{resize: {width:256}}],
+                      {
+                        base64: true,
+                        format: ImageManipulator.SaveFormat.PNG,
+                      }
+                    );
+                    this.setState({uri: result.uri})
+                    this.base64 = result.base64;
                   }
                 }}
               />
