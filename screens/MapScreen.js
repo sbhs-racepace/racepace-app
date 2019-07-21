@@ -119,7 +119,7 @@ class MapScreen extends React.Component {
 
   async goToCurrent() {
     Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.Low,
+      accuracy: Location.Accuracy.High,
       maximumAge: 5000,
       timeout: 5000,
     })
