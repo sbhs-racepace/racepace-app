@@ -1,6 +1,6 @@
 // JAson YU
 
-import { STORE_LOGIN_INFO, STORE_USER_INFO, LOGOUT } from './user_info_action'
+import { STORE_LOGIN_INFO, STORE_USER_INFO, LOGOUT, DECLINE_FOLLOW_REQUEST, ACCEPT_FOLLOW_REQUEST, UNFOLLOW, FOLLOW} from './user_info_action'
 
 const USER_INFO_INITIAL_STATE =  {
   full_name: "guest",
@@ -32,6 +32,16 @@ const USER_INFO_INITIAL_STATE =  {
   user_id: false,
 }
 
+function filterList(list, value) {
+  for (let i = 0; i < list.length; i++) {
+    if (list[i] == value) {
+      list.splice(i, 1); 
+      i--;
+    }
+  }
+  return list;
+}
+
 export default function userInfoReducer(state = USER_INFO_INITIAL_STATE, action) {
   switch (action.type) {
     case STORE_LOGIN_INFO:
@@ -45,6 +55,30 @@ export default function userInfoReducer(state = USER_INFO_INITIAL_STATE, action)
       return Object.assign({}, state, action.user_info)
     case LOGOUT:
       return USER_INFO_INITIAL_STATE;
+    case DECLINE_FOLLOW_REQUEST:
+      let new_follow_requests = filterList(state.follow_requests, action.other_user_id)
+      return Object.assign({}, state, {
+        follow_requests: new_follow_requests
+      })
+    case ACCEPT_FOLLOW_REQUEST:
+      let new_follow_requests = filterList(state.follow_requests, action.other_user_id)
+      return Object.assign({}, state, {
+        follow_requests: new_follow_requests,
+        followers: [
+          ...state.followers,
+          action.other_user_id
+        ]
+      })
+    case UNFOLLOW:
+      let new_following_list = filterList(state.following, action.other_user_id)
+      return Object.assign({}, state, {
+        following: new_following_list,
+      })
+    case FOLLOW:
+      let new_pending_follows = filterList(state.pending_follows, action.other_user_id)
+      return Object.assign({}, state, {
+        pending_follows: new_pending_follows,
+      })
     default:
       return state
   }
