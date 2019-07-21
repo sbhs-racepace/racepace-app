@@ -26,17 +26,39 @@ export async function getUserInfo(token) {
           `${global.serverURL}?token=${token}`,
           { transports: ['websocket'] }
         );
-        socket.emit('authenticate', token);
         user_info.socket = socket;
       } else {
         Alert.alert('Error', res_data.error);
       }
     })
     .catch(error => {
-      Alert.alert('Error', error);
+      Alert.alert('Error', error.message);
     });
+  await get_keys(); // Storing any api keys
   return user_info;
 }
+
+export async function get_keys() {
+  let api_url = global.serverURL + '/api/get_keys';
+  await fetch(api_url, {
+    method: 'POST',
+  })
+    .then(async res => {
+      let res_data = await res.json();
+      if (res_data.success) {
+        global.google_maps_api = res_data.google_maps_api
+        global.google_android_login_id = res_data.google_android_login_id
+        global.google_ios_login_id = res_data.google_ios_login_id
+      } else {
+        Alert.alert('Error', res_data.error);
+      }
+    })
+    .catch(error => {
+      Alert.alert('Error', error.message);
+    });
+}
+
+
 
 export async function login(email, password) {
   let api_url = global.serverURL + '/api/login';
@@ -72,7 +94,7 @@ export async function login(email, password) {
 
     })
     .catch(error => {
-      Alert.alert('Error', error);
+      Alert.alert('Error', error.message);
     });
 
   return login_response;
@@ -102,7 +124,7 @@ export async function register(email, pword, full_name, username) {
     body: JSON.stringify(data),
   })
     .catch(res => {
-      Alert.alert('Error connecting to server', res);
+      Alert.alert('Error connecting to server', res.message);
     })
     .then(
       async res => {
@@ -125,7 +147,8 @@ export async function googleLogin() {
   try {
     const url = global.serverURL + '/api/google_login';
     const config = {
-      androidClientId: global.googleLoginID.android,
+      androidClientId: global.google_android_login_id,
+      iosClientId: global.google_ios_login_id,
     };
     const result = await Google.logInAsync(config);
     if (result.type == 'success') {
@@ -134,7 +157,7 @@ export async function googleLogin() {
         body: JSON.stringify({ idToken: result.idToken }),
       })
         .catch(res => {
-          Alert.alert('Error connecting to server', res);
+          Alert.alert('Error connecting to server', res.message);
         })
         .then(
           async res => {

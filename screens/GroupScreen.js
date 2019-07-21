@@ -60,21 +60,14 @@ export default class GroupScreen extends React.Component {
       <View style={{flex:1, backgroundColor:Color.lightBackground}}>
         <Text style={{fontFamily:'Roboto-Bold',fontSize:40,padding:"3%",color:Color.primaryColor}}>Running Groups</Text>
 
-        <KeyboardAvoidingView keyboardVerticalOffset={100} behavior="position" style={{backgroundColor: Color.lightBackground}}>
-          <ScrollView>
-            {this.state.groups.map(group => <Group onPress={() => {this.props.navigation.navigate('Chat')}} group={group}></Group>)}
-          </ScrollView>
-          <Button
-            style={{ alignSelf: 'center' }}
-            text="Find Friends"
-            onPress={() => this.props.navigation.navigate('FindFriends')}
-          />
-          <Button
-            text="Follow Requests"
-            style={{ alignSelf: 'center' }}
-            onPress={() => this.props.navigation.navigate('FollowRequests')}
-          />
-        </KeyboardAvoidingView>
+        <ScrollView>
+          {this.state.groups.map(group => <Group onPress={() => {this.props.navigation.navigate('Chat')}} group={group}></Group>)}
+        </ScrollView>
+        <Button
+          style={{ alignSelf: 'center' }}
+          text="Find Friends"
+          onPress={() => this.props.navigation.navigate('FindFriends')}
+        />
 
       </View>
     );

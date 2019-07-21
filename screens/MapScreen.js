@@ -4,6 +4,7 @@ import React from 'react';
 import MapView from 'react-native-maps';
 import { Marker, Polyline } from 'react-native-maps';
 import { Alert, View, Text, TextInput, StyleSheet, Dimensions, Platform, TouchableOpacity} from "react-native";
+import SearchableDropdown from 'react-native-searchable-dropdown';
 import { Image } from 'react-native-elements'
 import { Constants } from 'expo';
 import * as Location from 'expo-location'
@@ -13,12 +14,10 @@ import { label, cobalt, lunar,neutral_blue } from '../constants/mapstyle'
 import Color from '../constants/Color'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
-import { startRun } from '../functions/run_action'
+import { startRun, changeEnd } from '../functions/run_action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-const LATITUDE_DELTA = 0.0922 * 1.5;
-const LONGITUDE_DELTA = 0.0421 * 1.5;
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
 const STYLES = StyleSheet.create({
@@ -28,7 +27,7 @@ const STYLES = StyleSheet.create({
     backgroundColor: Color.darkBackground,
     color:Color.textColor,
     width: windowWidth*0.6,
-    height: 40,
+    height:40
   },
   map: {
     ...StyleSheet.absoluteFillObject,
@@ -63,154 +62,118 @@ class MapScreen extends React.Component {
     super(props);
     this.state = {
       region: {
-        latitude: -33.9672563,
-        longitude: 151.1002119,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
+        ...global.default_location,
+        ...global.zoom_factor,
       },
-      viewHeight: 0,
-      moveToCurrentLoc: false,
       showSearch: false,
-      showSaveDialog: false,
       searchStr: '',
       searchLoc: {
-        latitude: -33.9672563,
-        longitude: 151.1002119,
+        latitude: '',
+        longitude: '',
       },
-      pace: {minutes:'-', seconds:'-'},
-      distance: 0,
+      searchResults: [ // Test Variables
+      ]
     };
-  }
-
-  defaultLocationAsync() {
-    let { status } = Permissions.askAsync(Permissions.LOCATION);
-    if (status) { //Check whether permission granted
-      Location.watchPositionAsync(
-        {
-          accuracy: 4, //Accurate to 10m
-          timeInterval: 5000,
-          distanceInterval:10,
-        },
-        (location) => {
-          // Always moves to current location if activated
-          if (this.state.moveToCurrentLoc) {
-            this.userTracking(location);
-          }
-        }
-      )
-    }
   }
 
   componentDidMount() {
     if (Platform.OS === 'android' && !Constants.isDevice) {
       Alert.alert('Device is not of valid type to record location.')
+      this.props.navigation.navigate('Feed')
     } else {
-      this.defaultLocationAsync();
+      this.goToCurrent() // Automatically go to current location
     }
   }
 
-  onRegionChange = region => {
+  onRegionChange(region) {
     this.setState({
       region: region,
-      moveToCurrentLoc: false,
     });
   };
 
-  async goToLocation(loc) {
-    if (!loc) {
+  async goToSearchLocation(searchStr) {
+    if (searchStr == '') {
       Alert.alert('Error', 'Input was blank.');
-      return 0;
-    }
-    let lat, lon;
-    try {
-      let { latitude, longitude } = (await Location.geocodeAsync(
-        loc + ',' + global.region.name
-      ))[0];
-      lat = latitude;
-      lon = longitude;
-    } catch {
-      Alert.alert('Error', "Input couldn't be understood.");
-      return 0;
-    }
-
-    if (lat != global.region.coords[0] || lon != global.region.coords[1]) {
-      this.setState(prevState => ({
-        region: {
-          ...prevState.region, //Copy in other parts of the object
-          latitude: lat,
-          longitude: lon,
-        },
-        searchLoc: {
-          latitude: lat,
-          longitude: lon,
-        },
-        showSearch: true,
-      }));
     } else {
-      Alert.alert('Error', "Input couldn't be understood.");
+      try {
+        let inputString = searchStr + ',' + global.region.name;
+        let topResult = await Location.geocodeAsync(inputString)[0]
+        let { latitude, longitude } = topResult
+        this.setState(prevState => ({
+          region: {
+            ...prevState.region, //Copy in other parts of the object
+            latitude: latitude,
+            longitude: longitude,
+          },
+          searchLoc: {
+            latitude: latitude,
+            longitude: longitude,
+          },
+          showSearch: true,
+        }));
+      } catch {
+        Alert.alert('Error', "Input couldn't be understood.");
+      }
     }
   }
 
   async goToCurrent() {
     Location.getCurrentPositionAsync({
-      accuracy: 4,
+      accuracy: Location.Accuracy.Low,
       maximumAge: 5000,
       timeout: 5000,
     })
-      .then(
-        location => {
-          this.setState(prevState => ({
-            region: {
-              ...prevState.region, //Copy in other parts of the object
-              latitude: location.coords.latitude,
-              longitude: location.coords.longitude,
-            },
-          }));
-        },
-        reason =>
-          Alert.alert('Error', 'Location tracking failed. Error: ' + reason)
-      )
-      .catch(error =>
-        Alert.alert('Error', 'Location tracking failed. Error: ' + error)
-      );
-  }
-
-  runHere(name, coords) {
-    if (!name) {
-      Alert.alert('Error', 'Please enter an address in the search box');
-    } this.props.navigation.navigate('Setup', {
-      name: name,
-      coords: coords,
-    });
-  }
-
-  async saveRoute() {
-    let data = {
-      name: "",
-      start_time: "",
-      points: 0,
-      description: "",
-      route: this.props.navigation.state.params.route
-    };
-    let api_url = global.serverURL + '/api/save_route';
-    fetch(api_url, {
-      method: 'POST',
-      body: JSON.stringify(data),
-    })
-    .catch(res => {
-      Alert.alert('Error connecting to server', res);
-    })
     .then(
-      async res => {
-        console.log('Login response received from server');
-      },
-      reason => {
-        console.log('Promise rejected');
-        Alert.alert('Error connecting to server', reason);
+      location => {
+        this.setState({
+          region: {
+            ...this.state.region,
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+            latitudeDelta: global.latitudeDelta,
+            longitudeDelta: global.longitudeDelta,
+          }
+        })
       }
+    )
+    .catch(error =>
+      Alert.alert('Error', 'Location tracking failed. Error: ' + error)
     );
-    this.setState({showSaveDialog: false}) //Close save dialog
   }
+
+  setupRun(name) {
+    if (name == '') { // Empty String input
+      Alert.alert('Error', 'Please enter an address in the search box');
+    } else {
+      this.props.changeEnd(name);
+      this.props.navigation.navigate('Setup')
+    }
+  }
+
+  async updateSearch(searchStr) {
+    let radius = 10000 // Limiting search to 10km
+    let location_string = `${this.state.region.latitude},${this.state.region.longitude}`
+    let api_url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${location_string}&radius=${radius}&keyword=${searchStr}&rankby=prominennce&key=${global.google_maps_api}`
+    let newSearchResults = []
+    // Search Reults are commented out currently as api has no billing account
+    // await fetch(api_url, {
+    //   method: 'GET',
+    // })
+    // .then(async res => {
+    //   let res_data = await res.json();
+    //   if (res_data.status != 'INVALID_REQUEST') {
+    //     for (let item in res_data.results.slice(0,5)) { // Returns top 5 results
+    //       newSearchResults.push(item.name)
+    //     }
+    //   } else {
+    //     Alert.alert('Error', res_data.status);
+    //   }
+    // })
+    // .catch(error => {
+    //   Alert.alert('Error', error.message);
+    // });
+    this.setState({ searchStr: searchStr, searchResults: newSearchResults });
+  };
 
   render() {
     return (
@@ -218,43 +181,50 @@ class MapScreen extends React.Component {
         <MapView
           style={STYLES.map}
           provider = { MapView.PROVIDER_GOOGLE } // Usage of google maps
-          customMapStyle = { neutral_blue }
+          customMapStyle = { lunar }
           showsUserLocation={true}
           showsMyLocationButton={false}
           region={this.state.region}
-          onRegionChangeComplete={this.onRegionChange.bind(this)}>
-          {this.state.showSearch && (
-            <Marker coordinate={this.state.searchLoc} pinColor="#9900FF" />
-          )}
-          {this.props.navigation.state.params != undefined && (
-            <Polyline
-              coordinates={this.props.navigation.state.params.route}
-              strokeColor="#9900FF"
-            />
-          )}
+          onRegionChangeComplete={this.onRegionChange.bind(this)}
+        >
+          {
+            this.state.showSearch && (<Marker coordinate={this.state.searchLoc} pinColor={Color.primaryColor} />)
+          }
         </MapView>
         
-        <View style={{position:'absolute',flexDirection: 'row', top:windowHeight*0.05,left:windowWidth*0.1, zIndex:3, justifyContent:'space-evenly', alignItems:'center'}}>
-          <TextInput
-            placeholder="Search"
-            style={STYLES.search}
+        <View style={{position:'absolute',flexDirection: 'row', top:windowHeight*0.05,left:windowWidth*0.1, zIndex:3, justifyContent:'space-evenly'}}>
+          <SearchableDropdown
+            onTextChange={searchStr => this.updateSearch(searchStr)}
+            onItemSelect={searchStr => this.updateSearch(searchStr)}
+            textInputStyle={STYLES.search}
+            itemStyle={{
+              padding: 10,
+              marginTop: 4,
+              backgroundColor: Color.lightBackground,
+              borderRadius: 5,
+            }}
+            itemTextStyle={{ color: Color.textColor }}
             placeholderTextColor={Color.textColor}
-            onChangeText={text => this.setState({ searchStr: text })}
+            itemsContainerStyle={{ maxHeight: 100 }}
+            items={this.state.searchResults}
+            placeholder="Enter a location"
+            reset={false}
           />
+          <View style={{flexDirection:'row', alignItems:'center', height:40}}>
+            <TouchableOpacity
+              style={[STYLES.circularButton, STYLES.smallButton]}
+              onPress={() => this.goToSearchLocation(this.state.searchStr)}
+            >
+              <FontAwesomeIcon name="search" size={STYLES.smallIcon} color={Color.primaryColor}/>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            style={[STYLES.circularButton, STYLES.smallButton]}
-            onPress={() => this.goToLocation(this.state.searchStr)}
-          >
-            <FontAwesomeIcon name="search" size={STYLES.smallIcon} color={Color.primaryColor}/>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[STYLES.circularButton, STYLES.smallButton]}
-            onPress={() => this.runHere(this.state.searchStr, this.state.searchLoc)}
-          >
-            <FontAwesome5Icon name="running" size={STYLES.smallIcon} color={Color.primaryColor}/>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={[STYLES.circularButton, STYLES.smallButton]}
+              onPress={() => this.setupRun(this.state.searchStr)}
+            >
+              <FontAwesome5Icon name="running" size={STYLES.smallIcon} color={Color.primaryColor}/>
+            </TouchableOpacity>
+          </View>
         </View>
 
         <View style={{position:'absolute',flexDirection: 'row', top:windowHeight*0.75, width:'100%', zIndex:3, alignItems:'center'}}>
@@ -275,22 +245,20 @@ class MapScreen extends React.Component {
           <View style={{flex:1, alignItems:'center'}}>
             <TouchableOpacity
               style={[STYLES.circularButton,STYLES.smallButton]}
-              onPress={() => {
-                this.setState({ moveToCurrentLoc: true });
-                this.goToCurrent();
-              }}
+              onPress={() => this.goToCurrent()}
             >
               <FontAwesomeIcon name="location-arrow" size={STYLES.smallIcon} color={Color.primaryColor}/>
             </TouchableOpacity>
           </View>
         </View>
+
       </View>
     )
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ startRun }, dispatch)
+  return bindActionCreators({ startRun, changeEnd }, dispatch)
 }
 
 function mapStateToProps(state) {

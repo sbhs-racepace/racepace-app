@@ -1,11 +1,13 @@
 // Jason Yu
 
 import React from 'react';
-import { ScrollView, Text, View, StyleSheet } from 'react-native';
+import { ScrollView, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Card } from 'react-native-elements'
 import '../global'
 import Color from '../constants/Color'
 import { connect } from 'react-redux';
+import Button from '../components/Button'
+import BackButtonHeader from '../components/BackButtonHeader';
 import { bindActionCreators } from 'redux';
 
 const STYLES = StyleSheet.create({
@@ -34,16 +36,20 @@ class RunItem extends React.Component {
 
   render() {
     return (
-      <Card 
-        title={this.props.run.date}
-        titleStyle={{color: Color.textColor}}
-        dividerStyle={{display: 'none'}}
-        containerStyle={STYLES.card}
+      <TouchableOpacity
+        onPress={()=>{}}
       >
-        <Text style={STYLES.text}>Duration: {this.props.run.duration.minutes}:{this.props.run.duration.seconds}</Text>
-        <Text style={STYLES.text}>Distance: {this.props.run.distance}km</Text>
-        <Text style={STYLES.text}>Pace: {this.props.run.average_pace.minutes}:{this.props.run.average_pace.seconds}</Text>
-      </Card>
+        <Card 
+          title={this.props.run.run_info.start_time}
+          titleStyle={{color: Color.textColor}}
+          dividerStyle={{display: 'none'}}
+          containerStyle={STYLES.card}
+        >
+          <Text style={STYLES.text}>Distance: {this.props.run.run_info.final_distance}km</Text>
+          <Text style={STYLES.text}>Pace: {this.props.run.run_info.average_pace.minutes}:{this.props.run.run_info.average_pace.seconds}</Text>
+          <Text style={STYLES.text}>Duration: {this.props.run.run_info.final_duration.minutes}:{this.props.run.run_info.final_duration.seconds}</Text>
+        </Card>
+      </TouchableOpacity>
     )
   }
 }
@@ -54,30 +60,23 @@ class RunListScreen extends React.Component {
       return <Text>Please login to see your runs</Text>;
     }
 
-    runs = [1,2,3]
-    let test_data = runs.map(route => 
+
+    let runs = this.props.user.runs.map(run => 
       <RunItem 
-        run={{
-          date:'Saturday June 10am',
-          distance:1,
-          average_pace: {minutes:4,seconds:30},
-          duration: {minutes:20,seconds:30},
-        }}
+        run={run}
       />
     );
 
     return (
-      <View style={{flex:1,backgroundColor:Color.darkBackground}}>
+      <View style={{flex:1,backgroundColor:Color.darkBackground,}}>
+        <Button
+          text="Follow Requests"
+          style={{ alignSelf: 'center', width:'90%', height:50, backgroundColor:Color.lightBackground, margin: 20, marginBottom:0}}
+          onPress={() => this.props.navigation.navigate('FollowRequests')}
+        />
         <ScrollView>
-          {test_data}
+          {runs}
         </ScrollView>
-        {/* {
-          this.props.user.runs.map(run=>
-          <RunItem
-            postTime={run.start_time}
-            length={run.distance}
-          />)
-        } */}
       </View>
     );
   }

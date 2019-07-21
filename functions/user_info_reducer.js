@@ -1,3 +1,5 @@
+// JAson YU
+
 import { STORE_LOGIN_INFO, STORE_USER_INFO, LOGOUT } from './user_info_action'
 
 const USER_INFO_INITIAL_STATE =  {
@@ -7,6 +9,8 @@ const USER_INFO_INITIAL_STATE =  {
   bio: "guest",
   following: [],
   followers: [],
+  follow_requests:[],
+  pending_follows:[],
   saved_routes: {},
   saved_runs: {}, 
   runs: [],
@@ -25,7 +29,7 @@ const USER_INFO_INITIAL_STATE =  {
     points: 0,
   },
   token: false,  
-  user_id: false 
+  user_id: false,
 }
 
 export default function userInfoReducer(state = USER_INFO_INITIAL_STATE, action) {

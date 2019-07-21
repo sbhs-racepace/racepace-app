@@ -8,9 +8,10 @@ export default async function request(
   method = 'POST',
   data = {},
   token = "",
-  errorMess = 'Error connecting to server'
+  callback
 ) {
   let options;
+  this.resp = false
   if (method === 'GET') {
     options = { method: 'GET' };
   } else {
@@ -18,22 +19,23 @@ export default async function request(
       method,
       body: JSON.stringify(data),
       headers: {
-        Authorization: token===true ? global.login_info.token : token,
+        Authorization: token,
       },
     };
   }
 
   fetch(global.serverURL + endpoint, options)
   .catch(res => {
-    Alert.alert(errorMess, res);
+    Alert.alert('Error connecting to server', res.message);
   })
   .then(
     async resp => {
-      this.resp = await resp.json();
+      resp = await resp.json();
+      callback(resp);
     },
     reason => {
-      Alert.alert(errorMess, reason);
+      Alert.alert('Error connecting to server', reason);
     }
   );
-  return this.resp;
+  return this.resp
 }

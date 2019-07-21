@@ -8,7 +8,7 @@ import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
 import Button from "../components/Button"
 import Color from '../constants/Color.js'
-import { startRun, addLocationPacket, saveRun,resumeRun } from '../functions/run_action'
+import { startRun, addLocationPacket, saveRun,resumeRun, endRun} from '../functions/run_action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
@@ -59,15 +59,9 @@ class RunPausedScreen extends React.Component {
     this.state = {
       pace: {minutes:'--', seconds:'--'},
       distance: 0,
-      time: {hours:'00',minutes:'00',seconds:'00',milliseconds:'00'},
       paused: false,
       interval_id: null,
     }
-  }
-
-
-  timeString() {
-    return `${this.state.time.hours}: ${this.state.time.minutes}: ${this.state.time.seconds}.${this.state.time.milliseconds}`
   }
   
   render() {
@@ -86,6 +80,7 @@ class RunPausedScreen extends React.Component {
           <TouchableOpacity
             style={[STYLES.circularButton, STYLES.smallButton]}
             onPress={()=>{
+              this.props.endRun();
               this.props.navigation.navigate('Feed');
             }}
           >
@@ -118,7 +113,7 @@ class RunPausedScreen extends React.Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ addLocationPacket, startRun, saveRun, resumeRun }, dispatch)
+  return bindActionCreators({ addLocationPacket, startRun, saveRun, resumeRun, endRun }, dispatch)
 }
 
 function mapStateToProps(state) {

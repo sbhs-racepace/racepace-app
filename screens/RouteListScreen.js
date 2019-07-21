@@ -18,7 +18,6 @@ const STYLES = StyleSheet.create({
   card: {
       backgroundColor: Color.lightBackground,
       borderColor: Color.darkBackground,
-      color: Color.textColor,
       margin: 10,
   }
 })
@@ -36,9 +35,8 @@ class RouteItem extends React.Component {
         dividerStyle={{display: 'none'}}
         containerStyle={STYLES.card}
       >
-        <Text style={STYLES.text}>{this.props.route.start.name + " to " + this.props.route.end.name}</Text>
-        <Text style={STYLES.text}>Start Time: {this.props.route.start_time}</Text>
-        <Text style={STYLES.text}>Distance: {this.props.route.dist}km</Text>
+        <Text style={STYLES.text}>{this.props.route.start_name + " to " + this.props.route.end_name}</Text>
+        <Text style={STYLES.text}>Distance: {this.props.route.route.distance}km</Text>
         <Text style={STYLES.text}>{this.props.route.description}</Text>
       </Card>
     )
@@ -51,23 +49,13 @@ class RouteListScreen extends React.Component {
   }
   
   render() {
-    // Conversion of Routes to being in array
-    // list_saved_routes = [];
-    // for (route_id in this.props.user.saved_routes) {list_saved_routes.push(this.props.user.saved_routes.route_id)};
-    // let routes = list_saved_routes.map(route => <RouteItem route={route}/>);
-
-
-    list_saved_routes = [1,2,3]
-    let test_data = list_saved_routes.map(route => 
+    list_saved_routes = [];
+    for (route_id in this.props.user.saved_routes) {
+      list_saved_routes.push(this.props.user.saved_routes[route_id])
+    };
+    let routes = list_saved_routes.map(route => 
       <RouteItem 
-        route={{
-          name:'Bay Run', 
-          start_time:'10am',
-          distance:1, 
-          start:{name:'Circular Quay'},
-          end:{name:'Central'},
-          description:"Very sunny run through the city",
-        }}
+        route={route}
       />
     );
 
@@ -76,7 +64,7 @@ class RouteListScreen extends React.Component {
       
       <View style={{backgroundColor: Color.darkBackground, flex:1}}>
         <ScrollView>
-          {test_data}
+          {routes}
         </ScrollView>
       </View>
     );

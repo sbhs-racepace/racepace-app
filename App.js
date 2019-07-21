@@ -120,7 +120,7 @@ const LoginNavigator = createStackNavigator({
           },
           RecentRuns: {
             screen: RunListScreen,
-            navigationOptions: { title: 'Runs' },
+            navigationOptions: { title: 'You' },
           },
         },
         {
@@ -170,7 +170,7 @@ const LoginNavigator = createStackNavigator({
           )
         } 
       },
-      Groups: { 
+      People: { 
         screen: GroupScreen,
         navigationOptions: {
           tabBarIcon: ({ tintColor }) => (
@@ -195,9 +195,9 @@ const LoginNavigator = createStackNavigator({
       tabBarOptions: {
         activeTintColor: Color.textColor,
         inactiveTintColor: Color.offColor,
-        style: { backgroundColor: Color.darkBackground},
-        labelStyle: {fontSize: 11},
-        tabStyle: {height:50,},
+        style: { backgroundColor: Color.darkBackground,},
+        labelStyle: {fontSize: 10},
+        tabStyle: {height:50, borderBottomWidth:3, borderColor:Color.primaryColor},
         showIcon: true,
       }
     })

@@ -28,24 +28,29 @@ class StartupScreen extends React.Component {
       'Roboto': require('../assets/fonts/Roboto-Regular.ttf')
     })
     let login_info = await AsyncStorage.getItem('login_info')
-    if (login_info != "false") {
+    if (login_info !== null) {
       // Storing Login Info
       let json_login_info = JSON.parse(login_info)
       await this.props.storeLoginInfo(json_login_info)
       // Storing User Info
       let user_info =  await getUserInfo(this.props.user.token);
-      this.props.storeUserInfo(user_info)
-      this.props.navigation.navigate('Feed')
+      if (user_info == false) {
+        Alert.alert("Auto-login failure","Due to the previous error, auto-login failed. Please login manually.")
+        this.props.navigation.navigate('Splash')
+      } else {
+        this.props.storeUserInfo(user_info)
+        this.props.navigation.navigate('Feed')
+      }
     } else {
-      this.props.navigation.navigate('Splash')
+      this.props.navigation.navigate('Splash');
     }
   }
 
   render () {
     return (
       <View style={{flex:1}}>
-        <LinearGradient 
-          colors={[Color.darkBackground, Color.lightBackground, Color.primaryColor, "transparent"]}
+        <LinearGradient
+          colors={[Color.darkBackground, Color.primaryColor]}
           style={{flex:1}}
         >
           <Text style={{textAlign:'center', justifyContent:'center',color:'white'}}>Loading...</Text>

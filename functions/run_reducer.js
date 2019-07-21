@@ -1,6 +1,8 @@
-import { CREATE_RUN_ROUTE, CREATE_RUN, START_RUN, ADD_LOCATION_PACKET, END_RUN, SAVE_RUN, PAUSE_RUN, RESUME_RUN } from './run_action'
-import { calculateAveragePace, speedToPace, coordDistance, calculateTimeFromPace, calculateKilojoulesBurnt, calculatePoints  } from './run.js'
+// Jason YU
 
+import { CREATE_RUN_ROUTE, CREATE_RUN, START_RUN, ADD_LOCATION_PACKET, END_RUN, SAVE_RUN, PAUSE_RUN, RESUME_RUN, CHANGE_END, CHANGE_START, CHANGE_LOCATION_INPUT } from './run_action'
+import { calculateAveragePace, speedToPace, coordDistance, calculateTimeFromPace, calculateKilojoulesBurnt, calculatePoints  } from './run.js'
+import '../global'
 const RUN_INITIAL_STATE = {
   real_time_info: {
     distance: 0,
@@ -17,6 +19,7 @@ const RUN_INITIAL_STATE = {
     start: null,
     end: null,
     goal_pace: {minutes:'--', seconds:'--'},
+    average_pace: {minutes:'--', seconds:'--'},
     estimated_duration: {minutes:'--', seconds:'--'},
     estimated_distance: null,
     estimated_energy: null,
@@ -25,22 +28,27 @@ const RUN_INITIAL_STATE = {
     final_energy: null,
     active: false,
   },
+  run_setup: {
+    start: 'Current Location',
+    end: '',
+    locations: {},
+  },
   location_packets: [],
 };
 
-function calculateRealTimeInfo(state, location_packet) {
+function generateNewState(state, location_packet) {
   // General Distance and Pace Update
-  state.location_packets.push(location_packet)
   let end_time = location_packet.timestamp
   let start_time = state.run_info.start_time.getTime()
   let change_in_distance = 0
   if (state.location_packets.length > 0) {
     let previous_location = state.location_packets[state.location_packets.length-1]
-    let change_in_distance = coordDistance(previous_location, location_packet)
+    change_in_distance = coordDistance(previous_location, location_packet)
   }
-  state.real_time_info.distance = state.real_time_info.distance + change_in_distance
-  state.real_time_info.average_pace = calculateAveragePace(new_distance, start_time, end_time)
+  state.real_time_info.distance += change_in_distance
+  state.real_time_info.average_pace = calculateAveragePace(state.real_time_info.distance, start_time, end_time)
   state.real_time_info.current_pace = speedToPace(location_packet.speed)
+  state.location_packets.push(location_packet) // Adding Location packet now
   // Updating Lap Pace and Distance
   let new_lap_distance = state.real_time_info.lap_distance + change_in_distance
   if (new_lap_distance > 1000) {
@@ -49,7 +57,7 @@ function calculateRealTimeInfo(state, location_packet) {
     state.real_time_info.lap_start = end_time // Setting new time to last location request
   } else {
     state.real_time_info.lap_distance = new_lap_distance
-    state.real_time_info.lap_pace = calculateAveragePace(lap_distance, state.real_time_info.lap_start, end_time)
+    state.real_time_info.lap_pace = calculateAveragePace(new_lap_distance, state.real_time_info.lap_start, end_time)
   }
   return state;
 }
@@ -96,8 +104,8 @@ export default function runReducer(state = RUN_INITIAL_STATE, action) {
         }
       }) 
     case ADD_LOCATION_PACKET:
-      let new_state = calculateRealTimeInfo(state, action.location_packet)
-      return new_state
+      let new_state = Object.assign({}, state);
+      return generateNewState(new_state, action.location_packet)
     case SAVE_RUN:
       let final_duration = 0
       let final_distance = state.real_time_info.distance
@@ -106,15 +114,15 @@ export default function runReducer(state = RUN_INITIAL_STATE, action) {
         let last_index = state.location_packets.length-1
         let end_time = state.location_packets[last_index].timestamp
         let start_time = state.run_info.start_time.getTime()
-        final_duration = Math.abs(end_time - start) / 1000
+        final_duration = Math.abs(end_time - start_time) / 1000
       }
-
       return Object.assign({}, state, {
         run_info: {
           ...state.run_info,
           final_duration: final_duration,
           final_distance: final_distance,
           final_energy: final_energy,
+          average_pace: state.real_time_info.average_pace,
         }
       }) 
     case END_RUN:
@@ -131,6 +139,29 @@ export default function runReducer(state = RUN_INITIAL_STATE, action) {
         run_info: {
           ...state.run_info,
           active: true,
+        }
+      }) 
+    case CHANGE_END:
+        return Object.assign({}, state, {
+          run_setup: {
+            ...state.run_setup,
+            end: action.end,
+          }
+        }) 
+    case CHANGE_START:
+      return Object.assign({}, state, {
+        run_setup: {
+          ...state.run_setup,
+          start: action.start, // Just sets up the end location
+        }
+      }) 
+    case CHANGE_LOCATION_INPUT:
+      let newLocations = state.run_setup.locations;
+      newLocations[action.index] = action.value;
+      return Object.assign({}, state, {
+        run_setup: {
+          ...state.run_setup,
+          locations: newLocations,
         }
       }) 
     default:

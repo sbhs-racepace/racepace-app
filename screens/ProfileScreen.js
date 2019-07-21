@@ -1,7 +1,7 @@
 // Jason Yu and Abdur Raqeeb Mohammed
 
 import React from 'react'
-import { View, Text, StyleSheet, AsyncStorage, Alert } from 'react-native'
+import { View, Text, StyleSheet, AsyncStorage, Alert, ScrollView, KeyboardAvoidingView, Dimensions} from 'react-native'
 import { Image, Icon } from 'react-native-elements'
 import Button from '../components/Button'
 import '../global'
@@ -15,13 +15,9 @@ import { logout } from '../functions/user_info_action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
+
 const STYLES = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-evenly',
-    backgroundColor: Color.lightBackground
-  },
   profile_image: {
     height: 100,
     width: 100,
@@ -51,43 +47,34 @@ class ProfileScreen extends React.Component {
 
   async doLogout() {
     if (this.props.user.token != null) { // Is not a Guest account
-        this.props.user.socket.emit('disconnect') // Disconnects io connection
-        await AsyncStorage.removeItem('login_info') // Deletes async storage for login
-      }
-      this.props.logout(); // Reset
+      this.props.user.socket.emit('disconnect') // Disconnects io connection
+      await AsyncStorage.removeItem('login_info') // Deletes async storage for login
+    }
+    this.props.logout(); // Reset
+    this.props.navigation.navigate('Splash');
   }
 
   logoutCall() {
-
     Alert.alert(
-        'Logout',
-        'Are you sure you want to logout?',
-        [
-          {
-            text: 'Cancel',
-            onPress: () => console.log('Cancel Pressed'),
-            style: 'cancel',
-          },
-          {text: 'Yes', onPress: () => this.doLogout()},
-        ],
-        {cancelable: false},
-      );
+      'Logout',
+      'Are you sure you want to logout?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {text: 'Yes', onPress: () => this.doLogout()},
+      ],
+      {cancelable: false},
+    );
   }
 
   render () {
     const Nav = createMaterialTopTabNavigator({
-      Stats: { 
-        screen: StatsScreen ,
-        navigationOptions: { title: 'Stats' },
-      },
-      Routes: { 
-        screen: RouteListScreen,
-        navigationOptions: { title: 'Routes' },
-      },
-      SavedRuns: {
-        screen: SavedRunListScreen, 
-        navigationOptions: { title: 'Saved' },
-      },
+        Stats: { screen: StatsScreen },
+        Routes: { screen: RouteListScreen },
+        Saved: {screen: SavedRunListScreen},
     }, {
       initialRouteName: this.props.navigation.state.params == undefined ? 'Stats' : this.props.navigation.state.params.screen,
       tabBarOptions: {
@@ -104,8 +91,15 @@ class ProfileScreen extends React.Component {
     const AppContainer = createAppContainer(Nav)
 
     return (
-      <View style={STYLES.container}>
-        <Text style={[STYLES.text, { fontSize: 30, textAlign: 'center', paddingTop: '5%', marginBottom: -15, fontFamily:'Roboto-Bold', color:Color.primaryColor}]}>{this.props.user.full_name}</Text>
+    <KeyboardAvoidingView keyboardVerticalOffset={100} behavior="position" style={{backgroundColor: Color.darkBackground}}>
+    <ScrollView>
+      <View style={{
+        flexDirection: 'column',
+        justifyContent: 'space-evenly',
+        backgroundColor: Color.lightBackground
+      }}>
+
+        <Text style={[STYLES.text, { fontSize: 30, textAlign: 'center', paddingTop: '5%', fontFamily:'Roboto-Bold', color:Color.primaryColor}]}>{this.props.user.full_name}</Text>
         <View style={{ height: 150, padding: '3%' }}>
           <View style={{flexDirection: 'row',flex: 1}}>
             <View style={{flexDirection: 'row',flex: 1,alignItems: 'center'}}>
@@ -164,19 +158,23 @@ class ProfileScreen extends React.Component {
                 style={{width: '30%', borderLeftWidth: 2, borderLeftColor: Color.lightBackground}}
                 text_style={{color: "#e74c3c"}}
                 text="Logout"
-                onPress={async () => {
-                  if (this.props.user.token) this.logoutCall();
-                }}
+                onPress={this.logoutCall.bind(this)}
               />
             </View>
           </View>
         </View>
       </View>
-      <Text multiline={true} style={[STYLES.text, { paddingBottom: '8%', paddingLeft: '5%'}]}>{this.props.user.bio}</Text>
-      <View style={{ flex: 1, backgroundColor: Color.darkBackground }}>
-        <AppContainer style={{ flex: 1 }}/>
+      <Text multiline={true} style={[STYLES.text,{margin:"4%", marginTop:0}]}>{this.props.user.bio}</Text>
+
+      <View style={{ backgroundColor: Color.darkBackground, height:windowHeight * 0.8}}>
+        <AppContainer style={{ flex:1 }}/>
       </View>
+
     </View>
+    </ScrollView>
+    </KeyboardAvoidingView>
+
+
     );
   }
 }
