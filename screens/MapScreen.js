@@ -235,7 +235,7 @@ class MapScreen extends React.Component {
             <TouchableOpacity
               style={[STYLES.circularButton,STYLES.largeButton]}
               onPress={()=>{
-                this.props.startRun();
+                this.props.startRun(new Date());
                 this.props.navigation.navigate('RunManager')
               }}
             >

@@ -5,7 +5,7 @@ import { Platform, StyleSheet, View, Text, Alert, ScrollView, TouchableOpacity, 
 import * as Location from 'expo-location'
 import Color from '../constants/Color.js'
 import "../global.js"
-import { startRun, addLocationPacket, pauseRun, incrementTimer } from '../functions/run_action'
+import { addLocationPacket, pauseRun, incrementTimer } from '../functions/run_action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { minuteSecondString, hourMinuteSecondString } from '../functions/conversions';
@@ -68,7 +68,7 @@ class RunScreen extends React.Component {
 
   async locationUpdate() {
     let location_packet = await Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.High,
+      accuracy: Location.Accuracy.Highest,
     })
     if (this.props.run.run_info.real_time_tracking == true) this.props.user.socket.emit('location_update',json_location_packet);
     let json_location_packet = {latitude: location_packet.coords.latitude, longitude: location_packet.coords.longitude, speed: location_packet.coords.speed, timestamp: location_packet.timestamp}
@@ -90,7 +90,6 @@ class RunScreen extends React.Component {
 
   async componentDidMount() {
     if (global.location_permission) {
-      await this.props.startRun(new Date())
       this.focusListener = this.props.navigation.addListener("didFocus", this.loops.bind(this));
     } else {
       Alert.alert('Location Permission not allowed')
@@ -148,7 +147,7 @@ class RunScreen extends React.Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ addLocationPacket, startRun, pauseRun, incrementTimer }, dispatch)
+  return bindActionCreators({ addLocationPacket, pauseRun, incrementTimer }, dispatch)
 }
 
 function mapStateToProps(state) {

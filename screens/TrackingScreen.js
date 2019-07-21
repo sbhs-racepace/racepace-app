@@ -11,7 +11,7 @@ import MapView from 'react-native-maps';
 import { Marker, Polyline } from 'react-native-maps';
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
-import { startRun, addLocationPacket, pauseRun } from '../functions/run_action'
+import { addLocationPacket, pauseRun } from '../functions/run_action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
@@ -157,7 +157,7 @@ class TrackingScreen extends React.Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ addLocationPacket, startRun, pauseRun }, dispatch)
+  return bindActionCreators({ addLocationPacket, pauseRun }, dispatch)
 }
 
 function mapStateToProps(state) {

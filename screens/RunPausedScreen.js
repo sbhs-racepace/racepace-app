@@ -4,7 +4,7 @@ import React from 'react';
 import { Platform, StyleSheet, View, Text, Alert, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
 import Color from '../constants/Color.js'
 import { minuteSecondString } from '../functions/conversions';
-import { startRun, addLocationPacket, saveRun,resumeRun, endRun} from '../functions/run_action'
+import { addLocationPacket, saveRun,resumeRun, endRun} from '../functions/run_action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
@@ -108,7 +108,7 @@ class RunPausedScreen extends React.Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ addLocationPacket, startRun, saveRun, resumeRun, endRun }, dispatch)
+  return bindActionCreators({ addLocationPacket, saveRun, resumeRun, endRun }, dispatch)
 }
 
 function mapStateToProps(state) {

@@ -62,7 +62,7 @@ function calculateLapValues(current_lap_distance, change_in_distance, old_lap_st
     lap_start_time = end_time
   } else {
     lap_distance = new_lap_distance
-    lap_pace = calculateAveragePace(new_lap_distance, old_lap_start_time.getTime(), end_time)
+    lap_pace = calculateAveragePace(new_lap_distance, old_lap_start_time, end_time)
     lap_start_time = old_lap_start_time;
   }
   return {lap_distance, lap_pace, lap_start_time};
@@ -158,7 +158,7 @@ export default function runReducer(state = RUN_INITIAL_STATE, action) {
       return Object.assign({}, state, {
         real_time_info: {
           ...state.real_time_info,
-          lap_start_time: action.start_time
+          lap_start_time: action.start_time.getTime()
         },
         run_info: {
           ...state.run_info,
