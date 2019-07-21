@@ -9,6 +9,7 @@ import "../global.js"
 import Color from '../constants/Color'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { acceptFollowRequest, declineFollowRequest } from '../functions/user_info_action'
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
@@ -109,6 +110,7 @@ class FollowRequest extends React.Component {
     .then( async res => {
       let res_data = await res.json();
       if (res_data.success == true) {
+        this.acceptFollowRequest(this.state.other_user_id)
         Alert.alert("Request SuccessfullyAccepted")
       } else {
         console.log("Couldn't accept request");
@@ -132,6 +134,7 @@ class FollowRequest extends React.Component {
     .then( async res => {
       let res_data = await res.json();
       if (res_data.success == true) {
+        this.declineFollowRequest(this.state.other_user_id)
         Alert.alert("Request Successfuly Declined")
       } else {
         console.log("Couldn't decline request");
@@ -197,7 +200,7 @@ class FollowerRequestScreen extends React.Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ }, dispatch)
+  return bindActionCreators({ acceptFollowRequest, declineFollowRequest }, dispatch)
 }
 
 function mapStateToProps(state) {

@@ -7,6 +7,7 @@ import "../global.js"
 import Color from '../constants/Color'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { unfollow } from '../functions/user_info_action'
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
@@ -107,6 +108,7 @@ class FollowRequest extends React.Component {
     .then( async res => {
       let res_data = await res.json();
       if (res_data.success == true) {
+        this.props.unfollow(this.state.other_user_id)
         Alert.alert("Successfuly Unfollowed")
       } else {
         console.log("Unfollow Unsuccessfulyt");
@@ -128,7 +130,9 @@ class FollowRequest extends React.Component {
         <View style={{width:"30%"}}>
           <TouchableOpacity
             style={[STYLES.circularButton, STYLES.smallButton]}
-            onPress={() => this.unfollow()}
+            onPress={() => {
+              this.unfollow()
+            }}
           >
             <FontAwesomeIcon name="remove" size={STYLES.smallIcon} color={Color.primaryColor}/>
           </TouchableOpacity>
@@ -167,7 +171,7 @@ class FollowingScreen extends React.Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ }, dispatch)
+  return bindActionCreators({ unfollow }, dispatch)
 }
 
 function mapStateToProps(state) {
