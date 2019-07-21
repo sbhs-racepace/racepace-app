@@ -106,12 +106,11 @@ class FindFriendsScreen extends React.Component {
 
   showUsers() {
     if (this.state.searchResults.length != 0) {
-        console.log('this happend')
         return this.state.searchResults.map(user => (
         <ListItem
           title={user.name}
           subtitle={user.bio}
-          onPress={user => this.goToUserProfile(user)}
+          onPress={() => this.goToUserProfile(user)}
           leftAvatar={{ source: { uri: global.serverURL + `/api/avatars/${user.user_id}.png` } }}
           titleStyle={{ color: Color.textColor, fontWeight: 'bold' }}
           subtitleStyle={{ color: Color.textColor }}
@@ -121,7 +120,6 @@ class FindFriendsScreen extends React.Component {
         />
       ))
     } else if (this.state.searchString != '' && !this.state.showLoading){
-        console.log('no this')
         return ( 
         <ListItem
         subtitle="No results found"
