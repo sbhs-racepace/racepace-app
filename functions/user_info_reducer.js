@@ -1,6 +1,6 @@
 // JAson YU
 
-import { STORE_LOGIN_INFO, STORE_USER_INFO, LOGOUT, DECLINE_FOLLOW_REQUEST, ACCEPT_FOLLOW_REQUEST, UNFOLLOW, FOLLOW} from './user_info_action'
+import { STORE_LOGIN_INFO, STORE_USER_INFO, LOGOUT, DECLINE_FOLLOW_REQUEST, ACCEPT_FOLLOW_REQUEST, UNFOLLOW, REQUEST_FOLLOW} from './user_info_action'
 
 const USER_INFO_INITIAL_STATE =  {
   full_name: "guest",
@@ -71,7 +71,7 @@ export default function userInfoReducer(state = USER_INFO_INITIAL_STATE, action)
       return Object.assign({}, state, {
         following: filterList(state.following, action.other_user_id),
       })
-    case FOLLOW:
+    case REQUEST_FOLLOW:
       return Object.assign({}, state, {
         pending_follows: filterList(state.pending_follows, action.other_user_id),
       })

@@ -13,6 +13,7 @@ import StatsScreen from './StatsScreen'
 import SavedRunListScreen from './SavedRunListScreen'
 import Color from '../constants/Color'
 import { connect } from 'react-redux';
+import { requestFollow } from '../functions/user_info_action'
 import { bindActionCreators } from 'redux';
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
@@ -78,7 +79,8 @@ class OtherProfileScreen extends React.Component {
         async res => {
           res = await res.json(); //Parse response as JSON
           if (following) { 
-              this.setState({'following': false})
+            this.props.requestFollow(user_id)
+            this.setState({'following': false})
           } else {
               this.setState({'requested': true})
           }
@@ -179,7 +181,7 @@ class OtherProfileScreen extends React.Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ }, dispatch)
+  return bindActionCreators({ requestFollow }, dispatch)
 }
 
 function mapStateToProps(state) {

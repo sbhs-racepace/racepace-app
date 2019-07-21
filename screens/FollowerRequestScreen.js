@@ -110,7 +110,7 @@ class FollowRequest extends React.Component {
     .then( async res => {
       let res_data = await res.json();
       if (res_data.success == true) {
-        this.acceptFollowRequest(this.state.other_user_id)
+        this.props.acceptFollowRequest(this.state.other_user_id)
         Alert.alert("Request SuccessfullyAccepted")
       } else {
         console.log("Couldn't accept request");
