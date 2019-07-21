@@ -70,6 +70,42 @@ class ProfileScreen extends React.Component {
     );
   }
 
+  renderButtons() {
+    if (!this.props.otherUser) { 
+        return ( 
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: -20}}>
+                <Button
+                style={{width: '70%', backgroundColor: Color.buttonColor}}
+                text="Edit Profile"
+                onPress={() => {
+                    this.props.navigation.navigate('Edit')
+                }}
+                disabled={!this.props.user.token}
+                />
+                <Button
+                style={{width: '30%', borderLeftWidth: 2, borderLeftColor: Color.lightBackground}}
+                text_style={{color: "#e74c3c"}}
+                text="Logout"
+                onPress={this.logoutCall.bind(this)}
+                />
+            </View>
+            )
+        } else {
+        return ( 
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: -20}}>
+                <Button
+                style={{width: '70%', backgroundColor: Color.buttonColor}}
+                text="Follow"
+                onPress={() => {
+                    this.followUser(this.props.user)
+                }}
+                disabled={!this.props.user.token}
+                />
+            </View>
+            )
+        }
+    }
+
   render () {
     const Nav = createMaterialTopTabNavigator({
         Stats: { screen: StatsScreen },
@@ -145,22 +181,7 @@ class ProfileScreen extends React.Component {
               />
             </View>
 
-            <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: -20}}>
-              <Button
-                style={{width: '70%', backgroundColor: Color.buttonColor}}
-                text="Edit Profile"
-                onPress={() => {
-                  this.props.navigation.navigate('Edit')
-                }}
-                disabled={!this.props.user.token}
-              />
-              <Button
-                style={{width: '30%', borderLeftWidth: 2, borderLeftColor: Color.lightBackground}}
-                text_style={{color: "#e74c3c"}}
-                text="Logout"
-                onPress={this.logoutCall.bind(this)}
-              />
-            </View>
+            {this.renderButtons()}
           </View>
         </View>
       </View>
