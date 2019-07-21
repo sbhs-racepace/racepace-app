@@ -15,6 +15,7 @@ import {
   INCREMENT_TIMER 
 } from './run_action'
 import { calculateAveragePace, speedToPace, coordDistance, calculateTimeFromPace, calculateKilojoulesBurnt, calculatePoints  } from './run.js'
+import { run_stats } from './points';
 import '../global'
 
 const RUN_INITIAL_STATE = {
@@ -39,6 +40,7 @@ const RUN_INITIAL_STATE = {
     final_duration: {minutes:'--', seconds:'--'},
     final_distance: null,
     final_energy: null,
+    points: 0,
     active: false,
     start: null,
     end: null,
@@ -181,8 +183,9 @@ export default function runReducer(state = RUN_INITIAL_STATE, action) {
           ...state.run_info,
           final_duration: state.real_time_info.timer,
           final_distance: state.real_time_info.current_distance,
-          final_energy: calculateKilojoulesBurnt(final_distance),
+          final_energy: calculateKilojoulesBurnt(state.real_time_info.current_distance),
           average_pace: state.real_time_info.average_pace,
+          points: run_stats(state.real_time_info.current_distance, state.real_time_info.timer)
         }
       }) 
     case END_RUN:
