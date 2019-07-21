@@ -1,3 +1,5 @@
+// Roy Wu, Jason Yu
+
 export function levelCalc(points) {
   let levelpoints = 0.6 * Math.sqrt(points);
   let level = Math.floor(levelpoints)
@@ -23,4 +25,11 @@ export function calculateLevelProgress(points) {
   let level_progress = Math.abs(points - currentLevelPoints)
   let progress = level_progress / level_total
   return progress
+}
+
+export function run_stats(distance, time) {
+  // returns 10 points per km, and 1 point per minute
+  let x = (distance / 1000) * 10 
+  let y = ((time.hours * 60 + time.minutes) * 60 + time.seconds ) / 120
+  return Math.floor(x + y);
 }

@@ -80,7 +80,6 @@ class FindFriendsScreen extends React.Component {
   }
 
   async sendRequest(text) {
-    console.log('sending req')
     this.setState({showLoading: true})
     fetch(global.serverURL+"/api/find_friends", {
       method: 'POST',

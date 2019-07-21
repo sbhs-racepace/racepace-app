@@ -5,7 +5,7 @@ import { Platform, StyleSheet, View, Text, Alert, ScrollView, TouchableOpacity, 
 import * as Location from 'expo-location'
 import Color from '../constants/Color.js'
 import "../global.js"
-import { startRun, addLocationPacket, pauseRun } from '../functions/run_action'
+import { addLocationPacket, pauseRun, incrementTimer } from '../functions/run_action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { minuteSecondString, hourMinuteSecondString } from '../functions/conversions';
@@ -59,30 +59,16 @@ class RunScreen extends React.Component {
     }
   }
 
-incrementTimer() {
-    let {hours,minutes,seconds} = this.state.time;
-    seconds++;
-    if (seconds == 60) {
-      minutes++;
-      seconds=0;
-    }
-    if (minutes == 60) {
-      hours++;
-      minutes=0;
-    }
-    this.setState({time: { hours, minutes, seconds }});
-}
-
   async timerUpdateLoop() {
     if (this.props.run.run_info.active == true) {
-      this.incrementTimer();
+      this.props.incrementTimer();
       let timerId = setTimeout(this.timerUpdateLoop.bind(this), 1000);
     } 
   }
 
   async locationUpdate() {
     let location_packet = await Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.Low,
+      accuracy: Location.Accuracy.Highest,
     })
     if (this.props.run.run_info.real_time_tracking == true) this.props.user.socket.emit('location_update',json_location_packet);
     let json_location_packet = {latitude: location_packet.coords.latitude, longitude: location_packet.coords.longitude, speed: location_packet.coords.speed, timestamp: location_packet.timestamp}
@@ -93,24 +79,22 @@ incrementTimer() {
     if (this.props.run.run_info.active == true) {
       if (this.props.run.run_info.real_time_tracking == true) this.props.user.socket.emit('start_run', start_time);
       this.locationUpdate()
-      let timerId = setTimeout(this.locationUpdateLoop.bind(this), 3000);
+      let timerId = setTimeout(this.locationUpdateLoop.bind(this), 5000);
     } 
   }
 
   loops() {
-    this.locationUpdateLoop();
     this.timerUpdateLoop();
+    this.locationUpdateLoop();
   }
 
   async componentDidMount() {
     if (global.location_permission) {
-      await this.props.startRun(new Date())
       this.focusListener = this.props.navigation.addListener("didFocus", this.loops.bind(this));
     } else {
       Alert.alert('Location Permission not allowed')
       this.props.navigation.navigate('Feed')
     }
-
   }
 
   componentWillUnmount() {
@@ -122,8 +106,8 @@ incrementTimer() {
       <View style={{backgroundColor:Color.lightBackground, flex:1}}>
         <View style={{flex:1,alignItems:'center'}}>
           <Text style={STYLES.title}>Run</Text>      
-          <Text style={STYLES.text}>Distance: {this.props.run.real_time_info.current_distance} m</Text>
-          <Text style={STYLES.text}>Timer: {hourMinuteSecondString(this.state.time)}</Text>
+          <Text style={STYLES.text}>Distance: {Math.ceil(this.props.run.real_time_info.current_distance)} m</Text>
+          <Text style={STYLES.text}>Timer: {hourMinuteSecondString(this.props.run.real_time_info.timer)}</Text>
           <Text style={STYLES.text}>Current Pace: {minuteSecondString(this.props.run.real_time_info.current_pace)}</Text>
           <Text style={STYLES.text}>Average Pace: {minuteSecondString(this.props.run.real_time_info.average_pace)}</Text>
         </View>
@@ -134,7 +118,6 @@ incrementTimer() {
               style={[STYLES.circularButton, STYLES.smallButton]}
               onPress={()=>{
                 this.props.navigation.navigate('OtherStats')
-                this.props.pauseRun();
               }}
             >
               <IonIcon name="ios-stats" size={STYLES.smallIcon} color={Color.primaryColor}/>
@@ -151,7 +134,6 @@ incrementTimer() {
             <TouchableOpacity
               style={[STYLES.circularButton, STYLES.smallButton]}
               onPress={()=>{
-                this.props.pauseRun();
                 this.props.navigation.navigate('Tracking');
               }}
             >
@@ -165,7 +147,7 @@ incrementTimer() {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ addLocationPacket, startRun, pauseRun }, dispatch)
+  return bindActionCreators({ addLocationPacket, pauseRun, incrementTimer }, dispatch)
 }
 
 function mapStateToProps(state) {

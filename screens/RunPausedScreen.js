@@ -2,17 +2,12 @@
 
 import React from 'react';
 import { Platform, StyleSheet, View, Text, Alert, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
-import { Image } from 'react-native-elements'
-import { Constants } from 'expo';
-import * as Location from 'expo-location'
-import * as Permissions from 'expo-permissions'
-import Button from "../components/Button"
 import Color from '../constants/Color.js'
-import { startRun, addLocationPacket, saveRun,resumeRun, endRun} from '../functions/run_action'
+import { minuteSecondString } from '../functions/conversions';
+import { addLocationPacket, saveRun,resumeRun, endRun} from '../functions/run_action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
-import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
@@ -69,11 +64,11 @@ class RunPausedScreen extends React.Component {
       <View style={{backgroundColor:Color.lightBackground, flex:1}}>
         <View style={{flex:1,alignItems:'center'}}>
           <Text style={STYLES.title}>Paused</Text>      
-          <Text style={STYLES.text}>Distance: {this.props.run.real_time_info.current_distance}</Text>
-          <Text style={STYLES.text}>Average Pace: {this.props.run.real_time_info.average_pace.minutes} :{this.props.run.real_time_info.average_pace.seconds}</Text>
-          <Text style={STYLES.text}>Calories/Kilojoules: Not implemented</Text>
+          <Text style={STYLES.text}>Distance: {Math.ceil(this.props.run.real_time_info.current_distance)} m</Text>
+          <Text style={STYLES.text}>Average Pace: {minuteSecondString(this.props.run.real_time_info.average_pace)}</Text>
+          {/* <Text style={STYLES.text}>Calories/Kilojoules: Not implemented</Text>
           <Text style={STYLES.text}>Elevation: Not implemented</Text>
-          <Text style={STYLES.text}>Graphs: Not implemented</Text>
+          <Text style={STYLES.text}>Graphs: Not implemented</Text> */}
         </View>
 
         <View style={{backgroundColor:Color.darkBackground, height: windowHeight * 0.20,flexDirection:'row', width:'100%', justifyContent:'space-evenly'}}>
@@ -113,7 +108,7 @@ class RunPausedScreen extends React.Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ addLocationPacket, startRun, saveRun, resumeRun, endRun }, dispatch)
+  return bindActionCreators({ addLocationPacket, saveRun, resumeRun, endRun }, dispatch)
 }
 
 function mapStateToProps(state) {

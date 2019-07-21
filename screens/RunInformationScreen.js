@@ -72,7 +72,7 @@ class RunInformationScreen extends React.Component {
           text="Start Run"
           style={{borderRadius:10, alignSelf:'center'}} 
           onPress={() => {
-            this.props.startRun();
+            this.props.startRun(new Date());
             this.props.navigation.navigate("RunManager");
           }}
         />

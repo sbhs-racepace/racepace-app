@@ -79,7 +79,7 @@ class RunSetupScreen extends React.Component {
       this.props.navigation.navigate('Feed')
     } else {
       await Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.Low,
+        accuracy: Location.Accuracy.High,
         maximumAge: 5000,
         timeout: 5000,
       })

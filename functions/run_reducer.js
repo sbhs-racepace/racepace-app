@@ -1,14 +1,30 @@
 // Jason YU
 
-import { CREATE_RUN_ROUTE, CREATE_RUN, START_RUN, ADD_LOCATION_PACKET, END_RUN, SAVE_RUN, PAUSE_RUN, RESUME_RUN, CHANGE_END, CHANGE_START, CHANGE_LOCATION_INPUT } from './run_action'
+import { 
+  CREATE_RUN_ROUTE, 
+  CREATE_RUN, 
+  START_RUN, 
+  ADD_LOCATION_PACKET, 
+  END_RUN, 
+  SAVE_RUN, 
+  PAUSE_RUN, 
+  RESUME_RUN, 
+  CHANGE_END, 
+  CHANGE_START, 
+  CHANGE_LOCATION_INPUT, 
+  INCREMENT_TIMER 
+} from './run_action'
 import { calculateAveragePace, speedToPace, coordDistance, calculateTimeFromPace, calculateKilojoulesBurnt, calculatePoints  } from './run.js'
+import { run_stats } from './points';
 import '../global'
+
 const RUN_INITIAL_STATE = {
   real_time_info: {
     current_distance: 0,
     current_pace: {minutes: '--', seconds:'--'},
     average_pace: {minutes: '--', seconds:'--'},
     lap_pace: {minutes: '--', seconds:'--'},
+    timer: {hours: 0, minutes: 0, seconds:0},
     lap_distance: 0,
     lap_start_time: null,
   },
@@ -16,8 +32,6 @@ const RUN_INITIAL_STATE = {
     route: null,
     real_time_tracking: false,
     start_time: null,
-    start: null,
-    end: null,
     goal_pace: {minutes:'--', seconds:'--'},
     average_pace: {minutes:'--', seconds:'--'},
     estimated_duration: {minutes:'--', seconds:'--'},
@@ -26,7 +40,10 @@ const RUN_INITIAL_STATE = {
     final_duration: {minutes:'--', seconds:'--'},
     final_distance: null,
     final_energy: null,
+    points: 0,
     active: false,
+    start: null,
+    end: null,
   },
   run_setup: {
     start: 'Current Location',
@@ -36,30 +53,79 @@ const RUN_INITIAL_STATE = {
   location_packets: [],
 };
 
+function calculateLapValues(current_lap_distance, change_in_distance, old_lap_start_time, current_pace, end_time) {
+  let lap_distance, lap_pace, lap_start_time;
+  let new_lap_distance = current_lap_distance + change_in_distance
+  if (new_lap_distance > 1000) {
+    lap_distance = 0;
+    lap_pace = current_pace;
+    lap_start_time = end_time
+  } else {
+    lap_distance = new_lap_distance
+    lap_pace = calculateAveragePace(new_lap_distance, old_lap_start_time, end_time)
+    lap_start_time = old_lap_start_time;
+  }
+  return {lap_distance, lap_pace, lap_start_time};
+}
+
+function calculateGeneralValues(start_time, current_distance, location_packet, end_time, speed, location_packets) {
+  let change_in_distance = 0
+  if (location_packets.length > 0) {
+    let previous_location = location_packets[location_packets.length-1]
+    change_in_distance = coordDistance(previous_location, location_packet)
+    current_distance += change_in_distance
+  }
+  let average_pace = calculateAveragePace(current_distance, start_time, end_time)
+  let current_pace = speedToPace(speed)
+  return {current_distance, average_pace, current_pace, change_in_distance}
+}
+
+
 function generateNewState(state, location_packet) {
   // General Distance and Pace Update
   let end_time = location_packet.timestamp
-  let start_time = state.run_info.start_time.getTime()
-  let change_in_distance = 0
-  if (state.location_packets.length > 0) {
-    let previous_location = state.location_packets[state.location_packets.length-1]
-    change_in_distance = coordDistance(previous_location, location_packet)
-  }
-  state.real_time_info.current_distance += change_in_distance
-  state.real_time_info.average_pace = calculateAveragePace(state.real_time_info.current_distance, start_time, end_time)
-  state.real_time_info.current_pace = speedToPace(location_packet.speed)
-  state.location_packets.push(location_packet) // Adding Location packet now
+  let speed = location_packet.speed
+  let {current_distance, average_pace, current_pace, change_in_distance } = calculateGeneralValues(
+    state.run_info.start_time.getTime(),
+    state.real_time_info.current_distance,
+    location_packet,
+    end_time, 
+    speed,
+    state.location_packets,
+  )
+  state.real_time_info.current_distance = current_distance
+  state.real_time_info.average_pace = average_pace
+  state.real_time_info.current_pace = current_pace
+  state.location_packets.push(location_packet) // Adding Location packet after updating values
+  // console.log(current_distance, average_pace, current_pace)
+
   // Updating Lap Pace and Distance
-  let new_lap_distance = state.real_time_info.lap_distance + change_in_distance
-  if (new_lap_distance > 1000) {
-    state.real_time_info.lap_distance = 0
-    state.real_time_info.lap_pace = state.real_time_info.current_pace // Can't determine pace from no distance
-    state.real_time_info.lap_start_time = end_time // Setting new time to last location request
-  } else {
-    state.real_time_info.lap_distance = new_lap_distance
-    state.real_time_info.lap_pace = calculateAveragePace(new_lap_distance, state.real_time_info.lap_start_time, end_time)
-  }
+  let {lap_distance, lap_pace, lap_start_time} = calculateLapValues(
+    state.real_time_info.lap_distance,
+    change_in_distance,
+    state.real_time_info.lap_start_time,
+    state.current_pace,
+    end_time
+  )
+  state.real_time_info.lap_distance = lap_distance
+  state.real_time_info.lap_pace = lap_pace
+  state.real_time_info.lap_start_time = lap_start_time
+  // console.log(lap_distance, lap_pace, lap_start_time)
   return state;
+}
+
+function incrementTimer(time) {
+  let {hours,minutes,seconds} = time;
+  seconds++;
+  if (seconds == 60) {
+    minutes++;
+    seconds=0;
+  }
+  if (minutes == 60) {
+    hours++;
+    minutes=0;
+  }
+  return {hours, minutes, seconds};
 }
 
 export default function runReducer(state = RUN_INITIAL_STATE, action) {
@@ -74,19 +140,16 @@ export default function runReducer(state = RUN_INITIAL_STATE, action) {
       })
     case CREATE_RUN_ROUTE:
       let {start_packet, end_packet, route, real_time_tracking, distance, goal_pace} = action
-      let estimated_duration = calculateTimeFromPace(distance, goal_pace)
-      let estimated_energy = calculateKilojoulesBurnt(distance)
-      let points = calculatePoints(distance, goal_pace)
       return Object.assign({}, state, {
         run_info: {
           ...state.run_info, 
           route:route,
           real_time_tracking:real_time_tracking,
           estimated_distance:distance,
-          estimated_duration: estimated_duration,
-          estimated_energy: estimated_energy,
+          estimated_duration: calculateTimeFromPace(distance, goal_pace),
+          estimated_energy: calculateKilojoulesBurnt(distance),
           goal_pace: goal_pace,
-          points: points,
+          points: calculatePoints(distance, goal_pace),
           start: start_packet,
           end: end_packet,
         }
@@ -95,34 +158,34 @@ export default function runReducer(state = RUN_INITIAL_STATE, action) {
       return Object.assign({}, state, {
         real_time_info: {
           ...state.real_time_info,
-          lap_start: action.start_time
+          lap_start_time: action.start_time.getTime()
         },
         run_info: {
           ...state.run_info,
           start_time: action.start_time,
           active: true
         }
-      }) 
+      })
     case ADD_LOCATION_PACKET:
       let new_state = Object.assign({}, state);
       return generateNewState(new_state, action.location_packet)
+    case INCREMENT_TIMER:
+      let new_time = incrementTimer(state.real_time_info.timer)
+      return Object.assign({}, state, {
+        real_time_info: {
+          ...state.real_time_info,
+          timer: new_time,
+        },
+      }) 
     case SAVE_RUN:
-      let final_duration = 0
-      let final_distance = state.real_time_info.current_distance
-      let final_energy = calculateKilojoulesBurnt(final_distance)
-      if (state.location_packets.length > 0) {
-        let last_index = state.location_packets.length-1
-        let end_time = state.location_packets[last_index].timestamp
-        let start_time = state.run_info.start_time.getTime()
-        final_duration = Math.abs(end_time - start_time) / 1000
-      }
       return Object.assign({}, state, {
         run_info: {
           ...state.run_info,
-          final_duration: final_duration,
-          final_distance: final_distance,
-          final_energy: final_energy,
+          final_duration: state.real_time_info.timer,
+          final_distance: state.real_time_info.current_distance,
+          final_energy: calculateKilojoulesBurnt(state.real_time_info.current_distance),
           average_pace: state.real_time_info.average_pace,
+          points: run_stats(state.real_time_info.current_distance, state.real_time_info.timer)
         }
       }) 
     case END_RUN:

@@ -5,6 +5,7 @@ export const CREATE_RUN_ROUTE = 'CREATE_RUN_ROUTE'
 export const CREATE_RUN = 'CREATE_RUN'
 export const START_RUN = 'START_RUN'
 export const ADD_LOCATION_PACKET = 'ADD_LOCATION_PACKET'
+export const INCREMENT_TIMER = 'INCREMENT_TIMER'
 export const END_RUN = 'END_RUN'
 export const SAVE_RUN = 'SAVE_RUN'
 export const PAUSE_RUN = 'PAUSE_RUN'
@@ -45,4 +46,7 @@ export function changeEnd(end) {
 }
 export function changeLocationInput(value, index) {
   return { type: CHANGE_LOCATION_INPUT, value, index }
+}
+export function incrementTimer() {
+  return { type: INCREMENT_TIMER }
 }

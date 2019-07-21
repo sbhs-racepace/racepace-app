@@ -7,6 +7,7 @@ import '../global'
 import Color from '../constants/Color'
 import { connect } from 'react-redux';
 import Button from '../components/Button'
+import { minuteSecondString } from '../functions/conversions';
 import BackButtonHeader from '../components/BackButtonHeader';
 import { bindActionCreators } from 'redux';
 
@@ -45,9 +46,9 @@ class RunItem extends React.Component {
           dividerStyle={{display: 'none'}}
           containerStyle={STYLES.card}
         >
-          <Text style={STYLES.text}>Distance: {this.props.run.run_info.final_distance}km</Text>
-          <Text style={STYLES.text}>Pace: {this.props.run.run_info.average_pace.minutes}:{this.props.run.run_info.average_pace.seconds}</Text>
-          <Text style={STYLES.text}>Duration: {this.props.run.run_info.final_duration.minutes}:{this.props.run.run_info.final_duration.seconds}</Text>
+          <Text style={STYLES.text}>Distance: {Math.ceil(this.props.run.run_info.final_distance)} m</Text>
+          <Text style={STYLES.text}>Pace: {minuteSecondString(this.props.run.run_info.average_pace)}</Text>
+          <Text style={STYLES.text}>Duration: {minuteSecondString(this.props.run.run_info.final_duration)}</Text>
         </Card>
       </TouchableOpacity>
     )
@@ -59,7 +60,6 @@ class RunListScreen extends React.Component {
     if (!this.props.user.token) {
       return <Text>Please login to see your runs</Text>;
     }
-
 
     let runs = this.props.user.runs.map(run => 
       <RunItem 
