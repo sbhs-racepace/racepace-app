@@ -2,7 +2,7 @@ import React from 'react';
 import { Component } from 'react';
 import { Alert, View, ScrollView, Text, Dimensions, StyleSheet } from 'react-native';
 import TextInput from '../components/TextInput'
-import { Image } from 'react-native-elements'
+import { Image, SearchBar, ListItem } from 'react-native-elements'
 import Button from '../components/Button.js';
 import BackButtonHeader from '../components/BackButtonHeader'
 import '../global'
@@ -81,6 +81,7 @@ class FindFriendsScreen extends React.Component {
 
   async sendRequest(text) {
     console.log('sending req')
+    this.setState({showLoading: true})
     fetch(global.serverURL+"/api/find_friends", {
       method: 'POST',
       body: JSON.stringify({name: text}),
@@ -94,35 +95,71 @@ class FindFriendsScreen extends React.Component {
     .then(
       async res => {
         res = await res.json(); //Parse response as JSON
-        this.setState({searchResults: res});
+        this.setState({searchResults: res, showLoading: false});
       }
     );
   }
 
+  goToUserProfile(user) {
+      console.log(user)
+  }
+
+  showUsers() {
+    if (this.state.searchResults.length != 0) {
+        console.log('this happend')
+        return this.state.searchResults.map(user => (
+        <ListItem
+          title={user.name}
+          subtitle={user.bio}
+          onPress={user => this.goToUserProfile(user)}
+          leftAvatar={{ source: { uri: global.serverURL + `/api/avatars/${user.user_id}.png` } }}
+          titleStyle={{ color: Color.textColor, fontWeight: 'bold' }}
+          subtitleStyle={{ color: Color.textColor }}
+          containerStyle={{
+              backgroundColor: Color.lightBackground,
+            }}
+        />
+      ))
+    } else if (this.state.searchString != '' && !this.state.showLoading){
+        console.log('no this')
+        return ( 
+        <ListItem
+        subtitle="No results found"
+        subtitleStyle={{ color: Color.textColor }}
+        containerStyle={{
+            backgroundColor: Color.lightBackground,
+          }}
+      />
+        )
+    }
+  }
+
   render() {
     return (
-      <View style={{ flex: 1 , backgroundColor:Color.lightBackground}}>
+      <View style={{ flex: 1 , backgroundColor:Color.darkBackground}}>
         <BackButtonHeader
           onPress={this.props.navigation.goBack}
           title='Find Friends'
         />
         <SearchBar
             placeholder="Type Here..."
+            showLoading={this.state.showLoading}
             onChangeText={text => {
                 this.setState({searchString: text})
                 this.sendRequest.bind(this)(text)
                 }}
             value={this.state.searchString}
+            containerStyle={{
+                backgroundColor: Color.lightBackground,
+                borderBottomWidth: 0,
+                borderTopWidth: 0,
+            }}
+            inputContainerStyle={{
+                backgroundColor: Color.lightBackground2
+            }}
         />
         <ScrollView style={{ width: '100%' }}>
-          {this.state.searchResults.map(user => (
-            <ListItem
-              title={user.name}
-              subtitle={user.bio}
-              leftAvatar={{ source: { uri: global.serverURL + `/api/avatars/${user.user_id}.png` } }}
-              containerStyle={{backgroundColor: Color.darkBackground}}
-            />
-          ))}
+          {this.showUsers()}
         </ScrollView>
       </View>
     );
