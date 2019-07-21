@@ -55,8 +55,10 @@ class TrackingScreen extends React.Component {
     this.state = {
       region: {
         ...global.default_location,
-        ...global.zoom_factor,
+        latitudeDelta:0.005, 
+        longitudeDelta:0.005,
       },
+      autoTracking:true,
     }
   }
 
@@ -69,27 +71,29 @@ class TrackingScreen extends React.Component {
   }
 
   async goToCurrent() {
-    Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.High,
-      maximumAge: 5000,
-      timeout: 5000,
+    let location_packet = await Location.getCurrentPositionAsync({
+      accuracy: Location.Accuracy.Low,
     })
-    .then(
-      location => {
-        this.setState({
-          region: {
-            ...this.state.region,
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-            latitudeDelta: global.latitudeDelta,
-            longitudeDelta: global.longitudeDelta,
-          }
-        })
+    this.setState({
+      region: {
+        ...this.state.region,
+        latitude: location_packet.coords.latitude,
+        longitude: location_packet.coords.longitude,
       }
-    )
-    .catch(error =>
-      Alert.alert('Error', 'Location tracking failed. Error: ' + error)
-    );
+    })
+    let {latitude, longitude, latitudeDelta, longitudeDelta} = this.state.region
+    this.animate(latitude, longitude)
+  }
+
+  animate(latitude, longitude) {
+    this.mapView.animateToRegion({latitude:Number(latitude), longitude:Number(longitude), latitudeDelta:0.005, longitudeDelta:0.005}, 2000)
+  }
+
+  async autoTrackingLoop() {
+    if (this.state.autoTracking == true) {
+      this.goToCurrent()
+      let timerId = setTimeout(this.autoTrackingLoop.bind(this), 2000);
+    } 
   }
 
   onRegionChange(region) {
@@ -103,13 +107,14 @@ class TrackingScreen extends React.Component {
       <View style={{flex:1, backgroundColor:Color.darkBackground}}>
         <MapView
           style={STYLES.map}
+          ref = {(ref)=>this.mapView=ref}
           provider = { MapView.PROVIDER_GOOGLE } // Usage of google maps
           customMapStyle = { lunar }
           showsUserLocation={true}
           showsMyLocationButton={false}
           region={this.state.region}
-          onRegionChangeComplete={this.onRegionChange.bind(this)
-        }>
+          onRegionChangeComplete={this.onRegionChange.bind(this)}
+        >
           {this.props.run.run_info.route != null && (
             <Polyline
               coordinates={this.props.run.run_info.route}
@@ -119,7 +124,7 @@ class TrackingScreen extends React.Component {
           )}
         </MapView>
 
-        <View style={{position:'absolute',flexDirection: 'row', top:windowHeight*0.8, width:'100%', zIndex:3, alignItems:'center'}}>
+        <View style={{position:'absolute',flexDirection: 'row', top:windowHeight*0.7, width:'100%', zIndex:3, alignItems:'center'}}>
           <View style={{flex:1, alignItems:'center'}}>
             <TouchableOpacity
               style={[STYLES.circularButton,STYLES.smallButton]}
@@ -142,12 +147,14 @@ class TrackingScreen extends React.Component {
           <View style={{flex:1, alignItems:'center'}}>
             <TouchableOpacity
               style={[STYLES.circularButton,STYLES.smallButton]}
-              onPress={() => {
-                this.setState({ moveToCurrentLocation: true });
-                this.goToCurrent();
+              onPress={async () => {
+                await this.setState({autoTracking: !this.state.autoTracking})
+                if (this.state.autoTracking == true) {
+                  this.autoTrackingLoop()
+                }
               }}
             >
-              <FontAwesomeIcon name="location-arrow" size={STYLES.smallIcon} color={Color.primaryColor}/>
+              <FontAwesomeIcon name="location-arrow" size={STYLES.smallIcon} color={this.state.autoTracking ? Color.primaryColor: 'grey'}/>
             </TouchableOpacity>
           </View>
         </View>

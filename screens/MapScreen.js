@@ -63,7 +63,8 @@ class MapScreen extends React.Component {
     this.state = {
       region: {
         ...global.default_location,
-        ...global.zoom_factor,
+        latitudeDelta:0.005, 
+        longitudeDelta:0.005,
       },
       showSearch: false,
       searchStr: '',
@@ -72,7 +73,8 @@ class MapScreen extends React.Component {
         longitude: '',
       },
       searchResults: [ // Test Variables
-      ]
+      ],
+      autoTracking:true,
     };
   }
 
@@ -118,27 +120,18 @@ class MapScreen extends React.Component {
   }
 
   async goToCurrent() {
-    Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.High,
-      maximumAge: 5000,
-      timeout: 5000,
+    let location_packet = await Location.getCurrentPositionAsync({
+      accuracy: Location.Accuracy.Low,
     })
-    .then(
-      location => {
-        this.setState({
-          region: {
-            ...this.state.region,
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-            latitudeDelta: global.latitudeDelta,
-            longitudeDelta: global.longitudeDelta,
-          }
-        })
+    this.setState({
+      region: {
+        ...this.state.region,
+        latitude: location_packet.coords.latitude,
+        longitude: location_packet.coords.longitude,
       }
-    )
-    .catch(error =>
-      Alert.alert('Error', 'Location tracking failed. Error: ' + error)
-    );
+    })
+    let {latitude, longitude, latitudeDelta, longitudeDelta} = this.state.region
+    this.animate(latitude, longitude)
   }
 
   setupRun(name) {
@@ -175,10 +168,22 @@ class MapScreen extends React.Component {
     this.setState({ searchStr: searchStr, searchResults: newSearchResults });
   };
 
+  animate(latitude, longitude) {
+    this.mapView.animateToRegion({latitude:Number(latitude), longitude:Number(longitude), latitudeDelta:0.005, longitudeDelta:0.005}, 2000)
+  }
+
+  async autoTrackingLoop() {
+    if (this.state.autoTracking == true) {
+      this.goToCurrent()
+      let timerId = setTimeout(this.autoTrackingLoop.bind(this), 2000);
+    } 
+  }
+
   render() {
     return (
       <View style={{flex:1, backgroundColor:Color.darkBackground}}>
         <MapView
+          ref = {(ref)=>this.mapView=ref}
           style={STYLES.map}
           provider = { MapView.PROVIDER_GOOGLE } // Usage of google maps
           customMapStyle = { lunar }
@@ -186,6 +191,7 @@ class MapScreen extends React.Component {
           showsMyLocationButton={false}
           region={this.state.region}
           onRegionChangeComplete={this.onRegionChange.bind(this)}
+          
         >
           {
             this.state.showSearch && (<Marker coordinate={this.state.searchLoc} pinColor={Color.primaryColor} />)
@@ -227,7 +233,7 @@ class MapScreen extends React.Component {
           </View>
         </View>
 
-        <View style={{position:'absolute',flexDirection: 'row', top:windowHeight*0.75, width:'100%', zIndex:3, alignItems:'center'}}>
+        <View style={{position:'absolute',flexDirection: 'row', top:windowHeight*0.70, width:'100%', zIndex:3, alignItems:'center'}}>
           <View style={{flex:1, alignItems:'center'}}>
 
           </View>
@@ -245,9 +251,14 @@ class MapScreen extends React.Component {
           <View style={{flex:1, alignItems:'center'}}>
             <TouchableOpacity
               style={[STYLES.circularButton,STYLES.smallButton]}
-              onPress={() => this.goToCurrent()}
+              onPress={async () => {
+                await this.setState({autoTracking: !this.state.autoTracking})
+                if (this.state.autoTracking == true) {
+                  this.autoTrackingLoop()
+                }
+              }}
             >
-              <FontAwesomeIcon name="location-arrow" size={STYLES.smallIcon} color={Color.primaryColor}/>
+              <FontAwesomeIcon name="location-arrow" size={STYLES.smallIcon} color={this.state.autoTracking ? Color.primaryColor: 'grey'}/>
             </TouchableOpacity>
           </View>
         </View>
