@@ -96,7 +96,6 @@ class RunScreen extends React.Component {
       Alert.alert('Location Permission not allowed')
       this.props.navigation.navigate('Feed')
     }
-
   }
 
   componentWillUnmount() {
@@ -120,7 +119,6 @@ class RunScreen extends React.Component {
               style={[STYLES.circularButton, STYLES.smallButton]}
               onPress={()=>{
                 this.props.navigation.navigate('OtherStats')
-                this.props.pauseRun();
               }}
             >
               <IonIcon name="ios-stats" size={STYLES.smallIcon} color={Color.primaryColor}/>
@@ -137,7 +135,6 @@ class RunScreen extends React.Component {
             <TouchableOpacity
               style={[STYLES.circularButton, STYLES.smallButton]}
               onPress={()=>{
-                this.props.pauseRun();
                 this.props.navigation.navigate('Tracking');
               }}
             >
