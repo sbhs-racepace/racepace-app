@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+
 import Color from '../constants/Color'
 
 export default class TextInputCustom extends React.Component {

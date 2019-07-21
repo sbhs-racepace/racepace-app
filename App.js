@@ -40,6 +40,7 @@ import CreateRouteScreen from './screens/CreateRouteScreen'
 import PlanRunScreen from './screens/PlanRunScreen'
 import LoadRouteScreen from './screens/LoadRouteScreen'
 import SaveRouteScreen from './screens/SaveRouteScreen'
+import OtherProfileScreen from './screens/OtherProfileScreen'
 
 import Color from './constants/Color'
 
@@ -98,6 +99,10 @@ const LoginNavigator = createStackNavigator({
   },
   Paused: {
     screen: RunPausedScreen,
+    navigationOptions: { header: null },
+  },
+  OtherProfile: {
+    screen: OtherProfileScreen,
     navigationOptions: { header: null },
   },
   Level: {

@@ -100,25 +100,28 @@ class FindFriendsScreen extends React.Component {
   }
 
   goToUserProfile(user) {
-      if (user.user_id == this.props.user.user_id) {
-          this.props.navigation.navigate('Profile')
-          return
-      }
+    if (user.user_id == this.props.user.user_id) {
+      this.props.navigation.navigate('Profile')
+    }
 
-      fetch(global.serverURL+`/api/get_info/${user.id}`, {
-          method: 'GET',
-          headers: {
-            authorization: this.props.user.token
+    fetch(
+      global.serverURL+`/api/get_info/${user.user_id}`, 
+      {
+        method: 'GET',
+        headers: {
+          authorization: this.props.user.token
         }
       })
-      .catch(res => {
-        Alert.alert('Error connecting to server', res);
-      })
-      .then(
-        async res => {
-          res = await res.json(); //Parse response as JSON
-        }
-      );
+    .catch(res => {
+      Alert.alert('Error connecting to server', res);
+    })
+    .then(
+      async res => {
+        res = await res.json(); //Parse response as JSON
+        let info = res['info']
+        this.props.navigation.navigate('OtherProfile', {info:info, user_id: user.user_id})
+      }
+    );
   }
 
   showUsers() {
@@ -159,6 +162,7 @@ class FindFriendsScreen extends React.Component {
         <SearchBar
             placeholder="Type Here..."
             showLoading={this.state.showLoading}
+            autoCapitalize="none"
             onChangeText={text => {
                 this.setState({searchString: text})
                 this.sendRequest.bind(this)(text)

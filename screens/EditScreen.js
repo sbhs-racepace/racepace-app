@@ -2,7 +2,7 @@
 
 import React from 'react';
 import * as ImageManipulator from 'expo-image-manipulator';
-import { DocumentPicker } from 'expo';
+import * as DocumentPicker from 'expo-document-picker'
 import {
   View,
   Alert,
@@ -195,12 +195,14 @@ class EditScreen extends React.Component {
             <View style={{ flex: 3 / 5 }}>
               <TextInput
                 placeholder="Name"
+                defaultValue={''}
                 style={{ ...STYLES.input, width: windowWidth * 0.5 }}
                 returnKeyType="go"
                 onChangeText={full_name => this.setState({ full_name })}
               />
               <TextInput
                 placeholder="Enter Bio"
+                defaultValue={''}
                 onChangeText={bio => this.setState({ bio })}
                 style={{ ...STYLES.input, width: windowWidth * 0.5 }}
                 text_style={{
@@ -223,12 +225,14 @@ class EditScreen extends React.Component {
             <TextInput
               style={STYLES.input}
               placeholder="New Username"
+              defaultValue={''}
               returnKeyType="go"
               onChangeText={new_username => this.setState({ new_username })}
             />
             <View>
               <TextInput
                 placeholder="Current Password"
+                defaultValue={''}
                 style={STYLES.input}
                 secureTextEntry={true}
                 autoCapitalize="none"
@@ -241,6 +245,7 @@ class EditScreen extends React.Component {
             </View>
             <TextInput
               placeholder="New Password"
+              defaultValue={''}
               style={STYLES.input}
               secureTextEntry={true}
               autoCapitalize="none"
@@ -250,6 +255,7 @@ class EditScreen extends React.Component {
             <TextInput
               placeholder="New Password Confirmation"
               style={STYLES.input}
+              defaultValue={''}
               secureTextEntry={true}
               autoCapitalize="none"
               returnKeyType="go"
