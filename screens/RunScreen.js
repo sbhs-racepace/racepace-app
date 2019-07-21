@@ -2,16 +2,14 @@
 
 import React from 'react';
 import { Platform, StyleSheet, View, Text, Alert, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
-import { Constants } from 'expo';
 import * as Location from 'expo-location'
-import * as Permissions from 'expo-permissions'
 import Color from '../constants/Color.js'
 import "../global.js"
 import { startRun, addLocationPacket, pauseRun } from '../functions/run_action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { minuteSecondString, hourMinuteSecondString } from '../functions/conversions';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
-import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import IonIcon from 'react-native-vector-icons/Ionicons'
 
@@ -57,34 +55,22 @@ class RunScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      pace: {minutes:'--', seconds:'--'},
-      distance: 0,
-      time: {hour:0, min:0, sec: 0},
-    }
-  }
-
-
-  zFill(num) {
-    if (num < 10) {
-      return "0"+num
-    }
-    else {
-      return num
+      time: { hours:0, minutes:0, seconds: 0 },
     }
   }
 
 incrementTimer() {
-    let {hour,min,sec} = this.state.time;
-    sec++;
-    if (sec == 60) {
-        min++;
-        sec=0;
+    let {hours,minutes,seconds} = this.state.time;
+    seconds++;
+    if (seconds == 60) {
+      minutes++;
+      seconds=0;
     }
-    if (min == 60) {
-        hour++;
-        min=0;
+    if (minutes == 60) {
+      hours++;
+      minutes=0;
     }
-    this.setState({time: {hour,min,sec}});
+    this.setState({time: { hours, minutes, seconds }});
 }
 
   async timerUpdateLoop() {
@@ -136,10 +122,10 @@ incrementTimer() {
       <View style={{backgroundColor:Color.lightBackground, flex:1}}>
         <View style={{flex:1,alignItems:'center'}}>
           <Text style={STYLES.title}>Run</Text>      
-          <Text style={STYLES.text}>Distance: {this.props.run.real_time_info.distance}m</Text>
-          <Text style={STYLES.text}>Timer: {this.state.time.hour==0 ? "" : this.state.time.hour+":"}{this.zFill(this.state.time.min)}:{this.zFill(this.state.time.sec)}</Text>
-          <Text style={STYLES.text}>Current Pace: {this.props.run.real_time_info.current_pace.minutes} :{this.props.run.real_time_info.current_pace.seconds}</Text>
-          <Text style={STYLES.text}>Average Pace: {this.props.run.real_time_info.average_pace.minutes} :{this.props.run.real_time_info.average_pace.seconds}</Text>
+          <Text style={STYLES.text}>Distance: {this.props.run.real_time_info.current_distance} m</Text>
+          <Text style={STYLES.text}>Timer: {hourMinuteSecondString(this.state.time)}</Text>
+          <Text style={STYLES.text}>Current Pace: {minuteSecondString(this.props.run.real_time_info.current_pace)}</Text>
+          <Text style={STYLES.text}>Average Pace: {minuteSecondString(this.props.run.real_time_info.average_pace)}</Text>
         </View>
 
         <View style={{backgroundColor:Color.darkBackground, height: windowHeight * 0.20}}>

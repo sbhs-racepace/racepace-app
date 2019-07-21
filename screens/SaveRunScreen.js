@@ -109,7 +109,7 @@ class SaveRunScreen extends React.Component {
             <Text style={STYLES.title_style}>Run Stats</Text>
             <Image source={require('../assets/map.png')} style={STYLES.routePic} />
             <Text style={STYLES.text_style}>Average Pace: {this.props.run.real_time_info.average_pace.minutes} minutes {this.props.run.real_time_info.average_pace.seconds} seconds</Text>
-            <Text style={STYLES.text_style}>Distance Ran: {this.props.run.real_time_info.distance}m</Text>
+            <Text style={STYLES.text_style}>Distance Ran: {this.props.run.real_time_info.current_distance} m</Text>
             <Text style={STYLES.text_style}>Duration: {this.props.run.run_info.duration}</Text>
             <Text style={STYLES.text_style}>Points: {this.props.run.run_info.points}</Text>
           </View>

@@ -5,12 +5,12 @@ import { calculateAveragePace, speedToPace, coordDistance, calculateTimeFromPace
 import '../global'
 const RUN_INITIAL_STATE = {
   real_time_info: {
-    distance: 0,
+    current_distance: 0,
     current_pace: {minutes: '--', seconds:'--'},
     average_pace: {minutes: '--', seconds:'--'},
     lap_pace: {minutes: '--', seconds:'--'},
     lap_distance: 0,
-    lap_start: null,
+    lap_start_time: null,
   },
   run_info: {
     route: null,
@@ -45,8 +45,8 @@ function generateNewState(state, location_packet) {
     let previous_location = state.location_packets[state.location_packets.length-1]
     change_in_distance = coordDistance(previous_location, location_packet)
   }
-  state.real_time_info.distance += change_in_distance
-  state.real_time_info.average_pace = calculateAveragePace(state.real_time_info.distance, start_time, end_time)
+  state.real_time_info.current_distance += change_in_distance
+  state.real_time_info.average_pace = calculateAveragePace(state.real_time_info.current_distance, start_time, end_time)
   state.real_time_info.current_pace = speedToPace(location_packet.speed)
   state.location_packets.push(location_packet) // Adding Location packet now
   // Updating Lap Pace and Distance
@@ -54,10 +54,10 @@ function generateNewState(state, location_packet) {
   if (new_lap_distance > 1000) {
     state.real_time_info.lap_distance = 0
     state.real_time_info.lap_pace = state.real_time_info.current_pace // Can't determine pace from no distance
-    state.real_time_info.lap_start = end_time // Setting new time to last location request
+    state.real_time_info.lap_start_time = end_time // Setting new time to last location request
   } else {
     state.real_time_info.lap_distance = new_lap_distance
-    state.real_time_info.lap_pace = calculateAveragePace(new_lap_distance, state.real_time_info.lap_start, end_time)
+    state.real_time_info.lap_pace = calculateAveragePace(new_lap_distance, state.real_time_info.lap_start_time, end_time)
   }
   return state;
 }
@@ -108,7 +108,7 @@ export default function runReducer(state = RUN_INITIAL_STATE, action) {
       return generateNewState(new_state, action.location_packet)
     case SAVE_RUN:
       let final_duration = 0
-      let final_distance = state.real_time_info.distance
+      let final_distance = state.real_time_info.current_distance
       let final_energy = calculateKilojoulesBurnt(final_distance)
       if (state.location_packets.length > 0) {
         let last_index = state.location_packets.length-1
