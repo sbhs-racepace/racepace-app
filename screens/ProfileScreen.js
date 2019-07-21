@@ -142,9 +142,7 @@ class ProfileScreen extends React.Component {
               <Image
                 style={STYLES.profile_image}
                 source={{
-                uri: `${global.serverURL}/api/avatars/${
-                  this.props.user.user_id
-                }.png`
+                uri: `${global.serverURL}/api/avatars/${this.props.user.user_id}.png`
                 }}
               />
             </View>
