@@ -57,8 +57,7 @@ class OtherProfileScreen extends React.Component {
   followUser() {
 
     let following = this.state.following 
-    let url = global.serverURL+'/api/sendFollowRequest'
-    let data = { other_user_id:this.props.navigation.state.params['user_id'] }
+    let url = global.serverURL+`/api/sendFollowRequest/${user_id}`
 
     if (following) {
       // url = global.serverURL+`/api/unfollow`
@@ -67,7 +66,6 @@ class OtherProfileScreen extends React.Component {
     fetch(url, 
         {
           method: 'POST',
-          body: JSON.stringify(data),
           headers: new Headers({
             Authorization: this.props.user.token, 
           }),

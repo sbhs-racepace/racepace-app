@@ -97,6 +97,7 @@ class FollowRequest extends React.Component {
 
   async unfollow() {
     let api_url = `${global.serverURL}/api/unfollow`
+    console.log(api_url)
     let data = { other_user_id:this.state.other_user_id }
     await fetch(api_url, {
       method: 'POST',
@@ -107,11 +108,12 @@ class FollowRequest extends React.Component {
     })
     .then( async res => {
       let res_data = await res.json();
+      console.log(res_data)
       if (res_data.success == true) {
         this.props.unfollow(this.state.other_user_id)
         Alert.alert("Successfuly Unfollowed")
       } else {
-        console.log("Unfollow Unsuccessfulyt");
+        Alert.alert("Unfollow Unsuccessfully");
       }
     })
     .catch(error => {

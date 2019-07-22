@@ -98,17 +98,14 @@ class FollowRequest extends React.Component {
   }
 
   async acceptRequest() {
-    let api_url = `${global.serverURL}/api/acceptFollowRequest`
-    let data = { other_user_id:this.state.other_user_id }
+    let api_url = global.serverURL+`/api/declineFollowRequest/${this.state.other_user_id}`
     await fetch(api_url, {
       method: 'POST',
-      body: JSON.stringify(data),
       headers: new Headers({
         Authorization: this.props.user_token, // Taking user_token from parent
       }),
     })
     .then( async res => {
-      Alert.alert('afsdasdf')
       let res_data = await res.json();
       if (res_data.success == true) {
         Alert.alert("Request Successfully Accepted")
@@ -123,11 +120,9 @@ class FollowRequest extends React.Component {
   }
 
   async declineRequest() {
-    let api_url = `${global.serverURL}/api/declineFollowRequest`
-    let data = { other_user_id:this.state.other_user_id }
+    let api_url = global.serverURL+`/api/declineFollowRequest/${this.state.other_user_id}`
     await fetch(api_url, {
       method: 'POST',
-      body: JSON.stringify(data),
       headers: new Headers({
         Authorization: this.props.user_token, // Taking user_token from parent
       }),
