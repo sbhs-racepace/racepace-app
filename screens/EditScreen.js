@@ -97,6 +97,18 @@ class EditScreen extends React.Component {
       Alert.alert("New Password doesn't match with Confirmation Password");
       return 0;
     }
+    if (
+      this.state.current_password != '' &&
+      this.state.new_username == '' &&
+      this.state.new_password == '' &&
+      this.state.confirmation_password == '' &&
+      this.state.full_name == '' &&
+      this.state.bio == '' &&
+      this.state.uri == null
+    ) {
+      Alert.alert('No changes made');
+      return 0;
+    }
     let login_data = await login(
       this.props.user.email,
       this.state.current_password
