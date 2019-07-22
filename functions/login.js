@@ -10,10 +10,8 @@ import io from 'socket.io-client';
 export async function getUserInfo(token) {
   let api_url = global.serverURL + '/api/get_info';
   let user_info = false;
-  let data = {};
   await fetch(api_url, {
     method: 'POST',
-    body: JSON.stringify(data),
     headers: new Headers({
       Authorization: token,
     }),
