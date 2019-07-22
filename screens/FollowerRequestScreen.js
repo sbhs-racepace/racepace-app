@@ -79,8 +79,8 @@ class FollowRequest extends React.Component {
       Alert.alert('Error connecting to server', res);
     })
     .then(
-      async res => {
-        res_data = await res.json(); //Parse response as JSON
+      async res_data => {
+        res_data = await res_data.json()
         if (res_data.success == true) {
           username = res_data.info.username
           full_name = res_data.info.full_name
@@ -105,11 +105,11 @@ class FollowRequest extends React.Component {
         Authorization: this.props.user_token, // Taking user_token from parent
       }),
     })
-    .then( async res => {
-      let res_data = await res.json();
+    .then( async res_data => {
+      res_data = await res_data.json()
       if (res_data.success == true) {
+        this.props.parent_props.acceptFollowRequest(this.state.other_user_id)
         Alert.alert("Request Successfully Accepted")
-        this.props.acceptFollowRequest(this.state.other_user_id)
       } else {
         Alert.alert("Couldn't accept request");
       }
@@ -127,11 +127,11 @@ class FollowRequest extends React.Component {
         Authorization: this.props.user_token, // Taking user_token from parent
       }),
     })
-    .then( async res => {
-      let res_data = await res.json();
+    .then( async res_data => {
+      res_data = await res_data.json()
       if (res_data.success == true) {
+        this.props.parent_props.declineFollowRequest(this.state.other_user_id)
         Alert.alert("Request Successfuly Declined")
-        this.declineFollowRequest(this.state.other_user_id)
       } else {
         Alert.alert("Couldn't decline request");
       }
@@ -179,6 +179,7 @@ class FollowerRequestScreen extends React.Component {
       <FollowRequest 
         other_user_id={other_user_id}
         user_token={this.props.user.token}
+        parent_props={this.props}
       />
     );
 

@@ -207,6 +207,7 @@ class EditScreen extends React.Component {
             <View style={{ flex: 3 / 5 }}>
               <TextInput
                 placeholder="Name"
+                autoCapitalize={false}
                 defaultValue={''}
                 style={{ ...STYLES.input, width: windowWidth * 0.5 }}
                 returnKeyType="go"

@@ -77,8 +77,8 @@ class FollowRequest extends React.Component {
       Alert.alert('Error connecting to server', res);
     })
     .then(
-      async res => {
-        res_data = await res.json(); //Parse response as JSON
+      async res_data => {
+        res_data = await res_data.json()
         if (res_data.success == true) {
           username = res_data.info.username
           full_name = res_data.info.full_name
@@ -94,7 +94,7 @@ class FollowRequest extends React.Component {
     await this.get_details()
   }
 
-  async unfollow() {
+  async unfollowUser() {
     let api_url = global.serverURL+`/api/unfollow/${this.state.other_user_id}`
     await fetch(api_url, {
       method: 'GET',
@@ -102,16 +102,17 @@ class FollowRequest extends React.Component {
         Authorization: this.props.user_token, // Other User
       }),
     })
-    .then( async res => {
-      let res_data = await res.json();
+    .then( async res_data => {
+      res_data = await res_data.json()
       if (res_data.success == true) {
-        this.props.unfollow(this.state.other_user_id)
+        this.props.parent_props.unfollow(this.state.other_user_id)
         Alert.alert("Successfuly Unfollowed")
       } else {
         Alert.alert("Unfollow Unsuccessfully");
       }
     })
     .catch(error => {
+      console.log(error)
       Alert.alert('Error connecting to server', error);
     });
   }
@@ -128,7 +129,7 @@ class FollowRequest extends React.Component {
           <TouchableOpacity
             style={[STYLES.circularButton, STYLES.smallButton]}
             onPress={() => {
-              this.unfollow()
+              this.unfollowUser()
             }}
           >
             <FontAwesomeIcon name="remove" size={STYLES.smallIcon} color={Color.primaryColor}/>
@@ -153,6 +154,7 @@ class FollowingScreen extends React.Component {
       <FollowRequest 
         other_user_id={other_user_id}
         user_token={this.props.user.token}
+        parent_props={this.props}
       />
     );
 

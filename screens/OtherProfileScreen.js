@@ -66,7 +66,7 @@ class OtherProfileScreen extends React.Component {
 
     fetch(url, 
         {
-          method: 'POST',
+          method: 'GET',
           headers: new Headers({
             Authorization: this.props.user.token, 
           }),
@@ -75,9 +75,9 @@ class OtherProfileScreen extends React.Component {
         Alert.alert('Error connecting to server', res);
       })
       .then(
-        async res => {
-          res = await res.json(); //Parse response as JSON
-          if (res.success == true) {
+        async res_data => {
+          res_data = await res_data.json()
+          if (res_data.success == true) {
             if (following) { 
               this.props.requestFollow(user_id)
               this.setState({'following': false})

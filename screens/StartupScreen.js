@@ -35,7 +35,7 @@ class StartupScreen extends React.Component {
       // Storing User Info
       let user_info =  await getUserInfo(this.props.user.token);
       if (user_info == false) {
-        Alert.alert("Auto-login failure","Due to the previous error, auto-login failed. Please login manually.")
+        // Alert.alert("Auto-login failure","Due to the previous error, auto-login failed. Please login manually.")
         this.props.navigation.navigate('Splash')
       } else {
         this.props.storeUserInfo(user_info)
