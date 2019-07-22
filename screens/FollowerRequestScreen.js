@@ -87,7 +87,7 @@ class FollowRequest extends React.Component {
           this.setState({full_name:full_name});
           this.setState({username:username});
         } else {
-          console.log("Couldn't retrieve other user info");
+          Alert.alert("Couldn't retrieve other user info");
         }
       }
     );
@@ -175,7 +175,6 @@ class FollowerRequestScreen extends React.Component {
     if (!this.props.user.token) {
       return <Text>Please login to see your follow requests</Text>;
     }
-    console.log(this.props.user.follow_requests)
     let test_data = this.props.user.follow_requests.map(other_user_id => 
       <FollowRequest 
         other_user_id={other_user_id}

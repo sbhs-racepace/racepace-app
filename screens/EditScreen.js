@@ -129,7 +129,7 @@ class EditScreen extends React.Component {
             .then(async res => {
               res = await res.json();
               if (res.success == true) {
-                console.log('Image upload success');
+                Alert.alert('Image upload success');
               } else {
                 Alert.alert(res.error);
               }

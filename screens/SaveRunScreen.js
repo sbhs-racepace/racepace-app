@@ -71,7 +71,7 @@ class SaveRunScreen extends React.Component {
       Alert.alert('Error connecting to server', res);
     })
     .then( async () => {
-      console.log('Success Saving Route');
+      Alert.alert('Success Saving Run');
     });
   }
 
@@ -94,7 +94,7 @@ class SaveRunScreen extends React.Component {
       Alert.alert('Error connecting to server', res);
     })
     .then( async () => {
-      console.log('Success Saving Run');
+      Alert.alert('Success Saving Run');
     });
   }
 

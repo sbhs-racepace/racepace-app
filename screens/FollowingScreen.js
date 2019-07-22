@@ -84,7 +84,7 @@ class FollowRequest extends React.Component {
           full_name = res_data.info.full_name
           this.setState({full_name:full_name, username:username});
         } else {
-          console.log("Couldn't retrieve other user info");
+          Alert.alert("Couldn't retrieve other user info");
         }
       }
     );
@@ -106,7 +106,6 @@ class FollowRequest extends React.Component {
       let res_data = await res.json();
       if (res_data.success == true) {
         this.props.unfollow(this.state.other_user_id)
-        console.log(this.props.user.following)
         Alert.alert("Successfuly Unfollowed")
       } else {
         Alert.alert("Unfollow Unsuccessfully");

@@ -120,7 +120,6 @@ class FindFriendsScreen extends React.Component {
       async res => {
         res = await res.json(); //Parse response as JSON
         let info = res['info']
-        console.log(info)
         this.props.navigation.navigate('OtherProfile', {info:info, user_id: user.user_id})
       }
     );

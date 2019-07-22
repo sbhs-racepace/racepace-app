@@ -83,7 +83,7 @@ class FollowRequest extends React.Component {
           this.setState({full_name:full_name});
           this.setState({username:username});
         } else {
-          console.log("Couldn't retrieve other user info");
+          Alert.alert("Couldn't retrieve other user info");
         }
       }
     );
