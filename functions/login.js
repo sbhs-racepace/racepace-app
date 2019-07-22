@@ -11,7 +11,7 @@ export async function getUserInfo(token) {
   let api_url = global.serverURL + '/api/get_info';
   let user_info = false;
   await fetch(api_url, {
-    method: 'POST',
+    method: 'GET',
     headers: new Headers({
       Authorization: token,
     }),

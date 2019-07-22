@@ -134,28 +134,28 @@ class EditScreen extends React.Component {
                 Alert.alert(res.error);
               }
             });
-          fetch(global.serverURL + '/api/update_profile', {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: new Headers({
-              Authorization: this.props.user.token,
-            }),
-          })
-            .catch(res => {
-              Alert.alert('Error connecting to server', res);
-            })
-            .then(async res => {
-              res = await res.json();
-              if (res.success == true) {
-                let user_info = await getUserInfo(this.props.user.token);
-                await this.props.storeUserInfo(user_info);
-                Alert.alert('Changed User Details');
-                this.props.navigation.navigate('Profile');
-              } else {
-                Alert.alert(res.error);
-              }
-            });
         }
+        fetch(global.serverURL + '/api/update_profile', {
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: new Headers({
+            Authorization: this.props.user.token,
+          }),
+        })
+          .catch(res => {
+            Alert.alert('Error connecting to server', res);
+          })
+          .then(async res => {
+            res = await res.json();
+            if (res.success == true) {
+              let user_info = await getUserInfo(this.props.user.token);
+              await this.props.storeUserInfo(user_info);
+              Alert.alert('Changed User Details');
+              this.props.navigation.navigate('Profile');
+            } else {
+              Alert.alert(res.error);
+            }
+          });
       }
     }
   }
