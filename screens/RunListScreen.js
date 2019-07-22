@@ -58,12 +58,13 @@ class RunItem extends React.Component {
 class RunListScreen extends React.Component {
   render() {
     if (!this.props.user.token) {
-      return <Text>Please login to see your runs</Text>;
+      return <Text style={STYLES.text}>Please login to see your runs</Text>;
     }
 
     let runs = this.props.user.runs.map(run => 
       <RunItem 
         run={run}
+        onPress={() => this.props.navigation.navigate('ExtendedDetails', {run: run})}
       />
     );
 

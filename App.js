@@ -12,7 +12,7 @@ import {
 } from 'react-navigation';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
-
+import ExtendedDetailsScreen from './screens/ExtendedDetailsScreen';
 import { View } from 'react-native';
 import EditScreen from './screens/EditScreen';
 import FeedScreen from './screens/FeedScreen';
@@ -105,6 +105,10 @@ const LoginNavigator = createStackNavigator({
   },
   OtherStats: {
     screen: RunOtherStatsScreen,
+    navigationOptions: { header: null },
+  },
+  ExtendedDetails: {
+    screen: ExtendedDetailsScreen,
     navigationOptions: { header: null },
   },
   Paused: {
