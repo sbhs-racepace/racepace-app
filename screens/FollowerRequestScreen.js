@@ -100,7 +100,7 @@ class FollowRequest extends React.Component {
   async acceptRequest() {
     let api_url = global.serverURL+`/api/acceptFollowRequest/${this.state.other_user_id}`
     await fetch(api_url, {
-      method: 'POST',
+      method: 'GET',
       headers: new Headers({
         Authorization: this.props.user_token, // Taking user_token from parent
       }),
@@ -122,7 +122,7 @@ class FollowRequest extends React.Component {
   async declineRequest() {
     let api_url = global.serverURL+`/api/declineFollowRequest/${this.state.other_user_id}`
     await fetch(api_url, {
-      method: 'POST',
+      method: 'GET',
       headers: new Headers({
         Authorization: this.props.user_token, // Taking user_token from parent
       }),
