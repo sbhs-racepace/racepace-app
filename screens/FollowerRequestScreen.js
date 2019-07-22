@@ -72,7 +72,7 @@ class FollowRequest extends React.Component {
       {
         method: 'GET',
         headers: {
-          authorization: this.props.user_token
+          authorization: this.props.user_token // Other User
         }
       })
     .catch(res => {
@@ -108,12 +108,13 @@ class FollowRequest extends React.Component {
       }),
     })
     .then( async res => {
+      Alert.alert('afsdasdf')
       let res_data = await res.json();
       if (res_data.success == true) {
-        this.props.acceptFollowRequest(this.state.other_user_id)
         Alert.alert("Request Successfully Accepted")
+        this.props.acceptFollowRequest(this.state.other_user_id)
       } else {
-        console.log("Couldn't accept request");
+        Alert.alert("Couldn't accept request");
       }
     })
     .catch(error => {
@@ -134,10 +135,10 @@ class FollowRequest extends React.Component {
     .then( async res => {
       let res_data = await res.json();
       if (res_data.success == true) {
-        this.declineFollowRequest(this.state.other_user_id)
         Alert.alert("Request Successfuly Declined")
+        this.declineFollowRequest(this.state.other_user_id)
       } else {
-        console.log("Couldn't decline request");
+        Alert.alert("Couldn't decline request");
       }
     })
     .catch(error => {
@@ -179,7 +180,7 @@ class FollowerRequestScreen extends React.Component {
     if (!this.props.user.token) {
       return <Text>Please login to see your follow requests</Text>;
     }
-
+    console.log(this.props.user.follow_requests)
     let test_data = this.props.user.follow_requests.map(other_user_id => 
       <FollowRequest 
         other_user_id={other_user_id}

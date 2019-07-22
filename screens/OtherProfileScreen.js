@@ -46,7 +46,6 @@ class OtherProfileScreen extends React.Component {
   constructor (props) {
     super(props)
     let info = this.props.navigation.state.params.info
-    console.log(info)
 
     this.state = {
         info: info,
@@ -58,19 +57,20 @@ class OtherProfileScreen extends React.Component {
   followUser() {
 
     let following = this.state.following 
-    let user_id = this.props.navigation.state.params['user_id']
-    let url = global.serverURL+`/api/sendFollowRequest/${user_id}`
+    let url = global.serverURL+'/api/sendFollowRequest'
+    let data = { other_user_id:this.props.navigation.state.params['user_id'] }
 
     if (following) {
-        url = global.serverURL+`/api/unfollow/${user_id}`
+      // url = global.serverURL+`/api/unfollow`
     }
 
     fetch(url, 
         {
           method: 'POST',
-          headers: {
-            authorization: this.props.user.token
-          }
+          body: JSON.stringify(data),
+          headers: new Headers({
+            Authorization: this.props.user.token, 
+          }),
         })
       .catch(res => {
         Alert.alert('Error connecting to server', res);
@@ -78,11 +78,16 @@ class OtherProfileScreen extends React.Component {
       .then(
         async res => {
           res = await res.json(); //Parse response as JSON
-          if (following) { 
-            this.props.requestFollow(user_id)
-            this.setState({'following': false})
+          if (res.success == true) {
+            if (following) { 
+              this.props.requestFollow(user_id)
+              this.setState({'following': false})
+            } else {
+                this.setState({'requested': true})
+            }
+            Alert.alert("Requested Follow")
           } else {
-              this.setState({'requested': true})
+            Alert.alert("Couldn't follow user")
           }
 
         }
@@ -96,25 +101,24 @@ class OtherProfileScreen extends React.Component {
     let following = this.state.following
     let requested = this.state.requested
 
-    const Nav = createMaterialTopTabNavigator({
-        Stats: { screen: StatsScreen },
-        Routes: { screen: RouteListScreen },
-        Saved: {screen: SavedRunListScreen},
-    }, {
-      initialRouteName: this.props.navigation.state.params == undefined ? 'Stats' : this.props.navigation.state.params.screen,
-      tabBarOptions: {
-        activeTintColor: Color.textColor,
-        indicatorStyle: {
-            backgroundColor: Color.primaryColor
-        },
-        inactiveTintColor: Color.offColor,
-        style: { backgroundColor: Color.buttonColor }
-      }
-    }
-    )
+    // const Nav = createMaterialTopTabNavigator({
+    //     Stats: { screen: StatsScreen },
+    //     Routes: { screen: RouteListScreen },
+    //     Saved: {screen: SavedRunListScreen},
+    // }, {
+    //   initialRouteName: this.props.navigation.state.params == undefined ? 'Stats' : this.props.navigation.state.params.screen,
+    //   tabBarOptions: {
+    //     activeTintColor: Color.textColor,
+    //     indicatorStyle: {
+    //         backgroundColor: Color.primaryColor
+    //     },
+    //     inactiveTintColor: Color.offColor,
+    //     style: { backgroundColor: Color.buttonColor }
+    //   }
+    // }
+    // )
 
-    const AppContainer = createAppContainer(Nav)
-    console.log(info)
+    // const AppContainer = createAppContainer(Nav)
 
     return (
       <View style={{backgroundColor: Color.darkBackground, flex:1}}>
@@ -171,9 +175,9 @@ class OtherProfileScreen extends React.Component {
           </View>
           <Text multiline={true} style={[STYLES.text,{margin:"4%", marginTop:0}]}>Bio: {info.bio}</Text>
 
-            <View style={{ backgroundColor: Color.darkBackground, height:windowHeight * 0.8}}>
+            {/* <View style={{ backgroundColor: Color.darkBackground, height:windowHeight * 0.8}}>
                 <AppContainer style={{ flex:1 }}/>
-            </View>
+            </View> */}
         </ScrollView>        
       </View>
     );

@@ -102,7 +102,7 @@ class FollowRequest extends React.Component {
       method: 'POST',
       body: JSON.stringify(data),
       headers: new Headers({
-        Authorization: this.props.user_token, // Taking user_token from parent
+        Authorization: this.props.user_token, // Other User
       }),
     })
     .then( async res => {

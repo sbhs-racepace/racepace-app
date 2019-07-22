@@ -68,7 +68,7 @@ class FollowRequest extends React.Component {
       {
         method: 'GET',
         headers: {
-          authorization: this.props.user_token
+          authorization: this.props.user_token // Other User
         }
       })
     .catch(res => {
