@@ -29,6 +29,8 @@ class FeedScreen extends React.Component {
       return (
         <FeedItem
           userid={item.user_id}
+          runid={item.route.id}
+          token={this.props.user.token}
           username={item.user_name}
           posttime={item.route.start_time}
           routename={item.route.description}
