@@ -2,9 +2,8 @@
 
 import '../global';
 import { Alert, AsyncStorage } from 'react-native';
-import Expo from 'expo';
 import { Google } from 'expo';
-import io from 'socket.io-client';
+import socketIO from 'socket.io-client';
 
 
 export async function getUserInfo(token) {
@@ -20,10 +19,14 @@ export async function getUserInfo(token) {
       let res_data = await res.json();
       if (res_data.success) {
         user_info = await res_data['info'];
-        let socket = io(
+        let socket = socketIO(
           `${global.serverURL}?token=${token}`,
           { transports: ['websocket'] }
         );
+        socket.connect(); 
+        socket.on('connect', () => { 
+          console.log('connected to socket server'); 
+        });
         user_info.socket = socket;
       } else {
         Alert.alert('Error', res_data.error);
