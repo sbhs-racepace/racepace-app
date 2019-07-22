@@ -139,12 +139,8 @@ class SaveRunScreen extends React.Component {
               text="Post and Save Run"
               onPress={async ()=> {
                 await this.saveRun()
-                if (this.props.run.run_info.route == null) {
-                  this.props.navigation.navigate('Feed');
-                  this.props.endRun();
-                } else {
-                  this.props.navigation.navigate('SaveRoute');
-                }
+                this.props.navigation.navigate('Feed');
+                this.props.endRun();
               }}
             />
             <Text style={[{alignSelf:'center'}, STYLES.text_style]}>Or</Text>
@@ -153,12 +149,8 @@ class SaveRunScreen extends React.Component {
               text="Just Save Run"
               onPress={async ()=> {
                 await this.addRun()
-                if (this.props.run.run_info.route == null) {
-                  this.props.navigation.navigate('Feed');
-                  this.props.endRun();
-                } else {
-                  this.props.navigation.navigate('SaveRoute');
-                }
+                this.props.navigation.navigate('Feed');
+                this.props.endRun();
               }}
             />
           </View>

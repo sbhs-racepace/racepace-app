@@ -76,6 +76,10 @@ class SaveRouteScreen extends React.Component {
   render() {
     return (
       <View style={{flex: 1, backgroundColor: Color.lightBackground, alignItems:'center'}}>
+        <BackButtonHeader
+          title="Save Route Screen"
+          onPress={this.props.navigation.goBack}
+        />
         <View style={{flex:4, justifyContent:'space-evenly', alignItems:'center'}}>
           <Text style={STYLES.title_style}>Would you like to save your route?</Text>
           <TextInput
@@ -112,25 +116,14 @@ class SaveRouteScreen extends React.Component {
             defaultValue='Route Description'
           />
         </View>
-        <View style={{flex:1, justifyContent:'space-evenly', alignItems:'center'}}>
-          <Button 
-            style={{width:windowWidth*0.8, alignSelf:'center'}}
-            text="Save Route"
-            onPress={async ()=> {
-              await this.saveRoute()
-              this.props.navigation.navigate('Feed');
-            }}
-          />
-          <Text style={[{alignSelf:'center'}, STYLES.text_style]}>Or</Text>
-          <Button 
-            style={{width:windowWidth*0.8, alignSelf:'center'}}
-            text="Just Exit"
-            onPress={()=> {
-              this.props.navigation.navigate('Feed');
-              this.props.endRun();
-            }}
-          />
-        </View>
+        <Button 
+          style={{width:windowWidth*0.8, alignSelf:'center'}}
+          text="Save Route"
+          onPress={async ()=> {
+            await this.saveRoute()
+            this.props.navigation.navigate('Information');
+          }}
+        />
       </View>
     );
   }

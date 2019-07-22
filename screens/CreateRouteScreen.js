@@ -220,6 +220,9 @@ class RunSetupScreen extends React.Component {
             <FontAwesomeIcon name="location-arrow" size={20} color={Color.primaryColor}/>
             <Text style={[STYLES.text_style,{fontSize:14}]}>Set Start to Current Location</Text>
           </TouchableOpacity>
+          <View style={{width:'90%'}}>
+            <Text style={[STYLES.text_style]}>Route</Text>
+          </View>
 
           <View style={{flexDirection:'row', alignItems:'center', marginBottom: 20, width:"90%", justifyContent:'space-between'}}>
             <TextInput 
@@ -258,6 +261,9 @@ class RunSetupScreen extends React.Component {
           </View>
 
           <View style={{alignItems:'center', flexDirection:'column', width:'100%'}}>
+            <View style={{width:'90%'}}>
+              <Text style={[STYLES.text_style]}>Goal Pace</Text>
+            </View>
             <View style={{flexDirection:'row', justifyContent:'space-between', width:'90%', marginBottom:20}}>
               <TextInput 
                 style={{width:'45%'}}
