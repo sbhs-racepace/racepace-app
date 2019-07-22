@@ -82,7 +82,7 @@ class OtherProfileScreen extends React.Component {
               this.props.requestFollow(user_id)
               this.setState({'following': false})
             } else {
-                this.setState({'requested': true})
+              this.setState({'requested': true})
             }
             Alert.alert("Requested Follow")
           } else {

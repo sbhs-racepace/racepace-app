@@ -57,23 +57,26 @@ export default function userInfoReducer(state = USER_INFO_INITIAL_STATE, action)
       return USER_INFO_INITIAL_STATE;
     case DECLINE_FOLLOW_REQUEST:
       return Object.assign({}, state, {
-        follow_requests: filterList(state.follow_requests, action.other_user_id)
+        follow_requests: filterList(state.follow_requests, action.other_user_id) // Removing other_user_id from follow requests
       })
     case ACCEPT_FOLLOW_REQUEST:
       return Object.assign({}, state, {
-        follow_requests: filterList(state.follow_requests, action.other_user_id),
+        follow_requests: filterList(state.follow_requests, action.other_user_id), // Removing other_user_id from follow reqeusts
         followers: [
           ...state.followers,
-          action.other_user_id
+          action.other_user_id // Adding other_user_id to followers
         ]
       })
     case UNFOLLOW:
       return Object.assign({}, state, {
-        following: filterList(state.following, action.other_user_id),
+        following: filterList(state.following, action.other_user_id), // Removing other_user_id from following
       })
     case REQUEST_FOLLOW:
       return Object.assign({}, state, {
-        pending_follows: filterList(state.pending_follows, action.other_user_id),
+        pending_follows: [
+          ...pending_follows,
+          action.other_user_id // adding other user id to pending follows
+        ]
       })
     default:
       return state
