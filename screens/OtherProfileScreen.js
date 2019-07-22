@@ -55,6 +55,7 @@ class OtherProfileScreen extends React.Component {
   }
 
   followUser() {
+    let user_id = this.props.navigation.state.params['user_id']
 
     let following = this.state.following 
     let url = global.serverURL+`/api/sendFollowRequest/${user_id}`

@@ -96,12 +96,9 @@ class FollowRequest extends React.Component {
   }
 
   async unfollow() {
-    let api_url = `${global.serverURL}/api/unfollow`
-    console.log(api_url)
-    let data = { other_user_id:this.state.other_user_id }
+    let api_url = global.serverURL+`/api/unfollow/${this.state.other_user_id}`
     await fetch(api_url, {
       method: 'POST',
-      body: JSON.stringify(data),
       headers: new Headers({
         Authorization: this.props.user_token, // Other User
       }),
