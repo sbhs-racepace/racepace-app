@@ -1,5 +1,4 @@
 // Jason Yu
-//TODO: Fix update
 import React from 'react';
 import {
   ScrollView,
@@ -43,8 +42,12 @@ class FeedScreen extends React.Component {
   }
 
   render() {
-    if (!this.props.user.token == null) {
-      return <Text>Please login to see your feed</Text>;
+    if (!this.props.user.token) {
+      return <Text style={{
+          backgroundColor: Color.darkBackground,
+          color:Color.textColor,
+          flex:1
+        }}>Please login to see your feed</Text>;
     } else if (this.state.reload) {
       request('/api/get_feed', 'POST', {}, this.props.user.token, feed => {
         this.setState({ feed: feed.feed_items, reload: false });
