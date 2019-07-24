@@ -93,12 +93,12 @@ class SaveRunScreen extends React.Component {
         Authorization: this.props.user.token,
       }),
     })
-    .catch(res => {
-      Alert.alert('Error connecting to server', res);
-    })
     .then( async () => {
       this.props.addSavedRun(data)
       Alert.alert('Success Saving Run');
+    })
+    .catch(res => {
+      Alert.alert('Error connecting to server', res);
     });
   }
 
