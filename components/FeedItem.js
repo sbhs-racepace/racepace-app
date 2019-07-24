@@ -1,56 +1,65 @@
 // Jason Yu
 
-import * as React from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
-import TextInput from './TextInput'
-import { Image } from 'react-native-elements'
-import Button from './Button';
-import request from '../functions/request';
-import '../global';
-import Color from '../constants/Color';
+import * as React from "react";
+import {
+  Text,
+  TextInput,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  KeyboardAvoidingView
+} from "react-native";
+import { Image } from "react-native-elements";
+import MapView from "react-native-maps";
+import { Polyline } from "react-native-maps";
+import Button from "./Button";
+import request from "../functions/request";
+import "../global";
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
+import Color from "../constants/Color";
+import { noLabel, cobalt, lunar, neutral_blue } from "../constants/mapstyle";
 
 const STYLES = StyleSheet.create({
   feed_item: {
     borderWidth: 5,
     borderColor: Color.buttonColor,
-    padding: '5%',
-    width: '100%',
-    backgroundColor: Color.lightBackground,
+    padding: "5%",
+    width: "100%",
+    backgroundColor: Color.lightBackground
   },
   profilePic: {
     width: 60,
     height: 60,
     borderRadius: 30,
-    margin: '3%',
+    margin: "3%"
   },
   user_info: {
-    flexDirection: 'column',
+    flexDirection: "column"
   },
   user_profile: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center"
   },
-  routePic: {
-      aspectRatio: 1.7,
-      width: '100%',
-      height: undefined,
-      borderRadius: 5
-
+  map: {
+    width: "100%",
+    height: 200,
+    borderRadius: 5
   },
   likeCommentButton: {
-    width: '50%',
-    borderWidth: 0,
+    width: "50%",
+    borderWidth: 0
   },
   text: {
-    color: Color.textColor,
+    color: Color.textColor
   },
   likeCommentCombo: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    width: '100%',
+    marginTop: 5,
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    width: "100%",
     borderRadius: 10,
-    padding: '0%'
-  },
+    padding: "0%"
+  }
 });
 
 class Comment extends React.Component {
@@ -60,9 +69,11 @@ class Comment extends React.Component {
 
   render() {
     return (
-      <View style={{ flexDirection: 'row' }}>
-        <Text style={{ fontWeight: 'bold' }}>{this.props.name}:</Text>
-        <Text> {this.props.comment}</Text>
+      <View style={{ flexDirection: "row" }}>
+        <Text style={{ fontWeight: "bold", color: Color.textColor }}>
+          {this.props.name}:
+        </Text>
+        <Text style={{ color: Color.textColor }}> {this.props.comment}</Text>
       </View>
     );
   }
@@ -71,36 +82,61 @@ class Comment extends React.Component {
 export default class FeedItem extends React.Component {
   constructor(props) {
     super(props);
+    console.log(this.props.likes);
     this.state = {
-      likes: this.props.likes || [],
-      liked: false,
+      likes: this.props.likes.length,
+      liked: this.props.likes.includes(this.props.user.user_id),
       comments: this.props.comments || [],
-      commentInput: '',
-      showComments: false,
+      commentInput: "",
+      showComments: false
     };
+    this.likedBefore = this.props.likes.includes(this.props.user.user_id);
   }
 
   like() {
-    this.setState(prevState => {
-      return {
-        liked: !prevState.liked,
-        likes: this.props.likes + !prevState.liked,
-      };
-    });
-    request('api/likeRoute', 'POST', { id: this.props.id }, true);
-  }
-
-  comment() {
-    this.setState({
-      showComments: true,
-    });
+    this.setState(
+      prevState => {
+        return {
+          liked: !prevState.liked,
+          likes: this.props.likes.length + !prevState.liked - this.likedBefore
+        };
+      },
+      () =>
+        request(
+          "/api/update_run",
+          "POST",
+          {
+            owner: this.props.ownerid,
+            runID: this.props.runid,
+            like: this.state.liked
+          },
+          this.props.user.token
+        )
+    );
   }
 
   sendComment() {
+    if (this.state.commentInput == "") {
+      return 0; //Do not send empty comment
+    }
+    request(
+      "/api/update_run",
+      "POST",
+      {
+        owner: this.props.ownerid,
+        runID: this.props.runid,
+        comment: this.state.commentInput
+      },
+      this.props.user.token
+    );
     this.setState(prevState => {
-      prevState.comments.push([global.user.full_name, this.state.commentInput]);
+      prevState.comments.push([
+        this.props.user.full_name,
+        this.state.commentInput
+      ]);
       return {
         comments: prevState.comments,
+        commentsInput: ""
       };
     });
   }
@@ -110,64 +146,108 @@ export default class FeedItem extends React.Component {
       <View style={STYLES.feed_item}>
         <View style={STYLES.user_profile}>
           <Image
-            key={Math.random()}
             style={STYLES.profilePic}
             source={{
-              uri: `${global.serverURL}/api/avatars/${this.props.userid}.png`,
+              uri: `${global.serverURL}/api/avatars/${this.props.ownerid}.png?rand=${Math.random()}`
             }}
           />
           <View style={STYLES.user_info}>
-            <Text style={STYLES.text}>{this.props.username}</Text>
+            <Text style={[STYLES.text, { fontWeight: "bold" }]}>
+              {this.props.username}
+            </Text>
             <Text style={STYLES.text}>{this.props.posttime}</Text>
+            <Text style={[STYLES.text, { fontWeight: "bold" }]}>
+              {this.props.routename}
+            </Text>
           </View>
         </View>
 
-        <View style={{ padding: '5%' , paddingLeft: '0%'}}>
-          <Text style={STYLES.text}>{this.props.routename}</Text>
-          <Text style={STYLES.text}>Description: {this.props.description}</Text>
-          <Text style={STYLES.text}>Length: {this.props.length}km</Text>
+        <View style={{ padding: "5%", paddingLeft: "0%" }}>
+          <Text style={STYLES.text}>{this.props.description}</Text>
+          <Text style={STYLES.text}>
+            Length: {this.props.length.toFixed(1)}m
+          </Text>
         </View>
 
-        <Image source={require('../assets/map.png')} style={STYLES.routePic} />
-        <View style={{ flexDirection: "row", justifyContent: 'space-between', width:"100%", padding: '5%' }}>
-          <Text style={STYLES.text}>{this.state.likes.length} Likes</Text>
-          <Text style={STYLES.text}>{this.state.comments.length} Comments</Text>
+        <MapView
+          style={STYLES.map}
+          provider={MapView.PROVIDER_GOOGLE} // Usage of google maps
+          customMapStyle={lunar}
+          showsMyLocationButton={false}
+          region={{
+            ...this.props.route[0],
+            latitudeDelta: 0.05,
+            longitudeDelta: 0.05,
+          }}
+        >
+          <Polyline
+            coordinates={this.props.route}
+            strokeColor={Color.primaryColor}
+            strokeWidth={4}
+          />
+        </MapView>
+
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            width: "100%"
+          }}
+        >
+          <Text style={STYLES.text}>
+            {this.state.likes} Like{this.state.likes == 1 ? "" : "s"}
+          </Text>
+          <Text style={STYLES.text}>
+            {this.state.comments.length} Comment
+            {this.state.comments.length == 1 ? "" : "s"}
+          </Text>
         </View>
         {this.state.showComments && (
           <View>
             {this.state.comments.map(comment => (
               <Comment name={comment[0]} comment={comment[1]} />
             ))}
-            <View style={{ flexDirection: 'row', marginBottom: 5 }}>
+            <View style={{ flexDirection: "row", marginBottom: 5 }}>
               <TextInput
                 placeholder="Enter a comment here..."
                 style={{
-                  width: '90%',
+                  width: "90%",
                   borderRadius: 10,
                   borderWidth: 1,
                   padding: 1,
-                  fontSize: 20,
-                  color:Color.textColor,
+                  fontSize: 14,
+                  color: Color.textColor
                 }}
                 onChangeText={text => this.setState({ commentInput: text })}
               />
               <Button
-                style={{ height: 30, width: 30, borderRadius: 15, marginLeft: 5 }}
+                style={{
+                  height: 30,
+                  width: 30,
+                  borderRadius: 15,
+                  marginLeft: 5
+                }}
                 onPress={this.sendComment.bind(this)}
-              />
+              >
+                <FontAwesome5Icon
+                  name="paper-plane"
+                  size={STYLES.smallIcon}
+                  color={Color.primaryColor}
+                />
+              </Button>
             </View>
           </View>
         )}
         <View style={STYLES.likeCommentCombo}>
           <Button
-            text="Like"
+            text={this.state.liked ? "Liked" : "Like"}
             style={STYLES.likeCommentButton}
             onPress={this.like.bind(this)}
           />
           <Button
             text="Comment"
             style={STYLES.likeCommentButton}
-            onPress={this.comment.bind(this)}
+            onPress={() => this.setState({ showComments: true })}
           />
         </View>
       </View>

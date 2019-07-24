@@ -144,7 +144,7 @@ class ProfileScreen extends React.Component {
                 key={Math.random()}
                 style={STYLES.profile_image}
                 source={{
-                uri: `${global.serverURL}/api/avatars/${this.props.user.user_id}.png`
+                uri: `${global.serverURL}/api/avatars/${this.props.user.user_id}.png?rand=${Math.random()}`
                 }}
               />
             </View>
