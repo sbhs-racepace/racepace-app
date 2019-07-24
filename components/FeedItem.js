@@ -184,6 +184,10 @@ export default class FeedItem extends React.Component {
             latitudeDelta: 0.05,
             longitudeDelta: 0.05,
           }}
+          pitchEnabled={false}
+          rotateEnabled={false}
+          scrollEnabled={false}
+          zoomEnabled={false}
         >
           <Polyline
             coordinates={this.props.route}

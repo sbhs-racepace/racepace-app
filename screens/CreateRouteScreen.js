@@ -283,13 +283,13 @@ class RunSetupScreen extends React.Component {
               />
             </View>
 
-            <CheckBox
+            {/* <CheckBox
               containerStyle={{backgroundColor:Color.lightBackground2, borderColor:Color.darkBackground, width:'90%', height:50, borderRadius:5,}}
               textStyle={{color:Color.textColor}}
               title='Enable Real Time Tracking'
               checked={this.state.real_time_tracking}
               onPress={() => {this.setState({real_time_tracking:!this.state.real_time_tracking})}}
-            />
+            /> */}
           </View>
         </ScrollView>
         <Button 
