@@ -74,14 +74,6 @@ class EditScreen extends React.Component {
   }
 
   async saveChanges() {
-    let equivalent_new =
-      this.state.new_password == this.state.confirmation_password;
-    let data = {
-      username: this.state.new_username,
-      password: this.state.new_password,
-      bio: this.state.bio,
-      full_name: this.state.full_name,
-    };
     if (
       this.state.current_password != '' &&
       this.state.current_password == this.state.new_password
@@ -109,12 +101,44 @@ class EditScreen extends React.Component {
       Alert.alert('No changes made');
       return 0;
     }
+
+    let data = {
+      username: this.state.new_username,
+      password: this.state.new_password,
+      bio: this.state.bio,
+      full_name: this.state.full_name,
+    };
     let login_data = await login(
       this.props.user.email,
       this.state.current_password
     );
+    let not_changing_password = (this.state.confirmation_password == '' && this.state.new_password == '')
+    let equivalent_new = this.state.new_password == this.state.confirmation_password;
+
     if (login_data.success) {
-      if (equivalent_new) {
+      if (equivalent_new || not_changing_password)  {
+        fetch(global.serverURL + '/api/update_profile', {
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: new Headers({
+            Authorization: this.props.user.token,
+          }),
+        })
+        .catch(res => {
+          Alert.alert('Error connecting to server', res);
+        })
+        .then(async res => {
+          res = await res.json();
+          if (res.success == true) {
+            let user_info = await getUserInfo(this.props.user.token);
+            await this.props.storeUserInfo(user_info);
+            Alert.alert('Changed User Details');
+            this.props.navigation.navigate('Profile');
+          } else {
+            Alert.alert(res.error);
+          }
+        });
+        
         if (this.base64 != false) {
           fetch(global.serverURL + '/api/avatars/update', {
             method: 'PATCH',
@@ -123,39 +147,18 @@ class EditScreen extends React.Component {
               Authorization: this.props.user.token,
             }),
           })
-            .catch(res => {
-              Alert.alert('Error connecting to server', res);
-            })
-            .then(async res => {
-              res = await res.json();
-              if (res.success == true) {
-                Alert.alert('Image upload success');
-              } else {
-                Alert.alert(res.error);
-              }
-            });
-        }
-        fetch(global.serverURL + '/api/update_profile', {
-          method: 'POST',
-          body: JSON.stringify(data),
-          headers: new Headers({
-            Authorization: this.props.user.token,
-          }),
-        })
           .catch(res => {
             Alert.alert('Error connecting to server', res);
           })
           .then(async res => {
             res = await res.json();
             if (res.success == true) {
-              let user_info = await getUserInfo(this.props.user.token);
-              await this.props.storeUserInfo(user_info);
-              Alert.alert('Changed User Details');
-              this.props.navigation.navigate('Profile');
+              Alert.alert('Image upload success');
             } else {
               Alert.alert(res.error);
             }
           });
+        }
       }
     }
   }

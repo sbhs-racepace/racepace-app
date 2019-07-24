@@ -15,6 +15,8 @@ import Color from '../constants/Color'
 import { connect } from 'react-redux';
 import { requestFollow } from '../functions/user_info_action'
 import { bindActionCreators } from 'redux';
+import noCacheHeader from '../constants/no_cache_header'
+
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
@@ -63,13 +65,12 @@ class OtherProfileScreen extends React.Component {
     if (following) {
       // url = global.serverURL+`/api/unfollow`
     }
-
+    let header = noCacheHeader
+    header.set('Authorization', this.props.user.token);
     fetch(url, 
         {
           method: 'GET',
-          headers: new Headers({
-            Authorization: this.props.user.token, 
-          }),
+          headers: header,
         })
       .catch(res => {
         Alert.alert('Error connecting to server', res);

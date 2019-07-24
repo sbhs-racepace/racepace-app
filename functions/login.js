@@ -2,6 +2,7 @@
 
 import '../global';
 import { Alert, AsyncStorage } from 'react-native';
+import noCacheHeader from '../constants/no_cache_header'
 import { Google } from 'expo';
 import socketIO from 'socket.io-client';
 
@@ -9,11 +10,11 @@ import socketIO from 'socket.io-client';
 export async function getUserInfo(token) {
   let api_url = global.serverURL + '/api/get_info';
   let user_info = false;
+  let header = noCacheHeader;
+  header.set('Authorization', token);
   await fetch(api_url, {
     method: 'GET',
-    headers: new Headers({
-      Authorization: token,
-    }),
+    headers: header,
   })
     .then(async res => {
       let res_data = await res.json();
@@ -153,7 +154,7 @@ export async function googleLogin() {
     };
     const result = await Google.logInAsync(config);
     if (result.type == 'success') {
-      fetch(url, {
+      await fetch(url, {
         method: 'POST',
         body: JSON.stringify({ idToken: result.idToken }),
       })

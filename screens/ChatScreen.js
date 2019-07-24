@@ -26,7 +26,7 @@ class ChatScreen extends React.Component {
 
   async componentWillMount() {
     let messagesURL = global.serverURL + '/api/groups/global/messages?before=' + (new Date()).toUTCString()
-    fetch(messagesURL, {
+    await fetch(messagesURL, {
       method: 'GET',
       headers: new Headers({
         'Authorization': this.props.user.token,

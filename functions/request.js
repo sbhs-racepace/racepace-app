@@ -24,7 +24,7 @@ export default async function request(
     };
   }
 
-  fetch(global.serverURL + endpoint, options)
+  await fetch(global.serverURL + endpoint, options)
   .catch(res => {
     Alert.alert('Error connecting to server', res.message);
   })
