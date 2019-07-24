@@ -176,10 +176,9 @@ class EditScreen extends React.Component {
             }}>
             <View style={{ flex: 2 / 5 }}>
               <Image
-                key={Math.random()}
                 style={STYLES.profile_image}
                 source={{
-                  uri: this.state.uri,
+                  uri: this.state.uri+`?rand=${Math.random()}`,
                 }}
               />
               <Button
@@ -191,7 +190,7 @@ class EditScreen extends React.Component {
                   });
                   if (type == 'success') {
                     let result = await ImageManipulator.manipulateAsync(
-                      this.state.uri,
+                      uri,
                       [{resize: {width:256}}],
                       {
                         base64: true,
