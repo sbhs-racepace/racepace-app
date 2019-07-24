@@ -1,6 +1,6 @@
 // JAson YU
 
-import { STORE_LOGIN_INFO, STORE_USER_INFO, LOGOUT, DECLINE_FOLLOW_REQUEST, ACCEPT_FOLLOW_REQUEST, UNFOLLOW, REQUEST_FOLLOW} from './user_info_action'
+import { STORE_LOGIN_INFO, STORE_USER_INFO, LOGOUT, DECLINE_FOLLOW_REQUEST, ACCEPT_FOLLOW_REQUEST, UNFOLLOW, REQUEST_FOLLOW, UPDATE_USER_INFO} from './user_info_action'
 
 const USER_INFO_INITIAL_STATE =  {
   full_name: "guest",
@@ -78,6 +78,19 @@ export default function userInfoReducer(state = USER_INFO_INITIAL_STATE, action)
           action.other_user_id // adding other user id to pending follows
         ]
       })
+    case UPDATE_USER_INFO:
+      let {username, bio , full_name} = action.update
+      let new_state = Object.assign({}, state);
+      if (username != '') {
+        new_state = Object.assign(new_state,{username:username})
+      }
+      if (bio != '') {
+        new_state = Object.assign(new_state,{bio:bio})
+      }
+      if (full_name != '') {
+        new_state = Object.assign(new_state,{full_name:full_name})
+      }
+      return new_state;
     default:
       return state
   }

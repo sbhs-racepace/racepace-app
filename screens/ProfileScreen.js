@@ -128,7 +128,7 @@ class ProfileScreen extends React.Component {
     const AppContainer = createAppContainer(Nav)
 
     return (
-    <KeyboardAvoidingView keyboardVerticalOffset={100} behavior="position" style={{backgroundColor: Color.darkBackground}}>
+    <KeyboardAvoidingView behavior="position" style={{backgroundColor: Color.darkBackground}}>
     <ScrollView>
       <View style={{
         flexDirection: 'column',
@@ -136,7 +136,7 @@ class ProfileScreen extends React.Component {
         backgroundColor: Color.lightBackground
       }}>
 
-        <Text style={[STYLES.text, { fontSize: 30, textAlign: 'center', paddingTop: '5%', fontFamily:'Roboto-Bold', color:Color.primaryColor}]}>{this.props.user.full_name}</Text>
+        <Text style={[STYLES.text, { fontSize: 30, textAlign: 'center', marginTop: '5%', fontFamily:'Roboto-Bold', color:Color.primaryColor}]}>{this.props.user.full_name}</Text>
         <View style={{ height: 150, padding: '3%' }}>
           <View style={{flexDirection: 'row',flex: 1}}>
             <View style={{flexDirection: 'row',flex: 1,alignItems: 'center'}}>

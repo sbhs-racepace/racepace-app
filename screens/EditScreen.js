@@ -20,7 +20,7 @@ import Button from '../components/Button';
 import BackButtonHeader from '../components/BackButtonHeader';
 import Color from '../constants/Color';
 import '../global.js';
-import { storeUserInfo, storeLoginInfo } from '../functions/user_info_action';
+import { updateUserInfo } from '../functions/user_info_action';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -131,7 +131,8 @@ class EditScreen extends React.Component {
           res = await res.json();
           if (res.success == true) {
             let user_info = await getUserInfo(this.props.user.token);
-            await this.props.storeUserInfo(user_info);
+            let updated_data = {username: data.username, bio: data.bio, full_name: data.full_name}
+            await this.props.updateUserInfo(updated_data);
             Alert.alert('Changed User Details');
             this.props.navigation.navigate('Profile');
           } else {
@@ -294,7 +295,7 @@ class EditScreen extends React.Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ storeUserInfo, storeLoginInfo }, dispatch);
+  return bindActionCreators({ updateUserInfo }, dispatch);
 }
 
 function mapStateToProps(state) {
