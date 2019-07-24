@@ -28,14 +28,16 @@ class FeedScreen extends React.Component {
     let feed = this.state.feed.map(item => {
       return (
         <FeedItem
-          userid={item.user_id}
+          ownerid={item.user_id}
           runid={item.route.id}
-          token={this.props.user.token}
+          user={this.props.user}
           username={item.user_name}
-          posttime={item.route.start_time}
-          routename={item.route.description}
-          length={item.route.estimated_distance}
-          likes={item.route.likes.length}
+          posttime={item.route.run_info.start_time}
+          routename={item.route.name}
+          description={item.route.description}
+          length={item.route.run_info.estimated_distance}
+          route={item.route.run_info.route}
+          likes={item.route.likes}
           comments={item.route.comments}
         />
       );

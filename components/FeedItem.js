@@ -3,17 +3,21 @@
 import * as React from "react";
 import {
   Text,
+  TextInput,
   View,
   StyleSheet,
   TouchableOpacity,
   KeyboardAvoidingView
 } from "react-native";
-import TextInput from "./TextInput";
 import { Image } from "react-native-elements";
+import MapView from "react-native-maps";
+import { Polyline } from "react-native-maps";
 import Button from "./Button";
 import request from "../functions/request";
 import "../global";
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import Color from "../constants/Color";
+import { noLabel, cobalt, lunar, neutral_blue } from "../constants/mapstyle";
 
 const STYLES = StyleSheet.create({
   feed_item: {
@@ -36,10 +40,9 @@ const STYLES = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center"
   },
-  routePic: {
-    aspectRatio: 1.7,
+  map: {
     width: "100%",
-    height: undefined,
+    height: 200,
     borderRadius: 5
   },
   likeCommentButton: {
@@ -50,6 +53,7 @@ const STYLES = StyleSheet.create({
     color: Color.textColor
   },
   likeCommentCombo: {
+    marginTop: 5,
     flexDirection: "row",
     justifyContent: "flex-start",
     width: "100%",
@@ -66,8 +70,10 @@ class Comment extends React.Component {
   render() {
     return (
       <View style={{ flexDirection: "row" }}>
-        <Text style={{ fontWeight: "bold" }}>{this.props.name}:</Text>
-        <Text> {this.props.comment}</Text>
+        <Text style={{ fontWeight: "bold", color: Color.textColor }}>
+          {this.props.name}:
+        </Text>
+        <Text style={{ color: Color.textColor }}> {this.props.comment}</Text>
       </View>
     );
   }
@@ -76,13 +82,15 @@ class Comment extends React.Component {
 export default class FeedItem extends React.Component {
   constructor(props) {
     super(props);
+    console.log(this.props.likes);
     this.state = {
-      likes: this.props.likes || [],
-      liked: false,
+      likes: this.props.likes.length,
+      liked: this.props.likes.includes(this.props.user.user_id),
       comments: this.props.comments || [],
       commentInput: "",
       showComments: false
     };
+    this.likedBefore = this.props.likes.includes(this.props.user.user_id);
   }
 
   like() {
@@ -90,19 +98,20 @@ export default class FeedItem extends React.Component {
       prevState => {
         return {
           liked: !prevState.liked,
-          likes: this.props.likes + !prevState.liked
+          likes: this.props.likes.length + !prevState.liked - this.likedBefore
         };
       },
-      () => request(
-        "/api/update_run",
-        "POST",
-        {
-          owner: this.props.userid,
-          runID: this.props.runid,
-          like: this.state.liked,
-        },
-        this.props.token
-      );
+      () =>
+        request(
+          "/api/update_run",
+          "POST",
+          {
+            owner: this.props.ownerid,
+            runID: this.props.runid,
+            like: this.state.liked
+          },
+          this.props.user.token
+        )
     );
   }
 
@@ -114,16 +123,20 @@ export default class FeedItem extends React.Component {
       "/api/update_run",
       "POST",
       {
-        owner: this.props.userid,
+        owner: this.props.ownerid,
         runID: this.props.runid,
         comment: this.state.commentInput
       },
-      this.props.token
+      this.props.user.token
     );
     this.setState(prevState => {
-      prevState.comments.push([global.user.full_name, this.state.commentInput]);
+      prevState.comments.push([
+        this.props.user.full_name,
+        this.state.commentInput
+      ]);
       return {
-        comments: prevState.comments
+        comments: prevState.comments,
+        commentsInput: ""
       };
     });
   }
@@ -133,35 +146,61 @@ export default class FeedItem extends React.Component {
       <View style={STYLES.feed_item}>
         <View style={STYLES.user_profile}>
           <Image
-            key={Math.random()}
             style={STYLES.profilePic}
             source={{
-              uri: `${global.serverURL}/api/avatars/${this.props.userid}.png`
+              uri: `${global.serverURL}/api/avatars/${this.props.ownerid}.png?rand=${Math.random()}`
             }}
           />
           <View style={STYLES.user_info}>
-            <Text style={STYLES.text}>{this.props.username}</Text>
+            <Text style={[STYLES.text, { fontWeight: "bold" }]}>
+              {this.props.username}
+            </Text>
             <Text style={STYLES.text}>{this.props.posttime}</Text>
+            <Text style={[STYLES.text, { fontWeight: "bold" }]}>
+              {this.props.routename}
+            </Text>
           </View>
         </View>
 
         <View style={{ padding: "5%", paddingLeft: "0%" }}>
-          <Text style={STYLES.text}>{this.props.routename}</Text>
-          <Text style={STYLES.text}>Description: {this.props.description}</Text>
-          <Text style={STYLES.text}>Length: {this.props.length}km</Text>
+          <Text style={STYLES.text}>{this.props.description}</Text>
+          <Text style={STYLES.text}>
+            Length: {this.props.length.toFixed(1)}m
+          </Text>
         </View>
 
-        <Image source={require("../assets/map.png")} style={STYLES.routePic} />
+        <MapView
+          style={STYLES.map}
+          provider={MapView.PROVIDER_GOOGLE} // Usage of google maps
+          customMapStyle={lunar}
+          showsMyLocationButton={false}
+          region={{
+            ...this.props.route[0],
+            latitudeDelta: 0.05,
+            longitudeDelta: 0.05,
+          }}
+        >
+          <Polyline
+            coordinates={this.props.route}
+            strokeColor={Color.primaryColor}
+            strokeWidth={4}
+          />
+        </MapView>
+
         <View
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
-            width: "100%",
-            padding: "5%"
+            width: "100%"
           }}
         >
-          <Text style={STYLES.text}>{this.state.likes.length} Likes</Text>
-          <Text style={STYLES.text}>{this.state.comments.length} Comments</Text>
+          <Text style={STYLES.text}>
+            {this.state.likes} Like{this.state.likes == 1 ? "" : "s"}
+          </Text>
+          <Text style={STYLES.text}>
+            {this.state.comments.length} Comment
+            {this.state.comments.length == 1 ? "" : "s"}
+          </Text>
         </View>
         {this.state.showComments && (
           <View>
@@ -176,7 +215,7 @@ export default class FeedItem extends React.Component {
                   borderRadius: 10,
                   borderWidth: 1,
                   padding: 1,
-                  fontSize: 20,
+                  fontSize: 14,
                   color: Color.textColor
                 }}
                 onChangeText={text => this.setState({ commentInput: text })}
@@ -189,7 +228,13 @@ export default class FeedItem extends React.Component {
                   marginLeft: 5
                 }}
                 onPress={this.sendComment.bind(this)}
-              />
+              >
+                <FontAwesome5Icon
+                  name="paper-plane"
+                  size={STYLES.smallIcon}
+                  color={Color.primaryColor}
+                />
+              </Button>
             </View>
           </View>
         )}
