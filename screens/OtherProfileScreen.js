@@ -15,7 +15,6 @@ import Color from '../constants/Color'
 import { connect } from 'react-redux';
 import { requestFollow } from '../functions/user_info_action'
 import { bindActionCreators } from 'redux';
-import noCacheHeader from '../constants/no_cache_header'
 
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
@@ -48,11 +47,11 @@ class OtherProfileScreen extends React.Component {
   constructor (props) {
     super(props)
     let info = this.props.navigation.state.params.info
-
+    let string_user_id = String(this.props.user.user_id)
     this.state = {
         info: info,
-        following: info.followers.includes(this.props.user.user_id),
-        requested: info.follow_requests.includes(this.props.user.user_id)
+        following: info.followers.includes(string_user_id),
+        requested: info.follow_requests.includes(string_user_id)
     }
   }
 
@@ -62,7 +61,6 @@ class OtherProfileScreen extends React.Component {
     let following = this.state.following 
     let api_url = global.serverURL+'/api/sendFollowRequest'
 
-    let header = noCacheHeader
     await fetch(api_url, 
         {
           method: 'POST',

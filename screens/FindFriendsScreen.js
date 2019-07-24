@@ -105,10 +105,12 @@ class FindFriendsScreen extends React.Component {
       return
     }
 
+    let data = {other_user_id: user.user_id}
     await fetch(
       global.serverURL+'/api/get_other_info', 
       {
         method: 'POST',
+        body: JSON.stringify(data),
         headers: new Headers({'Authorization': this.props.user.token})
       })
     .catch(res => {
