@@ -65,27 +65,26 @@ class FollowRequest extends React.Component {
   }
 
   async get_details() {
-    await fetch(
-      global.serverURL+`/api/get_info/${this.state.other_user_id}`, 
+    let data = {other_user_id:this.state.other_user_id}
+    let api_url = global.serverURL+'/api/get_other_info'
+    await fetch(api_url, 
       {
-        method: 'GET',
-        headers: {
-          authorization: this.props.user_token
-        }
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: new Headers({'Authorization': this.props.user_token})
       })
     .catch(res => {
       Alert.alert('Error connecting to server', res);
     })
     .then(
-      async res => {
-        res_data = await res.json(); //Parse response as JSON
+      async res_data => {
+        res_data = await res_data.json()
         if (res_data.success == true) {
           username = res_data.info.username
           full_name = res_data.info.full_name
-          this.setState({full_name:full_name});
-          this.setState({username:username});
+          this.setState({full_name:full_name, username:username});
         } else {
-          console.log("Couldn't retrieve other user info");
+          Alert.alert("Couldn't retrieve other user info");
         }
       }
     );
@@ -95,25 +94,25 @@ class FollowRequest extends React.Component {
     await this.get_details()
   }
 
-  async unfollow() {
-    let api_url = global.serverURL+`/api/unfollow/${this.state.other_user_id}`
+  async unfollowUser() {
+    let api_url = global.serverURL+'/api/unfollow'
+    let data = {other_user_id:this.state.other_user_id}
     await fetch(api_url, {
       method: 'POST',
-      headers: new Headers({
-        Authorization: this.props.user_token, // Other User
-      }),
+      body: JSON.stringify(data),
+      headers: new Headers({'Authorization': this.props.user_token})
     })
-    .then( async res => {
-      let res_data = await res.json();
-      console.log(res_data)
+    .then( async res_data => {
+      res_data = await res_data.json()
       if (res_data.success == true) {
-        this.props.unfollow(this.state.other_user_id)
+        this.props.parent_props.unfollow(this.state.other_user_id)
         Alert.alert("Successfuly Unfollowed")
       } else {
         Alert.alert("Unfollow Unsuccessfully");
       }
     })
     .catch(error => {
+      console.log(error)
       Alert.alert('Error connecting to server', error);
     });
   }
@@ -130,7 +129,7 @@ class FollowRequest extends React.Component {
           <TouchableOpacity
             style={[STYLES.circularButton, STYLES.smallButton]}
             onPress={() => {
-              this.unfollow()
+              this.unfollowUser()
             }}
           >
             <FontAwesomeIcon name="remove" size={STYLES.smallIcon} color={Color.primaryColor}/>
@@ -155,6 +154,7 @@ class FollowingScreen extends React.Component {
       <FollowRequest 
         other_user_id={other_user_id}
         user_token={this.props.user.token}
+        parent_props={this.props}
       />
     );
 

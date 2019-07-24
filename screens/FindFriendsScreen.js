@@ -81,12 +81,12 @@ class FindFriendsScreen extends React.Component {
 
   async sendRequest(text) {
     this.setState({showLoading: true})
-    fetch(global.serverURL+"/api/find_friends", {
+    let api_url = global.serverURL+"/api/find_friends"
+    let data = {name: text}
+    await fetch(api_url, {
       method: 'POST',
-      body: JSON.stringify({name: text}),
-      headers: {
-          authorization: this.props.user.token
-      }
+      body: JSON.stringify(data),
+      headers: new Headers({'Authorization': this.props.user.token})
     })
     .catch(res => {
       Alert.alert('Error connecting to server', res);
@@ -99,19 +99,17 @@ class FindFriendsScreen extends React.Component {
     );
   }
 
-  goToUserProfile(user) {
+  async goToUserProfile(user) {
     if (user.user_id == this.props.user.user_id) {
       this.props.navigation.navigate('Profile')
       return
     }
 
-    fetch(
-      global.serverURL+`/api/get_info/${user.user_id}`, 
+    await fetch(
+      global.serverURL+'/api/get_other_info', 
       {
-        method: 'GET',
-        headers: {
-          authorization: this.props.user.token
-        }
+        method: 'POST',
+        headers: new Headers({'Authorization': this.props.user.token})
       })
     .catch(res => {
       Alert.alert('Error connecting to server', res);
@@ -120,7 +118,6 @@ class FindFriendsScreen extends React.Component {
       async res => {
         res = await res.json(); //Parse response as JSON
         let info = res['info']
-        console.log(info)
         this.props.navigation.navigate('OtherProfile', {info:info, user_id: user.user_id})
       }
     );

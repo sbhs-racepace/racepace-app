@@ -15,6 +15,8 @@ import Color from '../constants/Color'
 import { connect } from 'react-redux';
 import { requestFollow } from '../functions/user_info_action'
 import { bindActionCreators } from 'redux';
+import noCacheHeader from '../constants/no_cache_header'
+
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
@@ -54,35 +56,31 @@ class OtherProfileScreen extends React.Component {
     }
   }
 
-  followUser() {
+  async followUser() {
     let user_id = this.props.navigation.state.params['user_id']
-
+    let data = {other_user_id:user_id}
     let following = this.state.following 
-    let url = global.serverURL+`/api/sendFollowRequest/${user_id}`
+    let api_url = global.serverURL+'/api/sendFollowRequest'
 
-    if (following) {
-      // url = global.serverURL+`/api/unfollow`
-    }
-
-    fetch(url, 
+    let header = noCacheHeader
+    await fetch(api_url, 
         {
           method: 'POST',
-          headers: new Headers({
-            Authorization: this.props.user.token, 
-          }),
+          body: JSON.stringify(data),
+          headers: new Headers({'Authorization': this.props.user.token})
         })
       .catch(res => {
         Alert.alert('Error connecting to server', res);
       })
       .then(
-        async res => {
-          res = await res.json(); //Parse response as JSON
-          if (res.success == true) {
+        async res_data => {
+          res_data = await res_data.json()
+          if (res_data.success == true) {
             if (following) { 
               this.props.requestFollow(user_id)
               this.setState({'following': false})
             } else {
-                this.setState({'requested': true})
+              this.setState({'requested': true})
             }
             Alert.alert("Requested Follow")
           } else {

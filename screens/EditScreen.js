@@ -15,12 +15,12 @@ import {
 } from 'react-native';
 import TextInput from '../components/TextInput';
 import { Image } from 'react-native-elements';
-import { login, getUserInfo } from '../functions/login';
+import { login } from '../functions/login';
 import Button from '../components/Button';
 import BackButtonHeader from '../components/BackButtonHeader';
 import Color from '../constants/Color';
 import '../global.js';
-import { storeUserInfo, storeLoginInfo } from '../functions/user_info_action';
+import { updateUserInfo } from '../functions/user_info_action';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -74,14 +74,6 @@ class EditScreen extends React.Component {
   }
 
   async saveChanges() {
-    let equivalent_new =
-      this.state.new_password == this.state.confirmation_password;
-    let data = {
-      username: this.state.new_username,
-      password: this.state.new_password,
-      bio: this.state.bio,
-      full_name: this.state.full_name,
-    };
     if (
       this.state.current_password != '' &&
       this.state.current_password == this.state.new_password
@@ -109,12 +101,44 @@ class EditScreen extends React.Component {
       Alert.alert('No changes made');
       return 0;
     }
+
+    let data = {
+      username: this.state.new_username,
+      password: this.state.new_password,
+      bio: this.state.bio,
+      full_name: this.state.full_name,
+    };
     let login_data = await login(
       this.props.user.email,
       this.state.current_password
     );
+    let not_changing_password = (this.state.confirmation_password == '' && this.state.new_password == '')
+    let equivalent_new = this.state.new_password == this.state.confirmation_password;
+
     if (login_data.success) {
-      if (equivalent_new) {
+      if (equivalent_new || not_changing_password)  {
+        fetch(global.serverURL + '/api/update_profile', {
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: new Headers({
+            Authorization: this.props.user.token,
+          }),
+        })
+        .catch(res => {
+          Alert.alert('Error connecting to server', res);
+        })
+        .then(async res => {
+          res = await res.json();
+          if (res.success == true) {
+            let updated_data = {username: data.username, bio: data.bio, full_name: data.full_name}
+            await this.props.updateUserInfo(updated_data);
+            Alert.alert('Changed User Details. These changes may take a while to sync.');
+            this.props.navigation.navigate('Profile');
+          } else {
+            Alert.alert(res.error);
+          }
+        });
+        
         if (this.base64 != false) {
           fetch(global.serverURL + '/api/avatars/update', {
             method: 'PATCH',
@@ -123,38 +147,17 @@ class EditScreen extends React.Component {
               Authorization: this.props.user.token,
             }),
           })
-            .catch(res => {
-              Alert.alert('Error connecting to server', res);
-            })
-            .then(async res => {
-              res = await res.json();
-              if (res.success == true) {
-                console.log('Image upload success');
-              } else {
-                Alert.alert(res.error);
-              }
-            });
-          fetch(global.serverURL + '/api/update_profile', {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: new Headers({
-              Authorization: this.props.user.token,
-            }),
+          .catch(res => {
+            Alert.alert('Error connecting to server', res);
           })
-            .catch(res => {
-              Alert.alert('Error connecting to server', res);
-            })
-            .then(async res => {
-              res = await res.json();
-              if (res.success == true) {
-                let user_info = await getUserInfo(this.props.user.token);
-                await this.props.storeUserInfo(user_info);
-                Alert.alert('Changed User Details');
-                this.props.navigation.navigate('Profile');
-              } else {
-                Alert.alert(res.error);
-              }
-            });
+          .then(async res => {
+            res = await res.json();
+            if (res.success == true) {
+              Alert.alert('Image upload success. These changes will not update until restart.');
+            } else {
+              Alert.alert(res.error);
+            }
+          });
         }
       }
     }
@@ -206,6 +209,7 @@ class EditScreen extends React.Component {
             <View style={{ flex: 3 / 5 }}>
               <TextInput
                 placeholder="Name"
+                autoCapitalize={false}
                 defaultValue={''}
                 style={{ ...STYLES.input, width: windowWidth * 0.5 }}
                 returnKeyType="go"
@@ -289,7 +293,7 @@ class EditScreen extends React.Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ storeUserInfo, storeLoginInfo }, dispatch);
+  return bindActionCreators({ updateUserInfo }, dispatch);
 }
 
 function mapStateToProps(state) {

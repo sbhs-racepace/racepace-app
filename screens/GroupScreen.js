@@ -59,9 +59,9 @@ export default class GroupScreen extends React.Component {
     return (
       <View style={{flex:1, backgroundColor:Color.lightBackground}}>
         <Text style={{fontFamily:'Roboto-Bold',fontSize:40,padding:"3%",color:Color.primaryColor}}>Running Groups</Text>
-
+        <Text>Groups is not fully implemented yet</Text>
         <ScrollView>
-          {this.state.groups.map(group => <Group onPress={() => {this.props.navigation.navigate('Chat')}} group={group}></Group>)}
+          {/* {this.state.groups.map(group => <Group onPress={() => {this.props.navigation.navigate('Chat')}} group={group}></Group>)} */}
         </ScrollView>
         <Button
           style={{ alignSelf: 'center' }}

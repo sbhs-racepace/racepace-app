@@ -63,27 +63,27 @@ class FollowRequest extends React.Component {
   }
 
   async get_details() {
+    let data = {other_user_id:this.state.other_user_id}
     await fetch(
-      global.serverURL+`/api/get_info/${this.state.other_user_id}`, 
+      global.serverURL+'/api/get_other_info', 
       {
-        method: 'GET',
-        headers: {
-          authorization: this.props.user_token // Other User
-        }
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: new Headers({'Authorization': this.props.user_token})
       })
     .catch(res => {
       Alert.alert('Error connecting to server', res);
     })
     .then(
-      async res => {
-        res_data = await res.json(); //Parse response as JSON
+      async res_data => {
+        res_data = await res_data.json()
         if (res_data.success == true) {
           username = res_data.info.username
           full_name = res_data.info.full_name
           this.setState({full_name:full_name});
           this.setState({username:username});
         } else {
-          console.log("Couldn't retrieve other user info");
+          Alert.alert("Couldn't retrieve other user info");
         }
       }
     );

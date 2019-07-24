@@ -67,27 +67,27 @@ class FollowRequest extends React.Component {
   }
 
   async get_details() {
+    let data = {other_user_id:this.state.other_user_id}
     await fetch(
-      global.serverURL+`/api/get_info/${this.state.other_user_id}`, 
+      global.serverURL+'/api/get_other_info', 
       {
-        method: 'GET',
-        headers: {
-          authorization: this.props.user_token // Other User
-        }
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: new Headers({'Authorization': this.props.user_token})
       })
     .catch(res => {
       Alert.alert('Error connecting to server', res);
     })
     .then(
-      async res => {
-        res_data = await res.json(); //Parse response as JSON
+      async res_data => {
+        res_data = await res_data.json()
         if (res_data.success == true) {
           username = res_data.info.username
           full_name = res_data.info.full_name
           this.setState({full_name:full_name});
           this.setState({username:username});
         } else {
-          console.log("Couldn't retrieve other user info");
+          Alert.alert("Couldn't retrieve other user info");
         }
       }
     );
@@ -98,18 +98,18 @@ class FollowRequest extends React.Component {
   }
 
   async acceptRequest() {
-    let api_url = global.serverURL+`/api/acceptFollowRequest/${this.state.other_user_id}`
+    let api_url = global.serverURL+'/api/acceptFollowRequest'
+    let data = {other_user_id:this.state.other_user_id}
     await fetch(api_url, {
       method: 'POST',
-      headers: new Headers({
-        Authorization: this.props.user_token, // Taking user_token from parent
-      }),
+      body: JSON.stringify(data),
+      headers: new Headers({'Authorization': this.props.user_token})
     })
-    .then( async res => {
-      let res_data = await res.json();
+    .then( async res_data => {
+      res_data = await res_data.json()
       if (res_data.success == true) {
+        this.props.parent_props.acceptFollowRequest(this.state.other_user_id)
         Alert.alert("Request Successfully Accepted")
-        this.props.acceptFollowRequest(this.state.other_user_id)
       } else {
         Alert.alert("Couldn't accept request");
       }
@@ -120,18 +120,18 @@ class FollowRequest extends React.Component {
   }
 
   async declineRequest() {
-    let api_url = global.serverURL+`/api/declineFollowRequest/${this.state.other_user_id}`
+    let api_url = global.serverURL+'/api/declineFollowRequest'
+    let data = {other_user_id:this.state.other_user_id}
     await fetch(api_url, {
       method: 'POST',
-      headers: new Headers({
-        Authorization: this.props.user_token, // Taking user_token from parent
-      }),
+      body: JSON.stringify(data),
+      headers: new Headers({'Authorization': this.props.user_token})
     })
-    .then( async res => {
-      let res_data = await res.json();
+    .then( async res_data => {
+      res_data = await res_data.json()
       if (res_data.success == true) {
+        this.props.parent_props.declineFollowRequest(this.state.other_user_id)
         Alert.alert("Request Successfuly Declined")
-        this.declineFollowRequest(this.state.other_user_id)
       } else {
         Alert.alert("Couldn't decline request");
       }
@@ -175,11 +175,11 @@ class FollowerRequestScreen extends React.Component {
     if (!this.props.user.token) {
       return <Text>Please login to see your follow requests</Text>;
     }
-    console.log(this.props.user.follow_requests)
     let test_data = this.props.user.follow_requests.map(other_user_id => 
       <FollowRequest 
         other_user_id={other_user_id}
         user_token={this.props.user.token}
+        parent_props={this.props}
       />
     );
 

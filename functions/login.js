@@ -2,30 +2,30 @@
 
 import '../global';
 import { Alert, AsyncStorage } from 'react-native';
-import Expo from 'expo';
 import { Google } from 'expo';
-import io from 'socket.io-client';
+import socketIO from 'socket.io-client';
 
 
 export async function getUserInfo(token) {
   let api_url = global.serverURL + '/api/get_info';
   let user_info = false;
-  let data = {};
   await fetch(api_url, {
     method: 'POST',
-    body: JSON.stringify(data),
-    headers: new Headers({
-      Authorization: token,
-    }),
+    headers: {'Authorization': token},
   })
     .then(async res => {
       let res_data = await res.json();
       if (res_data.success) {
         user_info = await res_data['info'];
-        let socket = io(
+        console.log(user_info.full_name)
+        let socket = socketIO(
           `${global.serverURL}?token=${token}`,
           { transports: ['websocket'] }
         );
+        socket.connect(); 
+        socket.on('connect', () => { 
+          console.log('connected to socket server'); 
+        });
         user_info.socket = socket;
       } else {
         Alert.alert('Error', res_data.error);
@@ -57,8 +57,6 @@ export async function get_keys() {
       Alert.alert('Error', error.message);
     });
 }
-
-
 
 export async function login(email, password) {
   let api_url = global.serverURL + '/api/login';
@@ -152,7 +150,7 @@ export async function googleLogin() {
     };
     const result = await Google.logInAsync(config);
     if (result.type == 'success') {
-      fetch(url, {
+      await fetch(url, {
         method: 'POST',
         body: JSON.stringify({ idToken: result.idToken }),
       })
