@@ -8,7 +8,7 @@ export default async function request(
   method = 'POST',
   data = {},
   token = "",
-  callback
+  callback = ()=>{}
 ) {
   let options;
   this.resp = false
