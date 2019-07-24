@@ -76,7 +76,6 @@ class OtherProfileScreen extends React.Component {
       .then(
         async res_data => {
           res_data = await res_data.json()
-          console.log(res_data)
           if (res_data.success == true) {
             if (following) { 
               this.setState({'following': false, 'requested': false})

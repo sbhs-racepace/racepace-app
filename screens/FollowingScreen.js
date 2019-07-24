@@ -88,7 +88,6 @@ class FollowRequest extends React.Component {
       async res_data => {
         res_data = await res_data.json()
         if (res_data.success == true) {
-            console.log(res_data)
           username = res_data.info.username
           full_name = res_data.info.full_name
           this.setState({full_name:full_name, username:username, bio: res_data.info.bio});
@@ -126,33 +125,6 @@ class FollowRequest extends React.Component {
     });
   }
 
-  goToUserProfile(user_id) {
-    if (user_id == this.props.user.user_id) {
-      this.props.navigation.navigate('Profile')
-      return
-    }
-
-    fetch(
-      global.serverURL+`/api/get_info/${user_id}`, 
-      {
-        method: 'GET',
-        headers: {
-          authorization: this.props.user.token
-        }
-      })
-    .catch(res => {
-      Alert.alert('Error connecting to server', res);
-    })
-    .then(
-      async res => {
-        res = await res.json(); //Parse response as JSON
-        let info = res['info']
-        console.log(info)
-        this.props.navigation.navigate('OtherProfile', {info:info, user_id: user_id})
-      }
-    );
-  }
-
   render() {
 
     return (
@@ -174,16 +146,16 @@ class FollowRequest extends React.Component {
             }}
         />
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <Button
+            {/* <Button
                 style={{width: '70%'}}
                 text="View Profile"
                 onPress={() => {
                 this.goToUserProfile(this.state.other_user_id)
                 }}
             >
-            </Button>
+            </Button> */}
             <Button
-                style={{width: '30%', borderLeftWidth: 2, borderLeftColor: Color.lightBackground}}
+                style={{width: '100%', borderLeftWidth: 2, borderLeftColor: Color.lightBackground}}
                 text_style={{color: "#e74c3c"}}
                 text="Unfollow"
                 onPress={() => {

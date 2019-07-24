@@ -119,14 +119,14 @@ class FollowRequest extends React.Component {
             }}
         />
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <Button
+            {/* <Button
                 style={{width: '100%'}}
                 text="View Profile"
                 onPress={() => {
                 this.goToUserProfile(this.state.other_user_id)
                 }}
             >
-            </Button>
+            </Button> */}
         </View>
       </Card>
     )
