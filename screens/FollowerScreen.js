@@ -7,8 +7,6 @@ import "../global.js"
 import Color from '../constants/Color'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import noCacheHeader from '../constants/no_cache_header'
-
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
@@ -65,13 +63,13 @@ class FollowRequest extends React.Component {
   }
 
   async get_details() {
-    let header = noCacheHeader
-    header.set('Authorization', this.props.user_token);
+    let data = {other_user_id:this.state.other_user_id}
     await fetch(
-      global.serverURL+`/api/get_info/${this.state.other_user_id}`, 
+      global.serverURL+'/api/get_other_info', 
       {
-        method: 'GET',
-        headers: header,
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: new Headers({'Authorization': this.props.user_token})
       })
     .catch(res => {
       Alert.alert('Error connecting to server', res);

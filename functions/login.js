@@ -2,7 +2,6 @@
 
 import '../global';
 import { Alert, AsyncStorage } from 'react-native';
-import noCacheHeader from '../constants/no_cache_header'
 import { Google } from 'expo';
 import socketIO from 'socket.io-client';
 
@@ -10,16 +9,15 @@ import socketIO from 'socket.io-client';
 export async function getUserInfo(token) {
   let api_url = global.serverURL + '/api/get_info';
   let user_info = false;
-  let header = noCacheHeader;
-  header.set('Authorization', token);
   await fetch(api_url, {
-    method: 'GET',
-    headers: header,
+    method: 'POST',
+    headers: {'Authorization': token},
   })
     .then(async res => {
       let res_data = await res.json();
       if (res_data.success) {
         user_info = await res_data['info'];
+        console.log(user_info.full_name)
         let socket = socketIO(
           `${global.serverURL}?token=${token}`,
           { transports: ['websocket'] }
@@ -59,8 +57,6 @@ export async function get_keys() {
       Alert.alert('Error', error.message);
     });
 }
-
-
 
 export async function login(email, password) {
   let api_url = global.serverURL + '/api/login';

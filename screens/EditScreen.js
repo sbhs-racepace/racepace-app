@@ -15,7 +15,7 @@ import {
 } from 'react-native';
 import TextInput from '../components/TextInput';
 import { Image } from 'react-native-elements';
-import { login, getUserInfo } from '../functions/login';
+import { login } from '../functions/login';
 import Button from '../components/Button';
 import BackButtonHeader from '../components/BackButtonHeader';
 import Color from '../constants/Color';
@@ -130,10 +130,9 @@ class EditScreen extends React.Component {
         .then(async res => {
           res = await res.json();
           if (res.success == true) {
-            let user_info = await getUserInfo(this.props.user.token);
             let updated_data = {username: data.username, bio: data.bio, full_name: data.full_name}
             await this.props.updateUserInfo(updated_data);
-            Alert.alert('Changed User Details');
+            Alert.alert('Changed User Details. These changes may take a while to sync.');
             this.props.navigation.navigate('Profile');
           } else {
             Alert.alert(res.error);
@@ -154,7 +153,7 @@ class EditScreen extends React.Component {
           .then(async res => {
             res = await res.json();
             if (res.success == true) {
-              Alert.alert('Image upload success');
+              Alert.alert('Image upload success. These changes will not update until restart.');
             } else {
               Alert.alert(res.error);
             }

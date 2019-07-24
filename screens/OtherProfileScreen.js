@@ -56,21 +56,18 @@ class OtherProfileScreen extends React.Component {
     }
   }
 
-  followUser() {
+  async followUser() {
     let user_id = this.props.navigation.state.params['user_id']
-
+    let data = {other_user_id:user_id}
     let following = this.state.following 
-    let url = global.serverURL+`/api/sendFollowRequest/${user_id}`
+    let api_url = global.serverURL+'/api/sendFollowRequest'
 
-    if (following) {
-      // url = global.serverURL+`/api/unfollow`
-    }
     let header = noCacheHeader
-    header.set('Authorization', this.props.user.token);
-    fetch(url, 
+    await fetch(api_url, 
         {
-          method: 'GET',
-          headers: header,
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: new Headers({'Authorization': this.props.user.token})
         })
       .catch(res => {
         Alert.alert('Error connecting to server', res);

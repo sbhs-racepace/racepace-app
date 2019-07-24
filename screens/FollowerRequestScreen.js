@@ -11,7 +11,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { acceptFollowRequest, declineFollowRequest } from '../functions/user_info_action'
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
-import noCacheHeader from '../constants/no_cache_header'
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
@@ -68,13 +67,13 @@ class FollowRequest extends React.Component {
   }
 
   async get_details() {
-    let header = noCacheHeader
-    header.set('Authorization', this.props.user_token);
+    let data = {other_user_id:this.state.other_user_id}
     await fetch(
-      global.serverURL+`/api/get_info/${this.state.other_user_id}`, 
+      global.serverURL+'/api/get_other_info', 
       {
-        method: 'GET',
-        headers: header,
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: new Headers({'Authorization': this.props.user_token})
       })
     .catch(res => {
       Alert.alert('Error connecting to server', res);
@@ -99,12 +98,12 @@ class FollowRequest extends React.Component {
   }
 
   async acceptRequest() {
-    let api_url = global.serverURL+`/api/acceptFollowRequest/${this.state.other_user_id}`
-    let header = noCacheHeader
-    header.set('Authorization', this.props.user_token);
+    let api_url = global.serverURL+'/api/acceptFollowRequest'
+    let data = {other_user_id:this.state.other_user_id}
     await fetch(api_url, {
-      method: 'GET',
-      headers: header,
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: new Headers({'Authorization': this.props.user_token})
     })
     .then( async res_data => {
       res_data = await res_data.json()
@@ -121,12 +120,12 @@ class FollowRequest extends React.Component {
   }
 
   async declineRequest() {
-    let api_url = global.serverURL+`/api/declineFollowRequest/${this.state.other_user_id}`
-    let header = noCacheHeader
-    header.set('Authorization', this.props.user_token);
+    let api_url = global.serverURL+'/api/declineFollowRequest'
+    let data = {other_user_id:this.state.other_user_id}
     await fetch(api_url, {
-      method: 'GET',
-      headers: header,
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: new Headers({'Authorization': this.props.user_token})
     })
     .then( async res_data => {
       res_data = await res_data.json()
