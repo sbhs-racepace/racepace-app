@@ -60,6 +60,9 @@ class OtherProfileScreen extends React.Component {
     let data = {other_user_id:user_id}
     let following = this.state.following 
     let api_url = global.serverURL+'/api/sendFollowRequest'
+    if (following) {
+        api_url = global.serverURL+'/api/unfollow'
+    }
 
     await fetch(api_url, 
         {
@@ -73,16 +76,17 @@ class OtherProfileScreen extends React.Component {
       .then(
         async res_data => {
           res_data = await res_data.json()
+          console.log(res_data)
           if (res_data.success == true) {
             if (following) { 
+              this.setState({'following': false, 'requested': false})
               this.props.requestFollow(user_id)
-              this.setState({'following': false})
             } else {
               this.setState({'requested': true})
             }
-            Alert.alert("Requested Follow")
+
           } else {
-            Alert.alert("Couldn't follow user")
+            Alert.alert("Couldn't send request.")
           }
 
         }
