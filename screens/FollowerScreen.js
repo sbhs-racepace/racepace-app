@@ -2,15 +2,22 @@
 
 import React from 'react';
 import { ScrollView, View, Text, Alert, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
-import { Image } from 'react-native-elements'
+import { Image, Card, ListItem } from 'react-native-elements'
 import "../global.js"
 import Color from '../constants/Color'
 import { connect } from 'react-redux';
+import Button from '../components/Button.js'
 import { bindActionCreators } from 'redux';
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
 const STYLES = StyleSheet.create({
+  card: {
+    backgroundColor: Color.lightBackground,
+    borderColor: Color.darkBackground,
+    color: Color.textColor,
+    margin: 10,
+    },
   total_view : {
     padding:"3%", 
     backgroundColor:Color.lightBackground
@@ -58,7 +65,7 @@ class FollowRequest extends React.Component {
     this.state = {
       full_name: "",
       other_user_id: this.props.other_user_id,
-      username: '',
+      username: 'loading',
     }
   }
 
@@ -81,7 +88,7 @@ class FollowRequest extends React.Component {
           username = res_data.info.username
           full_name = res_data.info.full_name
           this.setState({full_name:full_name});
-          this.setState({username:username});
+          this.setState({username:username, bio:res_data.info.bio});
         } else {
           Alert.alert("Couldn't retrieve other user info");
         }
@@ -95,16 +102,33 @@ class FollowRequest extends React.Component {
 
   render() {
     return (
-      <View style={{width:'100%',alignItems:'center',flex:1, flexDirection:'row', justifyContent:'space-around', height:windowHeight*0.2}}>
-        <Image
-          style={STYLES.profile_image}
-          source={{uri: `${global.serverURL}/api/avatars/${this.state.other_user_id}.png`}}
-        />
-        <Text style={{width:"30%",fontSize:15, color:Color.textColor}}>{this.state.username} is following you</Text>
-        <View style={{width:"30%"}}>
+        <Card 
+        dividerStyle={{display: 'none'}}
+        containerStyle={STYLES.card}
+      >
 
+        <ListItem
+          title={this.state.username}
+          subtitle={this.state.bio}
+          onPress={() => this.goToUserProfile(this.state.other_user_id)}
+          leftAvatar={{ source: { uri: global.serverURL + `/api/avatars/${this.state.other_user_id}.png` } }}
+          titleStyle={{ color: Color.textColor, fontWeight: 'bold' }}
+          subtitleStyle={{ color: Color.textColor }}
+          containerStyle={{
+              backgroundColor: Color.lightBackground,
+            }}
+        />
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <Button
+                style={{width: '100%'}}
+                text="View Profile"
+                onPress={() => {
+                this.goToUserProfile(this.state.other_user_id)
+                }}
+            >
+            </Button>
         </View>
-      </View>
+      </Card>
     )
   }
 }
@@ -128,7 +152,7 @@ class FollowerScreen extends React.Component {
 
 
     return (
-      <View style={{backgroundColor:Color.lightBackground, flex:1}}>
+      <View style={{backgroundColor:Color.darkBackground, flex:1}}>
         <ScrollView contentContainerStyle={Color.lightBackground}>
           {test_data}
         </ScrollView>
