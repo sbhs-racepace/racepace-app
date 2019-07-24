@@ -76,7 +76,7 @@ export default class GroupScreen extends React.Component {
         <View style={{flex:1}}>
           <Button
             style={{ alignSelf: 'center', width:'100%', height:60}}
-            text="Find Friends"
+            text="Find Friends  "
             onPress={() => this.props.navigation.navigate('FindFriends')}
           >
             <FontAwesomeIcon name="search" size={STYLES.smallIcon} color={Color.primaryColor}/>
