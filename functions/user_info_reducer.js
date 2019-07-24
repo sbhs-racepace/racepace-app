@@ -1,6 +1,17 @@
 // JAson YU
 
-import { STORE_LOGIN_INFO, STORE_USER_INFO, LOGOUT, DECLINE_FOLLOW_REQUEST, ACCEPT_FOLLOW_REQUEST, UNFOLLOW, REQUEST_FOLLOW, UPDATE_USER_INFO} from './user_info_action'
+import { 
+  STORE_LOGIN_INFO, 
+  STORE_USER_INFO, LOGOUT, 
+  DECLINE_FOLLOW_REQUEST, 
+  ACCEPT_FOLLOW_REQUEST, 
+  UNFOLLOW, 
+  REQUEST_FOLLOW, 
+  UPDATE_USER_INFO,
+  ADD_RUN,
+  ADD_ROUTE,
+  ADD_SAVED_RUN,
+} from './user_info_action'
 
 const USER_INFO_INITIAL_STATE =  {
   full_name: "guest",
@@ -42,6 +53,20 @@ function filterList(list, value) {
   return list;
 }
 
+function updateUserInfo(new_state, update_user_info) {
+  let { username, bio , full_name } = update_user_info
+  if (username != '') {
+    new_state = Object.assign(new_state,{username:username})
+  }
+  if (bio != '') {
+    new_state = Object.assign(new_state,{bio:bio})
+  }
+  if (full_name != '') {
+    new_state = Object.assign(new_state,{full_name:full_name})
+  }
+  return new_state
+}
+
 export default function userInfoReducer(state = USER_INFO_INITIAL_STATE, action) {
   switch (action.type) {
     case STORE_LOGIN_INFO:
@@ -79,18 +104,40 @@ export default function userInfoReducer(state = USER_INFO_INITIAL_STATE, action)
         ]
       })
     case UPDATE_USER_INFO:
-      let {username, bio , full_name} = action.update
-      let new_state = Object.assign({}, state);
-      if (username != '') {
-        new_state = Object.assign(new_state,{username:username})
+      return updateUserInfo(Object.assign({}, state), action.info);
+    case ADD_ROUTE:
+      let route_info = action.info
+      let route = {
+        route: route_info.route,
+        distance: route_info.distance
       }
-      if (bio != '') {
-        new_state = Object.assign(new_state,{bio:bio})
+      let saved_route = {
+        route: route,
+        name: route_info.name,
+        description: route_info.description,
+        start_name: route_info.start_name,
+        end_name: route_info.end_name,
       }
-      if (full_name != '') {
-        new_state = Object.assign(new_state,{full_name:full_name})
-      }
-      return new_state;
+      return Object.assign({}, state, {
+        saved_routes: [
+          ...state.saved_routes,
+          saved_route
+        ]
+      })
+    case ADD_RUN:
+      return Object.assign({}, state, {
+        runs: [
+          ...state.runs,
+          action.info
+        ]
+      })
+    case ADD_SAVED_RUN:
+      return Object.assign({}, state, {
+        saved_runs: [
+          ...state.saved_runs,
+          action.info
+        ]
+      })
     default:
       return state
   }

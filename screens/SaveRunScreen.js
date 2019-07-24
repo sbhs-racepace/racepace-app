@@ -9,6 +9,8 @@ import Color from '../constants/Color.js'
 import '../global.js';
 import BackButtonHeader from '../components/BackButtonHeader'; 
 import { endRun } from '../functions/run_action'
+import { addRun, addSavedRun } from '../functions/user_info_action'
+
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { minuteSecondString } from '../functions/conversions';
@@ -71,6 +73,7 @@ class SaveRunScreen extends React.Component {
       Alert.alert('Error connecting to server', res);
     })
     .then( async () => {
+      this.props.addRun(data)
       Alert.alert('Success Saving Run');
     });
   }
@@ -94,6 +97,7 @@ class SaveRunScreen extends React.Component {
       Alert.alert('Error connecting to server', res);
     })
     .then( async () => {
+      this.props.addSavedRun(data)
       Alert.alert('Success Saving Run');
     });
   }
@@ -161,7 +165,7 @@ class SaveRunScreen extends React.Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ endRun }, dispatch)
+  return bindActionCreators({ endRun, addRun, addSavedRun }, dispatch)
 }
 
 function mapStateToProps(state) {

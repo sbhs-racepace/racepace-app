@@ -7,9 +7,9 @@ import Color from '../constants/Color.js'
 import '../global.js';
 import BackButtonHeader from '../components/BackButtonHeader'; 
 import { endRun } from '../functions/run_action'
+import { addRoute } from '../functions/user_info_action'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { minuteSecondString } from '../functions/conversions';
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
@@ -69,6 +69,8 @@ class SaveRouteScreen extends React.Component {
       Alert.alert('Error connecting to server', res);
     })
     .then( async () => {
+      console.log('fasfads')
+      this.props.addRoute(data)
       Alert.alert('Success Saving Route');
     });
   }
@@ -130,7 +132,7 @@ class SaveRouteScreen extends React.Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ endRun }, dispatch)
+  return bindActionCreators({ endRun, addRoute }, dispatch)
 }
 
 function mapStateToProps(state) {

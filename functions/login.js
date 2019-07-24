@@ -17,7 +17,6 @@ export async function getUserInfo(token) {
       let res_data = await res.json();
       if (res_data.success) {
         user_info = await res_data['info'];
-        console.log(user_info.full_name)
         let socket = socketIO(
           `${global.serverURL}?token=${token}`,
           { transports: ['websocket'] }

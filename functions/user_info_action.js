@@ -8,7 +8,9 @@ export const ACCEPT_FOLLOW_REQUEST = 'ACCEPT_FOLLOW_REQUEST'
 export const UNFOLLOW = 'UNFOLLOW'
 export const REQUEST_FOLLOW = 'REQUEST_FOLLOW'
 export const UPDATE_USER_INFO = 'UPDATE_USER_INFO'
-
+export const ADD_RUN = 'ADD_RUN'
+export const ADD_SAVED_RUN = 'ADD_SAVED_RUN'
+export const ADD_ROUTE = 'ADD_ROUTE'
 
 
 
@@ -36,3 +38,13 @@ export function requestFollow(other_user_id) {
 export function updateUserInfo(update) {
   return { type: UPDATE_USER_INFO, update }
 }
+export function addRun(info) {
+  return { type: ADD_RUN, info }
+}
+export function addSavedRun(info) {
+  return { type: ADD_SAVED_RUN, info }
+}
+export function addRoute(info) {
+  return { type: UPDATE_USER_INFO, info }
+}
+
