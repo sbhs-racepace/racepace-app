@@ -129,67 +129,65 @@ class ProfileScreen extends React.Component {
 
     return (
     <KeyboardAvoidingView behavior="position" style={{backgroundColor: Color.darkBackground}}>
-    <ScrollView>
-      <View style={{
-        flexDirection: 'column',
-        justifyContent: 'space-evenly',
-        backgroundColor: Color.lightBackground
-      }}>
-
-        <Text style={[STYLES.text, { fontSize: 30, textAlign: 'center', marginTop: '5%', fontFamily:'Roboto-Bold', color:Color.primaryColor}]}>{this.props.user.full_name}</Text>
-        <View style={{ height: 150, padding: '3%' }}>
-          <View style={{flexDirection: 'row',flex: 1}}>
-            <View style={{flexDirection: 'row',flex: 1,alignItems: 'center'}}>
-              <Image
-                key={Math.random()}
-                style={STYLES.profile_image}
-                source={{
-                uri: `${global.serverURL}/api/avatars/${this.props.user.user_id}.png?rand=${Math.random()}`
-                }}
-              />
-            </View>
-
-            <View style={{
-              flexDirection: 'column',
-              flex: 2,
-              justifyContent: 'space-evenly'
-            }}>
-
-            <View style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
-              <Button
-                style={STYLES.stat_btn}
-                text={`${this.props.user.stats.points}\npoints`}
-                onPress={() => this.props.navigation.navigate('Level')}
-              />
-              <Button
-                style={STYLES.stat_btn}
-                text={`${this.props.user.following.length}\nFollowing`}
-                onPress={() =>
-                  this.props.navigation.navigate('Follow', {
-                  screen: 'Following'
-                  })
-                }
-              />
-              <Button
-                style={STYLES.stat_btn}
-                text={`${this.props.user.followers.length}\nFollowers`}
-                onPress={() =>
-                  this.props.navigation.navigate('Follow', {
-                  screen: 'Followers'
-                  })
-                }
-              />
-            </View>
-
-            {this.renderButtons()}
+    <ScrollView showsVerticalScrollIndicator={true}>
+    <View style={{
+      flexDirection: 'column',
+      justifyContent: 'space-evenly',
+      backgroundColor: Color.lightBackground,
+    }}>
+      <Text style={[STYLES.text, { fontSize: 30, textAlign: 'center', marginTop: '5%', fontFamily:'Roboto-Bold', color:Color.primaryColor}]}>{this.props.user.full_name}</Text>
+      <View style={{ height: 150, padding: '3%' }}>
+        <View style={{flexDirection: 'row',flex: 1}}>
+          <View style={{flexDirection: 'row',flex: 1,alignItems: 'center'}}>
+            <Image
+              key={Math.random()}
+              style={STYLES.profile_image}
+              source={{
+              uri: `${global.serverURL}/api/avatars/${this.props.user.user_id}.png?rand=${Math.random()}`
+              }}
+            />
           </View>
+
+          <View style={{
+            flexDirection: 'column',
+            flex: 2,
+            justifyContent: 'space-evenly'
+          }}>
+
+          <View style={{flexDirection: 'row', alignSelf: 'flex-start'}}>
+            <Button
+              style={STYLES.stat_btn}
+              text={`${this.props.user.stats.points}\npoints`}
+              onPress={() => this.props.navigation.navigate('Level')}
+            />
+            <Button
+              style={STYLES.stat_btn}
+              text={`${this.props.user.following.length}\nFollowing`}
+              onPress={() =>
+                this.props.navigation.navigate('Follow', {
+                screen: 'Following'
+                })
+              }
+            />
+            <Button
+              style={STYLES.stat_btn}
+              text={`${this.props.user.followers.length}\nFollowers`}
+              onPress={() =>
+                this.props.navigation.navigate('Follow', {
+                screen: 'Followers'
+                })
+              }
+            />
+          </View>
+          {this.renderButtons()}
         </View>
       </View>
-      <Text multiline={true} style={[STYLES.text,{margin:"4%", marginTop:0}]}>Bio: {this.props.user.bio}</Text>
+    </View>
+    <Text multiline={true} style={[STYLES.text,{margin:"4%", marginTop:0}]}>Bio: {this.props.user.bio}</Text>
 
-      <View style={{ backgroundColor: Color.darkBackground, height:windowHeight * 0.8}}>
-        <AppContainer style={{ flex:1 }}/>
-      </View>
+    <View style={{ backgroundColor: Color.darkBackground, height:windowHeight * 0.8}}>
+      <AppContainer style={{ flex:1}}/>
+    </View>
 
     </View>
     </ScrollView>
