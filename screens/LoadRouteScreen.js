@@ -45,7 +45,9 @@ class LoadRouteScreen extends React.Component {
   
   render() {
     return(
-      <View style={{flex:1,backgroundColor:Color.lightBackground}}></View>
+      <View style={{flex:1,backgroundColor:Color.lightBackground, alignItems:'center'}}>
+        <Text style={STYLES.text_style}>Not Implemented</Text>
+      </View>
     )
   }
 }
