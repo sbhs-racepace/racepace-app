@@ -35,8 +35,8 @@ class FeedScreen extends React.Component {
           posttime={item.route.run_info.start_time}
           routename={item.route.name}
           description={item.route.description}
-          length={item.route.run_info.estimated_distance}
-          route={item.route.run_info.route}
+          length={item.route.run_info.final_distance}
+          route={item.route.location_packets}
           likes={item.route.likes}
           comments={item.route.comments}
         />
@@ -68,15 +68,18 @@ class FeedScreen extends React.Component {
       );
     }
 
+    // <KeyboardAvoidingView
+    //   behavior="position"
+    //   style={{ backgroundColor: Color.darkBackground }}>
+    // </KeyboardAvoidingView>
+
     return (
-      <KeyboardAvoidingView
-        behavior="position"
-        style={{ backgroundColor: Color.darkBackground }}>
+
+      <View style={{ backgroundColor: Color.darkBackground, flex:1 }}>
         <ScrollView
           contentContainerStyle={{
             backgroundColor: Color.darkBackground,
             alignItems: "center",
-            height:"100%"
           }}>
           {this.generateFeed()}
           {this.state.feed.length == 0 && <Text style={{color:Color.textColor}}>Your feed is empty</Text>}
@@ -95,7 +98,7 @@ class FeedScreen extends React.Component {
             text="Refresh"
           />
         </ScrollView>
-      </KeyboardAvoidingView>
+      </View>
     );
   }
 }

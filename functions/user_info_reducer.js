@@ -53,6 +53,11 @@ function filterList(list, value) {
   return list;
 }
 
+function uniqueKey() {
+  let key = new Date().getTime()
+  return key
+}
+
 function updateUserInfo(new_state, update_user_info) {
   let { username, bio , full_name } = update_user_info
   if (username != '') {
@@ -118,12 +123,9 @@ export default function userInfoReducer(state = USER_INFO_INITIAL_STATE, action)
         start_name: route_info.start_name,
         end_name: route_info.end_name,
       }
-      return Object.assign({}, state, {
-        saved_routes: [
-          ...state.saved_routes,
-          saved_route
-        ]
-      })
+      let new_saved_route = {}
+      new_saved_route[uniqueKey()] = saved_route
+      return Object.assign({}, state, new_saved_route);
     case ADD_RUN:
       return Object.assign({}, state, {
         runs: [
@@ -132,12 +134,9 @@ export default function userInfoReducer(state = USER_INFO_INITIAL_STATE, action)
         ]
       })
     case ADD_SAVED_RUN:
-      return Object.assign({}, state, {
-        saved_runs: [
-          ...state.saved_runs,
-          action.info
-        ]
-      })
+      let new_saved_run = {}
+      new_saved_run[uniqueKey()] = action.info
+      return Object.assign({}, state, new_saved_run);
     default:
       return state
   }

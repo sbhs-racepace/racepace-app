@@ -4,20 +4,32 @@ import React from 'react';
 import { ScrollView, Text, View, StyleSheet, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import Button from "../components/Button"
 import Color from '../constants/Color'
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
 
 const STYLES = StyleSheet.create({
-  border: {
-    borderWidth:1,
-    paddingLeft:"3%",
-    padding:"2% 3%",
-    marginTop:5,
-    marginLeft:"2%",
-    width:"96%",
+  group: {
+    height:80,
+    margin:5,
+    width:"90%",
   },
   text: {
     color: Color.textColor,  
     fontSize:20,
-  }
+  },
+  circularButton:{
+    margin:5,
+    borderWidth:1,
+    backgroundColor:Color.darkBackground,
+    alignItems:'center',
+    alignSelf:'center',
+    justifyContent:'center',
+  },
+  smallButton: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+  },
+  smallIcon: 20,
 })
 
 class Group extends React.Component{
@@ -28,13 +40,15 @@ class Group extends React.Component{
 
   render() {
     return (
-      <TouchableOpacity 
-        style={STYLES.border}
+      <Button 
+        style={STYLES.group}
         onPress={() => {this.props.onPress()}}
       >
-        <Text style={[STYLES.text,{fontSize:16}]}>{this.props.group.group_name}</Text>
-        <Text style={STYLES.text}>Description: {this.props.group.description}</Text>
-      </TouchableOpacity>
+        <View style={{height:'100%', justifyContent:'space-evenly'}}>
+          <Text style={STYLES.text}>{this.props.group.group_name}</Text>
+          <Text style={STYLES.text}>Description: {this.props.group.description}</Text>
+        </View>
+      </Button>
     )
   }
 }
@@ -59,16 +73,22 @@ export default class GroupScreen extends React.Component {
   render() {
     return (
       <View style={{flex:1, backgroundColor:Color.lightBackground}}>
-        <Text style={{fontFamily:'Roboto-Bold',fontSize:40,padding:"3%",color:Color.primaryColor}}>Running Groups</Text>
-        <Text style={STYLES.text}>Groups is not fully implemented yet</Text>
-        <ScrollView>
-          {this.state.groups.map(group => <Group onPress={() => {this.props.navigation.navigate('Chat')}} group={group}></Group>)}
-        </ScrollView>
-        <Button
-          style={{ alignSelf: 'center' }}
-          text="Find Friends"
-          onPress={() => this.props.navigation.navigate('FindFriends')}
-        />
+        <View style={{flex:1}}>
+          <Button
+            style={{ alignSelf: 'center', width:'100%', height:60}}
+            text="Find Friends"
+            onPress={() => this.props.navigation.navigate('FindFriends')}
+          >
+            <FontAwesomeIcon name="search" size={STYLES.smallIcon} color={Color.primaryColor}/>
+          </Button>
+        </View>
+        <View style={{flex:5, alignItems:'center'}}>
+          <Text style={{fontFamily:'Roboto-Bold',fontSize:40,padding:"3%",color:Color.primaryColor}}>Running Groups</Text>
+          <Text style={STYLES.text}>Groups are not fully implemented yet</Text>
+          <ScrollView>
+            {this.state.groups.map(group => <Group onPress={() => {this.props.navigation.navigate('Chat')}} group={group}></Group>)}
+          </ScrollView>
+        </View>
 
       </View>
     );

@@ -69,7 +69,6 @@ class SaveRouteScreen extends React.Component {
       Alert.alert('Error connecting to server', res);
     })
     .then( async () => {
-      console.log('fasfads')
       this.props.addRoute(data)
       Alert.alert('Success Saving Route');
     });

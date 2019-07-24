@@ -82,7 +82,6 @@ class Comment extends React.Component {
 export default class FeedItem extends React.Component {
   constructor(props) {
     super(props);
-    console.log(this.props.likes);
     this.state = {
       likes: this.props.likes.length,
       liked: this.props.likes.includes(this.props.user.user_id),
@@ -90,6 +89,12 @@ export default class FeedItem extends React.Component {
       commentInput: "",
       showComments: false
     };
+    if (this.props.route.length == 0) {
+      this.props.route.push({
+        latitude:-33.890201568,
+        longitude:151.217895507
+      }) // SBHS if empty route
+    }
     this.likedBefore = this.props.likes.includes(this.props.user.user_id);
   }
 
