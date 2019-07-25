@@ -22,6 +22,7 @@ import { startRun, addLocationPacket } from "../functions/run_action";
 import { minuteSecondString } from "../functions/conversions";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import '../global.js'
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get("window");
 
@@ -54,19 +55,28 @@ class RunInformationScreen extends React.Component {
   }
 
   calcMapRegion() {
-    let lat_list = this.props.run.run_info.route.map(point => point.latitude);
-    let max_lat = Math.max(...lat_list);
-    let min_lat = Math.min(...lat_list);
-    let lon_list = this.props.run.run_info.route.map(point => point.longitude);
-    let max_lon = Math.max(...lon_list);
-    let min_lon = Math.min(...lon_list);
-    let region = {
-      latitude: (max_lat + min_lat)/2,
-      longitude: (max_lon + min_lon)/2,
-      latitudeDelta: max_lat - min_lat + 0.001,
-      longitudeDelta: max_lon - min_lon + 0.0005,
+    if (this.props.run.run_info.route.length > 0) {
+      let lat_list = this.props.run.run_info.route.map(point => point.latitude);
+      let max_lat = Math.max(...lat_list);
+      let min_lat = Math.min(...lat_list);
+      let lon_list = this.props.run.run_info.route.map(point => point.longitude);
+      let max_lon = Math.max(...lon_list);
+      let min_lon = Math.min(...lon_list);
+      let region = {
+        latitude: (max_lat + min_lat)/2,
+        longitude: (max_lon + min_lon)/2,
+        latitudeDelta: max_lat - min_lat + 0.001,
+        longitudeDelta: max_lon - min_lon + 0.0005,
+      }
+      return region;
+    } else {
+      let region =  {
+        ...global.default_location,
+        latitudeDelta:0.005, 
+        longitudeDelta:0.005,
+      }
+      return region;
     }
-    return region
   }
 
   render() {

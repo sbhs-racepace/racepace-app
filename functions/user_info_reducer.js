@@ -104,7 +104,7 @@ export default function userInfoReducer(state = USER_INFO_INITIAL_STATE, action)
     case REQUEST_FOLLOW:
       return Object.assign({}, state, {
         pending_follows: [
-          ...pending_follows,
+          ...state.pending_follows,
           action.other_user_id // adding other user id to pending follows
         ]
       })
