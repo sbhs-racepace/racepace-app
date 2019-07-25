@@ -93,7 +93,7 @@ class SaveRunScreen extends React.Component {
   async addRun() {
     let data = {
       run_info: this.props.run.run_info,
-      location_packets: this.props.run.location_packets,
+      location_packets: Array(this.props.run.location_packets),
     }
     let api_url = `${global.serverURL}/api/add_run`;
     fetch(api_url, {
@@ -117,7 +117,7 @@ class SaveRunScreen extends React.Component {
       name: this.state.runName,
       description: this.state.runDescription,
       run_info: this.props.run.run_info,
-      location_packets: this.props.run.location_packets,
+      location_packets: Array(this.props.run.location_packets),
     }
     let api_url = `${global.serverURL}/api/save_run`;
     fetch(api_url, {

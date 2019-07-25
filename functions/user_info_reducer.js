@@ -110,6 +110,22 @@ export default function userInfoReducer(state = USER_INFO_INITIAL_STATE, action)
       })
     case UPDATE_USER_INFO:
       return updateUserInfo(Object.assign({}, state), action.update);
+    case ADD_SAVED_RUN:
+      let info = action.info
+      let saved_run_data = {
+        description: info.description,
+        location_packets: info.location_packets,
+        name: info.name,
+        run_info: info.run_info,
+      }
+      let new_saved_run = {};
+      new_saved_run[uniqueKey()] = saved_run_data
+      return Object.assign({}, state, {
+        saved_runs: {
+          ...state.saved_runs,
+          // ...new_saved_run,
+        }
+      });
     case ADD_ROUTE:
       let route_info = action.info
       let route = {
@@ -132,21 +148,13 @@ export default function userInfoReducer(state = USER_INFO_INITIAL_STATE, action)
         }
       });
     case ADD_RUN:
+      let run = action.info
       return Object.assign({}, state, {
         runs: [
           ...state.runs,
-          action.info
+          run
         ]
       })
-    case ADD_SAVED_RUN:
-      let new_saved_run = {}
-      new_saved_run[uniqueKey()] = action.info
-      return Object.assign({}, state, {
-        saved_runs: {
-          ...state.saved_runs,
-          ...new_saved_run,
-        }
-      });
     default:
       return state
   }
