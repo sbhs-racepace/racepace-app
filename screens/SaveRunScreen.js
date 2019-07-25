@@ -11,6 +11,10 @@ import BackButtonHeader from '../components/BackButtonHeader';
 import { endRun } from '../functions/run_action'
 import { addRun, addSavedRun } from '../functions/user_info_action'
 
+import MapView from "react-native-maps";
+import { Polyline } from "react-native-maps";
+import { noLabel, cobalt, lunar, neutral_blue } from "../constants/mapstyle";
+
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { minuteSecondString } from '../functions/conversions';
@@ -21,6 +25,11 @@ const STYLES = StyleSheet.create({
   text_style: {
     color: Color.textColor,
     fontSize:20,
+  },
+  container: {
+    justifyContent: "space-evenly",
+    flexDirection: "column",
+    alignItems: "center"
   },
   title_style: {
     fontSize:30,
@@ -39,10 +48,9 @@ const STYLES = StyleSheet.create({
     color: Color.textColor,
     height:windowHeight*0.15,
   },
-  routePic: {
+  map: {
     aspectRatio: 1.7, 
     width: '80%', 
-    height: undefined,
     borderRadius: 5
   },
 })
@@ -54,6 +62,31 @@ class SaveRunScreen extends React.Component {
       runName: 'Run Name',
       runDescription: 'Run Description',
     };
+  }
+
+  calcMapRegion() {
+    if (this.props.run.location_packets.length > 0) {
+      let lat_list = this.props.run.location_packets.map(point => point.latitude);
+      let max_lat = Math.max(...lat_list);
+      let min_lat = Math.min(...lat_list);
+      let lon_list = this.props.run.location_packets.map(point => point.longitude);
+      let max_lon = Math.max(...lon_list);
+      let min_lon = Math.min(...lon_list);
+      let region = {
+        latitude: (max_lat + min_lat)/2,
+        longitude: (max_lon + min_lon)/2,
+        latitudeDelta: max_lat - min_lat + 0.001,
+        longitudeDelta: max_lon - min_lon + 0.0005,
+      }
+      return region
+    } else { // Default if no run
+      let region =  {
+        ...global.default_location,
+        latitudeDelta:0.005, 
+        longitudeDelta:0.005,
+      }
+      return region;
+    }
   }
 
   async addRun() {
@@ -112,7 +145,31 @@ class SaveRunScreen extends React.Component {
         <ScrollView style={{flex: 4/5, backgroundColor: Color.lightBackground}}>
           <View style={{height:windowHeight*0.8, justifyContent:'space-evenly', alignItems:'center'}}>
             <Text style={STYLES.title_style}>Run Stats</Text>
-            <Image source={require('../assets/map.png')} style={STYLES.routePic} />
+            <View
+              style={[
+                STYLES.container,
+                { alignItems: "center", justifyContent: "space-around", flex: 1 }
+              ]}
+            >
+              <MapView
+                style={STYLES.map}
+                provider={MapView.PROVIDER_GOOGLE} // Usage of google maps
+                customMapStyle={lunar}
+                showsMyLocationButton={false}
+                region={this.calcMapRegion()}
+                pitchEnabled={false}
+                rotateEnabled={false}
+                scrollEnabled={false}
+                zoomEnabled={false}
+              >
+                <Polyline
+                  coordinates={this.props.run.location_packets}
+                  strokeColor={Color.primaryColor}
+                  strokeWidth={4}
+                />
+              </MapView>
+            </View>
+
             <Text style={STYLES.text_style}>Average Pace: {minuteSecondString(this.props.run.real_time_info.average_pace)}</Text>
             <Text style={STYLES.text_style}>Distance Ran: {Math.ceil(this.props.run.real_time_info.current_distance)} m</Text>
             <Text style={STYLES.text_style}>Duration: {minuteSecondString(this.props.run.run_info.final_duration)}</Text>

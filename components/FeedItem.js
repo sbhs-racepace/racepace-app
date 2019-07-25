@@ -92,8 +92,7 @@ export default class FeedItem extends React.Component {
     };
     if (this.props.route.length == 0) {
       this.props.route.push({
-        latitude: -33.890201568,
-        longitude: 151.217895507
+        ...global.default_location,
       }); // SBHS if empty route
     }
     console.log(this.props.route)
