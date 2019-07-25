@@ -96,8 +96,8 @@ export default class FeedItem extends React.Component {
         longitude: 151.217895507
       }); // SBHS if empty route
     }
-    console.log(this.props.route)
     this.likedBefore = this.props.likes.includes(this.props.user.user_id);
+    this.loadTime = new Date().getTime()
   }
 
   like() {
@@ -176,7 +176,7 @@ export default class FeedItem extends React.Component {
             source={{
               uri: `${global.serverURL}/api/avatars/${
                 this.props.ownerid
-              }.png?rand=${Math.random()}`
+              }.png?rand=${this.loadTime}`
             }}
           />
           <View style={STYLES.user_info}>

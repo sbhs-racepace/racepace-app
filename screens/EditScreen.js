@@ -72,6 +72,7 @@ class EditScreen extends React.Component {
       confirmation_password: ""
     };
     this.base64 = false;
+    this.loadTime = new Date().getTime()
   }
 
   async saveChanges() {
@@ -196,7 +197,7 @@ class EditScreen extends React.Component {
                 }
                 style={STYLES.profile_image}
                 source={{
-                  uri: this.state.uri + `?rand=${Math.random()}`
+                  uri: this.state.uri + `?rand=${this.loadTime}`
                 }}
               />
               <Button
