@@ -145,6 +145,7 @@ export default class FeedItem extends React.Component {
         commentsInput: ""
       };
     });
+    this.setState({commentInput: ""})
   }
 
   calcMapRegion() {
@@ -245,6 +246,7 @@ export default class FeedItem extends React.Component {
                   fontSize: 14,
                   color: Color.textColor
                 }}
+                value={this.state.commentInput}
                 onChangeText={text => this.setState({ commentInput: text })}
               />
               <Button
