@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import {
+  ActivityIndicator,
   Text,
   TextInput,
   View,
@@ -15,7 +16,7 @@ import { Polyline } from "react-native-maps";
 import Button from "./Button";
 import request from "../functions/request";
 import "../global";
-import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
+import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import Color from "../constants/Color";
 import { noLabel, cobalt, lunar, neutral_blue } from "../constants/mapstyle";
 
@@ -91,9 +92,9 @@ export default class FeedItem extends React.Component {
     };
     if (this.props.route.length == 0) {
       this.props.route.push({
-        latitude:-33.890201568,
-        longitude:151.217895507
-      }) // SBHS if empty route
+        latitude: -33.890201568,
+        longitude: 151.217895507
+      }); // SBHS if empty route
     }
     this.likedBefore = this.props.likes.includes(this.props.user.user_id);
   }
@@ -151,9 +152,14 @@ export default class FeedItem extends React.Component {
       <View style={STYLES.feed_item}>
         <View style={STYLES.user_profile}>
           <Image
+            PlaceholderContent={
+              <ActivityIndicator color="white" size="large" />
+            }
             style={STYLES.profilePic}
             source={{
-              uri: `${global.serverURL}/api/avatars/${this.props.ownerid}.png?rand=${Math.random()}`
+              uri: `${global.serverURL}/api/avatars/${
+                this.props.ownerid
+              }.png?rand=${Math.random()}`
             }}
           />
           <View style={STYLES.user_info}>
@@ -182,7 +188,7 @@ export default class FeedItem extends React.Component {
           region={{
             ...this.props.route[0],
             latitudeDelta: 0.05,
-            longitudeDelta: 0.05,
+            longitudeDelta: 0.05
           }}
           pitchEnabled={false}
           rotateEnabled={false}
