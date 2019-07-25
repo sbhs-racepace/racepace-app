@@ -83,6 +83,7 @@ class LoginScreen extends React.Component {
           <Button
             style={STYLES.roundedButton}
             text_style={STYLES.button_text}
+            disabled={this.state.loading}
             onPress={async ()=> {
               this.setState({loading:true})
               let login_response = await login(this.state.email, this.state.pword);
