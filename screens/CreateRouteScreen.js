@@ -64,6 +64,10 @@ class RunSetupScreen extends React.Component {
     let coord, name = null;
     if (coordPattern.test(location_reference) == false) {
       coord = await this.addressToCoord(location_reference);
+      if (coord == undefined) {
+        Alert.alert('Name could not be understood')
+        return false;
+      } 
       name = location_reference;
     } else {
       coord = this.coordStringToCoord(location_reference);
@@ -149,8 +153,14 @@ class RunSetupScreen extends React.Component {
       start_packet = {name: start, coord: (await this.getCurrentLocation())} // Current Location cannot be retrieved on simulator
     } else {
       start_packet = await this.createLocationPacket(start);
+      if (start_packet == false) {
+        return 0;
+      }
     }
     let end_packet = await this.createLocationPacket(end);
+    if (end_packet == false) {
+      return 0;
+    }
 
     if (start == '' || end == '') {
       Alert.alert('Incomplete fields')
@@ -172,7 +182,6 @@ class RunSetupScreen extends React.Component {
         Alert.alert('Failure Generating Route')
       }
     }
-    this.setState({loading:false}); // End loading always at the end
   }
 
   setToCurrentLocation() {
@@ -299,7 +308,8 @@ class RunSetupScreen extends React.Component {
           text="Generate Route Info"
           disabled={this.state.loading}
           onPress={() => {
-			      this.setState({loading:true}, this.generateRouteInfo.bind(this))
+            this.setState({loading:true}, this.generateRouteInfo.bind(this))
+            this.setState({loading:false});
           }}
         >
           {this.state.loading && (
