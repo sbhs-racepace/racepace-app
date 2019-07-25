@@ -44,7 +44,7 @@ class ExtendedDetailsScreen extends React.Component {
           onPress={this.props.navigation.goBack}
           title='More Details'
         />
-        <ScrollView style={{ flex:1, width: '100%', alignItems:'center', justifyContent:'space-evenly', top: 0}}>
+        <ScrollView contentContainerStyle={{ flex:1, width: '100%', alignItems:'center', justifyContent:'space-evenly', top: 0}}>
           <Text style={STYLES.text1}> Here are the details of your run: </Text>
           <Text style={STYLES.text2}> Route: from {this.props.navigation.state.params.run.run_info.start} to  {this.props.navigation.state.params.run.run_info.end} </Text>
           <Text style={STYLES.text2}> Distance: {this.props.navigation.state.params.run.run_info.final_distance}km </Text>
