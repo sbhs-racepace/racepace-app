@@ -95,7 +95,6 @@ export default class FeedItem extends React.Component {
         ...global.default_location,
       }); // SBHS if empty route
     }
-    console.log(this.props.route)
     this.likedBefore = this.props.likes.includes(this.props.user.user_id);
   }
 

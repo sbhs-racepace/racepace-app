@@ -45,6 +45,6 @@ export function addSavedRun(info) {
   return { type: ADD_SAVED_RUN, info }
 }
 export function addRoute(info) {
-  return { type: UPDATE_USER_INFO, info }
+  return { type: ADD_ROUTE, info }
 }
 
