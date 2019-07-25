@@ -28,7 +28,7 @@ const STYLES = StyleSheet.create({
   },
   title: {
     fontFamily:'Roboto-Bold',fontSize:70,color: Color.primaryColor,
-  },  
+  },
   roundedButton: {
     width: '80%',
   }
@@ -98,7 +98,6 @@ class LoginScreen extends React.Component {
           >
             {this.state.loading && (
               <ActivityIndicator
-                animating={true}
                 color="white"
                 size="large"
               />
