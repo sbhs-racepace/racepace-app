@@ -78,7 +78,13 @@ class ChatScreen extends React.Component {
     payload = {
         group_id: 'global',
         content: msg.text,
-        image: null
+        author: {
+          _id: this.props.user.user_id,
+          username: this.props.user.username,
+          full_name: this.props.user.full_name,
+          avatar_url: `${global.serverURL}/api/avatars/${this.props.user.user_id}.png`,
+        },
+        image: `${global.serverURL}/api/avatars/${this.props.user.user_id}.png`
     }
 
     this.socket.emit('global_message', payload);
