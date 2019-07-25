@@ -140,7 +140,7 @@ class EditScreen extends React.Component {
               };
               await this.props.updateUserInfo(updated_data);
               Alert.alert(
-                "Changed User Details. These changes may take a while to sync."
+                "Changed User Details."
               );
               this.props.navigation.navigate("Profile");
             } else {

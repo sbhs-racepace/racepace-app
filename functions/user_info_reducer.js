@@ -109,7 +109,7 @@ export default function userInfoReducer(state = USER_INFO_INITIAL_STATE, action)
         ]
       })
     case UPDATE_USER_INFO:
-      return updateUserInfo(Object.assign({}, state), action.info);
+      return updateUserInfo(Object.assign({}, state), action.update);
     case ADD_ROUTE:
       let route_info = action.info
       let route = {
