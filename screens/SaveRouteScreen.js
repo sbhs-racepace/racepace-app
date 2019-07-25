@@ -122,7 +122,7 @@ class SaveRouteScreen extends React.Component {
           text="Save Route"
           onPress={async ()=> {
             await this.saveRoute()
-            this.props.navigation.navigate('Information');
+            this.props.navigation.goBack();
           }}
         />
       </View>
