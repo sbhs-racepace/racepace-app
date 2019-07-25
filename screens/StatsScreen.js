@@ -27,7 +27,6 @@ class StatsScreen extends React.Component {
   }
   
   render() {
-    let stats = this.props.user.stats
     return (
       <View style={{flexDirection: 'row', flexWrap: 'wrap',  padding: 10}}>
           {/* <Card 
@@ -49,21 +48,21 @@ class StatsScreen extends React.Component {
               containerStyle={STYLES.card} 
               titleStyle={{color: Color.textColor}} 
               dividerStyle={{display: 'none'}}>
-              <Text style={STYLES.text}>{stats.num_runs} Runs</Text>
+              <Text style={STYLES.text}>{this.props.user.stats.num_runs} Runs</Text>
           </Card>
           <Card 
               title="Distance Ran"
               containerStyle={STYLES.card} 
               titleStyle={{color: Color.textColor}} 
               dividerStyle={{display: 'none'}}>
-              <Text style={STYLES.text}>{stats.total_distance} km</Text>
+              <Text style={STYLES.text}>{this.props.user.stats.total_distance} km</Text>
           </Card>
           <Card 
               title="Longest Distance"
               containerStyle={STYLES.card} 
               titleStyle={{color: Color.textColor}} 
               dividerStyle={{display: 'none'}}>
-              <Text style={STYLES.text}>{stats.longest_distance_ran} km</Text>
+              <Text style={STYLES.text}>{this.props.user.stats.longest_distance_ran} km</Text>
           </Card>
           {/* <Card 
               title="Fastest 1km"
