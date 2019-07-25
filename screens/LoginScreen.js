@@ -1,36 +1,46 @@
 // Jason Yu, Sunny Yan
 
-import React from 'react';
-import { Component } from 'react';
-import Color from '../constants/Color'
-import { Image } from 'react-native-elements'
-import { View, Text, StyleSheet, Alert, Dimensions, ActivityIndicator, KeyboardAvoidingView } from 'react-native';
-import { login, googleLogin, getUserInfo } from '../functions/login';
-import Button from '../components/Button.js';
-import TextInputCustom from '../components/TextInput';
-import BackButtonHeader from '../components/BackButtonHeader'
-import { storeUserInfo, storeLoginInfo } from '../functions/user_info_action'
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import React from "react";
+import { Component } from "react";
+import Color from "../constants/Color";
+import { Image } from "react-native-elements";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Alert,
+  Dimensions,
+  ActivityIndicator,
+  KeyboardAvoidingView
+} from "react-native";
+import { login, googleLogin, getUserInfo } from "../functions/login";
+import Button from "../components/Button.js";
+import TextInputCustom from "../components/TextInput";
+import BackButtonHeader from "../components/BackButtonHeader";
+import { storeUserInfo, storeLoginInfo } from "../functions/user_info_action";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
-const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
+const { width: windowWidth, height: windowHeight } = Dimensions.get("window");
 
 const STYLES = StyleSheet.create({
   button_text: {
-    padding: '1%',
-    fontSize: 16,
+    padding: "1%",
+    fontSize: 16
   },
   logo: {
-    margin: '5%',
+    margin: "5%",
     width: windowWidth * 0.7,
     height: windowWidth * 0.7,
-    borderRadius: windowWidth * 0.7 / 2,
+    borderRadius: (windowWidth * 0.7) / 2
   },
   title: {
-    fontFamily:'Roboto-Bold',fontSize:70,color: Color.primaryColor,
+    fontFamily: "Roboto-Bold",
+    fontSize: 70,
+    color: Color.primaryColor
   },
   roundedButton: {
-    width: '80%',
+    width: "80%"
   }
 });
 
@@ -38,25 +48,28 @@ class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: 'email',
-      pword: 'password',
-      loading: false,
+      email: "email",
+      pword: "password",
+      loading: false
     };
   }
 
   render() {
     return (
-      <KeyboardAvoidingView style={{backgroundColor: Color.darkBackground, flex:1}} behavior="padding">
+      <KeyboardAvoidingView
+        style={{ backgroundColor: Color.darkBackground, flex: 1 }}
+        behavior="padding"
+      >
         <BackButtonHeader
           title="Login Screen"
           onPress={this.props.navigation.goBack}
         />
         <View
           style={{
-            alignItems: 'center',
-            flexDirection: 'column',
-            flex:1,
-            justifyContent: 'space-evenly',
+            alignItems: "center",
+            flexDirection: "column",
+            flex: 1,
+            justifyContent: "space-evenly"
           }}
         >
           <Text style={[STYLES.title]}>Racepace</Text>
@@ -72,7 +85,7 @@ class LoginScreen extends React.Component {
           />
           <TextInputCustom
             autoCorrect={false}
-            defaultValue={'password'}
+            defaultValue={"password"}
             onChangeText={pword => this.setState({ pword })}
             returnKeyType="go"
             secureTextEntry={true}
@@ -84,32 +97,47 @@ class LoginScreen extends React.Component {
             style={STYLES.roundedButton}
             text_style={STYLES.button_text}
             disabled={this.state.loading}
-            onPress={async ()=> {
-              this.setState({loading:true})
-              let login_response = await login(this.state.email, this.state.pword);
+            onPress={async () => {
+              this.setState({ loading: true });
+              let login_response = await login(
+                this.state.email,
+                this.state.pword
+              );
               if (login_response != false) {
                 await this.props.storeLoginInfo(login_response);
                 let userInfo = await getUserInfo(this.props.user.token);
-                this.props.storeUserInfo(userInfo)
-                this.props.navigation.navigate('Feed');
+                this.props.storeUserInfo(userInfo);
+                this.props.navigation.navigate("Feed");
               }
-              this.setState({loading:false})
+              this.setState({ loading: false });
             }}
             text="Login"
           >
             {this.state.loading && (
-              <ActivityIndicator
-                color="white"
-                size="large"
-              />
+              <ActivityIndicator color="white" size="large" />
             )}
           </Button>
           <Button
             style={STYLES.roundedButton}
             text_style={STYLES.button_text}
-            onPress={googleLogin}
+            disabled={this.state.loadingGoogle}
+            onPress={async () => {
+              this.setState({ loadingGoogle: true });
+              let login_response = await googleLogin();
+              if (login_response != false) {
+                await this.props.storeLoginInfo(login_response);
+                let userInfo = await getUserInfo(this.props.user.token);
+                this.props.storeUserInfo(userInfo);
+                this.props.navigation.navigate("Feed");
+              }
+              this.setState({ loadingGoogle: false });
+            }}
             text="Login with Google"
-          />
+          >
+          {this.state.loadingGoogle && (
+            <ActivityIndicator color="white" size="large" />
+          )}
+        </Button>
         </View>
       </KeyboardAvoidingView>
     );
@@ -117,12 +145,15 @@ class LoginScreen extends React.Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ storeUserInfo, storeLoginInfo }, dispatch)
+  return bindActionCreators({ storeUserInfo, storeLoginInfo }, dispatch);
 }
 
 function mapStateToProps(state) {
-  const {user} = state
-  return {user};
-};
+  const { user } = state;
+  return { user };
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LoginScreen);

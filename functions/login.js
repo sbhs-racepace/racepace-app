@@ -138,6 +138,7 @@ export async function register(email, pword, full_name, username) {
 
 export async function googleLogin() {
   let login_response = false;
+  await get_keys();
   try {
     const url = global.serverURL + '/api/google_login';
     const config = {
@@ -168,7 +169,7 @@ export async function googleLogin() {
         );
     }
   } catch (err) {
-    Alert.alert('Google Login Error', err);
+    Alert.alert('Google Login Error');
   }
   return login_response;
 }
