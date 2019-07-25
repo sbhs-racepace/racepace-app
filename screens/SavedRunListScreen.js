@@ -36,7 +36,6 @@ class SavedRunItem extends React.Component {
         dividerStyle={{display: 'none'}}
         containerStyle={STYLES.card}
       >
-        <Text style={STYLES.text}>Start Time: {this.props.run.run_info.start_time}</Text>
         <Text style={STYLES.text}>Distance: {Math.ceil(this.props.run.run_info.final_distance)} m</Text>
         <Text style={STYLES.text}>Pace: {minuteSecondString(this.props.run.run_info.average_pace)}</Text>
         <Text style={STYLES.text}>Duration: {minuteSecondString(this.props.run.run_info.final_duration)}</Text>
@@ -49,13 +48,17 @@ class SavedRunItem extends React.Component {
 class SavedRunListScreen extends React.Component {
   constructor(props) {
     super(props);
-    let saved_runs = [];
+  }
+
+  generateSavedRunList() {
+    let saved_run_values = [];
     for (run_id in this.props.user.saved_runs) {
-      saved_runs.push(this.props.user.saved_runs[run_id])
+      saved_run_values.push(this.props.user.saved_runs[run_id])
     };
-    this.state = {
-      saved_runs: saved_runs
-    }
+    let saved_runs = saved_run_values.map(run =>
+      <SavedRunItem run={run}/>
+    )
+    return saved_runs
   }
 
   render() {
@@ -64,11 +67,7 @@ class SavedRunListScreen extends React.Component {
     return (
       <View style={{backgroundColor: Color.darkBackground, flex:1}}>
         <ScrollView>
-          {this.state.saved_runs.map(run =>
-            <SavedRunItem
-              run={run}
-            />
-          )}
+          {this.generateSavedRunList()}
         </ScrollView>
       </View>
     );
@@ -80,8 +79,8 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-  const {user} = state
-  return {user};
+  const { user } = state
+  return { user };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SavedRunListScreen);

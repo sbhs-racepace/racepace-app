@@ -54,7 +54,7 @@ function filterList(list, value) {
 }
 
 function uniqueKey() {
-  let key = new Date().getTime()
+  let key = String(new Date().getTime());
   return key
 }
 
@@ -112,19 +112,20 @@ export default function userInfoReducer(state = USER_INFO_INITIAL_STATE, action)
       return updateUserInfo(Object.assign({}, state), action.update);
     case ADD_SAVED_RUN:
       let info = action.info
+      let key = uniqueKey()
       let saved_run_data = {
         description: info.description,
         location_packets: info.location_packets,
+        id: key,
         name: info.name,
-        run_info: info.run_info,
+        run_info: Object.assign({},info.run_info),
+        likes: [],
+        comments: []
       }
-      let new_saved_run = {};
-      new_saved_run[uniqueKey()] = saved_run_data
+      let new_saved_runs = state.saved_runs;
+      new_saved_runs[key] = saved_run_data
       return Object.assign({}, state, {
-        saved_runs: {
-          ...state.saved_runs,
-          // ...new_saved_run,
-        }
+        saved_runs: new_saved_runs,
       });
     case ADD_ROUTE:
       let route_info = action.info
