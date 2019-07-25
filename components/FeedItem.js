@@ -42,8 +42,8 @@ const STYLES = StyleSheet.create({
     alignItems: "center"
   },
   map: {
+    aspectRatio: 1.7,
     width: "100%",
-    height: 200,
     borderRadius: 5
   },
   likeCommentButton: {

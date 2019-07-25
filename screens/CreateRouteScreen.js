@@ -7,6 +7,7 @@ import TextInput from '../components/TextInput'
 import { CheckBox } from 'react-native-elements'
 import Button from "../components/Button"
 import "../global.js"
+import Constants from 'expo-constants';
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
 import Color from '../constants/Color'
@@ -19,7 +20,7 @@ const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
 
 const STYLES = StyleSheet.create({
   container: {
-    justifyContent:"space-evenly", 
+    justifyContent:"space-evenly",
     flexDirection:"column",
     alignItems:'center'
   },
@@ -185,9 +186,9 @@ class RunSetupScreen extends React.Component {
     this.setState({
       locationInputs: [
         ...this.state.locationInputs,
-        (            
+        (
           <View style={{flexDirection:'row', alignItems:'center', marginBottom: 20, width:"90%", justifyContent:'space-between'}}>
-          <TextInput 
+          <TextInput
             style={{width:windowWidth*0.7}}
             onChangeText={locationText => {
               this.props.changeLocationInput(locationText, index);
@@ -206,7 +207,7 @@ class RunSetupScreen extends React.Component {
       return {locationInputs: prevState.locationInputs}
     })
   }
-  
+
   render() {
     let locationInputs = this.state.locationInputs;
     return(
@@ -225,7 +226,7 @@ class RunSetupScreen extends React.Component {
           </View>
 
           <View style={{flexDirection:'row', alignItems:'center', marginBottom: 20, width:"90%", justifyContent:'space-between'}}>
-            <TextInput 
+            <TextInput
               style={{width:windowWidth*0.7}}
               placeholder="Start"
               value={this.props.run.run_setup.start}
@@ -234,7 +235,7 @@ class RunSetupScreen extends React.Component {
               }}
             />
             <View style={{width:windowWidth*0.1}}>
-              <TouchableOpacity 
+              <TouchableOpacity
                 onPress={()=>{this.addInput()}}
               >
                 <FontAwesomeIcon name="plus" size={30} color={Color.primaryColor}/>
@@ -243,7 +244,7 @@ class RunSetupScreen extends React.Component {
           </View>
           {locationInputs.map(input=>input)}
           <View style={{flexDirection:'row', alignItems:'center', marginBottom: 20, width:"90%", justifyContent:'space-between'}}>
-            <TextInput 
+            <TextInput
               placeholder="End"
               style={{width:windowWidth*0.7}}
               value={this.props.run.run_setup.end}
@@ -252,7 +253,7 @@ class RunSetupScreen extends React.Component {
               }}
             />
             <View style={{width:windowWidth*0.1}}>
-              <TouchableOpacity 
+              <TouchableOpacity
                 onPress={()=>{ this.removeInput()}}
               >
                 <FontAwesomeIcon name="minus" size={30} color={Color.primaryColor}/>
@@ -265,7 +266,7 @@ class RunSetupScreen extends React.Component {
               <Text style={[STYLES.text_style]}>Goal Pace</Text>
             </View>
             <View style={{flexDirection:'row', justifyContent:'space-between', width:'90%', marginBottom:20}}>
-              <TextInput 
+              <TextInput
                 style={{width:'45%'}}
                 placeholder="Minutes"
                 onChangeText={minutes => this.setState({goal_pace: {minutes: minutes}})}
@@ -273,12 +274,12 @@ class RunSetupScreen extends React.Component {
                 keyboardType="number-pad"
                 returnKeyType="go"
               />
-              <TextInput 
+              <TextInput
                 style={{width:'45%'}}
                 placeholder="Seconds"
                 onChangeText={seconds => this.setState({goal_pace: {seconds: seconds}})}
                 defaultValue={this.state.goal_pace.seconds}
-                returnKeyType="go" 
+                returnKeyType="go"
                 keyboardType="number-pad"
               />
             </View>
@@ -292,9 +293,10 @@ class RunSetupScreen extends React.Component {
             /> */}
           </View>
         </ScrollView>
-        <Button 
-          style={{borderRadius:10}} 
+        <Button
+          style={{borderRadius:10}}
           text="Generate Route Info"
+          disabled={this.state.loading}
           onPress={() => {
 			      this.setState({loading:true}, this.generateRouteInfo.bind(this))
           }}
