@@ -37,7 +37,6 @@ class ExtendedDetailsScreen extends React.Component {
   }
 
   render() {
-    console.log(this.props.navigation.state.params)
     return (
       <View style={{ flex: 1 , backgroundColor:Color.lightBackground}}>
         <BackButtonHeader
