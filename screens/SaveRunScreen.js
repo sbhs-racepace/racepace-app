@@ -61,6 +61,7 @@ class SaveRunScreen extends React.Component {
     this.state = {
       runName: 'Run Name',
       runDescription: 'Run Description',
+      region: this.calcMapRegion()
     };
   }
 
@@ -156,7 +157,7 @@ class SaveRunScreen extends React.Component {
                 provider={MapView.PROVIDER_GOOGLE} // Usage of google maps
                 customMapStyle={lunar}
                 showsMyLocationButton={false}
-                region={this.calcMapRegion()}
+                region={this.state.region}
                 pitchEnabled={false}
                 rotateEnabled={false}
                 scrollEnabled={false}

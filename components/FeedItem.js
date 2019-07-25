@@ -66,6 +66,9 @@ const STYLES = StyleSheet.create({
 class Comment extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      region: this.calcMapRegion(),
+    }
   }
 
   render() {
@@ -202,7 +205,7 @@ export default class FeedItem extends React.Component {
           provider={MapView.PROVIDER_GOOGLE} // Usage of google maps
           customMapStyle={lunar}
           showsMyLocationButton={false}
-          region={this.calcMapRegion()}
+          region={this.state.region}
           pitchEnabled={false}
           rotateEnabled={false}
           scrollEnabled={false}
