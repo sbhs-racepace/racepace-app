@@ -21,10 +21,7 @@ export async function getUserInfo(token) {
           `${global.serverURL}?token=${token}`,
           { transports: ['websocket'] }
         );
-        socket.connect(); 
-        socket.on('connect', () => { 
-          console.log('connected to socket server'); 
-        });
+        socket.emit('authenticate', token);
         user_info.socket = socket;
       } else {
         Alert.alert('Error', res_data.error);

@@ -77,13 +77,12 @@ class OtherProfileScreen extends React.Component {
         async res_data => {
           res_data = await res_data.json()
           if (res_data.success == true) {
-            if (following) { 
+            if (following == true) { 
               this.setState({'following': false, 'requested': false})
               this.props.requestFollow(user_id)
             } else {
               this.setState({'requested': true})
             }
-
           } else {
             Alert.alert("Couldn't send request.")
           }

@@ -47,7 +47,11 @@ class ChatScreen extends React.Component {
           }
         });
       }
-      this.setState((previousState) => { messages: GiftedChat.prepend(previousState.messages, messages) })
+      this.setState((previousState) => {
+        return {
+         messages: GiftedChat.prepend(previousState.messages, messages),
+        };
+      });
     });
   }
 
