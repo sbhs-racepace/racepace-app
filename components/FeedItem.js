@@ -96,6 +96,7 @@ export default class FeedItem extends React.Component {
         longitude: 151.217895507
       }); // SBHS if empty route
     }
+    console.log(this.props.route)
     this.likedBefore = this.props.likes.includes(this.props.user.user_id);
   }
 
@@ -147,6 +148,22 @@ export default class FeedItem extends React.Component {
     });
   }
 
+  calcMapRegion() {
+    let lat_list = this.props.route.map(point => point.latitude);
+    let max_lat = Math.max(...lat_list);
+    let min_lat = Math.min(...lat_list);
+    let lon_list = this.props.route.map(point => point.longitude);
+    let max_lon = Math.max(...lon_list);
+    let min_lon = Math.min(...lon_list);
+    let region = {
+      latitude: (max_lat + min_lat)/2,
+      longitude: (max_lon + min_lon)/2,
+      latitudeDelta: max_lat - min_lat + 0.001,
+      longitudeDelta: max_lon - min_lon + 0.0005,
+    }
+    return region
+  }
+
   render() {
     return (
       <View style={STYLES.feed_item}>
@@ -185,11 +202,7 @@ export default class FeedItem extends React.Component {
           provider={MapView.PROVIDER_GOOGLE} // Usage of google maps
           customMapStyle={lunar}
           showsMyLocationButton={false}
-          region={{
-            ...this.props.route[0],
-            latitudeDelta: 0.05,
-            longitudeDelta: 0.05
-          }}
+          region={this.calcMapRegion()}
           pitchEnabled={false}
           rotateEnabled={false}
           scrollEnabled={false}

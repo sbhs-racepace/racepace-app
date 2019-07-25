@@ -1,19 +1,19 @@
 // Jason Yu
-import React from 'react';
+import React from "react";
 import {
   ScrollView,
   Text,
   Alert,
   KeyboardAvoidingView,
-  View,
-} from 'react-native';
-import Button from '../components/Button';
-import FeedItem from '../components/FeedItem';
-import '../global.js';
-import request from '../functions/request';
-import Color from '../constants/Color';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+  View
+} from "react-native";
+import Button from "../components/Button";
+import FeedItem from "../components/FeedItem";
+import "../global.js";
+import request from "../functions/request";
+import Color from "../constants/Color";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
 class FeedScreen extends React.Component {
   constructor(props) {
@@ -36,34 +36,47 @@ class FeedScreen extends React.Component {
           routename={item.route.name}
           description={item.route.description}
           length={item.route.run_info.final_distance}
-          route={item.route.location_packets}
+          route={item.route.location_packets.map(packet => {
+            return {
+              latitude: packet.location[0],
+              longitude: packet.location[1]
+            };
+          })}
           likes={item.route.likes}
           comments={item.route.comments}
         />
       );
     });
-    return feed
+    return feed;
   }
 
   render() {
     if (!this.props.user.token) {
-      return <Text style={{
-          backgroundColor: Color.darkBackground,
-          color:Color.textColor,
-          flex:1
-        }}>Please login to see your feed</Text>;
+      return (
+        <Text
+          style={{
+            backgroundColor: Color.darkBackground,
+            color: Color.textColor,
+            flex: 1
+          }}
+        >
+          Please login to see your feed
+        </Text>
+      );
     } else if (this.state.reload) {
-      request('/api/get_feed', 'POST', {}, this.props.user.token, feed => {
+      request("/api/get_feed", "POST", {}, this.props.user.token, feed => {
         this.setState({ feed: feed.feed_items, reload: false });
       });
-      this.load = false
+      this.load = false;
       return (
-        <Text style={{
-          backgroundColor: Color.darkBackground,
-          color:Color.textColor,
-          flex:1
-        }}>
-        Loading...
+        <Text
+          style={{
+            backgroundColor: Color.darkBackground,
+            color: Color.textColor,
+            flex: 1
+          }}
+        >
+          Loading...
         </Text>
       );
     }
@@ -74,26 +87,28 @@ class FeedScreen extends React.Component {
     // </KeyboardAvoidingView>
 
     return (
-
-      <View style={{ backgroundColor: Color.darkBackground, flex:1 }}>
+      <View style={{ backgroundColor: Color.darkBackground, flex: 1 }}>
         <ScrollView
           contentContainerStyle={{
             backgroundColor: Color.darkBackground,
-            alignItems: "center",
-          }}>
+            alignItems: "center"
+          }}
+        >
           {this.generateFeed()}
-          {this.state.feed.length == 0 && <Text style={{color:Color.textColor}}>Your feed is empty</Text>}
+          {this.state.feed.length == 0 && (
+            <Text style={{ color: Color.textColor }}>Your feed is empty</Text>
+          )}
           <Button
             style={{
-              width: '80%',
-              alignSelf: 'center',
+              width: "80%",
+              alignSelf: "center"
             }}
             text_style={{
-              padding: '1%',
-              fontSize: 16,
+              padding: "1%",
+              fontSize: 16
             }}
             onPress={() => {
-              this.setState({reload:true})
+              this.setState({ reload: true });
             }}
             text="Refresh"
           />

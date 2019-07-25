@@ -66,7 +66,6 @@ class RunInformationScreen extends React.Component {
       latitudeDelta: max_lat - min_lat + 0.001,
       longitudeDelta: max_lon - min_lon + 0.0005,
     }
-    console.log(region)
     return region
   }
 
