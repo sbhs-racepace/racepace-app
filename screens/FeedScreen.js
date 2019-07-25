@@ -87,7 +87,7 @@ class FeedScreen extends React.Component {
     // </KeyboardAvoidingView>
 
     return (
-      <View style={{ backgroundColor: Color.darkBackground, flex: 1 }}>
+      <KeyboardAvoidingView behavior="position" style={{ backgroundColor: Color.darkBackground, flex: 1 }}>
         <ScrollView
           contentContainerStyle={{
             backgroundColor: Color.darkBackground,
@@ -113,7 +113,7 @@ class FeedScreen extends React.Component {
             text="Refresh"
           />
         </ScrollView>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
