@@ -79,7 +79,7 @@ class RunScreen extends React.Component {
     if (this.props.run.run_info.active == true) {
       if (this.props.run.run_info.real_time_tracking == true) this.props.user.socket.emit('start_run', start_time);
       this.locationUpdate()
-      let timerId = setTimeout(this.locationUpdateLoop.bind(this), 5000);
+      let timerId = setTimeout(this.locationUpdateLoop.bind(this), 3000);
     } 
   }
 

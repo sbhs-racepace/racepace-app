@@ -68,15 +68,20 @@ function calculateLapValues(current_lap_distance, change_in_distance, old_lap_st
   return {lap_distance, lap_pace, lap_start_time};
 }
 
-function calculateGeneralValues(start_time, current_distance, location_packet, end_time, speed, location_packets) {
+function calculateGeneralValues(start_time, current_distance, location_packet, location_packets) {
+  let end_time = location_packet.timestamp
+  let speed = location_packet.speed
+  let current_pace = speedToPace(speed) // Using Estimated Speed by expo if not enough info
   let change_in_distance = 0
   if (location_packets.length > 0) {
     let previous_location = location_packets[location_packets.length-1]
+    let previous_time = previous_location.timestamp
     change_in_distance = coordDistance(previous_location, location_packet)
     current_distance += change_in_distance
+    current_pace = calculateAveragePace(change_in_distance, previous_time, end_time) 
+    // Using previous location to calculate current pace
   }
   let average_pace = calculateAveragePace(current_distance, start_time, end_time)
-  let current_pace = speedToPace(speed)
   return {current_distance, average_pace, current_pace, change_in_distance}
 }
 
@@ -84,13 +89,10 @@ function calculateGeneralValues(start_time, current_distance, location_packet, e
 function generateNewState(state, location_packet) {
   // General Distance and Pace Update
   let end_time = location_packet.timestamp
-  let speed = location_packet.speed
   let {current_distance, average_pace, current_pace, change_in_distance } = calculateGeneralValues(
     state.run_info.start_time.getTime(),
     state.real_time_info.current_distance,
     location_packet,
-    end_time, 
-    speed,
     state.location_packets,
   )
   state.real_time_info.current_distance = current_distance
