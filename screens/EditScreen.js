@@ -30,7 +30,7 @@ const { width: windowWidth, height: windowHeight } = Dimensions.get("window");
 const STYLES = StyleSheet.create({
   chsfile: {
     width: 80,
-    height: 30,
+    height: 40,
     borderRadius: 10,
     alignSelf: "center"
   },
@@ -72,6 +72,7 @@ class EditScreen extends React.Component {
       confirmation_password: ""
     };
     this.base64 = false;
+    this.loadTime = new Date().getTime();
   }
 
   async saveChanges() {
@@ -139,9 +140,7 @@ class EditScreen extends React.Component {
                 full_name: data.full_name
               };
               await this.props.updateUserInfo(updated_data);
-              Alert.alert(
-                "Changed User Details."
-              );
+              Alert.alert("Changed User Details.");
               this.props.navigation.navigate("Profile");
             } else {
               Alert.alert(res.error);
@@ -163,7 +162,8 @@ class EditScreen extends React.Component {
               res = await res.json();
               if (res.success == true) {
                 Alert.alert(
-                  "Image upload success. These changes may not update until restart."
+                  "Image upload success",
+                  "These changes may not update until restart."
                 );
               } else {
                 Alert.alert(res.error);
@@ -176,7 +176,7 @@ class EditScreen extends React.Component {
 
   render() {
     return (
-      <View style={{ flex: 1, backgroundColor: Color.lightBackground }}>
+      <KeyboardAvoidingView behavior="padding" style={{ flex: 1, backgroundColor: Color.lightBackground }}>
         <BackButtonHeader
           title="Edit Screen"
           onPress={this.props.navigation.goBack}
@@ -196,11 +196,11 @@ class EditScreen extends React.Component {
                 }
                 style={STYLES.profile_image}
                 source={{
-                  uri: this.state.uri + `?rand=${Math.random()}`
+                  uri: this.state.uri + `?rand=${this.loadTime}`
                 }}
               />
               <Button
-                text="Choose File"
+                text="Choose new image"
                 style={STYLES.chsfile}
                 onPress={async () => {
                   let { uri, type } = await DocumentPicker.getDocumentAsync({
@@ -303,7 +303,7 @@ class EditScreen extends React.Component {
             />
           </View>
         </ScrollView>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }

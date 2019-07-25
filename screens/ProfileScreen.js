@@ -57,6 +57,7 @@ const STYLES = StyleSheet.create({
 class ProfileScreen extends React.Component {
   constructor(props) {
     super(props);
+    this.loadTime = new Date().getTime()
   }
 
   async doLogout() {
@@ -206,7 +207,7 @@ class ProfileScreen extends React.Component {
                     source={{
                       uri: `${global.serverURL}/api/avatars/${
                         this.props.user.user_id
-                      }.png?rand=${Math.random()}`
+                      }.png?rand=${this.loadTime}`
                     }}
                   />
                 </View>

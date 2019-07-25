@@ -189,6 +189,7 @@ class RunSetupScreen extends React.Component {
         (
           <View style={{flexDirection:'row', alignItems:'center', marginBottom: 20, width:"90%", justifyContent:'space-between'}}>
           <TextInput
+            placeholder="Waypoint"
             style={{width:windowWidth*0.7}}
             onChangeText={locationText => {
               this.props.changeLocationInput(locationText, index);
