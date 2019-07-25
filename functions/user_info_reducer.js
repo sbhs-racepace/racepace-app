@@ -125,7 +125,12 @@ export default function userInfoReducer(state = USER_INFO_INITIAL_STATE, action)
       }
       let new_saved_route = {}
       new_saved_route[uniqueKey()] = saved_route
-      return Object.assign({}, state, new_saved_route);
+      return Object.assign({}, state, {
+        saved_routes: {
+          ...state.saved_routes,
+          ...new_saved_route,
+        }
+      });
     case ADD_RUN:
       return Object.assign({}, state, {
         runs: [
@@ -136,7 +141,12 @@ export default function userInfoReducer(state = USER_INFO_INITIAL_STATE, action)
     case ADD_SAVED_RUN:
       let new_saved_run = {}
       new_saved_run[uniqueKey()] = action.info
-      return Object.assign({}, state, new_saved_run);
+      return Object.assign({}, state, {
+        saved_runs: {
+          ...state.saved_runs,
+          ...new_saved_run,
+        }
+      });
     default:
       return state
   }
