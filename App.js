@@ -22,6 +22,7 @@ import FollowerScreen from './screens/FollowerScreen';
 import FollowingScreen from './screens/FollowingScreen';
 import SplashScreen from './screens/SplashScreen';
 import MapScreen from './screens/MapScreen';
+import ExtendedDetailsScreen from './screens/ExtendedDetailsScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
@@ -105,6 +106,10 @@ const LoginNavigator = createStackNavigator({
   },
   OtherStats: {
     screen: RunOtherStatsScreen,
+    navigationOptions: { header: null },
+  },
+  ExtendedDetails: {
+    screen: ExtendedDetailsScreen,
     navigationOptions: { header: null },
   },
   Paused: {
