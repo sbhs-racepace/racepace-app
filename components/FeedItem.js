@@ -66,9 +66,6 @@ const STYLES = StyleSheet.create({
 class Comment extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      region: this.calcMapRegion(),
-    }
   }
 
   render() {
@@ -91,7 +88,8 @@ export default class FeedItem extends React.Component {
       liked: this.props.likes.includes(this.props.user.user_id),
       comments: this.props.comments || [],
       commentInput: "",
-      showComments: false
+      showComments: false,
+      region: this.calcMapRegion(),
     };
     if (this.props.route.length == 0) {
       this.props.route.push({
@@ -152,19 +150,28 @@ export default class FeedItem extends React.Component {
   }
 
   calcMapRegion() {
-    let lat_list = this.props.route.map(point => point.latitude);
-    let max_lat = Math.max(...lat_list);
-    let min_lat = Math.min(...lat_list);
-    let lon_list = this.props.route.map(point => point.longitude);
-    let max_lon = Math.max(...lon_list);
-    let min_lon = Math.min(...lon_list);
-    let region = {
-      latitude: (max_lat + min_lat)/2,
-      longitude: (max_lon + min_lon)/2,
-      latitudeDelta: max_lat - min_lat + 0.001,
-      longitudeDelta: max_lon - min_lon + 0.0005,
+    if (this.props.route.length > 0) {
+      let lat_list = this.props.route.map(point => point.latitude);
+      let max_lat = Math.max(...lat_list);
+      let min_lat = Math.min(...lat_list);
+      let lon_list = this.props.route.map(point => point.longitude);
+      let max_lon = Math.max(...lon_list);
+      let min_lon = Math.min(...lon_list);
+      let region = {
+        latitude: (max_lat + min_lat)/2,
+        longitude: (max_lon + min_lon)/2,
+        latitudeDelta: max_lat - min_lat + 0.001,
+        longitudeDelta: max_lon - min_lon + 0.0005,
+      }
+      return region
+    } else {
+      let region =  {
+        ...global.default_location,
+        latitudeDelta:0.005, 
+        longitudeDelta:0.005,
+      }
+      return region;
     }
-    return region
   }
 
   render() {
