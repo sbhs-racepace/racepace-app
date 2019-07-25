@@ -42,8 +42,8 @@ const RUN_INITIAL_STATE = {
     final_energy: null,
     points: 0,
     active: false,
-    start: null,
-    end: null,
+    start: 'start',
+    end: 'end',
   },
   run_setup: {
     start: 'Current Location',
