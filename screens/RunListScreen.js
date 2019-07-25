@@ -38,7 +38,7 @@ class RunItem extends React.Component {
   render() {
     return (
       <TouchableOpacity
-        onPress={()=>{}}
+        onPress={this.props.onPress}
       >
         <Card 
           title={this.props.run.run_info.start_time}
@@ -64,6 +64,7 @@ class RunListScreen extends React.Component {
     let runs = this.props.user.runs.map(run => 
       <RunItem 
         run={run}
+        onPress={() => this.props.navigation.navigate('ExtendedDetails', {run})}
       />
     );
 
