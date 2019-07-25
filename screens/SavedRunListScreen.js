@@ -49,25 +49,26 @@ class SavedRunItem extends React.Component {
 class SavedRunListScreen extends React.Component {
   constructor(props) {
     super(props);
-  }
-
-  render() {
     let saved_runs = [];
     for (run_id in this.props.user.saved_runs) {
       saved_runs.push(this.props.user.saved_runs[run_id])
     };
+    this.state = {
+      saved_runs: saved_runs
+    }
+  }
 
-    let runs = saved_runs.map(run =>
-      <SavedRunItem
-        run={run}
-      />
-    );
+  render() {
 
 
     return (
       <View style={{backgroundColor: Color.darkBackground, flex:1}}>
         <ScrollView>
-          {runs}
+          {this.state.saved_runs.map(run =>
+            <SavedRunItem
+              run={run}
+            />
+          )}
         </ScrollView>
       </View>
     );
