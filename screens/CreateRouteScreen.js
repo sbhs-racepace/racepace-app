@@ -182,6 +182,7 @@ class RunSetupScreen extends React.Component {
         Alert.alert('Failure Generating Route')
       }
     }
+    this.setState({loading:false});
   }
 
   setToCurrentLocation() {
@@ -309,7 +310,6 @@ class RunSetupScreen extends React.Component {
           disabled={this.state.loading}
           onPress={() => {
             this.setState({loading:true}, this.generateRouteInfo.bind(this))
-            this.setState({loading:false});
           }}
         >
           {this.state.loading && (

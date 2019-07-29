@@ -98,9 +98,8 @@ class MapScreen extends React.Component {
       Alert.alert('Error', 'Input was blank.');
     } else {
       try {
-        let inputString = searchStr + ',' + global.region.name;
-        let topResult = await Location.geocodeAsync(inputString)[0]
-        let { latitude, longitude } = topResult
+        let location = (await Location.geocodeAsync(searchStr+","+global.region.name))[0];
+        let { latitude, longitude } = location
         this.setState(prevState => ({
           region: {
             ...prevState.region, //Copy in other parts of the object
